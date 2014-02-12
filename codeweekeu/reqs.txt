@@ -1,0 +1,7 @@
+Django==1.6.2
+argparse==1.2.1
+distribute==0.6.34
+django-debug-toolbar==1.0.1
+ipython==1.2.0
+sqlparse==0.1.11
+wsgiref==0.1.2
