@@ -1,63 +1,33 @@
 """
 Django settings for codeweekeu project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 import os
-#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 here = lambda x: os.path.join(os.path.dirname(os.path.abspath(__file__)), x)
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd7o9p97d9d6t&ycz^aennig5!65xv8g!ba!#cezu(*^&h0bv8!'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
-
-
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+ADMINS = (
+    # ('Your Name', 'your_email@example.com'),
 )
 
-ROOT_URLCONF = 'codeweekeu.urls'
-
-WSGI_APPLICATION = 'codeweekeu.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'codeweekeu.db',
+        'NAME': here('../codeweekeu.db'),
+        # The following settings are not used with sqlite3:
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
-
+ALLOWED_HOSTS = []
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -68,9 +38,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID = 1
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'd7o9p97d9d6t&ycz^aennig5!65xv8g!ba!#cezu(*^&h0bv8!'
+
+MEDIA_ROOT = here('../media/')
+MEDIA_URL = '/media/'
 
 STATIC_ROOT = here('../staticfiles/')
 STATIC_URL = '/static/'
@@ -81,6 +55,19 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_REDIRECT_URL = '/'
+
+MIDDLEWARE_CLASSES = (
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+ROOT_URLCONF = 'codeweekeu.urls'
+
+WSGI_APPLICATION = 'codeweekeu.wsgi.application'
 
 STATICFILES_FINDERS = (
 	'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -121,11 +108,19 @@ INSTALLED_APPS = (
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
+	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'django.contrib.admindocs',
 	'debug_toolbar',
+    'web',
+    'api',
     'social.apps.django_app.default',
+    'django_countries',
+    'avatar',
 )
+
+AUTH_PROFILE_MODULE = 'api.UserProfile'
 
 AUTHENTICATION_BACKENDS = (
 	'social.backends.github.GithubOAuth2',
@@ -151,7 +146,7 @@ SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/login-error/'
-#SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/profile/'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/accounts/profile/'
 
 #############################################################################
 # Django debug toolbar settings
@@ -185,7 +180,8 @@ LOGGING = {
 	}
 }
 
+
 try:
-   from settings_local import *
+	from settings_local import *
 except ImportError, e:
-   pass
+	pass

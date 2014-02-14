@@ -1,48 +1,81 @@
 {% load static %}
+{% load avatar_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-    <meta name="description" content="October 11 - 17, 2014: a week to celebrate coding in Europe, encouraging citizens to learn more about technology, and connecting communities and organizations who can help you learn coding." />
+	<meta name="description"
+	      content="October 11 - 17, 2014: a week to celebrate coding in Europe, encouraging citizens to learn more about technology, and connecting communities and organizations who can help you learn coding." />
 	<link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
 	<link rel="icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
-	<title>Europe Code Week {% block title %}{% endblock title%}</title>
-	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">	
+	<title>Europe Code Week {% block title %}{% endblock title %}</title>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
 	<link href="{% static "css/custom.css" %}" rel="stylesheet">
 
 </head>
 <body>
-	<div class="container" id="navigation">
-		<div class="pure-g-r">
-			<div class="pure-u-1-1">
-			<div class="pure-menu pure-menu-open pure-menu-horizontal">
-			    <a href="http://codeweek.eu" class="pure-menu-heading">Europe Code Week</a>
+<div class="container" id="navigation">
 
-			    <ul>
-			        <li><a href="/">Map</a></li>
-			        <li><a href="http://codeweek.eu/learn">Resources</a></li>
-			        <li><a href="http://codeweek.eu/code">Why coding?</a></li>
-			        <li><a href="http://codeweek.eu/about/">About</a></li>
-			        <li><a href="http://codeeu.tumblr.com/">News</a></li>
-			    </ul>
-			</div>
-		</div>
-	</div>
-	</div>
-	<div class="container" id="main-content">
-	    {% if not user.is_authenticated %}
-<a href="{% url 'social:begin' 'github' %}">Login with Github</a>
-<a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
-<a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
-{% else %}
-	{% if user.first_name or user.last_name %}
-		{{ user.first_name }} {{ user.last_name }}
-	{% else %}
-		{{ user.username }}
-	{% endif %}
-	<a href="{% url 'logout' %}">Logout</a>
-{% endif %}
-		{% block content %}{% endblock content %}
-	</div>
+	<a href="http://codeweek.eu" class="pure-menu-heading">Europe Code Week</a>
+
+	<ul id="std-menu-items">
+		<li><a href="/">Map</a></li>
+		<li><a href="http://codeweek.eu/learn">Resources</a></li>
+		<li><a href="http://codeweek.eu/code">Why coding?</a></li>
+		<li><a href="http://codeweek.eu/about/">About</a></li>
+		<li><a href="http://codeeu.tumblr.com/">News</a></li>
+		<li>
+			{% if not user.is_authenticated %}
+				<a href="#">Login</a>
+				<ul>
+					<li class="pure-menu-heading">Login with one of your social logins</li>
+					<li><a href="{% url 'social:begin' 'github' %}">Login with Github</a></li>
+					<li><a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a></li>
+					<li><a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a></li>
+				</ul>
+			{% else %}
+				<a href="#">
+					{% avatar user 40 %}
+					{% if user.first_name or user.last_name %}
+						{{ user.first_name }} {{ user.last_name }}
+					{% else %}
+						{{ user.username }}
+					{% endif %}
+				</a>
+				<ul>
+					<li><a href="{% url 'profile' %}">My Profile</a></li>
+					<li><a href="{% url 'logout' %}">Logout</a></li>
+				</ul>
+			{% endif %}
+		</li>
+	</ul>
+</div>
+<div class="container" id="main-content">
+
+
+	{% block content %}{% endblock content %}
+
+</div>
+
+
+<script src="http://yui.yahooapis.com/3.14.1/build/yui/yui-min.js"></script>
+<script>
+	YUI({
+		classNamePrefix: 'pure'
+	}).use('gallery-sm-menu', function (Y) {
+
+				var horizontalMenu = new Y.Menu({
+					container: '#navigation',
+					sourceNode: '#std-menu-items',
+					orientation: 'horizontal',
+					hideOnOutsideClick: false,
+					hideOnClick: false
+				});
+
+				horizontalMenu.render();
+				horizontalMenu.show();
+
+			});
+</script>
 </body>
 </html>
