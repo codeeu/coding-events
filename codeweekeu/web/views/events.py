@@ -3,14 +3,16 @@ from django.template import RequestContext
 
 
 def index(request):
-
 	return render_to_response(
 		'pages/index.html',
 		{'test': 'test'},
 		context_instance=RequestContext(request))
 
 def add_event(request):
-	pass
+	return render_to_response(
+		'pages/add_event.html',
+		{'test': 'test'},
+		context_instance=RequestContext(request))
 
 def view_event(request):
 	pass
