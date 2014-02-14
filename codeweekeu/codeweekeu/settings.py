@@ -2,29 +2,29 @@
 Django settings for codeweekeu project.
 """
 
-
 import os
+
 here = lambda x: os.path.join(os.path.dirname(os.path.abspath(__file__)), x)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+	# ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': here('../codeweekeu.db'),
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.sqlite3',
+		'NAME': here('../codeweekeu.db'),
+		# The following settings are not used with sqlite3:
+		'USER': '',
+		'PASSWORD': '',
+		'HOST': '',
+		'PORT': '',
+	}
 }
 
 ALLOWED_HOSTS = []
@@ -51,7 +51,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    here('../static/'),
+	here('../static/'),
 )
 
 LOGIN_REDIRECT_URL = '/'
@@ -87,21 +87,20 @@ MIDDLEWARE_CLASSES = (
 	'debug_toolbar.middleware.DebugToolbarMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.locale.LocaleMiddleware',
-    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+	'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.contrib.auth.context_processors.auth',
 	'django.core.context_processors.request',
 	'django.core.context_processors.media',
-    'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect',
+	'social.apps.django_app.context_processors.backends',
+	'social.apps.django_app.context_processors.login_redirect',
 )
 
 TEMPLATE_DIRS = (
 	here('../web/templates'),
 )
-
 
 INSTALLED_APPS = (
 	'django.contrib.admin',
@@ -113,11 +112,11 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
 	'django.contrib.admindocs',
 	'debug_toolbar',
-    'web',
-    'api',
-    'social.apps.django_app.default',
-    'django_countries',
-    'avatar',
+	'web',
+	'api',
+	'social.apps.django_app.default',
+	'django_countries',
+	'avatar',
 )
 
 AUTH_PROFILE_MODULE = 'api.UserProfile'
@@ -138,7 +137,6 @@ SOCIAL_AUTH_FACEBOOK_KEY = ''
 SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_TWITTER_KEY = ''
 SOCIAL_AUTH_TWITTER_SECRET = ''
-
 
 SOCIAL_AUTH_ENABLED_BACKENDS = ('github', 'twitter', 'facebook', )
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
@@ -179,7 +177,6 @@ LOGGING = {
 		},
 	}
 }
-
 
 try:
 	from settings_local import *
