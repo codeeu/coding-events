@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load avatar_tags %}
 
 {% block content %}
 	<h2>Profil</h2>
@@ -12,5 +13,6 @@
 		<input type="submit" value="Update" />
 
 	</form>
+	{% avatar user 60 %}
 	<a href="{% url 'avatar_change' %}">Change your avatar</a>
 {% endblock content %}
