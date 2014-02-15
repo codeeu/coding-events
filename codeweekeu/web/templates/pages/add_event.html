@@ -7,50 +7,19 @@
 	<div class="pure-u-1-1">
 	<h1>Add your #codeEU event</h1>
 	<p><a href="#" target="_blank">How to organize your own event?</a></p>
-	<form class="pure-form pure-form-stacked">
-	    <fieldset>
-	        <legend>Just a dummy Pure form</legend>
+	
+	<form action="/add/" method="post" class="pure-form pure-form-stacked" id="event">{% csrf_token %}
+		<fieldset>
+	    {% for field in form %}
+            {{ field.label_tag }} {{ field }}
+            {{ field.errors }}
+	    {% endfor %}
+	   <p><input type="submit" value="Add event" class="pure-button pure-button-primary" /></p>
+		</fieldset>
+	</form>	
 
-	        <div class="pure-g">
-	            <div class="pure-u-1 pure-u-med-1-3">
-	                <label for="first-name">First Name</label>
-	                <input id="first-name" type="text">
-	            </div>
+	<p>Note: Events will be checked by one of our <a href="#" target="_blank">local ambassadors</a> before appearing on the map.</p>
 
-	            <div class="pure-u-1 pure-u-med-1-3">
-	                <label for="last-name">Last Name</label>
-	                <input id="last-name" type="text">
-	            </div>
-
-	            <div class="pure-u-1 pure-u-med-1-3">
-	                <label for="email">E-Mail</label>
-	                <input id="email" type="email" required>
-	            </div>
-
-	            <div class="pure-u-1 pure-u-med-1-3">
-	                <label for="city">City</label>
-	                <input id="city" type="text">
-	            </div>
-
-	            <div class="pure-u-1 pure-u-med-1-3">
-	                <label for="state">State</label>
-	                <select id="state" class="pure-input-1-2">
-	                    <option>AL</option>
-	                    <option>CA</option>
-	                    <option>IL</option>
-	                </select>
-	            </div>
-	        </div>
-
-	        <label for="terms" class="pure-checkbox">
-	            <input id="terms" type="checkbox"> I've read the terms and conditions
-	        </label>
-
-	        <button type="submit" class="pure-button pure-button-primary">Submit</button>
-	    </fieldset>
-	</form>
-	</div>
 </div>
-
 
 {% endblock content %}
