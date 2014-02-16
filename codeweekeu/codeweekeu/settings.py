@@ -20,6 +20,9 @@ here = lambda x: os.path.join(os.path.dirname(os.path.abspath(__file__)), x)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'd7o9p97d9d6t&ycz^aennig5!65xv8g!ba!#cezu(*^&h0bv8!'
 
+MEDIA_ROOT = here('../media/')
+MEDIA_URL = '/media/'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -121,6 +124,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+	'taggit',
+	'api',
+	'web',
 )
 
 #############################################################################
