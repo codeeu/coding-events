@@ -2,7 +2,12 @@ from django.db import models
 from taggit.managers import TaggableManager
 from django.contrib.auth.models import User
 import datetime
-# Create your models here.
+
+class CountryList(models.Model):
+	name = models.CharField(max_length=255)
+
+	def __unicode__(self):
+		return '{0}'.format(self.name)
 
 class Event(models.Model):
 
@@ -15,16 +20,17 @@ class Event(models.Model):
 	)
 
 	status=models.IntegerField(choices=STATUS_CHOICES,default=1)
-	organizer=models.CharField(max_length=255)
 	title=models.CharField(max_length=255)
-	description=models.TextField(max_length=255)
-	location=models.CharField(max_length=255)
+	organizer=models.CharField(max_length=255)
+	description=models.TextField(max_length=1000)
+	location=models.CharField(max_length=1000)
+	country=models.ForeignKey(CountryList)
 	start_date=models.DateTimeField()
 	end_date=models.DateTimeField()
-	event_url=models.URLField(max_length=200)
-	contact_person=models.EmailField(max_length=75)
-	tags=TaggableManager()
-	picture= models.ImageField(upload_to='event_avatars', default='http://placehold.it/400',blank=True)
+	event_url=models.URLField(blank=True)
+	contact_person=models.EmailField(blank=True)
+	#tags=TaggableManager()
+	picture= models.ImageField(upload_to='event_avatars',default='http://placehold.it/400',blank=True)
 	pub_date=models.DateTimeField(default=datetime.datetime.now())
 
 
@@ -34,12 +40,6 @@ class Event(models.Model):
 
 	class Meta:
 		ordering=['start_date']
-
-class CountryList(models.Model):
-	name = models.CharField(max_length=255)
-
-	def __unicode__(self):
-		return '{0}'.format(self.name)
 
 
 class SocialAccountList(models.Model):

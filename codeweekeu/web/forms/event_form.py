@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.utils.html import  escape
+from api.models import Event, CountryList
+from taggit.forms import TagField
 
 class AddEvent(forms.Form):
 
@@ -46,10 +48,11 @@ class AddEvent(forms.Form):
 		},
 		)
 
-	country = forms.CharField(
+	country = forms.ModelChoiceField(
 		required=True,
 		label='Event\'s country:',
-		widget=forms.widgets.TextInput(),
+		widget=forms.widgets.Select(),
+		queryset = CountryList.objects.all(),
 		error_messages = {
 			'required': u'Please select the event\'s country.',
 			'invalid': u'Make sure the event country is written in English.',
@@ -90,14 +93,7 @@ class AddEvent(forms.Form):
 		},
 		)
 
-	tags = forms.CharField(
-		required=True,
-		label='Tags for your event:',
-		widget=forms.widgets.TextInput(),
-		error_messages = {
-			'invalid': u'That\'s not a valid tag, please check.',
-		},
-		)
+	#tags = TagField()
 
 	picture = forms.ImageField(
 		required=False,
