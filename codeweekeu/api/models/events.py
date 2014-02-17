@@ -1,27 +1,21 @@
-from django.db import models
-from taggit.managers import TaggableManager
-from django.contrib.auth.models import User
 import datetime
-
-
-class CountryList(models.Model):
-	name = models.CharField(max_length=255)
-
-	def __unicode__(self):
-		return '{0}'.format(self.name)
+from django.db import models
+from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
+from django_countries.fields import CountryField
 
 
 class Event(models.Model):
 	STATUS_CHOICES = (
-		('APPROVED_STATUS', 'Approved'),
-		('PENDING_STATUS', 'Pending'),
+		(1, 'Approved'),
+		(2, 'Pending'),
 	)
-	status = models.IntegerField(choices=STATUS_CHOICES, default='PENDING_STATUS')
+	status = models.IntegerField(choices=STATUS_CHOICES, default=1)
 	title = models.CharField(max_length=255)
 	organizer = models.CharField(max_length=255)
 	description = models.TextField(max_length=1000)
 	location = models.CharField(max_length=1000)
-	country = models.ForeignKey(CountryList)
+	country = CountryField()
 	start_date = models.DateTimeField()
 	end_date = models.DateTimeField()
 	event_url = models.URLField(blank=True)
@@ -35,10 +29,5 @@ class Event(models.Model):
 	class Meta:
 		ordering = ['start_date']
 
-
-class SocialAccountList(models.Model):
-	name = models.CharField(max_length=255)
-	owner = models.ForeignKey(User)
-
-	def __unicode__(self):
-		return '{0}'.format(self.name)
+	class Meta:
+		app_label = 'api'
