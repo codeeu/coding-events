@@ -1,6 +1,6 @@
 from django import forms
-from api.models import User
-from api.models import UserProfile
+from api.models.users import User
+from api.models.users import UserProfile
 
 
 class UserForm(forms.ModelForm):
@@ -8,9 +8,14 @@ class UserForm(forms.ModelForm):
 		model = User
 		fields = ['first_name', 'last_name', 'email']
 		labels = {
-			'first_name': 'Your valued name',
-			'last_name': 'What your mommy and daddy gave you',
-		    'email': 'where you get spam?',
+			'first_name': 'Your Valued Name',
+			'last_name': 'What name did Your Mommy and Daddy Gave You?',
+		    'email': 'Where Do You Get Your Spam?',
+		}
+		help_text = {
+			'first_name': 'Your First Name',
+			'last_name': 'Last Name',
+		    'email': 'Email',
 		}
 
 
@@ -20,7 +25,7 @@ class UserProfileForm(forms.ModelForm):
 		fields = ('country',)
 		labels = {'country': 'Country', }
 		#labels = {'country': 'Country', }
-		help_texts = {'country': 'Tell us what is the place you call home.', }
+		help_texts = {'country': 'Tell Us What Is The Name Of The Place You Call Home.', }
 		error_messages = {
             'country': {
                 'max_length': 'Are you sure? Where is that?',

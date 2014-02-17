@@ -112,11 +112,11 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
 	'django.contrib.admindocs',
 	'debug_toolbar',
-	'web',
-	'api',
 	'social.apps.django_app.default',
 	'django_countries',
 	'avatar',
+	'web',
+	'api',
 )
 
 AUTH_PROFILE_MODULE = 'api.UserProfile'
@@ -126,19 +126,20 @@ AUTHENTICATION_BACKENDS = (
 	'social.backends.twitter.TwitterOAuth',
 	'social.backends.facebook.FacebookOAuth2',
 	'social.backends.facebook.FacebookAppOAuth2',
+	'social.backends.google.GoogleOpenId',
 	'django.contrib.auth.backends.ModelBackend',
 )
 
 SOCIAL_AUTH_GITHUB_KEY = ''
 SOCIAL_AUTH_GITHUB_SECRET = ''
-#SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '...'
-#SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '...'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '...'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '...'
 SOCIAL_AUTH_FACEBOOK_KEY = ''
 SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_TWITTER_KEY = ''
 SOCIAL_AUTH_TWITTER_SECRET = ''
 
-SOCIAL_AUTH_ENABLED_BACKENDS = ('github', 'twitter', 'facebook', )
+SOCIAL_AUTH_ENABLED_BACKENDS = ('github', 'twitter', 'facebook', 'google')
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 
 LOGIN_URL = '/login/'

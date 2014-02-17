@@ -1,0 +1,18 @@
+[{
+    "pk": 1,
+    "model": "api.countrylist",
+    "fields": {
+        "name": "Slovenia"
+
+    }
+},
+{
+    "pk": 2,
+    "model": "api.countrylist",
+    "fields": {
+        "name": "Germany"
+
+    }
+}
+]
+
