@@ -20,3 +20,14 @@ class UserProfile(models.Model):
 # It forces to get or create profile when User is accessed
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
+
+class SocialAccountList(models.Model):
+	name = models.CharField(max_length=255)
+	owner = models.ForeignKey(User)
+
+	def __unicode__(self):
+		return '{0}'.format(self.name)
+
+	class Meta:
+		app_label = 'api'
+
