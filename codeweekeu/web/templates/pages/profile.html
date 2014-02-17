@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load avatar_tags %}
+
+{% block content %}
+	<h2>
+		{% if user.first_name or user.last_name %}
+			{{ user.first_name }} {{ user.last_name }}
+		{% else %}
+			{{ user.username }}
+		{% endif %}'s Profile
+	</h2>
+	{% for field in form %}
+		{{ field.error }}
+	{% endfor %}
+
+	<form action="{% url 'profile' %}" method="POST" class="pure-form pure-form-stacked">{% csrf_token %}
+		{{ uform.as_p }}
+		{{ pform.as_p }}
+		<input type="submit" value="Update" class="pure-button" />
+
+	</form>
+	{% avatar user 160 %}
+	<br>
+	<a href="{% url 'avatar_change' %}">Change your avatar</a>
+{% endblock content %}
