@@ -8,7 +8,9 @@ class UserProfile(models.Model):
 	Extending User Model
 	"""
 	user = models.OneToOneField(User)
-	country = CountryField()
+	country = CountryField(blank=True)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now_add=True)
 
 	def __unicode__(self):
 		return 'Username: %s, First Name:%s Last Name: %s, Country: %s' % \
