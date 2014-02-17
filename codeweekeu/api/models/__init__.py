@@ -1,1 +1,2 @@
-from .users import UserProfile
+from .users import *
+from .events import *
