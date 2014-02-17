@@ -4,7 +4,7 @@ from api import models
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'country', )
+	list_display = ('user', 'country', )
 
 
 class EventAdmin(admin.ModelAdmin):
