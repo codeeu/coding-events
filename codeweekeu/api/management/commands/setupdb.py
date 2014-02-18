@@ -24,7 +24,7 @@ class Command(NoArgsCommand):
         # If engine is sqlite, remove db file
         if db_engine == 'sqlite3':
             sys.stdout.write('Removing %s ... \n' % db_name)
-            db_filepath = os.path.join(settings.PROJECT_DIR, db_name)
+            db_filepath = os.path.join(settings.DJANGO_ROOT, 'db', db_name)
             if os.path.exists(db_filepath):
                 os.unlink(db_filepath)
         else:
