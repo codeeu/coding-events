@@ -152,8 +152,6 @@ class AddEvent1(forms.Form):
 		},
 	)
 
-	tags = TagField()
-
 	picture = forms.ImageField(
 		required=False,
 		label='You can also upload an image to represent your event: (optional)',
