@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.context_processors import csrf

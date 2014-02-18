@@ -121,7 +121,7 @@ MEDIA_URL = '/media/'
 # Absolute path to the directory static files should be collected to. Don't put
 # anything in this directory yourself; store your static files in apps' static/
 # subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = normpath(join(DJANGO_ROOT, 'static'))
+STATIC_ROOT = normpath(join(DJANGO_ROOT, 'staticfiles'))
 
 # URL prefix for static files.
 STATIC_URL = '/static/'
@@ -131,7 +131,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Additional locations of static files.
 STATICFILES_DIRS = (
-    normpath(join(DJANGO_ROOT, 'assets')),
+    normpath(join(DJANGO_ROOT, 'static')),
 )
 
 # List of finder classes that know how to find static files in various
@@ -151,7 +151,7 @@ TEMPLATE_LOADERS = (
 
 # Directories to search when loading templates.
 TEMPLATE_DIRS = (
-    normpath(join(DJANGO_ROOT, 'templates')),
+    normpath(join(DJANGO_ROOT, 'web/templates')),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

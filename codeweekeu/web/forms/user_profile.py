@@ -24,7 +24,6 @@ class UserProfileForm(forms.ModelForm):
 		model = UserProfile
 		fields = ('country',)
 		labels = {'country': 'Country', }
-		#labels = {'country': 'Country', }
 		help_texts = {'country': 'Tell Us What Is The Name Of The Place You Call Home.', }
 		error_messages = {
             'country': {

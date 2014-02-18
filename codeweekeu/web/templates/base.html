@@ -38,7 +38,7 @@
 					</ul>
 				{% else %}
 					<a href="{% url 'profile' %}">
-						{% avatar user.username 30 %}
+						{% avatar user 30 %}
 						{% if user.first_name or user.last_name %}
 							{{ user.first_name }} {{ user.last_name }}
 						{% else %}
