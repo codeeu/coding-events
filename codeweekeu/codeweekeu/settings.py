@@ -206,6 +206,7 @@ INSTALLED_APPS = (
     # defined apps
     'web',
 	'api',
+	'taggit',
 )
 ########## END APP CONFIGURATION
 

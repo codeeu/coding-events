@@ -10,7 +10,7 @@ class AddEvent(forms.ModelForm):
 	class Meta:
 		model = Event
 		fields = ['title', 'organizer', 'description', 'location', 'country', 'start_date', 'end_date',
-		          'event_url', 'contact_person', 'picture']
+		          'event_url', 'contact_person', 'picture','tags']
 		labels = {
 			'title': 'Your event\'s title:',
 			'organizer': 'Who\'s organizing this event?',
@@ -151,8 +151,6 @@ class AddEvent1(forms.Form):
 		'invalid': u'Please enter a valid email address.',
 		},
 	)
-
-	#tags = TagField()
 
 	picture = forms.ImageField(
 		required=False,

@@ -6,6 +6,18 @@ from django_countries.fields import CountryField
 
 
 class Event(models.Model):
+
+	def __init__(self,*args,**kwargs):
+
+		try:
+			self.tag=kwargs["tags"]
+			del kwargs["tags"]
+		except KeyError:
+			pass
+
+		super(Event,self).__init__(*args,**kwargs)
+
+
 	STATUS_CHOICES = (
 		(1, 'Approved'),
 		(2, 'Pending'),
@@ -22,6 +34,7 @@ class Event(models.Model):
 	contact_person = models.EmailField(blank=True)
 	picture = models.ImageField(upload_to='event_avatars', default='http://placehold.it/400x400', blank=True)
 	pub_date = models.DateTimeField(default=datetime.datetime.now())
+	tags=TaggableManager(blank=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
 
@@ -30,6 +43,19 @@ class Event(models.Model):
 
 	class Meta:
 		ordering = ['start_date']
-
-	class Meta:
 		app_label = 'api'
+
+
+	def save(self,*args,**kwargs):
+		super(Event,self).save(*args,**kwargs)
+
+		try:
+			for tag in self.tag:
+				self.tags.add(tag)
+		except AttributeError:
+			pass
+
+
+
+
+

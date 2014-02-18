@@ -23,7 +23,7 @@ def add_event(request):
 			event = create_or_update_event(**event_data)
 			return render_to_response(
 					'pages/thankyou.html',
-					{'title': event.id, 'event_id': event.id},
+					{'title': event.title, 'event_id': event.id},
 					context_instance=RequestContext(request))
 	context = {"form": event_form}
 	return render_to_response("pages/add_event.html", context, context_instance=RequestContext(request))
