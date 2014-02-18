@@ -32,9 +32,9 @@ class Event(models.Model):
 	end_date = models.DateTimeField()
 	event_url = models.URLField(blank=True)
 	contact_person = models.EmailField(blank=True)
-	picture = models.ImageField(upload_to='event_avatars', default='http://placehold.it/400x400', blank=True)
+	picture = models.ImageField(upload_to='event_picture', blank=True)
 	pub_date = models.DateTimeField(default=datetime.datetime.now())
-	tags=TaggableManager(blank=True)
+	tags=TaggableManager()
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
 

@@ -16,8 +16,8 @@
 	<p>Contact email: {{ event.contact_person }}</p>
 	{% endif %}
 	{% if event.picture %}
-	<p>AN IMAGE WAS ADDED AND WE'LL DISPLAY IT HERE :)</p>
-	{% endif %}	
+	<p><img src="{{ event.picture.url }}" /></p>
+	{% endif %}
 	</div>
 </div>
 {% endblock content %}

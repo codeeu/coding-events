@@ -8,7 +8,7 @@
 	<h1>Add your #codeEU event</h1>
 	<p><a href="#" target="_blank">How to organize your own event?</a></p>
 	
-	<form action="/add/" method="post" class="pure-form pure-form-stacked" id="event">{% csrf_token %}
+	<form  enctype="multipart/form-data" action="/add/" method="post" class="pure-form pure-form-stacked" id="event">{% csrf_token %}
 		<fieldset>
 	    {% for field in form %}
             {{ field.label_tag }} {{ field }}

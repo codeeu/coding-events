@@ -22,6 +22,7 @@ class AddEvent(forms.ModelForm):
 		    'event_url': 'Do you have a website with more information about the event? (optional)',
 		    'contact_person': 'Would you like to display a contact email? (optional)',
 		    'picture': 'You can also upload an image to represent your event: (optional)',
+		   	'tags': 'Tags, separated by commas:',
 		}
 		error_messages = {
 			'title': {
@@ -60,6 +61,10 @@ class AddEvent(forms.ModelForm):
 			},
 		    'picture': {
 				'invalid': u'Make sure this is a valid image.',
+			},
+			'tags': {
+				'required': u'Please type in some tags to categorize the target audience and type of event',
+				'invalid': u'Please enter tags in plain text, separated by commas.',
 			},
 		}
 
