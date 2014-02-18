@@ -118,6 +118,7 @@ INSTALLED_APPS = (
 	'avatar',
 	'web',
 	'api',
+	'taggit',
 )
 
 AUTH_PROFILE_MODULE = 'api.UserProfile'
