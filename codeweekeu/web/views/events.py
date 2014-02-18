@@ -16,7 +16,7 @@ def index(request):
 def add_event(request):
 	event_form = AddEvent()
 	if request.method =="POST":
-		event_form = AddEvent(data=request.POST)
+		event_form = AddEvent(data=request.POST, files=request.FILES)
 		if event_form.is_valid():
 			event_data = {}
 			event_data.update(event_form.cleaned_data)

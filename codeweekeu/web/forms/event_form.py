@@ -63,7 +63,7 @@ class AddEvent(forms.ModelForm):
 				'invalid': u'Make sure this is a valid image.',
 			},
 			'tags': {
-				'required': u'Please type in some tags to categorize the target audience and type of event.',
+				'required': u'Please type in some tags to categorize the target audience and type of event',
 				'invalid': u'Please enter tags in plain text, separated by commas.',
 			},
 		}
