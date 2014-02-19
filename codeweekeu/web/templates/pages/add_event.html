@@ -11,7 +11,7 @@
 <div class="pure-g-r">
 	<div class="pure-u-1-1">
 	<h1>Add your #codeEU event</h1>
-	<p><a href="#" target="_blank">How to organize your own event?</a></p>
+	<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
 	
 	<form  enctype="multipart/form-data" action="/add/" method="post" class="pure-form pure-form-stacked" id="event">{% csrf_token %}
 		<fieldset>

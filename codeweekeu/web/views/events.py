@@ -38,3 +38,6 @@ def search_event(request):
 
 def thankyou(request):
 	return render_to_response('pages/thankyou.html')
+
+def guide(request):
+	return render_to_response('pages/guide.html')
