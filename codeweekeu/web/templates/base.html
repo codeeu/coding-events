@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
 	<link href="{% static "css/custom.css" %}" rel="stylesheet">
 
+{% block custom_css %}{% endblock %}
+
 </head>
 <body>
 <div class="container" id="navigation">
@@ -60,6 +62,7 @@
 
 </div>
 
+{% block custom_js %} {% endblock custom_js %}
 
 <script src="http://yui.yahooapis.com/3.14.1/build/yui/yui-min.js"></script>
 <script>
