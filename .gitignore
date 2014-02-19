@@ -6,3 +6,4 @@ settings_local.py
 *.db
 data.sqlite3
 media/
+codeweekeu/static/css/scss/.sass-cache/
