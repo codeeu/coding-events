@@ -7,7 +7,10 @@
 	<div class="pure-u-1-1">
 	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
 	<p>Organized by: {{ event.organizer }}</p>
-	<p>Location: {{ event.location }}, {{ event.country.name }}</p>
+	<p>Location: {{ event.location }}</p>
+	<div id="view-event-map-wrapper">
+		<div id="view-event-map"/>
+	</div>
 	<p>Starts at: {{ event.start_date }} Ends at: {{ event.end_date }}</p>
 	<p>{{ event.description }}</p>
 	<p>Tags: {% for tag in event.tags.all %}{% if forloop.last %}{{ tag.name }}{% else %}{{ tag.name }}, {% endif %}{% endfor %}
@@ -18,6 +21,41 @@
 	{% if event.picture %}
 	<p><img src="{{ event.picture.url }}" /></p>
 	{% endif %}
+
 	</div>
 </div>
 {% endblock content %}
+
+{% block custom_js %}
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
+    </script>
+    <script type="text/javascript">
+
+  
+		function initialize() {
+		var myLatlng = new google.maps.LatLng({{ event.geoposition.latitude }},{{ event.geoposition.longitude }});
+		var mapOptions = {
+			  		zoom: 10,
+					  center: myLatlng
+					}
+		var map = new google.maps.Map(document.getElementById('view-event-map'),
+		      mapOptions);
+		var marker = new google.maps.Marker({
+		    position: myLatlng,
+		    map: map,
+		    title:"{{ event.location }}"
+		}); 
+		}
+
+		function loadScript() {
+		  var script = document.createElement('script');
+		  script.type = 'text/javascript';
+		  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' +
+		      'callback=initialize';
+		  document.body.appendChild(script);
+		}
+
+		window.onload = loadScript;
+    </script>
+{% endblock %}

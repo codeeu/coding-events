@@ -202,11 +202,14 @@ INSTALLED_APPS = (
 	'django_countries',
     # avatar handling
     'avatar',
+    # support for tags
+	'taggit',
+    # a model field that can hold geoposition
+    "geoposition",
 
     # defined apps
     'web',
 	'api',
-	'taggit',
 )
 ########## END APP CONFIGURATION
 
