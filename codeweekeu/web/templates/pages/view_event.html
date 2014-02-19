@@ -7,7 +7,7 @@
 	<div class="pure-u-1-1">
 	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
 	<p>Organized by: {{ event.organizer }}</p>
-	<p>Location: {{ event.location }}, {{ event.country.name }}</p>
+	<p>Location: {{ event.location }}</p>
 	<p>Starts at: {{ event.start_date }} Ends at: {{ event.end_date }}</p>
 	<p>{{ event.description }}</p>
 	<p>Tags: {% for tag in event.tags.all %}{% if forloop.last %}{{ tag.name }}{% else %}{{ tag.name }}, {% endif %}{% endfor %}

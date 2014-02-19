@@ -15,7 +15,7 @@
 {% block custom_css %}{% endblock %}
 
 </head>
-<body>
+<body{% block custom_body %}{% endblock %}>
 <div class="container" id="navigation">
 
 	<a href="http://codeweek.eu" class="pure-menu-heading">Europe Code Week</a>
@@ -55,13 +55,10 @@
 		</ul>
 </div>
 <div class="container" id="main-content">
-
-
 	{% block content %}{% endblock content %}
-
 </div>
-<script type="text/javascript" src="{% static 'js/foundation.js' %}"></script>
-{% block custom_js %} {% endblock custom_js %}
-
+<script src="{% static "js/jquery.js" %}"> </script>
+<script type="text/javascript" src="{% static 'js/foundation/foundation.js' %}"></script>
+{% block custom_js %}{% endblock custom_js %}
 </body>
 </html>
