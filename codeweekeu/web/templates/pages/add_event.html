@@ -10,19 +10,16 @@
 {% block custom_body %}  onload="initialize()"{% endblock %}
 
 {% block content %}
-<div class="pure-g-r">
-	<div class="pure-u-1-1">
 	<h1>Add your #codeEU event</h1>
 	<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
 	
-	<form  enctype="multipart/form-data" action="/add/" method="post" class="pure-form pure-form-stacked" id="event">{% csrf_token %}
+	<form  enctype="multipart/form-data" action="/add/" method="post" id="event">{% csrf_token %}
 		<fieldset>
 	    {% for field in form %}
 	    	{% if field.name == 'geoposition' %}
 	    	<span style="display:none;">{{ field.label_tag }}{{ field }}</span>
             {% elif field.name == 'location' %}
-			{{ field.label_tag }} 
-{{ field }}
+			{{ field.label_tag }} {{ field }}
             {% elif field.name == 'country' %}
 			<span style="display:none">{{ field }}</span>
 	    	{% else %}
@@ -30,15 +27,11 @@
 	    	{% endif %}
 	    	{{ field.errors }}
 	    {% endfor %}
-	   <p><input type="submit" value="Add event" class="pure-button pure-button-primary" /></p>
+	   <p><input type="submit" value="Add event" /></p>
 		</fieldset>
 	</form>	
 
 	<p>Note: Events will be checked by one of our <a href="#" target="_blank">local ambassadors</a> before appearing on the map.</p>
-
-</div>
-    </div>
-
 {% endblock content %}
 
 {% block custom_js%}
