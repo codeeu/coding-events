@@ -45,7 +45,7 @@ class AddEvent(forms.ModelForm):
 				'invalid': u'Please check your event\'s location',
 			},
 		    'country': {
-				'required': u'Please select the event\'s country.',
+				'required': u'The event\'s location should be in Europe.',
 				'invalid': u'Make sure the event country is written in English.',
 			},
 		    'start_date': {

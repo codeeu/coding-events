@@ -30,16 +30,9 @@
 		<ul id="std-menu-items">
 			<li>
 				{% if not user.is_authenticated %}
-					<a href="#">Login</a>
-					<ul>
-						<li class="pure-menu-heading">Login with one of your social logins</li>
-						<li><a href="{% url 'social:begin' 'github' %}">Login with Github</a></li>
-						<li><a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a></li>
-						<li><a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a></li>
-						<li><a href="{% url 'social:begin' 'google' %}">Login with Google</a></li>
-					</ul>
+					<a href="/login">Login</a>
 				{% else %}
-					<a href="{% url 'profile' %}">
+					Logged in as <a href="{% url 'profile' %}">
 						{% avatar user 30 %}
 						{% if user.first_name or user.last_name %}
 							{{ user.first_name }} {{ user.last_name }}
