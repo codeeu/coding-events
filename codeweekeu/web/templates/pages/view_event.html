@@ -36,16 +36,22 @@
 					}
 		var map = new google.maps.Map(document.getElementById('view-event-map'),
 		      mapOptions);
+		var infowindow = new google.maps.InfoWindow({
+            content: "<p><strong>{{ event.title }}</strong></p>{{ event.location }}"
+   	        });
 		var marker = new google.maps.Marker({
 		    position: myLatlng,
-		    // map: map,
-		    title:"{{ event.location }}",
+		    animation: google.maps.Animation.DROP,
+		    title: "{{ event.location }}",
 		    zoomControl: true, 
 		    zoomControlOptions: {
 		    	style: google.maps.ZoomControlStyle.SMALL
 		    }
 		}); 
 		marker.setMap(map);
+	    google.maps.event.addListener(marker, 'click', function() {
+		      infowindow.open(map,marker);
+		    });
 		}
 
 		function loadScript() {
