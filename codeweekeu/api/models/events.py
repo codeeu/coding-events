@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django_countries.fields import CountryField
 from geoposition.fields import GeopositionField
+from django.template.defaultfilters import slugify
 
 class Event(models.Model):
 
@@ -24,6 +25,7 @@ class Event(models.Model):
 	)
 	status = models.IntegerField(choices=STATUS_CHOICES, default=1)
 	title = models.CharField(max_length=255)
+	slug = models.SlugField(max_length=255, null=True, blank=True)
 	organizer = models.CharField(max_length=255)
 	description = models.TextField(max_length=1000)
 	geoposition = GeopositionField()
@@ -48,6 +50,8 @@ class Event(models.Model):
 
 
 	def save(self,*args,**kwargs):
+		if not self.id:
+			self.slug = slugify(self.title)
 		super(Event,self).save(*args,**kwargs)
 
 		try:
@@ -55,8 +59,5 @@ class Event(models.Model):
 				self.tags.add(tag)
 		except AttributeError:
 			pass
-
-
-
 
 
