@@ -49,11 +49,11 @@ class AddEvent(forms.ModelForm):
 				'invalid': u'Make sure the event country is written in English.',
 			},
 		    'start_date': {
-				'required': u'Please enter a valid date and time.',
+				'required': u'Please enter a valid date and time (example: 2014-10-22 18:00).',
 				'invalid': u'This doesn\'t seem like a valid date and time. Can you check, please?',
 			},
 		    'end_date': {
-				'required': u'Please enter a valid date and time.',
+				'required': u'Please enter a valid date and time (example: 2014-10-22 20:00).',
 				'invalid': u'This doesn\'t seem like a valid date and time. Can you check, please?',
 			},
 			'event_url': {

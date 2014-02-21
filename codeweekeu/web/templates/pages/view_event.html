@@ -5,12 +5,12 @@
 {% block content %}
 	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
 	<p>Organized by: {{ event.organizer }}</p>
+	<p>{{ event.description }}</p>
+	<p>From {{ event.start_date|date:"l, M n, Y" }} at {{ event.start_date|date:"H:i" }} to {{ event.end_date|date:"l, M n, Y" }} at {{ event.end_date|date:"H:i" }}</p>
 	<p>Location: {{ event.location }}</p>
 	<div id="view-event-map-wrapper">
 		<div id="view-event-map"/>
 	</div>
-	<p>Starts at: {{ event.start_date }} Ends at: {{ event.end_date }}</p>
-	<p>{{ event.description }}</p>
 	<p>Tags: {% for tag in event.tags.all %}{% if forloop.last %}{{ tag.name }}{% else %}{{ tag.name }}, {% endif %}{% endfor %}
     </p>
 	{% if event.contact_person %}
@@ -31,16 +31,21 @@
 		function initialize() {
 		var myLatlng = new google.maps.LatLng({{ event.geoposition.latitude }},{{ event.geoposition.longitude }});
 		var mapOptions = {
-			  		zoom: 10,
+			  		zoom: 15,
 					  center: myLatlng
 					}
 		var map = new google.maps.Map(document.getElementById('view-event-map'),
 		      mapOptions);
 		var marker = new google.maps.Marker({
 		    position: myLatlng,
-		    map: map,
-		    title:"{{ event.location }}"
+		    // map: map,
+		    title:"{{ event.location }}",
+		    zoomControl: true, 
+		    zoomControlOptions: {
+		    	style: google.maps.ZoomControlStyle.SMALL
+		    }
 		}); 
+		marker.setMap(map);
 		}
 
 		function loadScript() {

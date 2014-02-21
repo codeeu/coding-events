@@ -28,4 +28,8 @@ body {
   height:300px; }
 
 #view-event-map { 
-  height: 100% }
+  height: 100%;
+ }
+#view-event-map img {
+    max-width: none;
+}
