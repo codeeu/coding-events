@@ -38,17 +38,18 @@
 <script src="{% static "js/jquery.datetimepicker.js" %}"> </script>
 
  <script>
-	$('#id_datepicker_end').datetimepicker({
-	  format:'Y-m-d H:i',
-	  dayOfWeekStart: 1,
-	  lang:'en',
-	});
 	$('#id_datepicker_start').datetimepicker({
 	  format:'Y-m-d H:i',
 	  dayOfWeekStart: 1,
 	  lang:'en',
 	});
+	$('#id_datepicker_end').datetimepicker({
+	  format:'Y-m-d H:i',
+	  dayOfWeekStart: 1,
+	  lang:'en',
+	});
   </script>
+
  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
 
 <script>
@@ -76,7 +77,6 @@
 	            country = component['short_name'];
 	            var choice = document.getElementById('id_country');
 				selectItemByValue(choice, country);
-				
 	        }
 	    }
 	function selectItemByValue(elmnt, value){
