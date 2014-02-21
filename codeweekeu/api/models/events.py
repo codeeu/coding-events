@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django_countries.fields import CountryField
+from api.managers.event_managers import EventSelectorManager
 from geoposition.fields import GeopositionField
 from django.template.defaultfilters import slugify
 
@@ -18,10 +19,12 @@ class Event(models.Model):
 
 		super(Event,self).__init__(*args,**kwargs)
 
+	APPROVED=2
+	PENDING=1
 
 	STATUS_CHOICES = (
-		(1, 'Approved'),
-		(2, 'Pending'),
+		(APPROVED, 'Approved'),
+		(PENDING, 'Pending'),
 	)
 	status = models.IntegerField(choices=STATUS_CHOICES, default=1)
 	title = models.CharField(max_length=255)
@@ -41,14 +44,21 @@ class Event(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
 
+	approved=EventSelectorManager(status=APPROVED)
+	pending=EventSelectorManager(status=PENDING)
+	objects = models.Manager()
+
 	def __unicode__(self):
 		return self.title
 
 	class Meta:
 		ordering = ['start_date']
 		app_label = 'api'
-
-
+		permissions= (
+			("edit_event","Can edit event"),
+			("submit_event", "Can submit event"),
+			("reject_event", "Can reject event"),
+		)
 	def save(self,*args,**kwargs):
 		if not self.id:
 			self.slug = slugify(self.title)
