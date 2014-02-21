@@ -15,10 +15,10 @@ from web.processors.event import has_model_permissions
 
 
 def index(request):
-	print request.user
+	latest_events = Event.approved.order_by('created')[:5]
 	return render_to_response(
 		'pages/index.html',
-		{'test': 'test'},
+		{'events': latest_events},
 		context_instance=RequestContext(request))
 
 @login_required

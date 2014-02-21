@@ -14,5 +14,9 @@
 		<button type="submit">Search</button>
 	</form>
 	<h2>Latest #codeEU events</h2>
-	<p>No events yet.</p>
+	<ul>
+	{% for event in events %}
+		<li><a href="/view/{{ event.id }}/{{ event.slug }}">{{ event.title }}</a></li>
+	{% endfor %}
+	</ul>
 {% endblock content %}
