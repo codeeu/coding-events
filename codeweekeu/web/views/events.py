@@ -2,6 +2,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+
 
 from api.models import Event
 from web.forms.event_form import AddEvent
@@ -13,6 +15,7 @@ def index(request):
 		{'test': 'test'},
 		context_instance=RequestContext(request))
 
+@login_required
 def add_event(request):
 	event_form = AddEvent()
 	if request.method =="POST":

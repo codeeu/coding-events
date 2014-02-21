@@ -8,9 +8,9 @@ class UserForm(forms.ModelForm):
 		model = User
 		fields = ['first_name', 'last_name', 'email']
 		labels = {
-			'first_name': 'Your Valued Name',
-			'last_name': 'What name did Your Mommy and Daddy Gave You?',
-		    'email': 'Where Do You Get Your Spam?',
+			'first_name': 'Your first name:',
+			'last_name': 'Your last name:',
+		    'email': 'Your contact email:',
 		}
 		help_text = {
 			'first_name': 'Your First Name',
@@ -23,8 +23,8 @@ class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = ('country',)
-		labels = {'country': 'Country', }
-		help_texts = {'country': 'Tell Us What Is The Name Of The Place You Call Home.', }
+		labels = {'country': 'Your country:', }
+		help_texts = {'country': 'If unsure, select the country in which you\'ll be active during Code Week', }
 		error_messages = {
             'country': {
                 'max_length': 'Are you sure? Where is that?',

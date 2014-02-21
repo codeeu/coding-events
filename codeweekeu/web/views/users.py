@@ -3,10 +3,10 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from web.forms.user_profile import UserForm, UserProfileForm
-from django.contrib.auth.decorators import login_required
 
+def login(request):
+	return render_to_response('pages/login.html')
 
-@login_required()
 def user_profile(request):
 
 	if request.method == 'POST':
