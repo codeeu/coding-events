@@ -9,7 +9,7 @@ from taggit.forms import TagField
 class AddEvent(forms.ModelForm):
 	class Meta:
 		model = Event
-		fields = ['title', 'organizer', 'description', 'location', 'country', 'start_date', 'end_date',
+		fields = ['title', 'organizer', 'description', 'geoposition', 'location', 'country', 'start_date', 'end_date',
 		          'event_url', 'contact_person', 'picture','tags']
 		labels = {
 			'title': 'Your event\'s title:',
@@ -37,12 +37,15 @@ class AddEvent(forms.ModelForm):
 				'required': u'Please write a short description of what the event is about.',
 				'invalid': u'Please check if the description only contains regular text.',
 			},
-		    'location': {
+			'geoposition': {
+				'invalid': u'Please enter valid coordinates.'
+			},
+			'location': {
 				'required': u'Please enter a location or use online for web-based events.',
 				'invalid': u'Please check your event\'s location',
 			},
 		    'country': {
-				'required': u'Please select the event\'s country.',
+				'required': u'The event\'s location should be in Europe.',
 				'invalid': u'Make sure the event country is written in English.',
 			},
 		    'start_date': {
@@ -67,14 +70,16 @@ class AddEvent(forms.ModelForm):
 				'invalid': u'Please enter tags in plain text, separated by commas.',
 			},
 		}
+	location = forms.CharField(
+		label="Where will the event be taking place?",
+		widget=forms.TextInput(attrs={"id":"autocomplete", "placeholder":"Search for your address"}),
+		)
 	start_date = forms.DateTimeField(
-		required=False,
 		label='When does the event start?',
 		widget=forms.TextInput(attrs={"id":"id_datepicker_start"}),
 	)
 
 	end_date = forms.DateTimeField(
-		required=False,
 		label='When does the event end?',
 		widget=forms.TextInput(attrs={"id":"id_datepicker_end"}),
 	)
