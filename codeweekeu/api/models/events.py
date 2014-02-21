@@ -47,6 +47,7 @@ class Event(models.Model):
 	approved=EventSelectorManager(status=APPROVED)
 	pending=EventSelectorManager(status=PENDING)
 	objects = models.Manager()
+	_default_manager=models.Manager()
 
 	def __unicode__(self):
 		return self.title
