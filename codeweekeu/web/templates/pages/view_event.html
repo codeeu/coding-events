@@ -3,8 +3,6 @@
 {% block title %}- Event Details{% endblock title %}
 
 {% block content %}
-<div class="pure-g-r">
-	<div class="pure-u-1-1">
 	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
 	<p>Organized by: {{ event.organizer }}</p>
 	<p>Location: {{ event.location }}</p>
@@ -21,9 +19,6 @@
 	{% if event.picture %}
 	<p><img src="{{ event.picture.url }}" /></p>
 	{% endif %}
-
-	</div>
-</div>
 {% endblock content %}
 
 {% block custom_js %}
