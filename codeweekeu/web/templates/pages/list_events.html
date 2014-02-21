@@ -7,7 +7,7 @@
 <h1>All events</h1>
 <ul>
 {% for event in event_list%}
-	<li><a href="/view/{{ event.id }}/{{ event.slug }}">{{ event.title }}</a></li>
+	<li><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></li>
 {% endfor %}
 </ul>
 {% endblock content %}

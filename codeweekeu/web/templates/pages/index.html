@@ -16,7 +16,7 @@
 	<h2>Latest #codeEU events</h2>
 	<ul>
 	{% for event in events %}
-		<li><a href="/view/{{ event.id }}/{{ event.slug }}">{{ event.title }}</a></li>
+		<li><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></li>
 	{% endfor %}
 	</ul>
 {% endblock content %}
