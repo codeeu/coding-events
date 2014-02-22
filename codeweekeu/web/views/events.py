@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
+from django.core import serializers
 
 
 from api.models import Event
@@ -15,10 +16,11 @@ from web.processors.event import has_model_permissions
 
 
 def index(request):
+	approved_events = serializers.serialize('json', Event.approved.all(), fields=('geoposition','title','pk','slug'))
 	latest_events = Event.approved.order_by('created')[:5]
 	return render_to_response(
 		'pages/index.html',
-		{'events': latest_events},
+		{'latest_events': latest_events, 'map_events': approved_events},
 		context_instance=RequestContext(request))
 
 @login_required
