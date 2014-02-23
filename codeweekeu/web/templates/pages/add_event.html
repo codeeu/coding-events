@@ -7,8 +7,6 @@
 <link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}"/ >
 {% endblock %}
 
-{% block custom_body %} onload="initialize()"{% endblock %}
-
 {% block content %}
 	<h1>Add your #codeEU event</h1>
 	<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
@@ -17,9 +15,12 @@
 		<fieldset>
 	    {% for field in form %}
 	    	{% if field.name == 'geoposition' %}
-	    	<span style="display:none;">{{ field.label_tag }}{{ field }}</span>
+	    	<span style="display:none">{{ field.label_tag }}{{ field }}</span>
             {% elif field.name == 'location' %}
 			{{ field.label_tag }} {{ field }}
+			<div id="view-event-map-wrapper">
+				<div id="view-event-map">Loading map ...</div>
+			</div>
             {% elif field.name == 'country' %}
 			<span style="display:none">{{ field }}</span>
 	    	{% else %}
@@ -50,42 +51,93 @@
 	});
   </script>
 
- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false&libraries=places"></script>
 
 <script>
 	var placeSearch, autocomplete;
+	var map;
+	var marker;
+	var geocoder;
 
-	function initialize() {
+	function createMap(latLng, zoomVal) {
+		var mapOptions = {
+			zoom: zoomVal,
+			center: latLng,
+			}
+		map = new google.maps.Map(document.getElementById('view-event-map'), mapOptions);
+		}
+
+	function autocomplete() {
 		autocomplete = new google.maps.places.Autocomplete(
-      /** @type {HTMLInputElement} */(document.getElementById('autocomplete')),
- 		{ types: ['geocode'] });
+			(document.getElementById('autocomplete')),
+ 			{ 
+ 				types: ['geocode'] 
+ 			});
+		google.maps.event.addListener(autocomplete, 'place_changed', function() {
+		    	fillInAddress();
+		  	});
+		}
 
-	google.maps.event.addListener(autocomplete, 'place_changed', function() {
-	    fillInAddress();
-	  });
-	}
+	function updateAddress(new_position) {
+		geocoder = new google.maps.Geocoder();
+	    geocoder.geocode({'latLng': new_position}, function(results, status) {
+ 	      if (status == google.maps.GeocoderStatus.OK) {
+    		document.getElementById("autocomplete").value=results[0].formatted_address;
+              } 
+		   });
+		}
+
+	function createMarker(markerLatLng) {
+		marker = new google.maps.Marker({
+		    position: markerLatLng,
+		    animation: google.maps.Animation.DROP,
+		    title: "Event location",
+		    draggable:true,
+				}); 
+		createMap(markerLatLng,15);
+		marker.setMap(map);
+		google.maps.event.addListener(marker, 'dragend', function (event) {
+		    document.getElementById("id_geoposition_0").value = this.getPosition().lat();
+		    document.getElementById("id_geoposition_1").value = this.getPosition().lng();
+		    updateAddress(marker.getPosition());
+
+		});
+		}
 
 	function fillInAddress() {
 	    var place = autocomplete.getPlace();
 	    var components = place.address_components;
 	    var country = null;
 	  	var output = autocomplete.getPlace().geometry.location;
-	  	document.getElementById("id_geoposition_0").value=output['d'];
-	  	document.getElementById("id_geoposition_1").value=output['e'];
+	  	var outputLat = output['d'];
+	  	var outputLng = output['e'];
+	  	document.getElementById("id_geoposition_0").value=outputLat;
+	  	document.getElementById("id_geoposition_1").value=outputLng;
+		var locLatlng = new google.maps.LatLng(outputLat,outputLng);
+		createMarker(locLatlng);
 		for (var i = 0, component; component = components[i]; i++) {
 	        if (component.types[0] == 'country') {
 	            country = component['short_name'];
 	            var choice = document.getElementById('id_country');
 				selectItemByValue(choice, country);
-	        }
-	    }
-	function selectItemByValue(elmnt, value){
- 	for(var i=0; i < elmnt.options.length; i++)
-		{
-		if(elmnt.options[i].value == value)
-			elmnt.selectedIndex = i;
+	        	}
+	    	}
+		function selectItemByValue(elmnt, value){
+		 	for(var i=0; i < elmnt.options.length; i++)
+				{
+				if(elmnt.options[i].value == value)
+					elmnt.selectedIndex = i;
+				}
+			}
 		}
-	}
-}
+
+	function initialize() { 
+		var initialCenter = new google.maps.LatLng(46.0608144,14.497165600000017);
+	  	createMap(initialCenter,4);
+	  	autocomplete();
+		}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+
     </script>
 {% endblock custom_js %}
