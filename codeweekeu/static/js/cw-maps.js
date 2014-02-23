@@ -1,7 +1,19 @@
-/**
- * Created with PyCharm.
- * User: erika
- * Date: 2/23/14
- * Time: 2:45 PM
- * To change this template use File | Settings | File Templates.
- */
+/*global jQuery, window, document, console */
+
+var Codeweek = window.Codeweek || {};
+
+(function ($, Codeweek) {
+
+    'use strict';
+
+    var init = function (json_data) {
+
+        $(function () {
+
+        });
+    };
+
+    Codeweek.Index = {};
+    Codeweek.Index.init = init;
+
+}(jQuery, Codeweek));
