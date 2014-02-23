@@ -36,3 +36,5 @@ class Command(NoArgsCommand):
 
         # Create admin superuser
         User.objects.create_superuser(ADMIN_USERNAME, 'admin@email.com', ADMIN_PASSWORD)
+
+        call_command('migrate')

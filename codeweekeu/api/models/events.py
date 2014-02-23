@@ -1,32 +1,23 @@
+"""
+Models for the event
+"""
 import datetime
 from django.db import models
-from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
+from geoposition.fields import GeopositionField
 from django_countries.fields import CountryField
 from api.managers.event_managers import EventSelectorManager
-from geoposition.fields import GeopositionField
-from django.template.defaultfilters import slugify
+
 
 class Event(models.Model):
 
-	def __init__(self,*args,**kwargs):
-
-		try:
-			self.tag=kwargs["tags"]
-			del kwargs["tags"]
-		except KeyError:
-			pass
-
-		super(Event,self).__init__(*args,**kwargs)
-
-	APPROVED=2
-	PENDING=1
-
 	STATUS_CHOICES = (
-		(APPROVED, 'Approved'),
-		(PENDING, 'Pending'),
+		('APPROVED', 'Approved'),
+		('PENDING', 'Pending'),
+	    ('REJECTED', 'Rejected'),
 	)
-	status = models.IntegerField(choices=STATUS_CHOICES, default=1)
+	status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='PENDING')
 	title = models.CharField(max_length=255)
 	slug = models.SlugField(max_length=255, null=True, blank=True)
 	organizer = models.CharField(max_length=255)
@@ -40,14 +31,15 @@ class Event(models.Model):
 	contact_person = models.EmailField(blank=True)
 	picture = models.ImageField(upload_to='event_picture', blank=True)
 	pub_date = models.DateTimeField(default=datetime.datetime.now())
-	tags=TaggableManager()
+	tags = TaggableManager(blank=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
 
-	approved=EventSelectorManager(status=APPROVED)
-	pending=EventSelectorManager(status=PENDING)
+	# (WTF)What is this? .-Erika
+	approved = EventSelectorManager(status='APPROVED')
+	pending = EventSelectorManager(status='PENDING')
 	objects = models.Manager()
-	_default_manager=models.Manager()
+	_default_manager = models.Manager()
 
 	def __unicode__(self):
 		return self.title
@@ -55,11 +47,22 @@ class Event(models.Model):
 	class Meta:
 		ordering = ['start_date']
 		app_label = 'api'
-		permissions= (
-			("edit_event","Can edit event"),
-			("submit_event", "Can submit event"),
-			("reject_event", "Can reject event"),
+		permissions = (
+			('edit_event', 'Can edit event'),
+			('submit_event', 'Can submit event'),
+			('reject_event', 'Can reject event'),
 		)
+
+	def __init__(self, *args, **kwargs):
+
+		try:
+			self.tag = kwargs['tags']
+			del kwargs['tags']
+		except KeyError:
+			pass
+
+		super(Event, self).__init__(*args, **kwargs)
+
 	def save(self,*args,**kwargs):
 		if not self.id:
 			self.slug = slugify(self.title)
@@ -70,5 +73,6 @@ class Event(models.Model):
 				self.tags.add(tag)
 		except AttributeError:
 			pass
+
 
 

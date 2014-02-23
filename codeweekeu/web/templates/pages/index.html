@@ -4,81 +4,83 @@
 
 {% block content %}
 	<h1>#codeEU Map of Events</h1>
-	<a href="/add">Add event</a>
+	<a href="{% url 'web.add_event' %}" class="button">Add event</a>
 	<p><a href="{% url 'web.guide' %}">How to organize your own event?</a></p>
 	<h3>Clicked marker: <span id="clicked_marker"></span></h3>
 	<div id="events-map-wrapper">
 		<div id="events-map"></div>
 	</div>
 	<form id="search">
-		<input type="text" placeholder="Search for events"/>
+		<input type="text" placeholder="Search for events" />
 		<button type="submit">Search</button>
 	</form>
 	<h2>Latest #codeEU events</h2>
 	<ul>
-	{% for event in latest_events %}
-		<li><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></li>
-	{% endfor %}
+		{% for event in latest_events %}
+			<li><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></li>
+		{% endfor %}
 	</ul>
+	{{ lan_lon }}
 {% endblock content %}
 
 {% block custom_js %}
-<script src="{% static "js/markerclusterer.js" %}"> </script>
-<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
- </script>
-<script type="text/javascript">
+	<script src="{% static "js/markerclusterer.js" %}"></script>
+	<script type="text/javascript"
+	        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
+	</script>
+	<script type="text/javascript" src="{% static 'js/cw-maps.js' %}"></script>
+	<script type="text/javascript">
 
-	function createMap(lat, lng, zoomVal) {
-		var mapOptions = {
-			zoom: zoomVal,
-			center: new google.maps.LatLng(lat, lng),
+		function createMap(lat, lng, zoomVal) {
+			var mapOptions = {
+				zoom: zoomVal,
+				center: new google.maps.LatLng(lat, lng),
 			}
-		map = new google.maps.Map(document.getElementById('events-map'), mapOptions);
+			map = new google.maps.Map(document.getElementById('events-map'), mapOptions);
 
-    	markerData = JSON.parse('{{map_events|safe}}');
+			markerData = JSON.parse('{{map_events|safe}}');
 
-		for(markerPoint in markerData) {
-			markTitle = markerData[markerPoint].fields.title;
-			map_position = markerData[markerPoint].fields.geoposition.split(",");
-			markLat = map_position[0]
-			markLng = map_position[1]
-			map_event_id = markerData[markerPoint].pk
-			map_event_slug = markerData[markerPoint].fields.slug
-			markUrl = "/view/" + map_event_id + "/" + map_event_slug
-			markers[map_event_id] = createMarker(markTitle,markLat,markLng,markUrl);
+			for (markerPoint in markerData) {
+				markTitle = markerData[markerPoint].fields.title;
+				map_position = markerData[markerPoint].fields.geoposition.split(",");
+				markLat = map_position[0]
+				markLng = map_position[1]
+				map_event_id = markerData[markerPoint].pk
+				map_event_slug = markerData[markerPoint].fields.slug
+				markUrl = "/view/" + map_event_id + "/" + map_event_slug
+				markers[map_event_id] = createMarker(markTitle, markLat, markLng, markUrl);
+			}
+
+			mcOptions = {gridSize: 30, maxZoom: 10};
+			mc = new MarkerClusterer(map, markers, mcOptions);
 		}
 
-		mcOptions = {gridSize: 30, maxZoom: 10};
-		mc = new MarkerClusterer(map,markers,mcOptions);
-	}
+		function createMarker(markTitle, markLat, markLng, markUrl) {
+			var myLatLng = new google.maps.LatLng(parseFloat(markLat), parseFloat(markLng));
+			var marker = new google.maps.Marker({
+				position: myLatLng,
+				map: map,
+				title: markTitle
+			});
+			google.maps.event.addListener(marker, 'click', function () {
+				document.getElementById("clicked_marker").innerHTML = "<a href=\"" + markUrl + "\">" + markTitle + "</a>";
+			});
+			//google.maps.event.addListener(marker, 'click', function()// {
+			//window.location.href = markUrl;
+			//	});
+			return marker;
+		}
 
-	function createMarker(markTitle,markLat,markLng,markUrl) {
-		var myLatLng = new google.maps.LatLng(parseFloat(markLat),parseFloat(markLng));
-	  	var marker = new google.maps.Marker({
-	    position: myLatLng,
-	    map: map,
-	    title: markTitle
-	  		});
-	  	google.maps.event.addListener(marker, 'click', function() {
-		      document.getElementById("clicked_marker").innerHTML = "<a href=\"" + markUrl + "\">" + markTitle + "</a>" ;
-		    });
-	  	//google.maps.event.addListener(marker, 'click', function()// {
-	    //window.location.href = markUrl;
-	  	//	});
-		return marker;
-	}
+		var map;
+		var markers = {};
+		var mcOptions;
+		var mc;
 
-	var map;
-	var markers = {};
-	var mcOptions; 
-	var mc; 
+		function initialize() {
+			createMap({{ lan_lon.0 }}, {{ lan_lon.1 }}, 4);
+		}
 
-	function initialize() { 
-	  createMap(46.0608144,14.497165600000017,4);
-	 }
+		google.maps.event.addDomListener(window, 'load', initialize);
 
-	google.maps.event.addDomListener(window, 'load', initialize);
-
-    </script>
+	</script>
 {% endblock %}
