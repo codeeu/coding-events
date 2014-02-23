@@ -53,22 +53,25 @@ def add_event(request):
 	context = {"form": event_form}
 	return render_to_response("pages/add_event.html", context, context_instance=RequestContext(request))
 
+
 def view_event(request, event_id, slug):
 	event = get_object_or_404(Event, pk=event_id, slug=slug)
 	context = {'event': event}
 	return render_to_response("pages/view_event.html", context, context_instance=RequestContext(request))
 
+
 def search_event(request):
 	pass
+
 
 def thankyou(request):
 	return render_to_response('pages/thankyou.html')
 
 
 class PendingListEventView(ListView):
-	'''
-		Display a list of pending events.
-	'''
+	"""
+	Display a list of pending events.
+	"""
 	model=Event
 	template_name ="pages/list_events.html"
 	queryset = Event.pending.all()
