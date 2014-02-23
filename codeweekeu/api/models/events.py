@@ -13,10 +13,11 @@ from api.managers.event_managers import EventSelectorManager
 class Event(models.Model):
 
 	STATUS_CHOICES = (
-		(1, 'Approved'),
-		(2, 'Pending'),
+		('APPROVED', 'Approved'),
+		('PENDING', 'Pending'),
+	    ('REJECTED', 'Rejected'),
 	)
-	status = models.IntegerField(choices=STATUS_CHOICES, default=2)
+	status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='PENDING')
 	title = models.CharField(max_length=255)
 	slug = models.SlugField(max_length=255, null=True, blank=True)
 	organizer = models.CharField(max_length=255)
@@ -35,8 +36,8 @@ class Event(models.Model):
 	updated = models.DateTimeField(auto_now_add=True)
 
 	# (WTF)What is this? .-Erika
-	approved = EventSelectorManager(status=1)
-	pending = EventSelectorManager(status=2)
+	approved = EventSelectorManager(status='APPROVED')
+	pending = EventSelectorManager(status='PENDING')
 	objects = models.Manager()
 	_default_manager = models.Manager()
 
