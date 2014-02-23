@@ -8,7 +8,9 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 
 class EventAdmin(admin.ModelAdmin):
+	prepopulated_fields = {'slug': ('title',)}
 	list_display = ('title', 'status')
+	list_editable = ('status',)
 	list_filter = ('status', 'start_date')
 
 admin.site.register(models.UserProfile, UserProfileAdmin)
