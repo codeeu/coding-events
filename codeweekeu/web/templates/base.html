@@ -11,35 +11,22 @@
 	<title>Europe Code Week {% block title %}{% endblock title %}</title>
 	<link href="{% static "css/foundation.css" %}" rel="stylesheet">
 	<link href="{% static "css/custom.css" %}" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 	{% block custom_css %}{% endblock %}
 </head>
 <body>
 <nav class="top-bar" data-topbar>
 	<ul class="title-area">
-		<li class="name">
-			<h1><a href="#">My Site</a></h1>
-		</li>
-		<li class="toggle-topbar menu-icon">
-			<a href="http://codeweek.eu">Europe Code Week</a>
-		</li>
+		<li class="name"><h1><a href="http://codeweek.eu">Europe Code Week</a></h1></li>
+		<li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
 	</ul>
-
 
 	<section class="top-bar-section">
 		<!-- Right Nav Section -->
 		<ul class="right">
-
-			<li class="has-dropdown">
-				{% if not user.is_authenticated %}
-					<a href="#">Login</a>
-					<ul>
-						<li><a href="{% url 'social:begin' 'github' %}">Login with Github</a></li>
-						<li><a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a></li>
-						<li><a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a></li>
-						<li><a href="{% url 'social:begin' 'google' %}">Login with Google</a></li>
-					</ul>
-				{% else %}
-					Logged in as <a href="{% url 'profile' %}">
+			<li class="has-dropdown not-click">
+				{% if user.is_authenticated %}
+					<a href="{% url 'profile' %}">
 						{% avatar user 30 %}
 						{% if user.first_name or user.last_name %}
 							{{ user.first_name }} {{ user.last_name }}
@@ -47,17 +34,26 @@
 							{{ user.username }}
 						{% endif %}
 					</a>
-					<ul>
-						<li><a href="{% url 'logout' %}">Logout</a></li>
+					<ul class="dropdown">
+						<li><a href="{% url 'profile' %}">Profile</a></li>
+						<li><a href="{% url 'logout' %}">Sign out</a></li>
 					</ul>
-
+				{% else %}
+					<a href="{% url 'profile' %}">Login</a>
+					<ul class="dropdown">
+						<li><a href="{% url 'social:begin' 'github' %}"><i class="fa fa-github-square"></i></a></li>
+						<li><a href="{% url 'social:begin' 'twitter' %}"><i class="fa fa-twitter-square"></i></a></li>
+						<li><a href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook-square"></i></a></li>
+						<li><a href="{% url 'social:begin' 'google' %}"><i class="fa fa-google-plus-square"></i></a></li>
+					</ul>
 				{% endif %}
+
 			</li>
 		</ul>
 
 		<!-- Left Nav Section -->
 		<ul class="left">
-			<li><a href="/">Map</a></li>
+			<li class="active"><a href="{% url 'web.index' %}">Map</a></li>
 			<li><a href="http://codeweek.eu/learn">Resources</a></li>
 			<li><a href="http://codeweek.eu/code">Why coding?</a></li>
 			<li><a href="http://codeweek.eu/about/">About</a></li>
@@ -66,13 +62,13 @@
 	</section>
 </nav>
 
-
 <div class="container" id="main-content">
 	{% block content %}{% endblock content %}
 </div>
 <footer>Made by CodeCatz. Fork on <a href="https://github.com/codeeu/coding-events">GitHub</a>.</footer>
-<script src="{% static "js/jquery.js" %}"> </script>
+<script src="{% static "js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static 'js/foundation/foundation.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/foundation/foundation.dropdown.js' %}"></script>
 {% block custom_js %}{% endblock custom_js %}
 
 </body>

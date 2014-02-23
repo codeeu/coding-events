@@ -191,7 +191,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     # South migration tool.
-    #'south',
+    'south',
 
     # Celery task queue.
     #'djcelery',
@@ -205,7 +205,7 @@ INSTALLED_APPS = (
     # support for tags
 	'taggit',
     # a model field that can hold geoposition
-    "geoposition",
+    'geoposition',
 
     # defined apps
     'web',
