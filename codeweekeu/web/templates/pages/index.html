@@ -4,7 +4,7 @@
 
 {% block content %}
 	<h1>#codeEU Map of Events</h1>
-	<a href="{% url 'web.add_event' %}">Add event</a>
+	<a href="{% url 'web.add_event' %}" class="button">Add event</a>
 	<p><a href="{% url 'web.guide' %}">How to organize your own event?</a></p>
 	<h3>Clicked marker: <span id="clicked_marker"></span></h3>
 	<div id="events-map-wrapper">
@@ -20,6 +20,7 @@
 			<li><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></li>
 		{% endfor %}
 	</ul>
+	{{ lan_lon }}
 {% endblock content %}
 
 {% block custom_js %}
@@ -27,8 +28,8 @@
 	<script type="text/javascript"
 	        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
 	</script>
-	x<script type="text/javascript">
-
+	<script type="text/javascript" src="{% static 'js/cw-maps.js' %}"></script>
+	<script type="text/javascript">
 
 		function createMap(lat, lng, zoomVal) {
 			var mapOptions = {
@@ -76,7 +77,7 @@
 		var mc;
 
 		function initialize() {
-			createMap(46.0608144, 14.497165600000017, 4);
+			createMap({{ lan_lon.0 }}, {{ lan_lon.1 }}, 4);
 		}
 
 		google.maps.event.addDomListener(window, 'load', initialize);

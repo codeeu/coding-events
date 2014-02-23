@@ -4,24 +4,38 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
-from django.utils.decorators import method_decorator
 from django.core import serializers
-
+from django.conf import settings
 
 from api.models import Event
 from web.forms.event_form import AddEvent
-from web.processors.event import create_or_update_event, get_event
+from web.processors.event import create_or_update_event
 from web.processors.event import has_model_permissions
+from web.processors.event import get_lat_lon_from_user_ip
+from api.processors import get_approved_events
 
+"""
+Do not Query the database directly from te view.
+Use a processors file within the api app, put all of your queries there and
+then call your newly created function in view!!! .-Erika
+"""
 
 
 def index(request):
-	approved_events = serializers.serialize('json', Event.approved.all(), fields=('geoposition','title','pk','slug'))
-	latest_events = Event.approved.order_by('created')[:5]
+	events = get_approved_events()
+	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
+	latest_events = get_approved_events(limit=5, order='pub_date')
+
+	lan_lon = get_lat_lon_from_user_ip(get_client_ip(request))
+
 	return render_to_response(
-		'pages/index.html',
-		{'latest_events': latest_events, 'map_events': approved_events},
+		'pages/index.html', {
+			'latest_events': latest_events,
+		    'map_events': map_events,
+		    'lan_lon': lan_lon,
+		},
 		context_instance=RequestContext(request))
+
 
 @login_required
 def add_event(request):
@@ -87,3 +101,15 @@ class EventListView(ListView):
 
 def guide(request):
 	return render_to_response('pages/guide.html')
+
+
+def get_client_ip(request):
+	if settings.DEBUG:
+		return '93.103.53.11'
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		ip = x_forwarded_for.split(',')[0]
+	else:
+		ip = request.META.get('REMOTE_ADDR')
+	return ip
