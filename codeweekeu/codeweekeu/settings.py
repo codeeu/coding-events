@@ -2,11 +2,6 @@
 Django settings for codeweekeu project.
 """
 
-import os
-
-here = lambda x: os.path.join(os.path.dirname(os.path.abspath(__file__)), x)
-PROJECT_DIR = here
-
 import sys
 from os.path import abspath, basename, dirname, join, normpath
 ########## PATH CONFIGURATION
@@ -506,7 +501,11 @@ LOGGING = {
 		},
 	}
 }
+
 ########## END LOGGING CONFIGURATION
+
+GEOIP_PATH = normpath(join(DJANGO_ROOT, 'geoip'))
+
 
 try:
 	from settings_local import *
