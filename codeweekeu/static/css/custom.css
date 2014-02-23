@@ -28,6 +28,6 @@
 #view-event-map, #events-map { 
   height: 100%;
  }
-#view-event-map, #events-map img {
+#view-event-map img, #events-map img {
     max-width: none;
 }
