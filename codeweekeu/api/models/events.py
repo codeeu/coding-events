@@ -3,7 +3,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django_countries.fields import CountryField
-
+from api.managers.event_managers import EventSelectorManager
+from geoposition.fields import GeopositionField
+from django.template.defaultfilters import slugify
 
 class Event(models.Model):
 
@@ -17,15 +19,19 @@ class Event(models.Model):
 
 		super(Event,self).__init__(*args,**kwargs)
 
+	APPROVED=2
+	PENDING=1
 
 	STATUS_CHOICES = (
-		(1, 'Approved'),
-		(2, 'Pending'),
+		(APPROVED, 'Approved'),
+		(PENDING, 'Pending'),
 	)
 	status = models.IntegerField(choices=STATUS_CHOICES, default=1)
 	title = models.CharField(max_length=255)
+	slug = models.SlugField(max_length=255, null=True, blank=True)
 	organizer = models.CharField(max_length=255)
 	description = models.TextField(max_length=1000)
+	geoposition = GeopositionField()
 	location = models.CharField(max_length=1000)
 	country = CountryField()
 	start_date = models.DateTimeField()
@@ -38,15 +44,25 @@ class Event(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
 
+	approved=EventSelectorManager(status=APPROVED)
+	pending=EventSelectorManager(status=PENDING)
+	objects = models.Manager()
+	_default_manager=models.Manager()
+
 	def __unicode__(self):
 		return self.title
 
 	class Meta:
 		ordering = ['start_date']
 		app_label = 'api'
-
-
+		permissions= (
+			("edit_event","Can edit event"),
+			("submit_event", "Can submit event"),
+			("reject_event", "Can reject event"),
+		)
 	def save(self,*args,**kwargs):
+		if not self.id:
+			self.slug = slugify(self.title)
 		super(Event,self).save(*args,**kwargs)
 
 		try:
@@ -54,8 +70,5 @@ class Event(models.Model):
 				self.tags.add(tag)
 		except AttributeError:
 			pass
-
-
-
 
 

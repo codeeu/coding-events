@@ -1,9 +1,3 @@
-body {
-  padding-bottom: 40px; }
-
-#navigation {
-  padding-top: 10px; }
-
 #main-content {
   padding-right: 20px;
   padding-left: 20px; }
@@ -22,3 +16,18 @@ body {
   margin-top: 1.5em;
   font-size: 1.1em;
   color: #3D3D3D; }
+
+#view-event-map-wrapper { 
+  width: 100%; 
+  height: 300px; }
+
+#events-map-wrapper { 
+  width: 100%; 
+  height: 450px; }
+
+#view-event-map, #events-map { 
+  height: 100%;
+ }
+#view-event-map, #events-map img {
+    max-width: none;
+}

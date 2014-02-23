@@ -1,50 +1,91 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}- Add Event{% endblock title %}
 
 {% block custom_css %}
-{% load static %}
 <link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}"/ >
 {% endblock %}
 
+{% block custom_body %} onload="initialize()"{% endblock %}
+
 {% block content %}
-<div class="pure-g-r">
-	<div class="pure-u-1-1">
 	<h1>Add your #codeEU event</h1>
 	<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
 	
-	<form  enctype="multipart/form-data" action="/add/" method="post" class="pure-form pure-form-stacked" id="event">{% csrf_token %}
+	<form  enctype="multipart/form-data" action="/add/" method="post" id="event">{% csrf_token %}
 		<fieldset>
 	    {% for field in form %}
+	    	{% if field.name == 'geoposition' %}
+	    	<span style="display:none;">{{ field.label_tag }}{{ field }}</span>
+            {% elif field.name == 'location' %}
+			{{ field.label_tag }} {{ field }}
+            {% elif field.name == 'country' %}
+			<span style="display:none">{{ field }}</span>
+	    	{% else %}
             {{ field.label_tag }} {{ field }}
-            {{ field.errors }}
+	    	{% endif %}
+	    	{{ field.errors }}
 	    {% endfor %}
-	   <p><input type="submit" value="Add event" class="pure-button pure-button-primary" /></p>
+	   <p><input type="submit" value="Add event" /></p>
 		</fieldset>
 	</form>	
 
 	<p>Note: Events will be checked by one of our <a href="#" target="_blank">local ambassadors</a> before appearing on the map.</p>
-
-</div>
-    </div>
-
 {% endblock content %}
 
 {% block custom_js%}
-
-<script src="{% static "js/jquery.js" %}"> </script>
 <script src="{% static "js/jquery.datetimepicker.js" %}"> </script>
 
  <script>
-	$('#id_datepicker_end').datetimepicker({
-	  format:'Y-m-d H:i',
-	  dayOfWeekStart: 1,
-	  lang:'en',
-	});
 	$('#id_datepicker_start').datetimepicker({
 	  format:'Y-m-d H:i',
 	  dayOfWeekStart: 1,
 	  lang:'en',
 	});
+	$('#id_datepicker_end').datetimepicker({
+	  format:'Y-m-d H:i',
+	  dayOfWeekStart: 1,
+	  lang:'en',
+	});
   </script>
+
+ <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+<script>
+	var placeSearch, autocomplete;
+
+	function initialize() {
+		autocomplete = new google.maps.places.Autocomplete(
+      /** @type {HTMLInputElement} */(document.getElementById('autocomplete')),
+ 		{ types: ['geocode'] });
+
+	google.maps.event.addListener(autocomplete, 'place_changed', function() {
+	    fillInAddress();
+	  });
+	}
+
+	function fillInAddress() {
+	    var place = autocomplete.getPlace();
+	    var components = place.address_components;
+	    var country = null;
+	  	var output = autocomplete.getPlace().geometry.location;
+	  	document.getElementById("id_geoposition_0").value=output['d'];
+	  	document.getElementById("id_geoposition_1").value=output['e'];
+		for (var i = 0, component; component = components[i]; i++) {
+	        if (component.types[0] == 'country') {
+	            country = component['short_name'];
+	            var choice = document.getElementById('id_country');
+				selectItemByValue(choice, country);
+	        }
+	    }
+	function selectItemByValue(elmnt, value){
+ 	for(var i=0; i < elmnt.options.length; i++)
+		{
+		if(elmnt.options[i].value == value)
+			elmnt.selectedIndex = i;
+		}
+	}
+}
+    </script>
 {% endblock custom_js %}
