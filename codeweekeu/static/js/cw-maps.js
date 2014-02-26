@@ -6,7 +6,7 @@ var Codeweek = window.Codeweek || {};
 
     'use strict';
 
-    var init = function (json_data) {
+    var init = function () {
 
         $(function () {
 
