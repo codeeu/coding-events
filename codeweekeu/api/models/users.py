@@ -16,6 +16,14 @@ class UserProfile(models.Model):
 		return 'Username: %s, First Name:%s Last Name: %s, Country: %s' % \
 			(self.user.username, self.user.first_name, self.user.last_name, self.country)
 
+	def is_ambassador(self):
+		groups = self.user.groups.all()
+		for group in groups:
+			if 'ambassadors' == group.name:
+				return True
+			else:
+				return False
+
 	class Meta:
 		app_label = 'api'
 
