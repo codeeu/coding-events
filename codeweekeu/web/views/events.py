@@ -10,7 +10,6 @@ from django.conf import settings
 from api.models import Event
 from web.forms.event_form import AddEvent
 from web.processors.event import create_or_update_event
-from web.processors.event import has_model_permissions
 from web.processors.event import get_lat_lon_from_user_ip
 from api.processors import get_approved_events, get_pending_events
 
@@ -78,8 +77,9 @@ def list_pending_events(request, country_code):
 
 	event_list=get_pending_events(country_code=country_code)
 	context = {'events': event_list}
+	user = request.user
 
-	if has_model_permissions(request.user, Event, ["edit","submit","reject"], Event._meta.app_label):
+	if user.profile.is_ambassador:
 		return render_to_response("pages/view_event.html", context, context_instance=RequestContext(request))
 	else:
 		return HttpResponse("You don't have permissions to see this page")
