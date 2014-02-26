@@ -35,7 +35,7 @@
 						{% endif %}
 					</a>
 					<ul class="dropdown">
-						<li><a href="{% url 'profile' %}">Profile</a></li>
+						{% if user.profile.is_ambassador %}<li><a href="{% url 'profile' %}">Profile</a></li>{% endif %}
 						<li><a href="{% url 'logout' %}">Sign out</a></li>
 					</ul>
 				{% else %}
