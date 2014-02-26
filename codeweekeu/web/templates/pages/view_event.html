@@ -2,8 +2,6 @@
 
 {% block title %}- Event Details{% endblock title %}
 
-{% block custom_body %} onload="initialize()"{% endblock %}
-
 {% block content %}
 	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
 	<p>Organized by: {{ event.organizer }}</p>
@@ -54,5 +52,7 @@
 		      infowindow.open(map,marker);
 		    });
 		}
+		google.maps.event.addDomListener(window, 'load', initialize);
+
     </script>
 {% endblock %}
