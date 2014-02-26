@@ -63,6 +63,11 @@
 </nav>
 
 <div class="container" id="main-content">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert-box">{{ message }}</div>
+    {% endfor %}
+{% endif %}
 	{% block content %}{% endblock content %}
 </div>
 <footer>Made by CodeCatz. Fork on <a href="https://github.com/codeeu/coding-events">GitHub</a>.</footer>
