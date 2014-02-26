@@ -169,6 +169,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 	'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+
 )
 ########## END MIDDLEWARE CONFIGURATION
 

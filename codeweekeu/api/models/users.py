@@ -21,8 +21,7 @@ class UserProfile(models.Model):
 		for group in groups:
 			if 'ambassadors' == group.name:
 				return True
-			else:
-				return False
+		return False
 
 	class Meta:
 		app_label = 'api'

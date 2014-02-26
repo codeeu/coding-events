@@ -1,11 +1,14 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.contrib import messages
 from django.core import serializers
+from django.core.urlresolvers import reverse
 from django.conf import settings
+
 
 from api.models import Event
 from web.forms.event_form import AddEvent
@@ -75,14 +78,18 @@ def list_pending_events(request, country_code):
 	Display a list of pending events.
 	"""
 
-	event_list=get_pending_events(country_code=country_code)
-	context = {'events': event_list}
+	event_list = get_pending_events(country_code=country_code)
 	user = request.user
 
-	if user.profile.is_ambassador:
-		return render_to_response("pages/view_event.html", context, context_instance=RequestContext(request))
+	if not user.profile.is_ambassador():
+		messages.error(request, "You don't have permissions to see this page")
+		return HttpResponseRedirect(reverse("web.index"))
 	else:
-		return HttpResponse("You don't have permissions to see this page")
+		return render_to_response("pages/list_events.html", {
+									'events': event_list
+									},
+									context_instance=RequestContext(request))
+
 
 
 @login_required
@@ -91,7 +98,7 @@ def list_approved_events(request,country_code):
 	event_list = get_approved_events(country_code=country_code)
 	context = {'events': event_list}
 
-	return render_to_response("pages/list_events.html",context,context_instance=RequestContext(request))
+	return render_to_response("pages/list_events.html", context, context_instance=RequestContext(request))
 
 
 
