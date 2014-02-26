@@ -29,7 +29,6 @@ then call your newly created function in view!!! .-Erika
 def index(request):
 	events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
-	latest_events = get_approved_events(limit=5, order='pub_date')
 
 	try:
 		user_ip = get_client_ip(request)
@@ -38,6 +37,11 @@ def index(request):
 	except:
 		lan_lon = (46.0608144,14.497165600000017)
 		country = None
+
+	if country:
+		latest_events = get_approved_events(limit=5, order='pub_date', country_code=country['country_code'])
+	else:
+		latest_events = get_approved_events(limit=5, order='pub_date')
 
 	return render_to_response(
 		'pages/index.html', {
@@ -90,13 +94,13 @@ def list_pending_events(request, country_code):
 
 	event_list = get_pending_events(country_code=country_code)
 	user = request.user
-
+	print event_list
 	if not user.profile.is_ambassador():
 		messages.error(request, "You don't have permissions to see this page")
 		return HttpResponseRedirect(reverse("web.index"))
 	else:
 		return render_to_response("pages/list_events.html", {
-									'events': event_list
+									'event_list': event_list
 									},
 									context_instance=RequestContext(request))
 
@@ -106,7 +110,7 @@ def list_pending_events(request, country_code):
 def list_approved_events(request,country_code):
 
 	event_list = get_approved_events(country_code=country_code)
-	context = {'events': event_list}
+	context = {'event_list': event_list}
 
 	return render_to_response("pages/list_events.html", context, context_instance=RequestContext(request))
 
