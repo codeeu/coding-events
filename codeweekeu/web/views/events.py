@@ -11,7 +11,7 @@ from api.models import Event
 from web.forms.event_form import AddEvent
 from web.processors.event import create_or_update_event
 from web.processors.event import has_model_permissions
-from web.processors.event import get_lat_lon_from_user_ip
+from web.processors.event import get_lat_lon_from_user_ip, get_country_from_user_ip
 from api.processors import get_approved_events
 
 """
@@ -26,13 +26,20 @@ def index(request):
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
 	latest_events = get_approved_events(limit=5, order='pub_date')
 
-	lan_lon = get_lat_lon_from_user_ip(get_client_ip(request))
+	try:
+		user_ip = get_client_ip(request)
+		lan_lon = get_lat_lon_from_user_ip(user_ip)
+		country = get_country_from_user_ip(user_ip)
+	except:
+		lan_lon = (46.0608144,14.497165600000017)
+		country = None
 
 	return render_to_response(
 		'pages/index.html', {
 			'latest_events': latest_events,
 		    'map_events': map_events,
 		    'lan_lon': lan_lon,
+		    'country': country,
 		},
 		context_instance=RequestContext(request))
 
