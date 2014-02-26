@@ -29,7 +29,6 @@ then call your newly created function in view!!! .-Erika
 def index(request):
 	events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
-	latest_events = get_approved_events(limit=5, order='pub_date')
 
 	try:
 		user_ip = get_client_ip(request)
@@ -38,6 +37,11 @@ def index(request):
 	except:
 		lan_lon = (46.0608144,14.497165600000017)
 		country = None
+
+	if country:
+		latest_events = get_approved_events(limit=5, order='pub_date', country_code=country['country_code'])
+	else:
+		latest_events = get_approved_events(limit=5, order='pub_date')
 
 	return render_to_response(
 		'pages/index.html', {

@@ -18,9 +18,9 @@ def get_approved_events(limit=None, order=None,country_code=None):
 	events = Event.objects.filter(status='APPROVED')
 
 	if country_code:
-		events.filter(country=country_code)
+		events = events.filter(country=country_code)
 	if order:
-		events.order_by(order)
+		events = events.order_by(order)
 	if limit:
 		events = events[:limit]
 
