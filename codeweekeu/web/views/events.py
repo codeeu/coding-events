@@ -12,7 +12,7 @@ from web.forms.event_form import AddEvent
 from web.processors.event import create_or_update_event
 from web.processors.event import has_model_permissions
 from web.processors.event import get_lat_lon_from_user_ip
-from api.processors import get_approved_events
+from api.processors import get_approved_events, get_pending_events
 
 """
 Do not Query the database directly from te view.
@@ -51,6 +51,7 @@ def add_event(request):
 					{'title': event.title, 'event_id': event.id, 'slug': event.slug},
 					context_instance=RequestContext(request))
 	context = {"form": event_form}
+	print context
 	return render_to_response("pages/add_event.html", context, context_instance=RequestContext(request))
 
 
@@ -68,37 +69,29 @@ def thankyou(request):
 	return render_to_response('pages/thankyou.html')
 
 
-class PendingListEventView(ListView):
+@login_required
+def list_pending_events(request, country_code):
+
 	"""
 	Display a list of pending events.
 	"""
-	model=Event
-	template_name ="pages/list_events.html"
-	queryset = Event.pending.all()
 
-	#@method_decorator(login_required)--- we have to uncomment that before going live
-	def dispatch(self, *args, **kwargs):
-		return super(PendingListEventView,self).dispatch(*args, **kwargs)
+	event_list=get_pending_events(country_code=country_code)
+	context = {'events': event_list}
 
-	def get_queryset(self):
-		return self.queryset.filter(country=self.kwargs["country_code"])
-
-	def get(self,*args,**kwargs):
-		if has_model_permissions(self.request.user,Event,["edit","submit","reject"],Event._meta.app_label):
-			return super(PendingListEventView,self).get(*args, **kwargs)
-		else:
-			return HttpResponse("You don't have permissions to see this page")
+	if has_model_permissions(request.user, Event, ["edit","submit","reject"], Event._meta.app_label):
+		return render_to_response("pages/view_event.html", context, context_instance=RequestContext(request))
+	else:
+		return HttpResponse("You don't have permissions to see this page")
 
 
+@login_required
+def list_approved_events(request,country_code):
 
-class EventListView(ListView):
+	event_list = get_approved_events(country_code=country_code)
+	context = {'events': event_list}
 
-	model = Event
-	template_name ="pages/list_events.html"
-	queryset = Event.approved.all()
-
-	def get_queryset(self):
-		return self.queryset.filter(country=self.kwargs["country_code"])
+	return render_to_response("pages/list_events.html",context,context_instance=RequestContext(request))
 
 
 

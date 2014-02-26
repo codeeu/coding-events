@@ -8,7 +8,6 @@ from os.path import abspath, basename, dirname, join, normpath
 # Absolute filesystem path to this Django project directory.
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
-
 # Site name.
 SITE_NAME = basename(DJANGO_ROOT)
 
@@ -20,6 +19,8 @@ SITE_ROOT = dirname(DJANGO_ROOT)
 # Absolute filesystem path to the secret file which holds this project's
 # SECRET_KEY. Will be auto-generated the first time this file is interpreted.
 SECRET_FILE = normpath(join(SITE_ROOT, 'deploy', 'SECRET'))
+
+
 
 
 # Add all necessary filesystem paths to our system path so that we can use
@@ -180,7 +181,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Admin panel and documentation.
     'django.contrib.admin',
     'django.contrib.admindocs',

@@ -7,7 +7,7 @@ from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
 from geoposition.fields import GeopositionField
 from django_countries.fields import CountryField
-from api.managers.event_managers import EventSelectorManager
+
 
 
 class Event(models.Model):
@@ -35,11 +35,6 @@ class Event(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
 
-	# (WTF)What is this? .-Erika
-	approved = EventSelectorManager(status='APPROVED')
-	pending = EventSelectorManager(status='PENDING')
-	objects = models.Manager()
-	_default_manager = models.Manager()
 
 	def __unicode__(self):
 		return self.title

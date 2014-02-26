@@ -28,6 +28,6 @@ def create_or_update_event(event_id=None, **event_data):
 
 def has_model_permissions(entity, model, perms, app):
 	for p in perms:
-		if not entity.has_perm("%s.%s_%s" % (app,p,model.__name__)):
+		if not entity.has_perm("%s.%s_%s" % (app, p, model.__name__)):
 			return False
 		return True
