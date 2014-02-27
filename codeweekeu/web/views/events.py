@@ -67,7 +67,6 @@ def add_event(request):
 					{'title': event.title, 'event_id': event.id, 'slug': event.slug},
 					context_instance=RequestContext(request))
 	context = {"form": event_form}
-	print context
 	return render_to_response("pages/add_event.html", context, context_instance=RequestContext(request))
 
 
