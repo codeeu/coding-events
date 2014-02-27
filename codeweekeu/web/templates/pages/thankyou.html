@@ -4,6 +4,6 @@
 
 {% block content %}
 	<h1>Thanks for adding your event!</h1>
-	<p>One of our local ambassadors will now review your event <strong><a href="{% url 'web.view_event' event_id slug %}">{{ title }}</a></strong> and make sure we've got all the important details. If you have any questions, get in touch with //local ambassador or main email if none</p>
+	<p>One of our local ambassadors will now review your event <strong><a href="{% url 'web.view_event' event_id slug %}">{{ title }}</a></strong> and make sure we've got all the important details. If you have any questions, get in touch with one of our <a href="{% url 'web.ambassadors' %}">local ambassadors</a> or send an email...</p>
 	<p>You can already share the news about your event via Twitter and Facebook // ADD SHARE</p>
 {% endblock content %}
