@@ -8,7 +8,6 @@ from os.path import abspath, basename, dirname, join, normpath
 # Absolute filesystem path to this Django project directory.
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
-
 # Site name.
 SITE_NAME = basename(DJANGO_ROOT)
 
@@ -20,6 +19,8 @@ SITE_ROOT = dirname(DJANGO_ROOT)
 # Absolute filesystem path to the secret file which holds this project's
 # SECRET_KEY. Will be auto-generated the first time this file is interpreted.
 SECRET_FILE = normpath(join(SITE_ROOT, 'deploy', 'SECRET'))
+
+
 
 
 # Add all necessary filesystem paths to our system path so that we can use
@@ -151,10 +152,11 @@ TEMPLATE_DIRS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.contrib.auth.context_processors.auth',
+	'django.contrib.messages.context_processors.messages',
 	'django.core.context_processors.request',
 	'django.core.context_processors.media',
 	'social.apps.django_app.context_processors.backends',
-	'social.apps.django_app.context_processors.login_redirect',
+	'social.apps.django_app.context_processors.login_redirect'
 )
 ########## END TEMPLATE CONFIGURATION
 
@@ -168,6 +170,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 	'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+
 )
 ########## END MIDDLEWARE CONFIGURATION
 
@@ -180,7 +183,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Admin panel and documentation.
     'django.contrib.admin',
     'django.contrib.admindocs',

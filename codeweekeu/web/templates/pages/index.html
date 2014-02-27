@@ -14,13 +14,17 @@
 		<input type="text" placeholder="Search for events" />
 		<button type="submit">Search</button>
 	</form>
-	<h2>Latest #codeEU events</h2>
+	<h2>Latest #codeEU events{% if country %} in {{ country.country_name }}{% endif %}</h2>
+	{% if latest_events %}
 	<ul>
 		{% for event in latest_events %}
 			<li><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></li>
 		{% endfor %}
 	</ul>
-	{{ lan_lon }}
+	{% else %}
+	<p>No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a><p>
+	{% endif %}
+	
 {% endblock content %}
 
 {% block custom_js %}

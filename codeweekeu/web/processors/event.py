@@ -9,6 +9,12 @@ def get_lat_lon_from_user_ip(ip):
 	g = GeoIP()
 	return g.lat_lon(ip)
 
+def get_country_from_user_ip(ip):
+	"""
+	Return country of IP
+	"""
+	g = GeoIP()
+	return g.country(ip)
 
 def create_or_update_event(event_id=None, **event_data):
 	"""
@@ -25,9 +31,3 @@ def create_or_update_event(event_id=None, **event_data):
 	print event.slug
 	return event
 
-
-def has_model_permissions(entity, model, perms, app):
-	for p in perms:
-		if not entity.has_perm("%s.%s_%s" % (app,p,model.__name__)):
-			return False
-		return True

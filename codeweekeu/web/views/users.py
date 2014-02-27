@@ -2,7 +2,11 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.context_processors import csrf
+
 from web.forms.user_profile import UserForm, UserProfileForm
+from web.views.events import get_client_ip
+from web.processors.user import get_ambassadors
+from web.processors.event import get_country_from_user_ip
 
 def login(request):
 	return render_to_response('pages/login.html')
@@ -29,3 +33,21 @@ def user_profile(request):
 
 	return render_to_response(
 		'pages/profile.html', context, context_instance=RequestContext(request))
+
+def ambassadors(request):
+
+	try:
+		user_ip = get_client_ip(request)
+		country = get_country_from_user_ip(user_ip)
+	except:
+		country = None
+
+	ambassadors = get_ambassadors()
+
+	return render_to_response(
+		'pages/ambassadors.html', {
+			'country': country,
+			'ambassadors': ambassadors,
+		},
+		context_instance=RequestContext(request))
+

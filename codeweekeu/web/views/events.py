@@ -1,18 +1,23 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.contrib import messages
 from django.core import serializers
+from django.core.urlresolvers import reverse
 from django.conf import settings
+
 
 from api.models import Event
 from web.forms.event_form import AddEvent
 from web.processors.event import create_or_update_event
-from web.processors.event import has_model_permissions
 from web.processors.event import get_lat_lon_from_user_ip
+from web.processors.event import get_country_from_user_ip
 from api.processors import get_approved_events
+from api.processors import get_approved_events
+from api.processors import get_pending_events
 
 """
 Do not Query the database directly from te view.
@@ -24,15 +29,26 @@ then call your newly created function in view!!! .-Erika
 def index(request):
 	events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
-	latest_events = get_approved_events(limit=5, order='pub_date')
 
-	lan_lon = get_lat_lon_from_user_ip(get_client_ip(request))
+	try:
+		user_ip = get_client_ip(request)
+		lan_lon = get_lat_lon_from_user_ip(user_ip)
+		country = get_country_from_user_ip(user_ip)
+	except:
+		lan_lon = (46.0608144,14.497165600000017)
+		country = None
+
+	if country:
+		latest_events = get_approved_events(limit=5, order='pub_date', country_code=country['country_code'])
+	else:
+		latest_events = get_approved_events(limit=5, order='pub_date')
 
 	return render_to_response(
 		'pages/index.html', {
 			'latest_events': latest_events,
 		    'map_events': map_events,
 		    'lan_lon': lan_lon,
+		    'country': country,
 		},
 		context_instance=RequestContext(request))
 
@@ -51,6 +67,7 @@ def add_event(request):
 					{'title': event.title, 'event_id': event.id, 'slug': event.slug},
 					context_instance=RequestContext(request))
 	context = {"form": event_form}
+	print context
 	return render_to_response("pages/add_event.html", context, context_instance=RequestContext(request))
 
 
@@ -68,38 +85,36 @@ def thankyou(request):
 	return render_to_response('pages/thankyou.html')
 
 
-class PendingListEventView(ListView):
+@login_required
+def list_pending_events(request, country_code):
+
 	"""
 	Display a list of pending events.
 	"""
-	model=Event
-	template_name ="pages/list_events.html"
-	queryset = Event.pending.all()
 
-	#@method_decorator(login_required)--- we have to uncomment that before going live
-	def dispatch(self, *args, **kwargs):
-		return super(PendingListEventView,self).dispatch(*args, **kwargs)
-
-	def get_queryset(self):
-		return self.queryset.filter(country=self.kwargs["country_code"])
-
-	def get(self,*args,**kwargs):
-		if has_model_permissions(self.request.user,Event,["edit","submit","reject"],Event._meta.app_label):
-			return super(PendingListEventView,self).get(*args, **kwargs)
-		else:
-			return HttpResponse("You don't have permissions to see this page")
+	event_list = get_pending_events(country_code=country_code)
+	user = request.user
+	if not user.profile.is_ambassador():
+		messages.error(request, "You don't have permissions to see this page")
+		return HttpResponseRedirect(reverse("web.index"))
+	else:
+		return render_to_response("pages/list_events.html", {
+									'event_list': event_list
+									},
+									context_instance=RequestContext(request))
 
 
 
-class EventListView(ListView):
+@login_required
+def list_approved_events(request,country_code):
+	"""
+	Display a list of approved events.
+	"""
 
-	model = Event
-	template_name ="pages/list_events.html"
-	queryset = Event.approved.all()
+	event_list = get_approved_events(country_code = country_code)
+	context = {'event_list': event_list}
 
-	def get_queryset(self):
-		return self.queryset.filter(country=self.kwargs["country_code"])
-
+	return render_to_response("pages/list_events.html", context, context_instance=RequestContext(request))
 
 
 def guide(request):
