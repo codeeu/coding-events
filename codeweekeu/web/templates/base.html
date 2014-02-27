@@ -62,13 +62,17 @@
 	</section>
 </nav>
 
-<div class="container" id="main-content">
-    {% if messages %}
-    {% for message in messages %}
+  {% if messages %}
+      {% for message in messages %}
         <div class="alert-box">{{ message }}</div>
-    {% endfor %}
-{% endif %}
-	{% block content %}{% endblock content %}
+      {% endfor %}
+  {% endif %}
+
+  {% block content %} {% endblock content %}
+
+<div class="container" id="main-content">
+
+
 </div>
 <footer>Made by CodeCatz. Fork on <a href="https://github.com/codeeu/coding-events">GitHub</a>.</footer>
 <script src="{% static "js/jquery.js" %}"></script>
