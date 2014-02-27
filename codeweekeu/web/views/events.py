@@ -94,7 +94,6 @@ def list_pending_events(request, country_code):
 
 	event_list = get_pending_events(country_code=country_code)
 	user = request.user
-	print event_list
 	if not user.profile.is_ambassador():
 		messages.error(request, "You don't have permissions to see this page")
 		return HttpResponseRedirect(reverse("web.index"))
@@ -108,12 +107,14 @@ def list_pending_events(request, country_code):
 
 @login_required
 def list_approved_events(request,country_code):
+	"""
+	Display a list of approved events.
+	"""
 
-	event_list = get_approved_events(country_code=country_code)
+	event_list = get_approved_events(country_code = country_code)
 	context = {'event_list': event_list}
 
 	return render_to_response("pages/list_events.html", context, context_instance=RequestContext(request))
-
 
 
 def guide(request):
