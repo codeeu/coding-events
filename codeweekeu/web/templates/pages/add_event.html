@@ -11,7 +11,7 @@
 	<h1>Add your #codeEU event</h1>
 	<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
 	
-	<form  enctype="multipart/form-data" action="/add/" method="post" id="event">{% csrf_token %}
+	<form  enctype="multipart/form-data" action="" method="post" id="event">{% csrf_token %}
 		<fieldset>
 	    {% for field in form %}
 	    	{% if field.name == 'geoposition' %}
@@ -132,7 +132,7 @@
 			}
 		}
 
-	function initialize() { 
+	function initialize() {
 		var initialCenter = new google.maps.LatLng(46.0608144,14.497165600000017);
 	  	createMap(initialCenter,4);
 	  	autocomplete();

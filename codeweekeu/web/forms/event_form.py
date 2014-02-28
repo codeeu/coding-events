@@ -85,3 +85,4 @@ class AddEvent(forms.ModelForm):
 	)
 
 
+
