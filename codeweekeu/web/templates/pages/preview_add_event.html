@@ -10,28 +10,13 @@
 </table>
 <input type="hidden" name="{{ stage_field }}" value="2" />
 <input type="hidden" name="{{ hash_field }}" value="{{ hash_value }}" />
-<p><input type="submit" value="Submit event" /> or edit it again
+<p><input type="submit" value="Submit event" />
 </p>
 
 </form>
 
+<button onclick="goBack()"> Edit Again</button>
 
-<!--form action="" method="post">{% csrf_token %}
-{% for field in form %}
-    {% if field.name == "geoposition" %}
-        {% for child in field %}
-              {{child.as_hidden}}
-        {% endfor %}
-    {% else %}
-        {{ field.as_hidden}}
-    {% endif %}
-{% endfor %}
-<input type="hidden" name="{{ stage_field }}" value="2" />
-<input type="hidden" name="{{ hash_field }}" value="{{ hash_value }}" />
-<p><input type="submit" value="Submit event" /> or edit it again
-</p>
-
-</form-->
 
 {% endblock content%}
 
@@ -39,11 +24,10 @@
 
 <script>
 
-$(document).ready(function(){
-
-
-
-});
+function goBack()
+  {
+  window.history.back()
+  }
  </script>
 
  {%  endblock custom_js%}
