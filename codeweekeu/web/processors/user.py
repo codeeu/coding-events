@@ -1,6 +1,14 @@
 from django.contrib.auth.models import User
 from django_countries import countries
 
+def get_user(user_id):
+    user = User.objects.get(id=user_id)
+    return user
+
+def get_user_profile(user_id):
+    user = User.objects.get(id=user_id)
+    return user.profile
+
 def get_ambassadors():
 	ambassadors = []
 	aambassadors = User.objects.filter(groups__name='ambassadors')

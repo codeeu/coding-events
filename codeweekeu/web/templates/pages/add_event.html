@@ -11,7 +11,11 @@
 	<h1>Add your #codeEU event</h1>
 	<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
 	
+<<<<<<< HEAD
 	<form  enctype="multipart/form-data" action="" method="post" id="event">{% csrf_token %}
+=======
+	<form  enctype="multipart/form-data" action="." method="post" id="event">{% csrf_token %}
+>>>>>>> upstream/master
 		<fieldset>
 	    {% for field in form %}
 	    	{% if field.name == 'geoposition' %}
@@ -59,6 +63,7 @@
 	var map;
 	var marker;
 	var geocoder;
+	var address;
 
 	function createMap(latLng, zoomVal) {
 		var mapOptions = {
@@ -88,6 +93,23 @@
 		   });
 		}
 
+	function updateLatLng(lat,lng) {
+		document.getElementById("id_geoposition_0").value = lat;
+		document.getElementById("id_geoposition_1").value = lng;
+		}
+
+	function getAddress(address) {
+		geocoder = new google.maps.Geocoder();
+	    geocoder.geocode({'address': address}, function(results, status) {
+ 	      if (status == google.maps.GeocoderStatus.OK) {
+ 	      		var updated_location = results[0].geometry.location;
+				createMarker(updated_location);
+				updateLatLng(updated_location.lat(),updated_location.lng());
+              } 
+		   });
+		}
+
+
 	function createMarker(markerLatLng) {
 		marker = new google.maps.Marker({
 		    position: markerLatLng,
@@ -98,8 +120,7 @@
 		createMap(markerLatLng,15);
 		marker.setMap(map);
 		google.maps.event.addListener(marker, 'dragend', function (event) {
-		    document.getElementById("id_geoposition_0").value = this.getPosition().lat();
-		    document.getElementById("id_geoposition_1").value = this.getPosition().lng();
+			updateLatLng(this.getPosition().lat(),this.getPosition().lng());
 		    updateAddress(marker.getPosition());
 
 		});
@@ -136,6 +157,10 @@
 		var initialCenter = new google.maps.LatLng(46.0608144,14.497165600000017);
 	  	createMap(initialCenter,4);
 	  	autocomplete();
+	  	{% if form %}
+			address = "{{address}}";
+			getAddress(address);
+		{% endif %}
 		}
 
 	google.maps.event.addDomListener(window, 'load', initialize);
