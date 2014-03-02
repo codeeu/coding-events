@@ -92,8 +92,11 @@ def edit_event(request,event_id):
 	event = get_event(event_id)
 	# Create a dictionary out of db data to populate the edit form
 	event_data = event.__dict__
+	tags = []
+	for tag in event.tags.all():
+		tags.append(tag.name)
+	event_data['tags'] = ",".join(tags)
 	event_form = AddEvent(data=event_data)
-	print "STILL NEED TO INCLUDE TAGS INTO EVENT DATA"
 	if request.method =="POST":
 		event_form = AddEvent(data=request.POST, files=request.FILES)
 		if event_form.is_valid():
