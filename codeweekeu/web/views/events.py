@@ -12,12 +12,15 @@ from django.conf import settings
 
 from api.models import Event
 from web.forms.event_form import AddEvent
+from web.processors.event import get_event
 from web.processors.event import create_or_update_event
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import get_country_from_user_ip
 from api.processors import get_approved_events
 from api.processors import get_approved_events
 from api.processors import get_pending_events
+
+from web.decorators.access_right import can_edit_event
 
 """
 Do not Query the database directly from te view.
@@ -82,6 +85,26 @@ def search_event(request):
 
 def thankyou(request):
 	return render_to_response('pages/thankyou.html')
+
+@login_required
+@can_edit_event
+def edit_event(request,event_id):
+	event = get_event(event_id)
+	# Create a dictionary out of db data to populate the edit form
+	event_data = event.__dict__
+	event_form = AddEvent(data=event_data)
+	print "STILL NEED TO INCLUDE TAGS INTO EVENT DATA"
+	if request.method =="POST":
+		event_form = AddEvent(data=request.POST, files=request.FILES)
+		if event_form.is_valid():
+			event_data = {}
+			event_data.update(event_form.cleaned_data)
+			event = create_or_update_event(**event_data)
+			url = reverse('web.view_event', kwargs={'event_id': event.id, 'slug': event.slug})
+			return HttpResponseRedirect(url)
+	# Passing event address separately to be used in map JS
+	context= {"form" : event_form, "address" : event_data['location']}
+	return render_to_response("pages/add_event.html", context, context_instance=RequestContext(request))
 
 
 @login_required
