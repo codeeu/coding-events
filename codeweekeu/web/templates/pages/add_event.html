@@ -15,7 +15,7 @@
 		<fieldset>
 	    {% for field in form %}
 	    	{% if field.name == 'geoposition' %}
-	    	<span>{{ field.label_tag }}{{ field }}</span>
+	    	<span style="display:none">{{ field.label_tag }}{{ field }}</span>
             {% elif field.name == 'location' %}
 			{{ field.label_tag }} {{ field }}
 			<div id="view-event-map-wrapper">
