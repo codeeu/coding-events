@@ -65,7 +65,6 @@ class Event(models.Model):
 
 		try:
 			for tag in self.tag:
-				print tag
 				self.tags.add(tag)
 		except AttributeError:
 			pass
