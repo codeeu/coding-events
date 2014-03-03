@@ -4,10 +4,14 @@
 
 {% block content %}
 	<h1>#codeEU Local Ambassadors</h1>
-	{% if country %}<p>Your country: {{ country.country_name }}</p>{% endif %}
-	<ul>
-	{% for ambassador in ambassadors %}
-		<li>{{ambassador}}</li>
+	{% if user_country %}<p>Your country: {{ user_country.country_name }}</p>{% endif %}
+	{% for country,ambassador in countries %}
+		{% if ambassador|length != 0 %}
+		<h2>{{country}}</h2>
+		<p>{{ambassador}}</p>
+		{% else %}
+		<h2>{{country}}</h2> 
+		<p>No ambassador yet. Why don't you volunteer?</p>
+		{% endif %}
 	{% endfor %}
-	</ul>
 {% endblock content %}

@@ -5,7 +5,8 @@ from django.core.context_processors import csrf
 
 from web.forms.user_profile import UserForm, UserProfileForm
 from web.views.events import get_client_ip
-from web.processors.user import get_ambassadors
+
+from web.processors.user import get_ambassadors_for_countries
 from web.processors.event import get_country_from_user_ip
 
 def login(request):
@@ -38,16 +39,16 @@ def ambassadors(request):
 
 	try:
 		user_ip = get_client_ip(request)
-		country = get_country_from_user_ip(user_ip)
+		user_country = get_country_from_user_ip(user_ip)
 	except:
-		country = None
+		user_country = None
 
-	ambassadors = get_ambassadors()
+	countries_ambassadors = get_ambassadors_for_countries()
 
 	return render_to_response(
 		'pages/ambassadors.html', {
-			'country': country,
-			'ambassadors': ambassadors,
+			'user_country': user_country,
+			'countries': countries_ambassadors,
 		},
 		context_instance=RequestContext(request))
 
