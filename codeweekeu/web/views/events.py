@@ -101,7 +101,8 @@ def edit_event(request,event_id):
 		event_form = AddEvent(data=request.POST, files=request.FILES)
 		if event_form.is_valid():
 			event_data = event_form.cleaned_data
-			print event_data
+			if not event_data['picture']:
+				event_data.pop('picture')
 			event = create_or_update_event(event_id,**event_data)
 			url = reverse('web.view_event', kwargs={'event_id': event.id, 'slug': event.slug})
 			return HttpResponseRedirect(url)
