@@ -3,7 +3,15 @@
 {% block title %}- Event Details{% endblock title %}
 
 {% block content %}
-	{% if user.profile.is_ambassador %}<a href="{% url 'web.edit_event' event.id %}">Edit event</a> | {% if event.status == "APPROVED" %}{{event.status}}{% else %}{{event.status}}{% endif %}{% endif %}
+	{% if user.profile.is_ambassador %}
+            <a href="{% url 'web.edit_event' event.id %}">Edit event</a> | 
+        {% if event.status == "APPROVED" %}
+            {{event.status}}
+        {% else %}
+            <b id="event_status">{{event.status}}</b>
+            <a href="" event_id="{{event.id}}" id="approve_event">Approve event</a>
+        {% endif %}
+    {% endif %}
 	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
 	<p>Organized by: {{ event.organizer }}</p>
 	<p>{{ event.description }}</p>
@@ -15,17 +23,37 @@
 	<p>Tags: {% for tag in event.tags.all %}{% if forloop.last %}{{ tag.name }}{% else %}{{ tag.name }}, {% endif %}{% endfor %}
     </p>
 	{% if event.contact_person %}
-	<p>Contact email: {{ event.contact_person }}</p>
+	    <p>Contact email: {{ event.contact_person }}</p>
 	{% endif %}
 	{% if event.picture %}
-	<p><img src="{{ event.picture.url }}" /></p>
+	    <p><img src="{{ event.picture.url }}" /></p>
 	{% endif %}
 {% endblock content %}
 
 {% block custom_js %}
+    {% load static %}
+
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
     </script>
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script>
+
+$( document ).ready(function() {
+    $('#approve_event').click(function(e){
+        var event = $(this).attr('event_id');
+        var path = '/approve_event/'+ event + '/';
+        $.get(path,function(data){
+            $('#event_status').html(data);
+            $('#approve_event').hide();
+        });
+        e.preventDefault();
+    });
+ });
+
+    </script>
+
     <script type="text/javascript">
 
 		function initialize() {

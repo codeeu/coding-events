@@ -10,12 +10,7 @@
 {% block content %}
 	<h1>Add your #codeEU event</h1>
 	<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
-	
-<<<<<<< HEAD
-	<form  enctype="multipart/form-data" action="" method="post" id="event">{% csrf_token %}
-=======
 	<form  enctype="multipart/form-data" action="." method="post" id="event">{% csrf_token %}
->>>>>>> upstream/master
 		<fieldset>
 	    {% for field in form %}
 	    	{% if field.name == 'geoposition' %}

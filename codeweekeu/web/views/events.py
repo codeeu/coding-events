@@ -129,7 +129,6 @@ def list_pending_events(request, country_code):
 									context_instance=RequestContext(request))
 
 
-
 @login_required
 def list_approved_events(request,country_code):
 	"""
@@ -156,3 +155,15 @@ def get_client_ip(request):
 	else:
 		ip = request.META.get('REMOTE_ADDR')
 	return ip
+
+#@login_required
+#@can_edit_event
+
+
+def approve_event(request,event_id):
+	if request.method == 'GET':
+		#event_id=request.GET["event_id"]
+		event_data= {"status": "APPROVED"}
+		event=create_or_update_event(event_id=event_id,**event_data)
+		status=event.status
+		return HttpResponse(status)
