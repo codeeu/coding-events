@@ -4,20 +4,13 @@
 
 {% block content %}
 	{% if user.profile.is_ambassador %}
-            <a href="{% url 'web.edit_event' event.id %}">Edit event</a> | 
-        {% if event.status == "APPROVED" %}
-            <div id="change_status">
-                <b id="event_status">{{event.status}}</b>
+        <a href="{% url 'web.edit_event' event.id %}">Edit event</a> | 
+            <span id="change_status">
+                Status: <b id="event_status">{{event.status}}</b> |
                 <a href="" event_id="{{event.id}}" id="pending_event">Reverse to pending</a>
                 <a href="" event_id="{{event.id}}" id="approve_event" style="display:none">Approve event</a>
-            </div>
-        {% else %}
-            <div id="change_status">
-                <b id="event_status">{{event.status}}</b>
-                <a href="" event_id="{{event.id}}" id="approve_event">Approve event</a>
-                <a href="" event_id="{{event.id}}" id="pending_event" style="display: none">Reverse to pending</a>
-            </div>
-        {% endif %}
+            </span>
+
     {% endif %}
 	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
 	<p>Organized by: {{ event.organizer }}</p>

@@ -1,7 +1,6 @@
 from django.conf.urls import patterns
 from django.conf.urls import url
 from django.contrib import admin
-from preview_forms import AddEventFormPreview
 from web.forms.event_form import AddEvent
 
 admin.autodiscover()
@@ -19,9 +18,4 @@ urlpatterns = patterns(
 	url(r'^login/$', 'users.login', name='web.login'),
 	url(r'^ambassadors/$', 'users.ambassadors', name='web.ambassadors'),
 	 url(r'^change_status/(?P<status>\w+)/(?P<event_id>\d+)/$','events.change_status',name='web.change_status'),
-	)
-
-urlpatterns+= patterns(
-	'',
-	url(r'^add/$',AddEventFormPreview(AddEvent),name='web.preview_event'),
 	)
