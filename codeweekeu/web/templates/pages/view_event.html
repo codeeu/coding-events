@@ -6,7 +6,7 @@
 	{% if user.profile.is_ambassador %}
             <a href="{% url 'web.edit_event' event.id %}">Edit event</a> | 
         {% if event.status == "APPROVED" %}
-            {{event.status}}
+            Event approved. Check for more <a href="{% url 'web.pending_events' event.country %}">pending events</a>?
         {% else %}
             <b id="event_status">{{event.status}}</b>
             <a href="" event_id="{{event.id}}" id="approve_event">Approve event</a>
