@@ -6,10 +6,17 @@
 	{% if user.profile.is_ambassador %}
             <a href="{% url 'web.edit_event' event.id %}">Edit event</a> | 
         {% if event.status == "APPROVED" %}
-            {{event.status}}
+            <div id="change_status">
+                <b id="event_status">{{event.status}}</b>
+                <a href="" event_id="{{event.id}}" id="pending_event">Reverse to pending</a>
+                <a href="" event_id="{{event.id}}" id="approve_event" style="display:none">Approve event</a>
+            </div>
         {% else %}
-            <b id="event_status">{{event.status}}</b>
-            <a href="" event_id="{{event.id}}" id="approve_event">Approve event</a>
+            <div id="change_status">
+                <b id="event_status">{{event.status}}</b>
+                <a href="" event_id="{{event.id}}" id="approve_event">Approve event</a>
+                <a href="" event_id="{{event.id}}" id="pending_event" style="display: none">Reverse to pending</a>
+            </div>
         {% endif %}
     {% endif %}
 	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
@@ -41,13 +48,27 @@
     <script>
 
 $( document ).ready(function() {
-    $('#approve_event').click(function(e){
-        var event = $(this).attr('event_id');
+    $('#change_status').click(function(e){
+        var event = $(e.target).attr('event_id');
         var path = '/approve_event/'+ event + '/';
-        $.get(path,function(data){
-            $('#event_status').html(data);
-            $('#approve_event').hide();
-        });
+
+        if ($(e.target).attr('id') == "pending_event") {
+            var path = '/change_status/PENDING/'+ event + '/';
+            var func= function(data){
+                 $('#event_status').html(data);
+                 $('#approve_event').show();
+                 $('#pending_event').hide();
+            }
+        } else {
+            var path = '/change_status/APPROVED/'+ event + '/';
+            var func= function(data){
+                 $('#event_status').html(data);
+                 $('#pending_event').show();
+                 $('#approve_event').hide();
+            }
+        }
+
+       $.get(path,func);
         e.preventDefault();
     });
  });
