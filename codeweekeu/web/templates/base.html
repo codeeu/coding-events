@@ -35,7 +35,9 @@
 						{% endif %}
 					</a>
 					<ul class="dropdown">
-						{% if user.profile.is_ambassador %}<li><a href="{% url 'profile' %}">Profile</a></li>{% endif %}
+						{% if user.profile.is_ambassador %}
+						<li>{% if user.profile.country %}<a href="{% url 'web.pending_events' user.profile.country %}">Pending events in {{user.profile.country.name}}</a>{% else %}<a href="{% url 'profile' %}">Set your country</a>{% endif %}</li>
+						<li><a href="{% url 'profile' %}">Profile</a></li>{% endif %}
 						<li><a href="{% url 'logout' %}">Sign out</a></li>
 					</ul>
 				{% else %}

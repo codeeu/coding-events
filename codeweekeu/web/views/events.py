@@ -101,7 +101,6 @@ def edit_event(request,event_id):
 		event_form = AddEvent(data=request.POST, files=request.FILES)
 		if event_form.is_valid():
 			event_data = event_form.cleaned_data
-			print event_data
 			event = create_or_update_event(event_id,**event_data)
 			url = reverse('web.view_event', kwargs={'event_id': event.id, 'slug': event.slug})
 			return HttpResponseRedirect(url)
@@ -124,7 +123,9 @@ def list_pending_events(request, country_code):
 		return HttpResponseRedirect(reverse("web.index"))
 	else:
 		return render_to_response("pages/list_events.html", {
-									'event_list': event_list
+									'event_list': event_list,
+									'status': 'pending',
+									'country_code': country_code,
 									},
 									context_instance=RequestContext(request))
 
@@ -136,7 +137,7 @@ def list_approved_events(request,country_code):
 	"""
 
 	event_list = get_approved_events(country_code = country_code)
-	context = {'event_list': event_list}
+	context = {'event_list': event_list, 'status': 'approved','country_code': country_code}
 
 	return render_to_response("pages/list_events.html", context, context_instance=RequestContext(request))
 
