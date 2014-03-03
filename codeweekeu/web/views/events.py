@@ -156,14 +156,13 @@ def get_client_ip(request):
 		ip = request.META.get('REMOTE_ADDR')
 	return ip
 
-#@login_required
-#@can_edit_event
-
-
-def approve_event(request,event_id):
+@login_required
+@can_edit_event
+def change_status(request, status,event_id):
 	if request.method == 'GET':
 		#event_id=request.GET["event_id"]
-		event_data= {"status": "APPROVED"}
+		event_data= {"status": status}
 		event=create_or_update_event(event_id=event_id,**event_data)
 		status=event.status
 		return HttpResponse(status)
+
