@@ -183,9 +183,14 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Point Django at the default FormPreview templates
+    'django.contrib.formtools',
+
     # Admin panel and documentation.
     'django.contrib.admin',
     'django.contrib.admindocs',
+
 
     # South migration tool.
     'south',
