@@ -3,6 +3,8 @@
 {% block title %}- Map of Events{% endblock title %}
 
 {% block content %}
+<div class="row">
+<div class="small-12 large-12 columns">
 	<h1>#codeEU Map of Events</h1>
 	<a href="{% url 'web.add_event' %}" class="button">Add event</a>
 	<p><a href="{% url 'web.guide' %}">How to organize your own event?</a></p>
@@ -22,9 +24,10 @@
 		{% endfor %}
 	</ul>
 	{% else %}
-	<p>No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a><p>
+	<p>No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a></p>
 	{% endif %}
-	
+</div>
+</div>	
 {% endblock content %}
 
 {% block custom_js %}
