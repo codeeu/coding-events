@@ -357,6 +357,9 @@ table {
 * Site specific defined variables
 *************************************/
 /*********************
+MAIN STYLES
+*********************/
+/*********************
 NAVIGATION STYLES
 *********************/
 .navbar {
@@ -403,6 +406,9 @@ LANDING PAGE MAP STYLES
   width: 100%;
   text-align: center; }
 
+/*********************
+INDEX PAGE STYLES
+*********************/
 .index-heading {
   font-size: 18px;
   position: absolute;
@@ -411,6 +417,9 @@ LANDING PAGE MAP STYLES
 .index-content {
   padding: 100px 0; }
 
+/*********************
+FOOTER STYLES
+*********************/
 footer {
   width: 100%;
   background-color: #515665;
