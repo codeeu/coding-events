@@ -22,11 +22,19 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ('country',)
-		labels = {'country': 'Your country:', }
+		fields = ('country', 'bio', 'website', 'twitter')
+		labels = {
+			'country': 'Your country:',
+			'bio': 'Short bio:',
+			'website': 'Your website:',
+			'twitter': 'Twitter handle: @',
+			}
 		help_texts = {'country': 'If unsure, select the country in which you\'ll be active during Code Week', }
 		error_messages = {
             'country': {
                 'max_length': 'Are you sure? Where is that?',
             },
-        }
+			'website': {
+				'invalid': 'Please enter a valid web address',
+			},
+			}
