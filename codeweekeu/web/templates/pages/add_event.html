@@ -7,32 +7,34 @@
 <link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}"/ >
 {% endblock %}
 
+
 {% block content %}
-	<h1>Add your #codeEU event</h1>
-	<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
-	<form  enctype="multipart/form-data" action="." method="post" id="event">{% csrf_token %}
-		<fieldset>
-	    {% for field in form %}
-	    	{% if field.name == 'geoposition' %}
-	    	<span style="display:none">{{ field.label_tag }}{{ field }}</span>
-            {% elif field.name == 'location' %}
-			{{ field.label_tag }} {{ field }}
-			<div id="view-event-map-wrapper">
-				<div id="view-event-map">Loading map ...</div>
-			</div>
-            {% elif field.name == 'country' %}
-			<span style="display:none">{{ field }}</span>
-	    	{% else %}
-            {{ field.label_tag }} {{ field }}
-	    	{% endif %}
-	    	{{ field.errors }}
-	    {% endfor %}
-	   <p><input type="submit" value="Add event" /></p>
-		</fieldset>
-	</form>	
+	<div class="container"> 
+		<h1>Add your #codeEU event</h1>
+		<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
+		<form  enctype="multipart/form-data" action="." method="post" id="event">{% csrf_token %}
+			<fieldset>
+		    {% for field in form %}
+		    	{% if field.name == 'geoposition' %}
+		    	<span style="display:none">{{ field.label_tag }}{{ field }}</span>
+	            {% elif field.name == 'location' %}
+				{{ field.label_tag }} {{ field }}
+				<div id="view-event-map-wrapper">
+					<div id="view-event-map">Loading map ...</div>
+				</div>
+	            {% elif field.name == 'country' %}
+				<span style="display:none">{{ field }}</span>
+		    	{% else %}
+	            {{ field.label_tag }} {{ field }}
+		    	{% endif %}
+		    	{{ field.errors }}
+		    {% endfor %}
+		   <p><input type="submit" value="Add event" class="btn btn-default" /></p>
+			</fieldset>
+		</form>	
 
-	<p>Note: Events will be checked by one of our <a href="{% url 'web.ambassadors' %}" target="_blank">local ambassadors</a> before appearing on the map.</p>
-
+		<p>Note: Events will be checked by one of our <a href="{% url 'web.ambassadors' %}" target="_blank">local ambassadors</a> before appearing on the map.</p>
+	</div>
 {% endblock content %}
 
 {% block custom_js%}
