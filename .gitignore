@@ -8,4 +8,4 @@ data.sqlite3
 media/
 codeweekeu/static/css/scss/.sass-cache/
 *.sass-cache/
-*CACHE
+staticfiles/
