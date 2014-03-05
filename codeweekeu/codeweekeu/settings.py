@@ -208,6 +208,8 @@ INSTALLED_APPS = (
 	'taggit',
     # a model field that can hold geoposition
     'geoposition',
+    # a compressor for static files
+    #'compressor',
 
     # defined apps
     'web',
@@ -511,7 +513,10 @@ LOGGING = {
 
 ########## END LOGGING CONFIGURATION
 
+
+########## GEOIP PATH
 GEOIP_PATH = normpath(join(DJANGO_ROOT, 'geoip'))
+########## END GEOIP PATH
 
 
 try:

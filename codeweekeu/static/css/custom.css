@@ -1,33 +1,31 @@
 #main-content {
-  padding-right: 20px;
-  padding-left: 20px; }
+    padding-right: 20px;
+    padding-left: 20px;
+}
 
-#search {
-  margin-top: 20px;
-  margin-bottom: 20px; }
 
 .errorlist {
-  color: red;
-  padding-left: 0px;
-  margin-top: 0px;
-  list-style-type: none; }
+    color: red;
+    padding-left: 0px;
+    margin-top: 0px;
+    list-style-type: none;
+}
 
 #event label {
-  margin-top: 1.5em;
-  font-size: 1.1em;
-  color: #3D3D3D; }
+    margin-top: 1.5em;
+    font-size: 1.1em;
+    color: #3D3D3D;
+}
 
-#view-event-map-wrapper { 
-  width: 100%; 
-  height: 300px; }
 
-#events-map-wrapper { 
-  width: 100%; 
-  height: 450px; }
 
-#view-event-map, #events-map { 
-  height: 100%;
- }
+
+
+#view-event-map, #events-map {
+    height: 100%;
+}
+
 #view-event-map img, #events-map img {
     max-width: none;
 }
+
