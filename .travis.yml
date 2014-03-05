@@ -16,7 +16,7 @@ install:
 
 # command to run tests, e.g. python setup.py test
 script:  python codeweekeu/manage.py test api
- --settings=badges.settings
+ --settings=codeweekeu.settings
 
 notifications:
   email:
