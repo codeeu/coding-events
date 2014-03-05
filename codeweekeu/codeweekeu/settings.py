@@ -135,7 +135,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
 )
 ########## END STATIC FILE CONFIGURATION
 
@@ -519,12 +518,6 @@ LOGGING = {
 GEOIP_PATH = normpath(join(DJANGO_ROOT, 'geoip'))
 ########## END GEOIP PATH
 
-
-########## DJANGO COMPRESSOR SETTINGS
-COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'sass --scss {infile} {outfile}'),
-)
-########## END DJANGO COMPRESSOR SETTINGS
 
 try:
 	from settings_local import *
