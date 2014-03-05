@@ -18,9 +18,9 @@ class Event(models.Model):
 	    ('REJECTED', 'Rejected'),
 	)
 	status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='PENDING')
-	title = models.CharField(max_length=255)
+	title = models.CharField(max_length=255, default=None)
 	slug = models.SlugField(max_length=255, null=True, blank=True)
-	organizer = models.CharField(max_length=255)
+	organizer = models.CharField(max_length=255, default=None)
 	description = models.TextField(max_length=1000)
 	geoposition = GeopositionField()
 	location = models.CharField(max_length=1000)
