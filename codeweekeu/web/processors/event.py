@@ -16,8 +16,8 @@ def get_country_from_user_ip(ip):
 	return g.country(ip)
 
 def get_event(event_id):
-    event = Event.objects.get(id=event_id)
-    return event
+	event = Event.objects.get(id=event_id)
+	return event
 
 def create_or_update_event(event_id=None, **event_data):
 	"""
