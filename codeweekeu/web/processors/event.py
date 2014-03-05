@@ -26,10 +26,12 @@ def create_or_update_event(event_id=None, **event_data):
 	event = Event.objects.filter(id=event_id)
 	if event:
 		event = event[0]
+		#we have to update tags after the other fields are updated
+		event_tags=event_data['tags']
+		event_data.pop('tags')
 
 		#in case we have geoposition data in event_data
 		if 'geoposition' in event_data:
-
 			# updating geoposition field is a bit fussy
 			event_latitude = event_data['geoposition'][0]
 			event_longitude = event_data['geoposition'][1]
@@ -43,6 +45,10 @@ def create_or_update_event(event_id=None, **event_data):
 		else:
 			event.__dict__.update(event_data)
 			event.save()
+
+		#delete old tags and store new ones
+		event.tags.set(*event_tags)
+
 	else:
 		event = Event.objects.create(**event_data)
 	return event
