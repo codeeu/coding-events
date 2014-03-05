@@ -20,7 +20,7 @@
 				<li class="toggle-topbar menu-icon"><a href="http://codeeu.tumblr.com/">News</a></li>
 				<li class="dropdown">
 					{% if user.is_authenticated %}
-						<a href="{% url 'profile' %}" class="dropdown-toggle avatar img-circle" data-toggle="dropdown">
+						<a href="{% url 'profile' %}" class="dropdown-toggle avatar" data-toggle="dropdown">
 							{% avatar user 30 %}
 						</a>
 						<ul class="dropdown-menu" role="menu">
@@ -39,8 +39,9 @@
 							<li><a href="{% url 'logout' %}">Sign out</a></li>
 						</ul>
 					{% else %}
-						<a href="{% url 'profile' %}">Login</a>
-						<ul class="dropdown">
+						<a href="{% url 'profile' %}" class="dropdown-toggle" data-toggle="dropdown"
+								data-trigger="hover" data-target="#">Login</a>
+						<ul class="dropdown-menu" role="menu">
 							<li><a href="{% url 'social:begin' 'github' %}"><i class="fa fa-github-square"></i></a></li>
 							<li><a href="{% url 'social:begin' 'twitter' %}"><i class="fa fa-twitter-square"></i></a></li>
 							<li><a href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook-square"></i></a></li>

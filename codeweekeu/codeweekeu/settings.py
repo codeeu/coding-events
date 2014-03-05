@@ -21,8 +21,6 @@ SITE_ROOT = dirname(DJANGO_ROOT)
 SECRET_FILE = normpath(join(SITE_ROOT, 'deploy', 'SECRET'))
 
 
-
-
 # Add all necessary filesystem paths to our system path so that we can use
 # python import statements.
 sys.path.append(SITE_ROOT)
@@ -34,6 +32,7 @@ sys.path.append(normpath(join(DJANGO_ROOT, 'web')))
 # Disable debugging by default.
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
 ########## END DEBUG CONFIGURATION
 
 ########## MANAGER CONFIGURATION
@@ -59,7 +58,7 @@ DATABASES = {
 }
 ########## END DATABASE CONFIGURATION
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'codeweek.eu']
 ########## GENERAL CONFIGURATION
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name although not all
@@ -135,6 +134,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 )
 ########## END STATIC FILE CONFIGURATION
 
@@ -209,7 +209,7 @@ INSTALLED_APPS = (
     # a model field that can hold geoposition
     'geoposition',
     # a compressor for static files
-    #'compressor',
+    'compressor',
 
     # defined apps
     'web',
@@ -518,6 +518,15 @@ LOGGING = {
 GEOIP_PATH = normpath(join(DJANGO_ROOT, 'geoip'))
 ########## END GEOIP PATH
 
+########## DJANGO COMPRESSOR SETTINGS
+
+COMPRESS_CSS_FILTERS = ('compressor.filters.cssmin.CSSMinFilter',)
+COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'sass --scss {infile} {outfile}'),
+)
+########## END DJANGO COMRESSOR SETTINGS
 
 try:
 	from settings_local import *
