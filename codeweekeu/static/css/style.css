@@ -359,6 +359,10 @@ table {
 /*********************
 MAIN STYLES
 *********************/
+.form-control {
+  margin-top: 5px;
+  margin-bottom: 5px; }
+
 /*********************
 NAVIGATION STYLES
 *********************/
