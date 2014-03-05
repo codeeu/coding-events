@@ -29,7 +29,7 @@ class Migration(SchemaMigration):
         # Adding model 'Event'
         db.create_table(u'api_event', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('status', self.gf('django.db.models.fields.IntegerField')(default=1)),
+            ('status', self.gf('django.db.models.fields.CharField')(default='PENDING', max_length=50)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=255, null=True, blank=True)),
             ('organizer', self.gf('django.db.models.fields.CharField')(max_length=255)),
@@ -42,7 +42,7 @@ class Migration(SchemaMigration):
             ('event_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
             ('contact_person', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
             ('picture', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2014, 2, 23, 0, 0))),
+            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2014, 3, 5, 0, 0))),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
@@ -74,10 +74,10 @@ class Migration(SchemaMigration):
             'location': ('django.db.models.fields.CharField', [], {'max_length': '1000'}),
             'organizer': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'picture': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'}),
-            'pub_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2014, 2, 23, 0, 0)'}),
+            'pub_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2014, 3, 5, 0, 0)'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'start_date': ('django.db.models.fields.DateTimeField', [], {}),
-            'status': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
+            'status': ('django.db.models.fields.CharField', [], {'default': "'PENDING'", 'max_length': '50'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
         },
