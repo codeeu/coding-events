@@ -12,7 +12,7 @@ before_install:
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
-  - pip install -r codeweekeu/codeweekeu/reqs.txt --use-mirrors
+  - pip install -r codeweekeu/reqs.txt --use-mirrors
 
 # command to run tests, e.g. python setup.py test
 script:  python badges/manage.py test api
