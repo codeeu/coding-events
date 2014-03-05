@@ -13,6 +13,7 @@ of the styles inside media queries.
 // IMPORTING FONT
 @import url(http://fonts.googleapis.com/css?family=Bubbler+One&subset=latin,latin-ext);
 
+
 // import normalize
 @import "normalize";
 
@@ -20,7 +21,7 @@ of the styles inside media queries.
 @import "variables";
 
 // styles in base.scss
-@import "_base";
+@import "base";
 
 /*
 MOBILE DEVICES

@@ -440,6 +440,14 @@ footer {
     width: 100px;
     display: block; }
 
+/*********************
+AVATAR STYLES
+*********************/
+.avatar img {
+  padding: 2px;
+  background-color: white;
+  margin-top: 3px; }
+
 /*
 MOBILE DEVICES
 This is for devices like an iPhone.
