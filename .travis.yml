@@ -15,7 +15,7 @@ install:
   - pip install -r codeweekeu/reqs.txt
 
 # command to run tests, e.g. python setup.py test
-script:  python codeweekeu/manage.py test api
+script:  python codeweekeu/manage.py test api web
  --settings=codeweekeu.settings
 
 notifications:
