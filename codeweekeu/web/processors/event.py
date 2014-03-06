@@ -31,9 +31,11 @@ def get_country_from_user_ip(ip):
 	g = GeoIP()
 	return g.country(ip)
 
+
 def get_event(event_id):
 	event = Event.objects.get(id=event_id)
 	return event
+
 
 def create_or_update_event(event_id=None, **event_data):
 	"""
@@ -45,7 +47,7 @@ def create_or_update_event(event_id=None, **event_data):
 		event_tags = []
 		#we have to update tags after the other fields are updated
 		if 'tags' in event_data:
-			event_tags=event_data['tags']
+			event_tags = event_data['tags']
 			event_data.pop('tags')
 
 		#in case we have geoposition data in event_data
