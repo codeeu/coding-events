@@ -15,9 +15,6 @@ class Migration(SchemaMigration):
             ('country', self.gf('django_countries.fields.CountryField')(max_length=2, blank=True)),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('bio', self.gf('django.db.models.fields.TextField')(max_length=1000, blank=True)),
-            ('website', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-            ('twitter', self.gf('django.db.models.fields.CharField')(max_length=140, blank=True)),
         ))
         db.send_create_signal('api', ['UserProfile'])
 
@@ -33,9 +30,9 @@ class Migration(SchemaMigration):
         db.create_table(u'api_event', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('status', self.gf('django.db.models.fields.CharField')(default='PENDING', max_length=50)),
-            ('title', self.gf('django.db.models.fields.CharField')(default=None, max_length=255)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=255, null=True, blank=True)),
-            ('organizer', self.gf('django.db.models.fields.CharField')(default=None, max_length=255)),
+            ('organizer', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('description', self.gf('django.db.models.fields.TextField')(max_length=1000)),
             ('geoposition', self.gf('geoposition.fields.GeopositionField')(default='0,0', max_length=42)),
             ('location', self.gf('django.db.models.fields.CharField')(max_length=1000)),
@@ -45,7 +42,7 @@ class Migration(SchemaMigration):
             ('event_url', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
             ('contact_person', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
             ('picture', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2014, 3, 6, 0, 0))),
+            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2014, 3, 5, 0, 0))),
             ('created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
@@ -75,13 +72,13 @@ class Migration(SchemaMigration):
             'geoposition': ('geoposition.fields.GeopositionField', [], {'default': "'0,0'", 'max_length': '42'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'location': ('django.db.models.fields.CharField', [], {'max_length': '1000'}),
-            'organizer': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '255'}),
+            'organizer': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'picture': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'}),
-            'pub_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2014, 3, 6, 0, 0)'}),
+            'pub_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2014, 3, 5, 0, 0)'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'start_date': ('django.db.models.fields.DateTimeField', [], {}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'PENDING'", 'max_length': '50'}),
-            'title': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '255'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
         },
         'api.socialaccountlist': {
@@ -92,14 +89,11 @@ class Migration(SchemaMigration):
         },
         'api.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
-            'bio': ('django.db.models.fields.TextField', [], {'max_length': '1000', 'blank': 'True'}),
             'country': ('django_countries.fields.CountryField', [], {'max_length': '2', 'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'twitter': ('django.db.models.fields.CharField', [], {'max_length': '140', 'blank': 'True'}),
             'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
-            'website': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'})
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'})
         },
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
