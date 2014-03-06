@@ -11,10 +11,13 @@ class UserProfile(models.Model):
 	country = CountryField(blank=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
+	bio = models.TextField(max_length=1000,blank=True)
+	website = models.URLField(blank=True)
+	twitter = models.CharField(max_length=140,blank=True)
 
 	def __unicode__(self):
-		return 'Username: %s, First Name:%s Last Name: %s, Country: %s' % \
-			(self.user.username, self.user.first_name, self.user.last_name, self.country)
+		return 'Username: %s, First Name:%s Last Name: %s, Country: %s, Bio: %s, Website: %s, Twitter: %s' % \
+			(self.user.username, self.user.first_name, self.user.last_name, self.country, self.bio, self.website, self.twitter)
 
 	def is_ambassador(self):
 		groups = self.user.groups.all()
@@ -39,4 +42,3 @@ class SocialAccountList(models.Model):
 
 	class Meta:
 		app_label = 'api'
-
