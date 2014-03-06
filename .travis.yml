@@ -24,7 +24,7 @@ install:
 
 # command to run tests, e.g. python setup.py test
 script:  python codeweekeu/manage.py test api web
- --settings=codeweekeu.settings
+ --settings=codeweekeu.settings_travis
 
 notifications:
   email:
