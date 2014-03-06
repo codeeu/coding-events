@@ -1,5 +1,4 @@
 import datetime
-from decimal import *
 from django.test import TestCase
 from django.db import IntegrityError
 from django_countries import countries
