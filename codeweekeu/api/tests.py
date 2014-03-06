@@ -3,13 +3,20 @@ from django.test import TestCase
 from api.models import Event
 from api.processors import get_pending_events
 
+
 class EventTestCase(TestCase):
 	def setUp(self):
-		Event.objects.create(organizer="asdasd",title="asdasd",
-							description="asdsad",location="asdsad",
-							start_date=datetime.datetime.now(),end_date=datetime.datetime.now(),
-							event_url="http://eee.com",contact_person="ss@ss.com",country="SI",
-							pub_date=datetime.datetime.now())
+		Event.objects.create(
+			organizer="asdasd",
+			title="asdasd",
+			description="asdsad",
+			location="asdsad",
+			start_date=datetime.datetime.now(),
+			end_date=datetime.datetime.now(),
+			event_url="http://eee.com",
+			contact_person="ss@ss.com",
+			country="SI",
+			pub_date=datetime.datetime.now())
 
 	def test_get_approved_events(self):
 		test_event = Event.objects.get(title="asdasd")
