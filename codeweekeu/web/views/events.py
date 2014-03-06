@@ -1,3 +1,4 @@
+from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
@@ -7,19 +8,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
 
 from api.models import Event
 from web.forms.event_form import AddEvent
 from web.processors.event import get_event
 from web.processors.event import create_or_update_event
+from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import get_country_from_user_ip
 from api.processors import get_approved_events
-from api.processors import get_approved_events
 from api.processors import get_pending_events
-
 from web.decorators.access_right import can_edit_event
 
 """
@@ -32,19 +31,18 @@ then call your newly created function in view!!! .-Erika
 def index(request):
 	events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
+	country = []
+	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+	                        remote=request.META.get('REMOTE_ADDR'))
 
 	try:
-		user_ip = get_client_ip(request)
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
 		country = get_country_from_user_ip(user_ip)
-	except:
-		lan_lon = (46.0608144,14.497165600000017)
-		country = None
+	except GeoIPException:
+		lan_lon = (46.0608144, 14.497165600000017)
 
-	if country:
-		latest_events = get_approved_events(limit=5, order='pub_date', country_code=country['country_code'])
-	else:
-		latest_events = get_approved_events(limit=5, order='pub_date')
+	latest_events = get_approved_events(limit=5, order='pub_date',
+	                                    country_code=country.get('country_code', None))
 
 	return render_to_response(
 		'pages/index.html', {
@@ -148,16 +146,7 @@ def guide(request):
 	return render_to_response('pages/guide.html')
 
 
-def get_client_ip(request):
-	if settings.DEBUG:
-		return '93.103.53.11'
 
-	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-	if x_forwarded_for:
-		ip = x_forwarded_for.split(',')[0]
-	else:
-		ip = request.META.get('REMOTE_ADDR')
-	return ip
 
 @login_required
 @can_edit_event

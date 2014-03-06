@@ -1,5 +1,20 @@
+################################################
+# Processors for events views
+################################################
+from django.conf import settings
 from django.contrib.gis.geoip import GeoIP
 from api.models import Event
+
+
+def get_client_ip(forwarded=None, remote=None):
+
+	if settings.DEBUG:
+		return '93.103.53.11'
+
+	if forwarded:
+		return forwarded.split(',')[0]
+	return remote
+
 
 def get_lat_lon_from_user_ip(ip):
 	"""
@@ -7,6 +22,7 @@ def get_lat_lon_from_user_ip(ip):
 	"""
 	g = GeoIP()
 	return g.lat_lon(ip)
+
 
 def get_country_from_user_ip(ip):
 	"""
