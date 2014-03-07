@@ -1,0 +1,146 @@
+.btn {
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	background: none;
+	cursor: pointer;
+	padding: 15px 30px;
+	display: inline-block;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+	outline: none;
+	position: relative;
+	border-radius: 0;
+	@include transition(all 0.3s linear);
+
+	background: $defaultButton;
+	color: $slate;
+
+	&:before {
+
+		font-family: 'FontAwesome';
+		speak: none;
+		font-size: 30px;
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		position: relative;
+		-webkit-font-smoothing: antialiased;
+	}
+	&:after {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		-webkit-transition: all 0.3s;
+		-moz-transition: all 0.3s;
+		transition: all 0.3s;
+	}
+
+	&:hover {
+		background: $defaultButtonHover;
+	}
+}
+
+.btn-primary {
+	background: $primaryButton;
+	color: $white;
+
+	&:before {
+		position: absolute;
+		height: 100%;
+		left: 0;
+		top: 0;
+		line-height: 3;
+		font-size: 140%;
+		width: 60px;
+	}
+
+	&:hover,
+	&:focus {
+		background-color: $primaryButtonHover;
+	}
+
+}
+
+.btn-icon {
+	padding: 25px 60px 25px 120px;
+
+	&:before {
+		font-size: 30px;
+		line-height: 2.3;
+		background: $white;
+		color: $primaryButton;
+		z-index: 2;
+	}
+
+	&:after {
+		width: 20px;
+		height: 20px;
+		background: #fff;
+		z-index: 1;
+		left: 55px;
+		top: 50%;
+		margin: -10px 0 0 -10px;
+		-webkit-transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+	}
+}
+
+.btn-directional {
+
+	padding: 15px 120px 15px 30px;;
+	overflow: hidden;
+
+	&:before {
+		left: auto;
+		right: 10px;
+		z-index: 2;
+		line-height: 2.4;
+	}
+
+	&:after {
+		width: 30%;
+		height: 200%;
+		background: rgba(255, 255, 255, 0.1);
+		z-index: 1;
+		right: 0;
+		top: 0;
+		margin: -5px 0 0 -5px;
+		@include transform-origin(0 0);
+		@include rotate(-20deg);
+	}
+
+	&:hover:after {
+		width: 40%;
+	}
+
+	&.btn-sm {
+		padding: 5px 50px 5px 10px;
+		font-size: 12px;
+		&:before {
+			font-size: 12px;
+			right: -15px;
+			font-weight: normal;
+		}
+	}
+}
+
+.btn-lg {
+
+	padding: 25px 80px;
+
+	&.btn-icon {
+		padding: 25px 60px 25px 120px;
+	}
+
+}
+
+.btn-sm {
+	padding: 5px 10px 5px 10px;
+	font-size: 12px;
+}
