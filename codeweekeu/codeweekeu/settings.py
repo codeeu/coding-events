@@ -211,8 +211,6 @@ INSTALLED_APPS = (
     'geoposition',
     # a compressor for static files
     'compressor',
-    # crispy forms
-    'crispy_forms',
 
     # defined apps
     'web',
