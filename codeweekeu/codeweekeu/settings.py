@@ -155,6 +155,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.contrib.messages.context_processors.messages',
 	'django.core.context_processors.request',
 	'django.core.context_processors.media',
+	'django.core.context_processors.static',
 	'social.apps.django_app.context_processors.backends',
 	'social.apps.django_app.context_processors.login_redirect'
 )
@@ -527,6 +528,9 @@ COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'sass --scss {infile} {outfile}'),
 )
 ########## END DJANGO COMRESSOR SETTINGS
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 try:
 	from settings_local import *

@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 
 
 from api.models import Event
-from web.forms.event_form import AddEvent
+from web.forms.event_form import AddEventForm
 from web.processors.event import get_event
 from web.processors.event import create_or_update_event
 from web.processors.event import get_client_ip
@@ -56,9 +56,9 @@ def index(request):
 
 @login_required
 def add_event(request):
-	event_form = AddEvent()
+	event_form = AddEventForm()
 	if request.method =="POST":
-		event_form = AddEvent(data=request.POST, files=request.FILES)
+		event_form = AddEventForm(data=request.POST, files=request.FILES)
 		if event_form.is_valid():
 			event_data = {}
 			event_data.update(event_form.cleaned_data)
@@ -86,27 +86,38 @@ def thankyou(request):
 
 @login_required
 @can_edit_event
-def edit_event(request,event_id):
+def edit_event(request, event_id):
 	event = get_event(event_id)
 	# Create a dictionary out of db data to populate the edit form
 	event_data = event.__dict__
 	tags = []
+
 	for tag in event.tags.all():
 		tags.append(tag.name)
 	event_data['tags'] = ",".join(tags)
-	event_form = AddEvent(data=event_data)
-	if request.method =="POST":
-		event_form = AddEvent(data=request.POST, files=request.FILES)
+	event_form = AddEventForm(data=event_data)
+
+	if request.method == "POST":
+		event_form = AddEventForm(data=request.POST, files=request.FILES)
 		if event_form.is_valid():
+
 			event_data = event_form.cleaned_data
 			if not event_data['picture']:
 				event_data.pop('picture')
-			event = create_or_update_event(event_id,**event_data)
+
+			event = create_or_update_event(event_id, **event_data)
+
 			url = reverse('web.view_event', kwargs={'event_id': event.id, 'slug': event.slug})
+
 			return HttpResponseRedirect(url)
-	# Passing event address separately to be used in map JS
-	context= {"form" : event_form, "address" : event_data['location']}
-	return render_to_response("pages/add_event.html", context, context_instance=RequestContext(request))
+
+	return render_to_response(
+		"pages/add_event.html", {
+			"form": event_form,
+			"address": event_data['location'],
+		    "editing": True,
+		    "picture_url": event.picture,
+		}, context_instance=RequestContext(request))
 
 
 @login_required

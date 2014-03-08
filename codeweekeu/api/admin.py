@@ -9,7 +9,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 class EventAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug': ('title',)}
-	list_display = ('title', 'status')
+	list_display = ('title', 'status', 'location', 'country', 'start_date')
 	list_editable = ('status',)
 	list_filter = ('status', 'start_date')
 

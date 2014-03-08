@@ -1,9 +1,10 @@
 {% load avatar_tags %}
 
-<nav class="navbar navbar-inverse" role="navigation">
+<nav class="navbar navbar-inverse" role="navigation" data-spy="affix" data-offset-top="450">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+			        data-target="#bs-example-navbar-collapse-1">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -40,12 +41,14 @@
 						</ul>
 					{% else %}
 						<a href="{% url 'profile' %}" class="dropdown-toggle" data-toggle="dropdown"
-								data-trigger="hover" data-target="#">Login</a>
+						   data-trigger="hover" data-target="#">Login</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{% url 'social:begin' 'github' %}"><i class="fa fa-github-square"></i></a></li>
-							<li><a href="{% url 'social:begin' 'twitter' %}"><i class="fa fa-twitter-square"></i></a></li>
-							<li><a href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook-square"></i></a></li>
-							<li><a href="{% url 'social:begin' 'google' %}"><i class="fa fa-google-plus-square"></i></a></li>
+							<li>
+								<a href="{% url 'social:begin' 'github' %}"><i class="fa fa-github-square"></i></a>
+								<a href="{% url 'social:begin' 'twitter' %}"><i class="fa fa-twitter-square"></i></a>
+								<a href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook-square"></i></a>
+								<a href="{% url 'social:begin' 'google' %}"><i class="fa fa-google-plus-square"></i></a>
+							</li>
 						</ul>
 					{% endif %}
 				</li>

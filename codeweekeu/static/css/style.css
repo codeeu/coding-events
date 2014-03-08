@@ -1,4 +1,6 @@
 @import url(http://fonts.googleapis.com/css?family=Bubbler+One&subset=latin,latin-ext);
+@import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
+@import url(http://fonts.googleapis.com/css?family=Kreon:300,400,700);
 /******************************************************************
 Site Name: Europe Codeweek
 Author: CodeCatz
@@ -356,6 +358,184 @@ table {
 /************************************
 * Site specific defined variables
 *************************************/
+a {
+  color: #2ac56c; }
+  a:hover, a:focus {
+    color: #1d8649;
+    text-decoration: none; }
+
+.btn {
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+  padding: 15px 30px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  outline: none;
+  position: relative;
+  border-radius: 0;
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  background: #cccccc;
+  color: #515665; }
+  .btn:before {
+    font-family: 'FontAwesome';
+    speak: none;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    position: relative;
+    -webkit-font-smoothing: antialiased; }
+  .btn:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s; }
+  .btn:hover {
+    background: #b3b3b3; }
+
+.btn-primary {
+  background: #2ac56c;
+  color: white; }
+  .btn-primary:before {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    line-height: 3;
+    font-size: 140%;
+    width: 60px; }
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: #219b55; }
+
+.btn-icon {
+  padding: 25px 60px 25px 120px; }
+  .btn-icon:before {
+    font-size: 30px;
+    line-height: 2.3;
+    background: white;
+    color: #2ac56c;
+    z-index: 2; }
+  .btn-icon:after {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    z-index: 1;
+    left: 55px;
+    top: 50%;
+    margin: -10px 0 0 -10px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg); }
+
+.btn-directional {
+  padding: 15px 120px 15px 30px;
+  overflow: hidden; }
+  .btn-directional:before {
+    left: auto;
+    right: 10px;
+    z-index: 2;
+    line-height: 2.4; }
+  .btn-directional:after {
+    width: 30%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    right: 0;
+    top: 0;
+    margin: -5px 0 0 -5px;
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: rotate(-20deg);
+    -ms-transform: rotate(-20deg);
+    transform: rotate(-20deg); }
+  .btn-directional:hover:after {
+    width: 40%; }
+  .btn-directional.btn-sm {
+    padding: 5px 50px 5px 10px;
+    font-size: 12px; }
+    .btn-directional.btn-sm:before {
+      font-size: 12px;
+      right: -15px;
+      font-weight: normal; }
+
+.btn-lg {
+  padding: 25px 80px; }
+  .btn-lg.btn-icon {
+    padding: 25px 60px 25px 120px; }
+
+.btn-sm {
+  padding: 5px 10px 5px 10px;
+  font-size: 12px; }
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: "Kreon", serif;
+  font-weight: 500;
+  line-height: 1.1; }
+
+.form-control:focus {
+  border-color: #aab0bf;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(170, 176, 191, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(170, 176, 191, 0.6); }
+
+.input-with-icon {
+  position: relative; }
+  .input-with-icon.has-error i {
+    color: #a94442; }
+  .input-with-icon input[type="text"] {
+    padding-left: 50px; }
+  .input-with-icon i {
+    position: absolute;
+    top: 38px;
+    left: 15px; }
+
+.thumbnail {
+  border: 0;
+  border-bottom: 1px solid #cdccbc;
+  border-radius: 0; }
+  .thumbnail .title {
+    font-size: 16px;
+    line-height: 21px;
+    font-family: "Kreon", serif;
+    margin: 20px 0; }
+  .thumbnail .img-link {
+    display: block; }
+    .thumbnail .img-link img {
+      width: 100%;
+      margin: 20px 0;
+      height: 80px;
+      box-shadow: inset 0px 0px 80px rgba(0, 0, 0, 0.2);
+      -webkit-transition: all 0.5s linear;
+      transition: all 0.5s linear; }
+    .thumbnail .img-link:hover img {
+      -webkit-filter: saturate(10%);
+      -moz-filter: saturate(10%);
+      -ms-filter: saturate(10%);
+      -o-filter: saturate(10%);
+      filter: saturate(10%); }
+  .thumbnail .caption {
+    font-size: 14px;
+    line-height: 20px;
+    padding: 5px 0; }
+    .thumbnail .caption p {
+      height: 60px; }
+  .thumbnail .countdown {
+    font-family: "Kreon", serif; }
+
 /*********************
 MAIN STYLES
 *********************/
@@ -363,18 +543,36 @@ MAIN STYLES
   margin-top: 5px;
   margin-bottom: 5px; }
 
+.first {
+  padding-left: 0; }
+
+.last {
+  padding-right: 0; }
+
 /*********************
 NAVIGATION STYLES
 *********************/
 .navbar {
   margin-bottom: 0;
   border-radius: 0; }
+  .navbar.affix {
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10000; }
 
 .navbar-glass {
   background-color: rgba(0, 0, 0, 0.2); }
 
 .navbar-nav a.avatar {
   padding: 7px; }
+
+.dropdown-menu > li {
+  width: 270px; }
+  .dropdown-menu > li > a {
+    display: inline-table; }
+    .dropdown-menu > li > a i {
+      font-size: 25px; }
 
 /*********************
 LANDING PAGE MAP STYLES
@@ -394,8 +592,9 @@ LANDING PAGE MAP STYLES
   z-index: 0; }
 
 #view-event-map-wrapper {
-  width: 100%;
-  height: 300px; }
+  width: 50%;
+  height: 300px;
+  float: right; }
 
 .search-event-form {
   position: absolute;
@@ -416,10 +615,43 @@ INDEX PAGE STYLES
 .index-heading {
   font-size: 18px;
   position: absolute;
-  right: 20px; }
+  right: 40px; }
+  .index-heading h1 {
+    margin-top: 20px; }
 
-.index-content {
-  padding: 100px 0; }
+.search-event-form .form-group {
+  width: 100%;
+  position: relative; }
+.search-event-form input[type="text"] {
+  width: 100% !important;
+  margin: 0;
+  border-radius: 0; }
+.search-event-form .search-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  font-size: 20px;
+  color: #515665;
+  border: none;
+  background: transparent;
+  padding: 0 15px; }
+
+.change-location-wrapper, .change-country-link {
+  margin: 20px 0; }
+
+/*********************
+ADD/EDIT EVENT PAGE STYLES
+*********************/
+.how-to {
+  margin-top: 25px; }
+
+.event-footnote {
+  margin: 50px 0;
+  font-style: italic; }
+
+.fileinput-preview img {
+  width: 100%; }
 
 /*********************
 FOOTER STYLES
