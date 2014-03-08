@@ -49,23 +49,26 @@ NAVIGATION STYLES
 		}
 	}
 }
+
 .dropdown {
-	&.open{
+	&.open {
 
 	}
 }
+
 .dropdown-menu {
-	&> li{
+	&> li {
 		width: 270px;
 		&> a {
 			display: inline-table;
-			i{
+			i {
 				font-size: 25px;
 			}
 
 		}
 	}
 }
+
 /*********************
 LANDING PAGE MAP STYLES
 *********************/
@@ -86,8 +89,9 @@ LANDING PAGE MAP STYLES
 }
 
 #view-event-map-wrapper {
-	width: 100%;
+	width: 50%;
 	height: 300px;
+	float: right;
 }
 
 .search-event-form {
@@ -151,6 +155,22 @@ INDEX PAGE STYLES
 
 .change-location-wrapper, .change-country-link {
 	margin: 20px 0;
+}
+
+/*********************
+ADD/EDIT EVENT PAGE STYLES
+*********************/
+.how-to {
+	margin-top: 25px;
+}
+.event-footnote {
+	margin: 50px 0;
+	font-style: italic;
+}
+.fileinput-preview {
+	img {
+		width: 100%;
+	}
 }
 
 /*********************

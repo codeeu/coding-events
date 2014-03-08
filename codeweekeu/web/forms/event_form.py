@@ -6,11 +6,25 @@ from api.models import Event
 from taggit.forms import TagField
 
 
-class AddEvent(forms.ModelForm):
+class AddEventForm(forms.ModelForm):
+
 	class Meta:
 		model = Event
 		fields = ['title', 'organizer', 'description', 'geoposition', 'location', 'country', 'start_date', 'end_date',
-		          'event_url', 'contact_person', 'picture','tags']
+		          'event_url', 'contact_person', 'picture', 'tags']
+		widgets = {
+			'title': forms.TextInput(attrs={"class": "form-control"}),
+			'organizer': forms.TextInput(attrs={"class": "form-control"}),
+			'description': forms.Textarea(attrs={"class": "form-control"}),
+			'location': forms.TextInput(attrs={"id": "autocomplete", "placeholder": "Search for your address",
+			                                   "class": "form-control"}),
+			'start_date': forms.TextInput(attrs={"id": "id_datepicker_start", "class": "form-control"}),
+			'end_date': forms.TextInput(attrs={"id": "id_datepicker_end", "class": "form-control"}),
+			'event_url': forms.TextInput(attrs={"class": "form-control"}),
+			'contact_person': forms.TextInput(attrs={"class": "form-control"}),
+			'tags': forms.TextInput(attrs={"class": "form-control"}),
+		}
+
 		labels = {
 			'title': 'Your event\'s title:',
 			'organizer': 'Who\'s organizing this event?',
@@ -70,48 +84,11 @@ class AddEvent(forms.ModelForm):
 				'invalid': u'Please enter tags in plain text, separated by commas.',
 			},
 		}
-	title = forms.CharField(
-		label="Your event\'s title:",
-		widget=forms.TextInput(attrs={"class": "form-control"}),
-		)
 
-	organizer = forms.CharField(
-		label="Who\'s organizing this event?",
-		widget=forms.TextInput(attrs={"class": "form-control"}),
-		)
+	def __init__(self, *args, **kwargs):
+		super(AddEventForm, self).__init__(*args, **kwargs)
+		#self.fields['title'].widget.attrs['class'] = 'col-md-3'
 
-	description = forms.CharField(
-		label="Short event description:",
-		widget=forms.Textarea(attrs={"class": "form-control"}),
-		)
-
-	location = forms.CharField(
-		label="Where will the event be taking place?",
-		widget=forms.TextInput(attrs={"id":"autocomplete", "placeholder":"Search for your address", "class": "form-control"}),
-		)
-	start_date = forms.DateTimeField(
-		label='When does the event start?',
-		widget=forms.TextInput(attrs={"id":"id_datepicker_start", "class": "form-control"}),
-	)
-
-	end_date = forms.DateTimeField(
-		label='When does the event end?',
-		widget=forms.TextInput(attrs={"id":"id_datepicker_end", "class": "form-control"}),
-	)
-	event_url = forms.CharField(
-		label="Do you have a website with more information about the event? (optional)",
-		widget=forms.TextInput(attrs={"class": "form-control"}),
-		)
-
-	contact_person = forms.CharField(
-		label="Would you like to display a contact email? (optional)",
-		widget=forms.TextInput(attrs={"class": "form-control"}),
-		)
-	
-	tags = forms.CharField(
-		label="Tags, separated by commas:",
-		widget=forms.TextInput(attrs={"class": "form-control"}),
-		)
 	
 
 

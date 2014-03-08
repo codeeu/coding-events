@@ -1,165 +1,228 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}- Add Event{% endblock title %}
 
 {% block custom_css %}
-<link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}"/ >
+	<link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}" />
+	<link rel="stylesheet" type="text/css" href="{% static "css/jasny-bootstrap.min.css" %}" />
 {% endblock %}
 
 
 {% block content %}
-	<div class="container"> 
-		<h1>Add your #codeEU event</h1>
-		<p><a href="{% url 'web.guide' %}" target="_blank">How to organize your own event?</a></p>
-		<form  enctype="multipart/form-data" action="." method="post" id="event">{% csrf_token %}
-			<fieldset>
-		    {% for field in form %}
-		    	{% if field.name == 'geoposition' %}
-		    	<span style="display:none">{{ field.label_tag }}{{ field }}</span>
-	            {% elif field.name == 'location' %}
-				{{ field.label_tag }} {{ field }}
-				<div id="view-event-map-wrapper">
-					<div id="view-event-map">Loading map ...</div>
-				</div>
-	            {% elif field.name == 'country' %}
-				<span style="display:none">{{ field }}</span>
-		    	{% else %}
-	            {{ field.label_tag }} {{ field }}
-		    	{% endif %}
-		    	{{ field.errors }}
-		    {% endfor %}
-		   <p><input type="submit" value="Add event" class="btn btn-default" /></p>
-			</fieldset>
-		</form>	
+	<div class="container">
+		<div class="clearfix">
+			<h1 class="pull-left">{% if editing %}Edit{% else %}Add {% endif %} your #codeEU event</h1>
 
-		<p>Note: Events will be checked by one of our <a href="{% url 'web.ambassadors' %}" target="_blank">local ambassadors</a> before appearing on the map.</p>
+			<div class="how-to">
+				<a href="{% url 'web.guide' %}" target="_blank"
+				   class="btn btn-sm pull-right">How to organize your own event?
+				</a>
+			</div>
+
+		</div>
+
+
+		<form enctype="multipart/form-data" method="post" id="event" role="form">{% csrf_token %}
+
+			{% for field in form %}
+
+				{% if field.name == 'geoposition' %}
+					<span style="display:none">{{ field.label_tag }}{{ field }}</span>
+				{% elif field.name == 'location' %}
+					<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first">
+						<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+						{{ field }}
+						<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+					</div>
+					<div id="view-event-map-wrapper">
+						<div id="view-event-map">Loading map ...</div>
+					</div>
+				{% elif field.name == 'country' %}
+					<span class="hidden">{{ field }}</span>
+				{% elif field.name == 'start_date' %}
+					<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+						<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+						{{ field }}
+						<i class="fa fa-calendar"></i>
+						<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+					</div>
+				{% elif field.name == 'end_date' %}
+					<div class="clearfix">
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+							<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+							{{ field }}
+							<i class="fa fa-calendar"></i>
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
+					</div>
+				{% elif field.name == 'picture' %}
+
+					<div class="clearfix">
+						<div class="fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %} col-md-6 first" data-provides="fileinput">
+							<div class="fileinput-new">
+								<img data-src="holder.js/100%x100%/text:hello world" alt="...">
+							</div>
+							<div class="fileinput-preview fileinput-exists">
+								<img src="{{ MEDIA_URL }}{{ picture_url }}" alt="{{ field.name }} Image" />
+							</div>
+							<div>
+								<span class="btn btn-sm btn-file">
+									<span class="fileinput-new">Select image</span>
+									<span class="fileinput-exists">Change</span>
+									<input type="file" name="{{ field.name }}"></span>
+									<a href="#" class="btn btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
+							</div>
+						</div>
+					</div>
+
+				{% else %}
+					<div class="form-group {% if field.errors %}has-error{% endif %}">
+						<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+						{{ field }}
+						<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+					</div>
+				{% endif %}
+
+			{% endfor %}
+			<div class="clearfix"><input type="submit" value="{% if editing %}Edit{% else %}Add{% endif %} event" class="btn btn-primary" /></div>
+
+		</form>
+
+		<div class="event-footnote">
+			Note: Events will be checked by one of our
+			<a href="{% url 'web.ambassadors' %}" target="_blank">Local Ambassadors</a>
+		   before appearing on the map.
+		</div>
 	</div>
 {% endblock content %}
 
-{% block custom_js%}
-<script src="{% static "js/jquery.datetimepicker.js" %}"> </script>
+{% block custom_js %}
+	<script src="{% static "js/jquery.datetimepicker.js" %}"></script>
+	<script src="{% static "js/jasny-bootstrap.min.js" %}"></script>
+	<script src="{% static "js/holder.js" %}"></script>
 
- <script>
-	$('#id_datepicker_start').datetimepicker({
-	  format:'Y-m-d H:i',
-	  dayOfWeekStart: 1,
-	  lang:'en',
-	});
-	$('#id_datepicker_end').datetimepicker({
-	  format:'Y-m-d H:i',
-	  dayOfWeekStart: 1,
-	  lang:'en',
-	});
-  </script>
-
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false&libraries=places"></script>
-
-<script>
-	var placeSearch, autocomplete;
-	var map;
-	var marker;
-	var geocoder;
-	var address;
-
-	function createMap(latLng, zoomVal) {
-		var mapOptions = {
-			zoom: zoomVal,
-			center: latLng,
-			}
-		map = new google.maps.Map(document.getElementById('view-event-map'), mapOptions);
-		}
-
-	function autocomplete() {
-		autocomplete = new google.maps.places.Autocomplete(
-			(document.getElementById('autocomplete')),
- 			{ 
- 				types: ['geocode'] 
- 			});
-		google.maps.event.addListener(autocomplete, 'place_changed', function() {
-		    	fillInAddress();
-		  	});
-		}
-
-	function updateAddress(new_position) {
-		geocoder = new google.maps.Geocoder();
-	    geocoder.geocode({'latLng': new_position}, function(results, status) {
- 	      if (status == google.maps.GeocoderStatus.OK) {
-    		document.getElementById("autocomplete").value=results[0].formatted_address;
-              } 
-		   });
-		}
-
-	function updateLatLng(lat,lng) {
-		document.getElementById("id_geoposition_0").value = lat;
-		document.getElementById("id_geoposition_1").value = lng;
-		}
-
-	function getAddress(address) {
-		geocoder = new google.maps.Geocoder();
-	    geocoder.geocode({'address': address}, function(results, status) {
- 	      if (status == google.maps.GeocoderStatus.OK) {
- 	      		var updated_location = results[0].geometry.location;
-				createMarker(updated_location);
-				updateLatLng(updated_location.lat(),updated_location.lng());
-              } 
-		   });
-		}
-
-
-	function createMarker(markerLatLng) {
-		marker = new google.maps.Marker({
-		    position: markerLatLng,
-		    animation: google.maps.Animation.DROP,
-		    title: "Event location",
-		    draggable:true,
-				}); 
-		createMap(markerLatLng,15);
-		marker.setMap(map);
-		google.maps.event.addListener(marker, 'dragend', function (event) {
-			updateLatLng(this.getPosition().lat(),this.getPosition().lng());
-		    updateAddress(marker.getPosition());
+	<script>
+		$('#id_datepicker_start').datetimepicker({
+			format: 'Y-m-d H:i',
+			dayOfWeekStart: 1,
+			lang: 'en'
 		});
+		$('#id_datepicker_end').datetimepicker({
+			format: 'Y-m-d H:i',
+			dayOfWeekStart: 1,
+			lang: 'en'
+		});
+	</script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false&libraries=places"></script>
+
+	<script>
+		var placeSearch, autocomplete;
+		var map;
+		var marker;
+		var geocoder;
+		var address;
+
+		function createMap(latLng, zoomVal) {
+			var mapOptions = {
+				scrollwheel: false,
+				zoom: zoomVal,
+				center: latLng,
+			}
+			map = new google.maps.Map(document.getElementById('view-event-map'), mapOptions);
 		}
 
-	function fillInAddress() {
-	    var place = autocomplete.getPlace();
-	    var components = place.address_components;
-	    var country = null;
-	  	var output = autocomplete.getPlace().geometry.location;
-	  	var outputLat = output['d'];
-	  	var outputLng = output['e'];
-	  	document.getElementById("id_geoposition_0").value=outputLat;
-	  	document.getElementById("id_geoposition_1").value=outputLng;
-		var locLatlng = new google.maps.LatLng(outputLat,outputLng);
-		createMarker(locLatlng);
-		for (var i = 0, component; component = components[i]; i++) {
-	        if (component.types[0] == 'country') {
-	            country = component['short_name'];
-	            var choice = document.getElementById('id_country');
-				selectItemByValue(choice, country);
-	        	}
-	    	}
-		function selectItemByValue(elmnt, value){
-		 	for(var i=0; i < elmnt.options.length; i++)
-				{
-				if(elmnt.options[i].value == value)
-					elmnt.selectedIndex = i;
+		function autocomplete() {
+			autocomplete = new google.maps.places.Autocomplete(
+					(document.getElementById('autocomplete')),
+					{
+						types: ['geocode']
+					});
+			google.maps.event.addListener(autocomplete, 'place_changed', function () {
+				fillInAddress();
+			});
+		}
+
+		function updateAddress(new_position) {
+			geocoder = new google.maps.Geocoder();
+			geocoder.geocode({'latLng': new_position}, function (results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					document.getElementById("autocomplete").value = results[0].formatted_address;
+				}
+			});
+		}
+
+		function updateLatLng(lat, lng) {
+			document.getElementById("id_geoposition_0").value = lat;
+			document.getElementById("id_geoposition_1").value = lng;
+		}
+
+		function getAddress(address) {
+			geocoder = new google.maps.Geocoder();
+			geocoder.geocode({'address': address}, function (results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					var updated_location = results[0].geometry.location;
+					createMarker(updated_location);
+					updateLatLng(updated_location.lat(), updated_location.lng());
+				}
+			});
+		}
+
+
+		function createMarker(markerLatLng) {
+			marker = new google.maps.Marker({
+				position: markerLatLng,
+				animation: google.maps.Animation.DROP,
+				title: "Event location",
+				draggable: true,
+			});
+			createMap(markerLatLng, 15);
+			marker.setMap(map);
+			google.maps.event.addListener(marker, 'dragend', function (event) {
+				updateLatLng(this.getPosition().lat(), this.getPosition().lng());
+				updateAddress(marker.getPosition());
+			});
+		}
+
+		function fillInAddress() {
+			var place = autocomplete.getPlace();
+			var components = place.address_components;
+			var country = null;
+			var output = autocomplete.getPlace().geometry.location;
+			var outputLat = output['d'];
+			var outputLng = output['e'];
+			document.getElementById("id_geoposition_0").value = outputLat;
+			document.getElementById("id_geoposition_1").value = outputLng;
+			var locLatlng = new google.maps.LatLng(outputLat, outputLng);
+			createMarker(locLatlng);
+			for (var i = 0, component; component = components[i]; i++) {
+				if (component.types[0] == 'country') {
+					country = component['short_name'];
+					var choice = document.getElementById('id_country');
+					selectItemByValue(choice, country);
+				}
+			}
+			function selectItemByValue(elmnt, value) {
+				for (var i = 0; i < elmnt.options.length; i++) {
+					if (elmnt.options[i].value == value)
+						elmnt.selectedIndex = i;
 				}
 			}
 		}
 
-	function initialize() {
-		var initialCenter = new google.maps.LatLng(46.0608144,14.497165600000017);
-	  	createMap(initialCenter,4);
-	  	autocomplete();
-	  	{% if form %}
-			address = "{{address}}";
-			getAddress(address);
-		{% endif %}
+		function initialize() {
+			var initialCenter = new google.maps.LatLng(46.0608144, 14.497165600000017);
+			createMap(initialCenter, 4);
+			autocomplete();
+			{% if form %}
+				address = "{{address}}";
+				getAddress(address);
+			{% endif %}
 		}
 
-	google.maps.event.addDomListener(window, 'load', initialize);
+		google.maps.event.addDomListener(window, 'load', initialize);
 
-    </script>
+	</script>
 {% endblock custom_js %}

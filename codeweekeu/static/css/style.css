@@ -486,6 +486,23 @@ h1, h2, h3, h4, h5, h6,
   font-weight: 500;
   line-height: 1.1; }
 
+.form-control:focus {
+  border-color: #aab0bf;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(170, 176, 191, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(170, 176, 191, 0.6); }
+
+.input-with-icon {
+  position: relative; }
+  .input-with-icon.has-error i {
+    color: #a94442; }
+  .input-with-icon input[type="text"] {
+    padding-left: 50px; }
+  .input-with-icon i {
+    position: absolute;
+    top: 38px;
+    left: 15px; }
+
 .thumbnail {
   border: 0;
   border-bottom: 1px solid #cdccbc;
@@ -500,6 +517,7 @@ h1, h2, h3, h4, h5, h6,
     .thumbnail .img-link img {
       width: 100%;
       margin: 20px 0;
+      height: 80px;
       box-shadow: inset 0px 0px 80px rgba(0, 0, 0, 0.2);
       -webkit-transition: all 0.5s linear;
       transition: all 0.5s linear; }
@@ -513,6 +531,8 @@ h1, h2, h3, h4, h5, h6,
     font-size: 14px;
     line-height: 20px;
     padding: 5px 0; }
+    .thumbnail .caption p {
+      height: 60px; }
   .thumbnail .countdown {
     font-family: "Kreon", serif; }
 
@@ -572,8 +592,9 @@ LANDING PAGE MAP STYLES
   z-index: 0; }
 
 #view-event-map-wrapper {
-  width: 100%;
-  height: 300px; }
+  width: 50%;
+  height: 300px;
+  float: right; }
 
 .search-event-form {
   position: absolute;
@@ -618,6 +639,19 @@ INDEX PAGE STYLES
 
 .change-location-wrapper, .change-country-link {
   margin: 20px 0; }
+
+/*********************
+ADD/EDIT EVENT PAGE STYLES
+*********************/
+.how-to {
+  margin-top: 25px; }
+
+.event-footnote {
+  margin: 50px 0;
+  font-style: italic; }
+
+.fileinput-preview img {
+  width: 100%; }
 
 /*********************
 FOOTER STYLES
