@@ -1,10 +1,71 @@
 /************************************
 * Site specific defined variables
 *************************************/
+//@import "../lib/bootstrap-sass/stylesheets/bootstrap/variables";
+$black:                     #000000;
+$slate:                     #515665;
+$silver:                    #cccccc;
+$steel:                     #aab0bf;
+$white:                     #ffffff;
+$brand-primary:             #2AC56C;
 
-$black: #000000;
-$slate: #515665;
-$silver: #cccccc;
-$steel: #aab0bf;
-$white: #ffffff;
+// Buttons
+$defaultButton:             #cccccc;
+$defaultButtonHover:        darken($defaultButton, 10%);
+$primaryButton:             $brand-primary;
+$primaryButtonHover:        darken($primaryButton, 10%);
 
+//== Scaffolding
+//
+// ## Settings for some of the most global styles.
+
+//** Background color for `<body>`.
+$body-bg:                   #fff !default;
+//** Global text color on `<body>`.
+//$text-color:              $gray-dark !default;
+
+//** Global textual link color.
+$link-color:                $brand-primary !default;
+//** Link hover color set via `darken()` function.
+$link-hover-color:          darken($link-color, 15%) !default;
+
+
+//== Typography
+//
+//## Font, line-height, and color for body text, headings, and more.
+
+$font-family-sans-serif:    Verdana, Arial, sans-serif !default;
+$font-family-serif:         "Kreon", serif !default;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+$font-family-monospace:     Menlo, Monaco, Consolas, "Courier New", monospace !default;
+$font-family-base:          $font-family-sans-serif !default;
+
+$font-size-base:            14px !default;
+$font-size-large:           ceil(($font-size-base * 1.25)) !default; // ~18px
+$font-size-small:           ceil(($font-size-base * 0.85)) !default; // ~12px
+
+$font-size-h1:              floor(($font-size-base * 2.6)) !default; // ~36px
+$font-size-h2:              floor(($font-size-base * 2.15)) !default; // ~30px
+$font-size-h3:              ceil(($font-size-base * 1.7)) !default; // ~24px
+$font-size-h4:              ceil(($font-size-base * 1.25)) !default; // ~18px
+$font-size-h5:               $font-size-base !default;
+$font-size-h6:              ceil(($font-size-base * 0.85)) !default; // ~12px
+
+//** Unit-less `line-height` for use in components like buttons.
+$line-height-base:          1.428571429 !default; // 20/14
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
+$line-height-computed:    floor(($font-size-base * $line-height-base)) !default; // ~20px
+
+//** By default, this inherits from the `<body>`.
+$headings-font-family:      "Kreon", serif !default;
+$headings-font-weight:      500 !default;
+$headings-line-height:      1.1 !default;
+$headings-color:            inherit !default;
+
+//Links
+$link-color:                $primaryButton;
+
+
+$state-danger-text:              #a94442 !default;
+$state-danger-bg:                #f2dede !default;
+$state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
