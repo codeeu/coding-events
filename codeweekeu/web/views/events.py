@@ -72,9 +72,13 @@ def add_event(request):
 
 
 def view_event(request, event_id, slug):
+
 	event = get_object_or_404(Event, pk=event_id, slug=slug)
-	context = {'event': event}
-	return render_to_response("pages/view_event.html", context, context_instance=RequestContext(request))
+
+	return render_to_response(
+		'pages/view_event.html', {
+			'event': event,
+		}, context_instance=RequestContext(request))
 
 
 def search_event(request):
