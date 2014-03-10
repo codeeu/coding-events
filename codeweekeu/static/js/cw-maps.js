@@ -7,7 +7,8 @@ var Codeweek = window.Codeweek || {};
     'use strict';
 
     var map,
-        markers = {};
+        markers = {},
+        place;
 
     function createMap(events, lat, lng, zoomVal) {
         var markerData = JSON.parse(events),
@@ -69,12 +70,14 @@ var Codeweek = window.Codeweek || {};
     function setAutocomplete() {
         var input = /** @type {HTMLInputElement} */(
             document.getElementById('search-event'));
+        var event_list_container = /** @type {HTMLInputElement} */(
+            document.getElementById('events-list'));
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.bindTo('bounds', map);
         var infowindow = new google.maps.InfoWindow();
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             infowindow.close();
-            var place = autocomplete.getPlace();
+            place = autocomplete.getPlace();
             if (!place.geometry) {
                 return;
             }
@@ -86,25 +89,58 @@ var Codeweek = window.Codeweek || {};
                 map.map.setZoom(17);  // Why 17? Because it looks good.
             }
 
-            var address = '';
+            var country_code = 'CZ',
+                country_name = '';
             if (place.address_components) {
-                address = [
-                    (place.address_components[0] && place.address_components[0].short_name || ''),
-                    (place.address_components[1] && place.address_components[1].short_name || ''),
-                    (place.address_components[2] && place.address_components[2].short_name || '')
-                ].join(' ');
+                var address = place.address_components;
+                //console.log(address);
+                for (var j = 0; j <= address.length; j++) {
+                    if (address[j] && address[j].types[0] === 'country') {
+                        country_code = address[j].short_name;
+                        country_name = address[j].long_name;
+                    }
+                }
+
             }
             infowindow.open(map.map);
             infowindow.close();
+
+            if ($.support.pjax) {
+                $.pjax({url: '/' + country_code, container: event_list_container});
+                $(document).on('pjax:success', function () {
+                    $('#country').html(country_name);
+                });
+
+            }
         });
     }
 
 
     function initialize(events, lon, lan) {
-			map = createMap(events, lon, lan, 4);
-			setAutocomplete();
+        map = createMap(events, lon, lan, 4);
+        setAutocomplete();
 
     }
+
+    var search_events_handler = function () {
+        var serch_query_input = $('#search-event'),
+            search_event_btn = $('search-btn');
+
+        search_event_btn.on('click', function (e) {
+            e.preventDefault();
+        });
+
+        /*
+         if ($.support.pjax) {
+         $(document).bind('change', '[data-pjax]', function (event) {
+         event.preventDefault();
+         var container = $('[data-pjax-container]');
+
+         $.pjax({url: '/', container: container});
+         //$.pjax.click(event, {container: container});
+         });
+         }*/
+    };
 
     var init = function (events, lon, lan) {
 
@@ -114,6 +150,8 @@ var Codeweek = window.Codeweek || {};
             google.maps.event.addDomListener(window, 'load', function () {
                 initialize(events, lon, lan);
             });
+
+            search_events_handler();
 
         });
     };

@@ -1,0 +1,33 @@
+{% if latest_events %}
+	<div class="clearfix" id="events-list">
+		{% for event in latest_events %}
+			<div class=" col-md-4 {% if forloop.first %}first{% endif %}">
+				<div class="thumbnail">
+					<div class="title">{{ event.title }}</div>
+					<a href="{% url 'web.view_event' event.id event.slug %}" class="img-link">
+						<img src="//maps.googleapis.com/maps/api/staticmap?markers={{ event.geoposition }}&zoom=9&size=390x80&sensor=false">
+					</a>
+
+					<div class="caption">
+						<p>{{ event.description|truncatewords:20 }}</p>
+
+
+						<a href="{% url 'web.view_event' event.id event.slug %}"
+						   class="btn btn-primary btn-directional fa-arrow-right btn-sm"
+						   role="button">View</a>
+
+								<span class="countdown pull-right">
+									Happeining in:
+									{{ event.start_date|timeuntil }}
+								</span>
+
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% else %}
+	<p>
+		No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a>
+	<p>
+{% endif %}
