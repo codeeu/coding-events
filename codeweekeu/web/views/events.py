@@ -29,16 +29,22 @@ then call your newly created function in view!!! .-Erika
 """
 
 
-def index(request):
+def index(request, country_code=None):
+	template = 'pages/index.html'
 	events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
-	country = []
+	country = {'country_code': country_code}
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 
+	if request.is_ajax():
+		template = 'pages/pjax_index.html'
+
+	if not country_code:
+			country = get_country_from_user_ip(user_ip)
+
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
-		country = get_country_from_user_ip(user_ip)
 	except GeoIPException:
 		lan_lon = (46.0608144, 14.497165600000017)
 
@@ -46,7 +52,7 @@ def index(request):
 	                                    country_code=country.get('country_code', None))
 
 	return render_to_response(
-		'pages/index.html', {
+		template, {
 			'latest_events': latest_events,
 		    'map_events': map_events,
 		    'lan_lon': lan_lon,
