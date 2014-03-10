@@ -16,10 +16,11 @@
             </span>
 
 		{% endif %}
-
-		<div class="event-jumbotron">
-			<img src="{{ event.picture.url }}" alt="{{ event.title }} Cover Image" role="image" />
-		</div>
+		{% if event.picture %}
+			<div class="event-jumbotron">
+				<img src="{{ event.picture.url }}" alt="{{ event.title }} Cover Image" role="image" />
+			</div>
+		{% endif %}
 
 		<h1>
 			{% if event.event_url %}
@@ -39,12 +40,10 @@
 					<strong>Contact email:</strong><br>
 					<a href="mailto:{{ event.contact_person }}">{{ event.contact_person }}</a>
 				{% endif %}
-				<p>
 				<address>
 					<strong>Happening at: </strong><br />
 					{{ event.location }}
 				</address>
-				</p>
 
 				{% if event.tags %}
 					<strong>Tags:</strong>
@@ -124,7 +123,7 @@
 			var mapOptions = {
 				zoom: 15,
 				center: myLatlng
-			}
+			};
 			var map = new google.maps.Map(document.getElementById('view-event-map'),
 					mapOptions);
 			var infowindow = new google.maps.InfoWindow({
@@ -136,7 +135,7 @@
 				title: "{{ event.location }}",
 				zoomControl: true,
 				zoomControlOptions: {
-					style: google.maps.ZoomControlStyle.SMALL
+					style: google.maps.ZoomControlStyle.LARGE
 				}
 			});
 			marker.setMap(map);
