@@ -6,15 +6,29 @@
 {% block content %}
 
 	<div class="container">
-
+		<div id="fb-root"></div>
 		{% if user.profile.is_ambassador and user.profile.country == event.country %}
-			<a href="{% url 'web.edit_event' event.id %}">Edit event</a> | 
-			<span id="change_status">
-                Status: <b id="event_status">{{ event.status }}</b> |
-                <a href="" event_id="{{ event.id }}" id="pending_event">Reverse to pending</a>
-                <a href="" event_id="{{ event.id }}" id="approve_event" style="display:none">Approve event</a>
-            </span>
+			<div class="edit-toolbar">
+				<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
+					<i class="fa fa-pencil-square-o"></i>Edit event</a>
 
+				<div id="change_status">
+					{% if event.status == 'PENDING' %}
+						<div class="alert alert-warning">
+							This event is stil <strong>Pending</strong>.
+							If it looks good then
+							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
+								approve
+							</a> it!
+						</div>
+					{% elif event.status == 'APPROVED' %}
+						<div class="alert alert-info">
+							This event is nice and approved. You can revert it to
+							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a>.
+						</div>
+					{% endif %}
+	            </div>
+			</div>
 		{% endif %}
 		{% if event.picture %}
 			<div class="event-jumbotron">
@@ -63,7 +77,10 @@
 				<p>
 					{{ event.description }}
 				</p>
+				<p>
+					<div class="fb-share-button" data-href="http://developers.facebook.com/docs/plugins/" data-type="button_count"></div>
 
+				</p>
 			</div>
 
 			<div class="col-md-4 event-time-place">
@@ -86,35 +103,6 @@
 	</script>
 
 	<script src="{% static 'js/jquery.js' %}"></script>
-	<script>
-
-		$(document).ready(function () {
-			$('#change_status').click(function (e) {
-				var event = $(e.target).attr('event_id');
-				var path = '/approve_event/' + event + '/';
-
-				if ($(e.target).attr('id') == "pending_event") {
-					var path = '/change_status/PENDING/' + event + '/';
-					var func = function (data) {
-						$('#event_status').html(data);
-						$('#approve_event').show();
-						$('#pending_event').hide();
-					}
-				} else {
-					var path = '/change_status/APPROVED/' + event + '/';
-					var func = function (data) {
-						$('#event_status').html(data);
-						$('#pending_event').show();
-						$('#approve_event').hide();
-					}
-				}
-
-				$.get(path, func);
-				e.preventDefault();
-			});
-		});
-
-	</script>
 
 	<script type="text/javascript">
 
@@ -146,4 +134,12 @@
 		google.maps.event.addDomListener(window, 'load', initialize);
 
 	</script>
+
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=219052144964057";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
 {% endblock %}

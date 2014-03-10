@@ -73,3 +73,15 @@ def create_or_update_event(event_id=None, **event_data):
 		event = Event.objects.create(**event_data)
 	return event
 
+
+def change_event_status(event_id):
+	event = Event.objects.get(pk=event_id)
+
+	if event.status == 'APPROVED':
+		event.status = 'PENDING'
+	else:
+		event.status = 'APPROVED'
+
+	event.save()
+	return event
+

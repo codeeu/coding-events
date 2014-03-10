@@ -220,6 +220,15 @@ AVATAR STYLES
 /*********************
 VIEW EVENT STYLES
 *********************/
+.edit-toolbar {
+	margin: 20px 0;
+
+	.edit-event-btn {
+		margin-top: 1px;
+		margin-right: 1px;
+	}
+}
+
 .event-jumbotron {
 	img {
 		width: 100%;

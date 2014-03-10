@@ -16,5 +16,5 @@ urlpatterns = patterns(
 	url(r'^guide/$', 'events.guide', name='web.guide'),	
 	url(r'^login/$', 'users.login', name='web.login'),
 	url(r'^ambassadors/$', 'users.ambassadors', name='web.ambassadors'),
-	url(r'^change_status/(?P<status>\w+)/(?P<event_id>\d+)/$', 'events.change_status', name='web.change_status'),
+	url(r'^change_status/(?P<event_id>\d+)/$', 'events.change_status', name='web.change_status'),
 )
