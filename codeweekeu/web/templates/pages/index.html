@@ -9,13 +9,13 @@
 			<div id="events-map"></div>
 		</div>
 		<div class="index-heading"><h1>#codeEU Map of Events</h1></div>
-		<form class="form-inline search-event-form col-md-4" role="form">
+		<div class="form-inline search-event-form col-md-4" role="form">
 			<div class="form-group">
 				<input type="text" class="form-control" id="search-event"
-				       placeholder="Search For Events" autocomplete="off">
-				<button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+				       placeholder="Search For Events" autocomplete="off" data-pjax>
+				<a href="#" class="search-btn"><i class="fa fa-search"></i></a>
 			</div>
-		</form>
+		</div>
 		<div class="add-event-wrapper">
 			<a href="{% url 'web.add_event' %}" class="add-event-btn btn btn-primary btn-icon btn-lg fa-map-marker">
 				Add Your Own Event</a>
@@ -24,9 +24,9 @@
 	{% include 'layout/top_navigation.html' %}
 	<div class="container index-content">
 
-		<h2>Latest #codeEU Events{% if country %} in {{ country.country_name }}{% endif %}</h2>
+		<h2>Latest #codeEU Events{% if country %} in <span id="country">{{ country.country_name }}</span>{% endif %}</h2>
 		{% if latest_events %}
-			<div class="clearfix">
+			<div class="clearfix" id="events-list">
 				{% for event in latest_events %}
 					<div class=" col-md-4 {% if forloop.first %}first{% endif %}">
 						<div class="thumbnail">
@@ -84,6 +84,7 @@
 {% block custom_js %}
 	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
 	<script src="{% static "js/markerclusterer.js" %}"></script>
+	<script src="{% static "lib//pjax/jquery.pjax.js" %}"></script>
 	<script type="text/javascript"
 	        src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
 	</script>
