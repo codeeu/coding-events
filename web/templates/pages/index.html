@@ -30,7 +30,7 @@
 				{% for event in latest_events %}
 					<div class=" col-md-4 {% if forloop.first %}first{% endif %}">
 						<div class="thumbnail">
-							<div class="title">{{ event.title }}</div>
+							<div class="title"><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></div>
 							<a href="{% url 'web.view_event' event.id event.slug %}" class="img-link">
 								<img src="//maps.googleapis.com/maps/api/staticmap?markers={{ event.geoposition }}&zoom=9&size=390x80&sensor=false">
 							</a>
