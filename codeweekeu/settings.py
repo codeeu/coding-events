@@ -9,7 +9,8 @@ from os.path import abspath, basename, dirname, join, normpath
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
 # Site name.
-SITE_NAME = basename(DJANGO_ROOT)
+# SITE_NAME = basename(DJANGO_ROOT)
+SITE_NAME = 'codeweekeu'
 
 
 # Absolute filesystem path to the top-level project folder.
