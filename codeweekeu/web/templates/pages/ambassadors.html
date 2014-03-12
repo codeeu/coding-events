@@ -3,20 +3,22 @@
 {% block title %}- Local Ambassadors{% endblock title %}
 
 {% block content %}
-	<h1>#codeEU Local Ambassadors</h1>
-	{% if user_country %}<p>Your country: {{ user_country.country_name }}</p>{% endif %}
-	{% for country,ambassadors in countries %}
-		{% if ambassadors|length != 0 %}
-		<h2>{{country}}</h2>
-		<ul>
-		{% for ambassador in ambassadors %}
-		<li><strong>{{ambassador.user.first_name}} {{ambassador.user.last_name}}</strong>
-		<p>{{ambassador.bio}}</p>{% if ambassador.user.email %}<br /><a href="mailto:{{ambassador.user.email}}"><br />Contact me</a>{% endif %} {% if ambassador.website %}<br /><a href="{{ambassador.website}}">Website</a>{% endif %} {% if ambassador.twitter %} <a href="http://twitter.com/{{ambassador.twitter}}"><br />Twitter</a>{% endif %}</li>
+	<div class="container">
+		<h1>#codeEU Local Ambassadors</h1>
+		{% if user_country %}<p>Your country: {{ user_country.country_name }}</p>{% endif %}
+		{% for country,ambassadors in countries %}
+			{% if ambassadors|length != 0 %}
+			<h2>{{country}}</h2>
+			<ul>
+			{% for ambassador in ambassadors %}
+			<li><strong>{{ambassador.user.first_name}} {{ambassador.user.last_name}}</strong>
+			<p>{{ambassador.bio}}</p>{% if ambassador.user.email %}<br /><a href="mailto:{{ambassador.user.email}}"><br />Contact me</a>{% endif %} {% if ambassador.website %}<br /><a href="{{ambassador.website}}">Website</a>{% endif %} {% if ambassador.twitter %} <a href="http://twitter.com/{{ambassador.twitter}}"><br />Twitter</a>{% endif %}</li>
+			{% endfor %}
+			</ul>
+			{% else %}
+			<h2>{{country}}</h2>
+			<p>No ambassador yet. Why don't you volunteer?</p>
+			{% endif %}
 		{% endfor %}
-		</ul>
-		{% else %}
-		<h2>{{country}}</h2>
-		<p>No ambassador yet. Why don't you volunteer?</p>
-		{% endif %}
-	{% endfor %}
+	</div>
 {% endblock content %}
