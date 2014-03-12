@@ -190,8 +190,8 @@
 			var components = place.address_components;
 			var country = null;
 			var output = autocomplete.getPlace().geometry.location;
-			var outputLat = output['d'];
-			var outputLng = output['e'];
+			var outputLat = output.lat();
+			var outputLng = output.lng();
 			document.getElementById("id_geoposition_0").value = outputLat;
 			document.getElementById("id_geoposition_1").value = outputLng;
 			var locLatlng = new google.maps.LatLng(outputLat, outputLng);
