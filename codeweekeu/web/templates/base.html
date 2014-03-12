@@ -24,6 +24,7 @@
 	{% endcompress %}
 	<link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
 	<link rel="icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="http://assets.cookieconsent.silktide.com/current/style.min.css" />
 </head>
 <body>
 {% block main_navigation %}
@@ -54,6 +55,20 @@
 {% endcompress %}
 
 {% block custom_js %}{% endblock custom_js %}
+<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript" src="http://assets.cookieconsent.silktide.com/current/plugin.min.js"></script>
+<script type="text/javascript">
+	// <![CDATA[
+	cc.initialise({
+		cookies: {},
+		settings: {
+			consenttype: "implicit"
+		}
+	});
+	// ]]>
+</script>
+<!-- End Cookie Consent plugin -->
+
 <!--End Scripts------------------------------------------------------------------------------------------->
 </body>
 </html>
