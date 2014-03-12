@@ -19,12 +19,12 @@
 							If it looks good then
 							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
 								approve
-							</a> it!
+							</a> it.
 						</div>
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
 							This event is nice and approved. You can revert it to
-							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a>.
+							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a> or check other <a href="{% url 'web.pending_events' user.profile.country %}"><strong>pending events in {{ user.profile.country.name }}</strong></a>.
 						</div>
 					{% endif %}
 	            </div>
@@ -36,14 +36,7 @@
 			</div>
 		{% endif %}
 
-		<h1>
-			{% if event.event_url %}
-				<a href="{{ event.event_url }}">{{ event.title }}</a>
-			{% else %}
-				{{ event.title }}
-			{% endif %}
-
-		</h1>
+		<h1>{{ event.title }}</h1>
 
 		<div class="about-event clearfix">
 			<div class="col-md-8 event-description first">
@@ -52,13 +45,23 @@
 				<p> {{ event.organizer }}</p>
 				{% if event.contact_person %}
 					<strong>Contact email:</strong><br>
-					<a href="mailto:{{ event.contact_person }}">{{ event.contact_person }}</a>
+					<p><a href="mailto:{{ event.contact_person }}">{{ event.contact_person }}</a></p>
 				{% endif %}
 				<address>
 					<strong>Happening at: </strong><br />
 					{{ event.location }}
 				</address>
-
+				<p>
+					<strong>From</strong> {{ event.start_date|date:"l, M n, Y" }} at {{ event.start_date|date:"H:i" }} <strong>to</strong> {{ event.end_date|date:"l, M n, Y" }} at {{ event.end_date|date:"H:i" }}
+				</p>
+				<strong>Description:</strong>
+				<p>
+					{{ event.description }}
+				</p>
+				{% if event.event_url %}
+				<strong>More information:</strong>
+				<p><a href="{{ event.event_url }}" target="_blank">{{ event.event_url }}</a></p>
+				{% endif %}
 				{% if event.tags %}
 					<strong>Tags:</strong>
 					<p>
@@ -72,11 +75,7 @@
 					</p>
 				{% endif %}
 				<hr>
-				<strong>Description:</strong>
-
-				<p>
-					{{ event.description }}
-				</p>
+				<strong>Share the event:</strong>
 				<p>
 					<div class="fb-share-button" data-href="http://developers.facebook.com/docs/plugins/" data-type="button_count"></div>
 
