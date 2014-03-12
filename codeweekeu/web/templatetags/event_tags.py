@@ -1,4 +1,4 @@
-from calendar import LocaleHTMLCalendar
+from calendar import HTMLCalendar
 from django import template
 from datetime import date
 from itertools import groupby
@@ -8,7 +8,7 @@ from django.utils.html import conditional_escape as esc
 register = template.Library()
 
 
-class EventCalendar(LocaleHTMLCalendar):
+class EventCalendar(HTMLCalendar):
 	"""
 	Overload Python's calendar.HTMLCalendar to add the appropriate events to
 	each day's table cell.
