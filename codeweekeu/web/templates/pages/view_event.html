@@ -1,101 +1,145 @@
 {% extends 'base.html' %}
+{% load event_tags %}
 
 {% block title %}- Event Details{% endblock title %}
 
 {% block content %}
-	{% if user.profile.is_ambassador %}
-        <a href="{% url 'web.edit_event' event.id %}">Edit event</a> | 
-            <span id="change_status">
-                Status: <b id="event_status">{{event.status}}</b> |
-                <a href="" event_id="{{event.id}}" id="pending_event">Reverse to pending</a>
-                <a href="" event_id="{{event.id}}" id="approve_event" style="display:none">Approve event</a>
-            </span>
 
-    {% endif %}
-	<h1>{% if event.event_url %}<a href="{{ event.event_url }}">{{ event.title }}{% else %}{{ event.title }}{% endif %}</a></h1>
-	<p>Organized by: {{ event.organizer }}</p>
-	<p>{{ event.description }}</p>
-	<p>From {{ event.start_date|date:"l, M n, Y" }} at {{ event.start_date|date:"H:i" }} to {{ event.end_date|date:"l, M n, Y" }} at {{ event.end_date|date:"H:i" }}</p>
-	<p>Location: {{ event.location }}</p>
-	<div id="view-event-map-wrapper">
-		<div id="view-event-map"></div>
+	<div class="container">
+		<div id="fb-root"></div>
+		{% if user.profile.is_ambassador and user.profile.country == event.country %}
+			<div class="edit-toolbar">
+				<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
+					<i class="fa fa-pencil-square-o"></i>Edit event</a>
+
+				<div id="change_status">
+					{% if event.status == 'PENDING' %}
+						<div class="alert alert-warning">
+							This event is stil <strong>Pending</strong>.
+							If it looks good then
+							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
+								approve
+							</a> it!
+						</div>
+					{% elif event.status == 'APPROVED' %}
+						<div class="alert alert-info">
+							This event is nice and approved. You can revert it to
+							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a>.
+						</div>
+					{% endif %}
+	            </div>
+			</div>
+		{% endif %}
+		{% if event.picture %}
+			<div class="event-jumbotron">
+				<img src="{{ event.picture.url }}" alt="{{ event.title }} Cover Image" role="image" />
+			</div>
+		{% endif %}
+
+		<h1>
+			{% if event.event_url %}
+				<a href="{{ event.event_url }}">{{ event.title }}</a>
+			{% else %}
+				{{ event.title }}
+			{% endif %}
+
+		</h1>
+
+		<div class="about-event clearfix">
+			<div class="col-md-8 event-description first">
+				<strong>Organized by:</strong>
+
+				<p> {{ event.organizer }}</p>
+				{% if event.contact_person %}
+					<strong>Contact email:</strong><br>
+					<a href="mailto:{{ event.contact_person }}">{{ event.contact_person }}</a>
+				{% endif %}
+				<address>
+					<strong>Happening at: </strong><br />
+					{{ event.location }}
+				</address>
+
+				{% if event.tags %}
+					<strong>Tags:</strong>
+					<p>
+						{% for tag in event.tags.all %}
+							{% if forloop.last %}
+								{{ tag.name }}
+							{% else %}
+								{{ tag.name }}
+							{% endif %}
+						{% endfor %}
+					</p>
+				{% endif %}
+				<hr>
+				<strong>Description:</strong>
+
+				<p>
+					{{ event.description }}
+				</p>
+				<p>
+					<div class="fb-share-button" data-href="http://developers.facebook.com/docs/plugins/" data-type="button_count"></div>
+
+				</p>
+			</div>
+
+			<div class="col-md-4 event-time-place">
+				<div id="calendar">
+					{{ event.start_date|render_calendar:event.end_date }}
+				</div>
+				<div id="view-event-map-wrapper">
+					<div id="view-event-map"></div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<p>Tags: {% for tag in event.tags.all %}{% if forloop.last %}{{ tag.name }}{% else %}{{ tag.name }}, {% endif %}{% endfor %}
-    </p>
-	{% if event.contact_person %}
-	    <p>Contact email: {{ event.contact_person }}</p>
-	{% endif %}
-	{% if event.picture %}
-	    <p><img src="{{ event.picture.url }}" /></p>
-	{% endif %}
 {% endblock content %}
 
 {% block custom_js %}
-    {% load static %}
+	{% load static %}
 
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
-    </script>
+	<script type="text/javascript"
+	        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
+	</script>
 
-    <script src="{% static 'js/jquery.js' %}"></script>
-    <script>
+	<script src="{% static 'js/jquery.js' %}"></script>
 
-$( document ).ready(function() {
-    $('#change_status').click(function(e){
-        var event = $(e.target).attr('event_id');
-        var path = '/approve_event/'+ event + '/';
-
-        if ($(e.target).attr('id') == "pending_event") {
-            var path = '/change_status/PENDING/'+ event + '/';
-            var func= function(data){
-                 $('#event_status').html(data);
-                 $('#approve_event').show();
-                 $('#pending_event').hide();
-            }
-        } else {
-            var path = '/change_status/APPROVED/'+ event + '/';
-            var func= function(data){
-                 $('#event_status').html(data);
-                 $('#pending_event').show();
-                 $('#approve_event').hide();
-            }
-        }
-
-       $.get(path,func);
-        e.preventDefault();
-    });
- });
-
-    </script>
-
-    <script type="text/javascript">
+	<script type="text/javascript">
 
 		function initialize() {
-		var myLatlng = new google.maps.LatLng({{ event.geoposition.latitude }},{{ event.geoposition.longitude }});
-		var mapOptions = {
-			  		zoom: 15,
-					  center: myLatlng
-					}
-		var map = new google.maps.Map(document.getElementById('view-event-map'),
-		      mapOptions);
-		var infowindow = new google.maps.InfoWindow({
-            content: "<p><strong>{{ event.title }}</strong></p>{{ event.location }}"
-   	        });
-		var marker = new google.maps.Marker({
-		    position: myLatlng,
-		    animation: google.maps.Animation.DROP,
-		    title: "{{ event.location }}",
-		    zoomControl: true, 
-		    zoomControlOptions: {
-		    	style: google.maps.ZoomControlStyle.SMALL
-		    }
-		}); 
-		marker.setMap(map);
-	    google.maps.event.addListener(marker, 'click', function() {
-		      infowindow.open(map,marker);
-		    });
+			var myLatlng = new google.maps.LatLng({{ event.geoposition.latitude }}, {{ event.geoposition.longitude }});
+			var mapOptions = {
+				zoom: 15,
+				center: myLatlng
+			};
+			var map = new google.maps.Map(document.getElementById('view-event-map'),
+					mapOptions);
+			var infowindow = new google.maps.InfoWindow({
+				content: "<p><strong>{{ event.title }}</strong></p>{{ event.location }}"
+			});
+			var marker = new google.maps.Marker({
+				position: myLatlng,
+				animation: google.maps.Animation.DROP,
+				title: "{{ event.location }}",
+				zoomControl: true,
+				zoomControlOptions: {
+					style: google.maps.ZoomControlStyle.LARGE
+				}
+			});
+			marker.setMap(map);
+			google.maps.event.addListener(marker, 'click', function () {
+				infowindow.open(map, marker);
+			});
 		}
 		google.maps.event.addDomListener(window, 'load', initialize);
 
-    </script>
+	</script>
+
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=219052144964057";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
 {% endblock %}

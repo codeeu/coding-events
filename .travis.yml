@@ -9,14 +9,22 @@ env:
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
+  - git clone git://github.com/maxmind/geoip-api-c
+  - cd geoip-api-c
+  - ./bootstrap
+  - ./configure
+  - make
+  - sudo make install
+  - sudo ldconfig
+  - cd ..
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
   - pip install -r codeweekeu/reqs.txt
 
 # command to run tests, e.g. python setup.py test
-script:  python codeweekeu/manage.py test api
- --settings=codeweekeu.settings
+script:  python codeweekeu/manage.py test api web
+ --settings=codeweekeu.settings_travis
 
 notifications:
   email:

@@ -1,0 +1,25 @@
+
+.form-control {
+	@include form-control-focus($color: $steel);
+}
+
+
+.input-with-icon {
+	position: relative;
+
+	&.has-error {
+		i{
+			color: $state-danger-text;
+		}
+	}
+
+	input[type="text"] {
+		padding-left: 50px;
+	}
+
+	i {
+		position: absolute;
+		top: 38px;
+		left: 15px;
+	}
+}

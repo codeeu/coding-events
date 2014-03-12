@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
-
-{% block title %}- Thank You{% endblock title %}
-
-{% block content %}
+<div class="container">
 	<h1>Thanks for adding your event!</h1>
-	<p>One of our local ambassadors will now review your event <strong><a href="{% url 'web.view_event' event_id slug %}">{{ title }}</a></strong> and make sure we've got all the important details. If you have any questions, get in touch with one of our <a href="{% url 'web.ambassadors' %}">local ambassadors</a> or send an email...</p>
-	<p>You can already share the news about your event via Twitter and Facebook // ADD SHARE</p>
-{% endblock content %}
+
+	<p>One of our local ambassadors will now review your event
+		<a href="{% url 'web.view_event' event.pk event.slug %}"><strong>{{ event.title }}</strong></a>
+	    and make sure we've got all the important details. <br />
+	    If you have any questions, get in touch with one of our
+		<a href="{% url 'web.ambassadors' %}">local ambassadors</a> or send an email...</p>
+</div>

@@ -1,5 +1,20 @@
+################################################
+# Processors for events views
+################################################
+from django.conf import settings
 from django.contrib.gis.geoip import GeoIP
 from api.models import Event
+
+
+def get_client_ip(forwarded=None, remote=None):
+
+	if settings.DEBUG:
+		return '93.103.53.11'
+
+	if forwarded:
+		return forwarded.split(',')[0]
+	return remote
+
 
 def get_lat_lon_from_user_ip(ip):
 	"""
@@ -8,6 +23,7 @@ def get_lat_lon_from_user_ip(ip):
 	g = GeoIP()
 	return g.lat_lon(ip)
 
+
 def get_country_from_user_ip(ip):
 	"""
 	Return country of IP
@@ -15,9 +31,11 @@ def get_country_from_user_ip(ip):
 	g = GeoIP()
 	return g.country(ip)
 
+
 def get_event(event_id):
 	event = Event.objects.get(id=event_id)
 	return event
+
 
 def create_or_update_event(event_id=None, **event_data):
 	"""
@@ -26,9 +44,11 @@ def create_or_update_event(event_id=None, **event_data):
 	event = Event.objects.filter(id=event_id)
 	if event:
 		event = event[0]
+		event_tags = []
 		#we have to update tags after the other fields are updated
-		event_tags=event_data['tags']
-		event_data.pop('tags')
+		if 'tags' in event_data:
+			event_tags = event_data['tags']
+			event_data.pop('tags')
 
 		#in case we have geoposition data in event_data
 		if 'geoposition' in event_data:
@@ -51,5 +71,17 @@ def create_or_update_event(event_id=None, **event_data):
 
 	else:
 		event = Event.objects.create(**event_data)
+	return event
+
+
+def change_event_status(event_id):
+	event = Event.objects.get(pk=event_id)
+
+	if event.status == 'APPROVED':
+		event.status = 'PENDING'
+	else:
+		event.status = 'APPROVED'
+
+	event.save()
 	return event
 
