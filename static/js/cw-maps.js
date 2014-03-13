@@ -8,7 +8,8 @@ var Codeweek = window.Codeweek || {};
 
     var map,
         markers = {},
-        place;
+        place,
+        placeinfowindow = null;
 
     function createMap(events, lat, lng, zoomVal) {
         var markerData = JSON.parse(events),
@@ -31,6 +32,9 @@ var Codeweek = window.Codeweek || {};
                     position: google.maps.ControlPosition.RIGHT_BOTTOM
                 }
             });
+        placeinfowindow = new google.maps.InfoWindow({
+                content: "loading..."
+    });
 
         for (var i = 0; i <= markerData_len; i++) {
             var markdata = markerData[i];
@@ -56,14 +60,14 @@ var Codeweek = window.Codeweek || {};
         var marker = new google.maps.Marker({
             position: myLatLng,
             map: map,
-            title: markTitle
+            title: markTitle,
+            html: '<a href="' + markUrl + '"><h4>' + markTitle + '</h4></a>'
         });
-        google.maps.event.addListener(marker, 'click', function () {
-            document.getElementById("clicked-marker").innerHTML = "<a href=\"" + markUrl + "\">" + markTitle + "</a>";
-        });
-        /*google.maps.event.addListener(marker, 'click', function() {
-         window.location.href = markUrl;
-         });*/
+        google.maps.event.addListener(marker, 'click', function() {
+                placeinfowindow.setContent(this.html);
+                placeinfowindow.open(this.map, this);
+         });
+
         return marker;
     }
 
