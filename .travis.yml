@@ -20,10 +20,10 @@ before_install:
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
-  - pip install -r codeweekeu/reqs.txt
+  - pip install -r ./requirements.txt
 
 # command to run tests, e.g. python setup.py test
-script:  python codeweekeu/manage.py test api web
+script:  python ./manage.py test api web
  --settings=codeweekeu.settings_travis
 
 notifications:
