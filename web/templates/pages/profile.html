@@ -2,20 +2,24 @@
 {% load avatar_tags %}
 
 {% block content %}
-	<h2>{% if user.first_name or user.last_name %}
-			{{ user.first_name }} {{ user.last_name }}
-		{% else %}
-			{{ user.username }}
-		{% endif %}'s Profile</h2>
-	{% for field in form %}
-		{{ field.error }}
-	{% endfor %}
+	<div class="container">
+		<h2>{% if user.first_name or user.last_name %}
+				{{ user.first_name }} {{ user.last_name }}
+			{% else %}
+				{{ user.username }}
+			{% endif %}'s Profile</h2>
+		{% for field in form %}
+			{{ field.error }}
+		{% endfor %}
 
-	<form action="{% url 'profile' %}" method="POST">{% csrf_token %}
-		{{ uform.as_p }}
-		{{ pform.as_p }}
-		<input type="submit" value="Update profile" />
-	</form>
-	<a href="{% url 'avatar_change' %}">{% avatar user %}</a>
-	<a href="{% url 'avatar_delete' %}">Delete avatar</a>
+		<form action="{% url 'profile' %}" method="POST">{% csrf_token %}
+			{{ uform.as_p }}
+			{{ pform.as_p }}
+			<input type="submit" value="Update profile"  class="btn btn-primary" />
+		</form>
+		<p><br />
+		<a href="{% url 'avatar_change' %}">{% avatar user %}</a>
+		<a href="{% url 'avatar_delete' %}">Delete avatar</a>
+		</p>
+	</div>
 {% endblock content %}
