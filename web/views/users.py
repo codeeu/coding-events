@@ -10,7 +10,7 @@ from web.processors.user import get_ambassadors_for_countries
 from web.processors.event import get_country_from_user_ip
 
 def login(request):
-	return render_to_response('pages/login.html')
+	return render_to_response('pages/login.html', {}, context_instance=RequestContext(request))
 
 def user_profile(request):
 

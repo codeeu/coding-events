@@ -4,14 +4,15 @@
 
 
 {% block content %}
+
 	<h1>Login with one of your existing accounts</h1>
 	<p>To prevent spam, we require a login before adding an event.</p>
 	{% if not user.is_authenticated %}
 		<ul>
-			<li><a href="{% url 'social:begin' 'github' %}">Login with Github</a></li>
-			<li><a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a></li>
-			<li><a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a></li>
-			<li><a href="{% url 'social:begin' 'google' %}">Login with Google</a></li>
+			<li><a href="{% url 'social:begin' 'github' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Login with Github</a></li>
+			<li><a href="{% url 'social:begin' 'twitter' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Login with Twitter</a></li>
+			<li><a href="{% url 'social:begin' 'facebook' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Login with Facebook</a></li>
+			<li><a href="{% url 'social:begin' 'google' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Login with Google</a></li>
 		</ul>
 	{% else %}
 		<p>Looks like you're already logged in as
