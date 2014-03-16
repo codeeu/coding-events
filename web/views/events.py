@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
-
+from django_countries import countries
 
 from api.models import Event
 from web.forms.event_form import AddEventForm
@@ -34,15 +34,18 @@ def index(request, country_code=None):
 	template = 'pages/index.html'
 	events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
-	country = {'country_code': country_code}
+
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 
+	if country_code:
+		country_name = unicode(dict(countries)[country_code])
+		country = {'country_name': country_name, 'country_code': country_code}
+	else:
+		country = get_country_from_user_ip(user_ip)
+
 	if request.is_ajax():
 		template = 'pages/pjax_index.html'
-
-	if not country_code:
-			country = get_country_from_user_ip(user_ip)
 
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
@@ -53,7 +56,7 @@ def index(request, country_code=None):
 	                                    country_code=country.get('country_code', None))
 	
 	all_countries = list_countries()
-
+	
 	return render_to_response(
 		template, {
 			'latest_events': latest_events,
