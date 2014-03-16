@@ -64,8 +64,8 @@
 				See events in other countries
 			</a>
 			<div id="allcountries" style="display:none" >
-				{% for country in all_countries %}
-				<a href="/{{country.1}}">{{country.0}}</a>
+				{% for each_country in all_countries %}
+				<a href="/{{each_country.1}}">{{each_country.0}}</a>
 				{% endfor %}
 			</div>
 		</div>
