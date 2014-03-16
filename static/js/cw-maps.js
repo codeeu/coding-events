@@ -118,12 +118,25 @@ var Codeweek = window.Codeweek || {};
             }
         });
     }
-
+    function zoomCountry(current_country) {
+        var zoomgeocoder = new google.maps.Geocoder();
+        zoomgeocoder.geocode({'address': current_country}, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var ne = results[0].geometry.viewport.getNorthEast();
+                var sw = results[0].geometry.viewport.getSouthWest();
+                map.map.fitBounds(results[0].geometry.viewport);
+                map.map.setCenter(results[0].geometry.location);
+            }
+        });
+    }
 
     function initialize(events, lon, lan) {
         map = createMap(events, lon, lan, 4);
         setAutocomplete();
-
+        if (location.pathname != "/") {
+        var current_country = document.getElementById('country').innerHTML;
+        zoomCountry(current_country); 
+        }
     }
 
     var search_events_handler = function () {
