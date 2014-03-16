@@ -35,7 +35,7 @@ def list_countries():
 	all_countries = []
 	for code, name in list(countries):
 		readable_name = unicode(name)
-		all_countries.append((code, readable_name))
+		all_countries.append((readable_name, code))
 	all_countries.sort()
 	return all_countries
 
