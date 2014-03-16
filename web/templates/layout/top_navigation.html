@@ -1,4 +1,5 @@
 {% load avatar_tags %}
+{% include 'layout/login_modal_window.html' %}
 
 <nav class="navbar navbar-inverse" role="navigation" data-spy="affix" data-offset-top="450">
 	<div class="container-fluid">
@@ -15,11 +16,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Events</a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="{% url 'web.index' %}">Events</a></li>
-						<li><a href="{% url 'web.ambassadors' %}">Ambassadors</a></li>
-					</ul>
+					<a href="{% url 'web.index' %}">Events</a>
 				</li>
 				<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/learn">Resources</a></li>
 				<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/code">Why coding?</a></li>
@@ -35,27 +32,21 @@
 								<li>
 									{% if user.profile.country %}
 										<a href="{% url 'web.pending_events' user.profile.country %}">
+											<i class="fa fa-clock-o"></i>
 											Pending events in {{ user.profile.country.name }}</a>
 									{% else %}
-										<a href="{% url 'profile' %}">Set your country</a>
+										<a href="{% url 'profile' %}"><i class="fa fa-map-marker"></i>
+											Set your country</a>
 									{% endif %}
 								</li>
-								<li><a href="{% url 'profile' %}">Edit your profile</a></li>
+								<li><a href="{% url 'profile' %}"><i class="fa fa-pencil-square-o"></i>
+									Edit your profile</a></li>
 								<li class="divider"></li>
 							{% endif %}
-							<li><a href="{% url 'logout' %}">Sign out</a></li>
+							<li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Sign out</a></li>
 						</ul>
 					{% else %}
-						<a href="{% url 'profile' %}" class="dropdown-toggle" data-toggle="dropdown"
-						   data-trigger="hover" data-target="#">Login</a>
-						<ul class="dropdown-menu" role="menu">
-							<li>
-								<a href="{% url 'social:begin' 'github' %}"><i class="fa fa-github-square"></i></a>
-								<a href="{% url 'social:begin' 'twitter' %}"><i class="fa fa-twitter-square"></i></a>
-								<a href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook-square"></i></a>
-								<a href="{% url 'social:begin' 'google' %}"><i class="fa fa-google-plus-square"></i></a>
-							</li>
-						</ul>
+						<a href="{% url 'profile' %}" data-toggle="modal" data-target="#login-modal">Login</a>
 					{% endif %}
 				</li>
 			</ul>

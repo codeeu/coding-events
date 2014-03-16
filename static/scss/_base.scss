@@ -45,29 +45,49 @@ NAVIGATION STYLES
 	a {
 
 		&.avatar {
-			padding: 7px;
+			padding: 9px;
 		}
 	}
 }
 
 .dropdown {
-	&.open {
 
-	}
-}
+	.dropdown-menu {
+		a{
+			padding: 3px 20px 3px 5px;
+		}
 
-.dropdown-menu {
-	&> li {
-		width: 270px;
-		&> a {
-			display: inline-table;
-			i {
-				font-size: 25px;
-			}
-
+		i {
+			font-size: 18px;
+			border-right: 1px dotted #999;
+			padding: 5px;
+			margin-right: 2px;
+			width: 30px;
 		}
 	}
 }
+
+
+/*********************
+LOGIN MODAL WINDOW STYLES
+*********************/
+#login-modal{
+	.modal-header {
+		border-bottom: none;
+	}
+	.modal-footer {
+		border-top: none;
+	}
+}
+
+.btn-social {
+
+	i{
+		line-height: 68px !important;
+	}
+
+}
+
 
 /*********************
 LANDING PAGE MAP STYLES
