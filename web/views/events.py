@@ -21,7 +21,7 @@ from web.processors.event import get_country_from_user_ip
 from web.processors.event import list_countries
 from api.processors import get_approved_events
 from api.processors import get_pending_events
-from web.decorators.access_right import can_edit_event
+from web.decorators.events import can_edit_event
 
 """
 Do not Query the database directly from te view.

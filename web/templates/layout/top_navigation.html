@@ -43,7 +43,7 @@
 									Edit your profile</a></li>
 								<li class="divider"></li>
 							{% endif %}
-							<li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Sign out</a></li>
+							<li><a href="{% url 'logout' %}?next={% firstof request.path '/' %}"><i class="fa fa-sign-out"></i> Sign out</a></li>
 						</ul>
 					{% else %}
 						<a href="{% url 'profile' %}" data-toggle="modal" data-target="#login-modal">Login</a>
