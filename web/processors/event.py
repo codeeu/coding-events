@@ -4,7 +4,7 @@
 from django.conf import settings
 from django.contrib.gis.geoip import GeoIP
 from api.models import Event
-
+from django_countries import countries
 
 def get_client_ip(forwarded=None, remote=None):
 
@@ -30,6 +30,14 @@ def get_country_from_user_ip(ip):
 	"""
 	g = GeoIP()
 	return g.country(ip)
+
+def list_countries():
+	all_countries = []
+	for code, name in list(countries):
+		readable_name = unicode(name)
+		all_countries.append((code, readable_name))
+	all_countries.sort()
+	return all_countries
 
 
 def get_event(event_id):
