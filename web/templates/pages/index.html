@@ -25,8 +25,8 @@
 	<div class="container index-content">
 
 		<h2>Latest #codeEU Events{% if country %} in <span id="country">{{ country.country_name }}</span>{% endif %}</h2>
-		{% if latest_events %}
-			<div class="clearfix" id="events-list">
+		<div class="clearfix" id="events-list">
+			{% if latest_events %}
 				{% for event in latest_events %}
 					<div class=" col-md-4 {% if forloop.first %}first{% endif %}">
 						<div class="thumbnail">
@@ -51,13 +51,13 @@
 							</div>
 						</div>
 					</div>
-				{% endfor %}
-			</div>
-		{% else %}
-			<p>
-				No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a>
-			<p>
-		{% endif %}
+				{% endfor %}		
+			{% else %}
+				<p>
+					No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a>
+				<p>
+			{% endif %}
+		</div>
 
 		<div class="change-location-wrapper">
 			<a class="change-country-link btn btn-sm"  id="showcountries">
