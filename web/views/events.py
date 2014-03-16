@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
-
+from django_countries import countries
 
 from api.models import Event
 from web.forms.event_form import AddEventForm
@@ -18,6 +18,7 @@ from web.processors.event import create_or_update_event
 from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import get_country_from_user_ip
+from web.processors.event import list_countries
 from api.processors import get_approved_events
 from api.processors import get_pending_events
 from web.decorators.access_right import can_edit_event
@@ -33,15 +34,18 @@ def index(request, country_code=None):
 	template = 'pages/index.html'
 	events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
-	country = {'country_code': country_code}
+
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 
+	if country_code:
+		country_name = unicode(dict(countries)[country_code])
+		country = {'country_name': country_name, 'country_code': country_code}
+	else:
+		country = get_country_from_user_ip(user_ip)
+
 	if request.is_ajax():
 		template = 'pages/pjax_index.html'
-
-	if not country_code:
-			country = get_country_from_user_ip(user_ip)
 
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
@@ -50,13 +54,16 @@ def index(request, country_code=None):
 
 	latest_events = get_approved_events(limit=5, order='pub_date',
 	                                    country_code=country.get('country_code', None))
-
+	
+	all_countries = list_countries()
+	
 	return render_to_response(
 		template, {
 			'latest_events': latest_events,
 		    'map_events': map_events,
 		    'lan_lon': lan_lon,
 		    'country': country,
+		    'all_countries': all_countries,
 		},
 		context_instance=RequestContext(request))
 
