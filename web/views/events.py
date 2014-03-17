@@ -79,7 +79,7 @@ def add_event(request):
 			event_data.update(event_form.cleaned_data)
 			event = create_or_update_event(**event_data)
 
-			t = loader.get_template('pages/thankyou.html')
+			t = loader.get_template('alerts/thank_you.html')
 			c = Context({'event': event, })
 			messages.info(request, t.render(c))
 
@@ -105,7 +105,7 @@ def search_event(request):
 
 
 def thankyou(request):
-	return render_to_response('pages/thankyou.html')
+	return render_to_response('alerts/thank_you.html')
 
 @login_required
 @can_edit_event

@@ -27,7 +27,7 @@ def get_approved_events(limit=None, order=None, country_code=None):
 	return events
 
 
-def get_pending_events(limit=None, order=None,country_code=None):
+def get_pending_events(limit=None, order=None, country_code=None):
 
 	"""
 	Select all events which are pending and optionally limit and/or order them
