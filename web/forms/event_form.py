@@ -23,8 +23,8 @@ class AddEventForm(forms.ModelForm):
 			'end_date': forms.TextInput(attrs={"id": "id_datepicker_end", "class": "form-control"}),
 			'event_url': forms.TextInput(attrs={"class": "form-control"}),
 			'contact_person': forms.TextInput(attrs={"class": "form-control"}),
-			'audience': forms.CheckboxSelectMultiple(attrs={"class": "form-control"}),
-			'theme': forms.CheckboxSelectMultiple(attrs={"class": "form-control"}),
+			'audience': forms.CheckboxSelectMultiple(),
+			'theme': forms.CheckboxSelectMultiple(),
 			'tags': forms.TextInput(attrs={"class": "form-control"}),
 		}
 
