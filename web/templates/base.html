@@ -12,8 +12,6 @@
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 	{% compress css %}
 
-		<link href="{% static 'lib/bootstrap-sass/stylesheets/bootstrap.scss' %}"
-		      media="screen" rel="stylesheet" type="text/x-scss">
 		<link href="{% static 'scss/style.scss' %}"
 		      media="screen" rel="stylesheet" type="text/x-scss" />
 		<link href="{% static 'css/custom.css' %}"
@@ -32,11 +30,9 @@
 
 {% endblock %}
 
-{% if messages %}
-	{% for message in messages %}
-		<div class="alert alert-info">{{ message }}</div>
-	{% endfor %}
-{% endif %}
+{% block messages %}
+	{% include 'layout/messages.html' %}
+{% endblock messages %}
 
 {% block content %} {% endblock content %}
 
@@ -47,11 +43,13 @@
 <script>window.jQuery || document.write('<script src="{% static "lib/jquery/jquery.js" %}"><\/script>')</script>
 {% compress js %}
 	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/dropdown.js' %}"></script>
+	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/modal.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/cw-maps.js' %}"></script>
 
 	<script type="text/javascript">
 		Codeweek.Index.init();
 	</script>
+
 {% endcompress %}
 
 {% block custom_js %}{% endblock custom_js %}

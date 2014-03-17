@@ -1,0 +1,25 @@
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-social-buttons" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<p>&nbsp;</p>
+			</div>
+			<div class="modal-body">
+				<a href="{% url 'social:begin' 'github' %}?next={% firstof request.path '/' %}" class="btn btn-block btn-social btn-lg btn-github">
+					<i class="fa fa-github-square"></i> Sign in with Github
+				</a>
+				<a href="{% url 'social:begin' 'twitter' %}?next={% firstof request.path '/' %}" class="btn btn-block btn-social btn-lg btn-twitter">
+					<i class="fa fa-twitter-square"></i> Sign in with Twitter
+				</a>
+				<a href="{% url 'social:begin' 'facebook' %}?next={% firstof request.path '/' %}" class="btn btn-block btn-social btn-lg btn-facebook">
+					<i class="fa fa-facebook-square"></i> Sign in with Facebook
+				</a>
+				<a href="{% url 'social:begin' 'google' %}?next={% firstof request.path '/' %}" class="btn btn-block btn-social btn-lg btn-google-plus">
+					<i class="fa fa-google-plus-square"></i> Sign in with Google
+				</a>
+			</div>
+			<div class="modal-footer">&nbsp;</div>
+		</div>
+	</div>
+</div>

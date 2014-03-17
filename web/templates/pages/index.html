@@ -3,6 +3,7 @@
 {% block title %}- Map of Events{% endblock title %}
 
 {% block main_navigation %}{% endblock %}
+{% block messages %}{% endblock %}
 {% block content %}
 	<div class="landing-wrapper">
 		<div class="events-map-wrapper">
@@ -22,6 +23,7 @@
 		</div>
 	</div>
 	{% include 'layout/top_navigation.html' %}
+	{% include 'layout/messages.html' %}
 	<div class="container index-content">
 
 		<h2>Latest #codeEU Events{% if country %} in <span id="country">{{ country.country_name }}</span>{% endif %}</h2>

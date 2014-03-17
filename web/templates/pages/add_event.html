@@ -24,83 +24,147 @@
 
 
 		<form enctype="multipart/form-data" method="post" id="event" role="form">{% csrf_token %}
+			<div class="clearfix">
+				{% for field in form %}
 
-			{% for field in form %}
-
-				{% if field.name == 'geoposition' %}
-					<span style="display:none">{{ field.label_tag }}{{ field }}</span>
-				{% elif field.name == 'location' %}
-					<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first">
-						<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-						{{ field }}
-						<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
-					</div>
-					<div id="view-event-map-wrapper">
-						<div id="view-event-map">Loading map ...</div>
-					</div>
-				{% elif field.name == 'country' %}
-					<span class="hidden">{{ field }}</span>
-				{% elif field.name == 'start_date' %}
-					<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
-						<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-						{{ field }}
-						<i class="fa fa-calendar"></i>
-						<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
-					</div>
-				{% elif field.name == 'end_date' %}
-					<div class="clearfix">
+					{% if field.name == 'geoposition' %}
+						<span style="display:none">{{ field.label_tag }}{{ field }}</span>
+					{% elif field.name == 'location' %}
 						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
-							<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}<i class="fa fa-asterisk"></i>{% endif %}
+								{{ field.label }}
+							</label>
+							{{ field }}
+							<i class="fa fa-map-marker"></i>
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
+						<div id="view-event-map-wrapper" class="col-md-8 pull-right">
+							<div id="view-event-map">Loading map ...</div>
+						</div>
+					{% elif field.name == 'country' %}
+						<span class="hidden">{{ field }}</span>
+					{% elif field.name == 'start_date' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}
+							</label>
 							{{ field }}
 							<i class="fa fa-calendar"></i>
 							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
 						</div>
-					</div>
-				{% elif field.name == 'picture' %}
+					{% elif field.name == 'end_date' %}
+						<div class="clearfix">
+							<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+								<label class="control-label" for="{{ field.auto_id }}">
+									{% if field.field.required %}
+										<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+										   title="This data is required"></i>
+									{% endif %}
+									{{ field.label }}</label>
+								{{ field }}
+								<i class="fa fa-calendar"></i>
+								<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+							</div>
+						</div>
+					{% elif field.name == 'picture' %}
+						<div class="pull-right col-md-8">
+							<label>{{ field.label }}</label>
 
-					<div class="clearfix">
-						<div class="fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %} col-md-6 first" data-provides="fileinput">
-							<div class="fileinput-new">
-								<img data-src="holder.js/100%x100%/text:hello world" alt="...">
-							</div>
-							<div class="fileinput-preview fileinput-exists">
-								<img src="{{ MEDIA_URL }}{{ picture_url }}" alt="{{ field.name }} Image" />
-							</div>
-							<div>
+							<div class="fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %} "
+							     data-provides="fileinput">
+								<div class="fileinput-new">
+									<img data-src="holder.js/100%x100%/text:Your image..." alt="..." style="max-height: 204px" >
+								</div>
+								<div class="fileinput-preview fileinput-exists">
+									<img src="{{ MEDIA_URL }}{{ picture_url }}" alt="{{ field.name }} Image" style="max-height: 204px" />
+								</div>
+								<div>
 								<span class="btn btn-sm btn-file">
 									<span class="fileinput-new">Select image</span>
 									<span class="fileinput-exists">Change</span>
 									<input type="file" name="{{ field.name }}"></span>
 									<a href="#" class="btn btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
+								</div>
 							</div>
 						</div>
-					</div>
+					{% elif field.name == 'event_url' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<i class="fa fa-globe"></i>
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
 
-				{% else %}
-					<div class="form-group {% if field.errors %}has-error{% endif %}">
-						<label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
-						{{ field }}
-						<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
-					</div>
-				{% endif %}
+					{% elif field.name == 'contact_person' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<i class="fa fa-envelope"></i>
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
 
-			{% endfor %}
-			<div class="clearfix"><input type="submit" value="{% if editing %}Save{% else %}Add{% endif %} event" class="btn btn-primary" /></div>
+					{% elif field.name == 'tags' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<i class="fa fa-tags"></i>
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
+					{% else %}
+						<div class="form-group {% if field.errors %}has-error{% endif %}">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
+					{% endif %}
+
+				{% endfor %}
+			</div>
+			<div class="btn btn-primary btn-directional fa-plus-circle btn-lg submit-button-wrapper">
+				<input type="submit" value="{% if editing %}Save{% else %}Add{% endif %} event" />
+			</div>
 
 		</form>
 
 		<div class="event-footnote">
 			Note: Events will be checked by one of our
 			<a href="{% url 'web.ambassadors' %}" target="_blank">Local Ambassadors</a>
-		   before appearing on the map.
+			before appearing on the map.
 		</div>
 	</div>
 {% endblock content %}
 
 {% block custom_js %}
-	<script src="{% static "js/jquery.datetimepicker.js" %}"></script>
-	<script src="{% static "js/jasny-bootstrap.min.js" %}"></script>
-	<script src="{% static "js/holder.js" %}"></script>
+	<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/DateTimePicker.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jquery.datetimepicker.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/holder.js" %}"></script>
 
 	<script>
 		$('#id_datepicker_start').datetimepicker({
@@ -133,15 +197,15 @@
 			map = new google.maps.Map(document.getElementById('view-event-map'), mapOptions);
 		}
 
-	function autocomplete() {
-		autocomplete = new google.maps.places.Autocomplete(
-			(document.getElementById('autocomplete')),
- 			{ 
- 				types: ['geocode']
- 			});
-		google.maps.event.addListener(autocomplete, 'place_changed', function() {
-		    	fillInAddress();
-		  	});
+		function autocomplete() {
+			autocomplete = new google.maps.places.Autocomplete(
+					(document.getElementById('autocomplete')),
+					{
+						types: ['geocode']
+					});
+			google.maps.event.addListener(autocomplete, 'place_changed', function () {
+				fillInAddress();
+			});
 		}
 
 		function updateAddress(new_position) {
@@ -185,29 +249,28 @@
 			});
 		}
 
-	function fillInAddress() {
-	    var place = autocomplete.getPlace();
-	    var components = place.address_components;
-	    var country = null;
-	  	var output = autocomplete.getPlace().geometry.location;
-	  	var outputLat = output.lat();
-	  	var outputLng = output.lng();
-	  	document.getElementById("id_geoposition_0").value=outputLat;
-	  	document.getElementById("id_geoposition_1").value=outputLng;
-		var locLatlng = new google.maps.LatLng(outputLat,outputLng);
-		createMarker(locLatlng);
-		for (var i = 0, component; component = components[i]; i++) {
-	        if (component.types[0] == 'country') {
-	            country = component['short_name'];
-	            var choice = document.getElementById('id_country');
-				selectItemByValue(choice, country);
-	        	}
-	    	}
-		function selectItemByValue(elmnt, value){
-		 	for(var i=0; i < elmnt.options.length; i++)
-				{
-				if(elmnt.options[i].value == value)
-					elmnt.selectedIndex = i;
+		function fillInAddress() {
+			var place = autocomplete.getPlace();
+			var components = place.address_components;
+			var country = null;
+			var output = autocomplete.getPlace().geometry.location;
+			var outputLat = output.lat();
+			var outputLng = output.lng();
+			document.getElementById("id_geoposition_0").value = outputLat;
+			document.getElementById("id_geoposition_1").value = outputLng;
+			var locLatlng = new google.maps.LatLng(outputLat, outputLng);
+			createMarker(locLatlng);
+			for (var i = 0, component; component = components[i]; i++) {
+				if (component.types[0] == 'country') {
+					country = component['short_name'];
+					var choice = document.getElementById('id_country');
+					selectItemByValue(choice, country);
+				}
+			}
+			function selectItemByValue(elmnt, value) {
+				for (var i = 0; i < elmnt.options.length; i++) {
+					if (elmnt.options[i].value == value)
+						elmnt.selectedIndex = i;
 				}
 			}
 		}

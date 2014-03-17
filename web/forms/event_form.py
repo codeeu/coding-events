@@ -11,7 +11,8 @@ class AddEventForm(forms.ModelForm):
 	class Meta:
 		model = Event
 		fields = ['title', 'organizer', 'description', 'geoposition', 'location', 'country', 'start_date', 'end_date',
-		          'event_url', 'contact_person', 'picture', 'audience', 'theme', 'tags']
+		          'picture', 'event_url', 'contact_person', 'audience', 'theme', 'tags']
+
 		widgets = {
 			'title': forms.TextInput(attrs={"class": "form-control"}),
 			'organizer': forms.TextInput(attrs={"class": "form-control"}),
@@ -35,12 +36,12 @@ class AddEventForm(forms.ModelForm):
 		    'country': 'Event\'s country:',
 		    'start_date': 'When does the event start?',
 		    'end_date': 'When does the event end?',
-		    'event_url': 'Do you have a website with more information about the event? (optional)',
-		    'contact_person': 'Would you like to display a contact email? (optional)',
-		    'picture': 'You can also upload an image to represent your event: (optional)',
-		   	'audience': 'Who is the event for?',
+		    'event_url': 'Do you have a website with more information about the event?',
+		    'contact_person': 'Would you like to display a contact email?',
+		    'picture': 'You can also upload an image to represent your event:',
+		    'audience': 'Who is the event for?',
 		   	'theme': 'Which aspect of coding will your event cover?',
-		   	'tags': 'Tags, separated by commas: (optional)',
+		   	'tags': 'Tags, separated by commas:',
 		}
 		error_messages = {
 			'title': {

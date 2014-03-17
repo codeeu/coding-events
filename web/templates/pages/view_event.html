@@ -24,22 +24,20 @@
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
 							This event is nice and approved. You can revert it to
-							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a> or check other <a href="{% url 'web.pending_events' user.profile.country %}"><strong>pending events in {{ user.profile.country.name }}</strong></a>.
+							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a> or check other
+							<a href="{% url 'web.pending_events' user.profile.country %}"><strong><a href="{% url 'web.pending_events' user.profile.country %}">pending events in {{ user.profile.country.name }}</a></strong>.
 						</div>
 					{% endif %}
-	            </div>
-			</div>
-		{% endif %}
-		{% if event.picture %}
-			<div class="event-jumbotron">
-				<img src="{{ event.picture.url }}" alt="{{ event.title }} Cover Image" role="image" />
+				</div>
 			</div>
 		{% endif %}
 
-		<h1>{{ event.title }}</h1>
+
+
 
 		<div class="about-event clearfix">
 			<div class="col-md-8 event-description first">
+				<h1>{{ event.title }}</h1>
 				<strong>Organized by:</strong>
 
 				<p> {{ event.organizer }}</p>
@@ -52,15 +50,17 @@
 					{{ event.location }}
 				</address>
 				<p>
-					<strong>From</strong> {{ event.start_date|date:"l, M n, Y" }} at {{ event.start_date|date:"H:i" }} <strong>to</strong> {{ event.end_date|date:"l, M n, Y" }} at {{ event.end_date|date:"H:i" }}
+					<strong>From</strong> {{ event.start_date|date:"l, M d, Y" }} at {{ event.start_date|date:"H:i" }}
+					<strong>to</strong> {{ event.end_date|date:"l, M d, Y" }} at {{ event.end_date|date:"H:i" }}
 				</p>
 				<strong>Description:</strong>
+
 				<p>
 					{{ event.description }}
 				</p>
 				{% if event.event_url %}
-				<strong>More information:</strong>
-				<p><a href="{{ event.event_url }}" target="_blank">{{ event.event_url }}</a></p>
+					<strong>More information:</strong>
+					<p><a href="{{ event.event_url }}" target="_blank">{{ event.event_url }}</a></p>
 				{% endif %}
 				<strong>This event is for:</strong> 
 				<p>{% for entry in event.audience.all %}
@@ -90,21 +90,30 @@
 						{% endfor %}
 					</p>
 				{% endif %}
-				<hr>
-				<strong>Share the event:</strong>
-				<p>
-					<div class="fb-share-button" data-href="http://developers.facebook.com/docs/plugins/" data-type="button_count"></div>
 
-				</p>
+				<strong>Share the event:</strong>
+
+				<div class="fb-share-button" data-href="http://developers.facebook.com/docs/plugins/"
+				     data-type="button_count"></div>
+
 			</div>
 
+
 			<div class="col-md-4 event-time-place">
+				{% if event.picture %}
+					<div class="event-jumbotron">
+						<img src="{{ event.picture.url }}" alt="{{ event.title }} Cover Image" role="image" />
+					</div>
+				{% endif %}
 				<div id="calendar">
 					{{ event.start_date|render_calendar:event.end_date }}
 				</div>
-				<div id="view-event-map-wrapper">
-					<div id="view-event-map"></div>
-				</div>
+			</div>
+			<div class="col-md-12 first">
+				<hr>
+			</div>
+			<div id="view-event-map-wrapper" class=" col-md-12 first">
+				<div id="view-event-map"></div>
 			</div>
 		</div>
 	</div>
@@ -148,11 +157,12 @@
 
 	</script>
 
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=219052144964057";
-	  fjs.parentNode.insertBefore(js, fjs);
+	<script>(function (d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s);
+		js.id = id;
+		js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=219052144964057";
+		fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));</script>
 {% endblock %}

@@ -1,27 +1,85 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% load avatar_tags %}
 {% block title %}- Login{% endblock title %}
 
-
+{% block main_navigation %}
+	{% include 'layout/top_navigation.html' with modal=True %}
+{% endblock %}
 {% block content %}
 
-	<h1>Login with one of your existing accounts</h1>
-	<p>To prevent spam, we require a login before adding an event.</p>
-	{% if not user.is_authenticated %}
-		<ul>
-			<li><a href="{% url 'social:begin' 'github' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Login with Github</a></li>
-			<li><a href="{% url 'social:begin' 'twitter' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Login with Twitter</a></li>
-			<li><a href="{% url 'social:begin' 'facebook' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Login with Facebook</a></li>
-			<li><a href="{% url 'social:begin' 'google' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Login with Google</a></li>
-		</ul>
-	{% else %}
-		<p>Looks like you're already logged in as
-		<a href="{% url 'profile' %}">	
-			{% if user.first_name or user.last_name %}
-				{{ user.first_name }} {{ user.last_name }}
-			{% else %}
-				{{ user.username }}
-			{% endif %}
-		</a>. Want to <a href="{% url 'logout' %}">Logout</a>?</p>
-	{% endif %}
+	<div class="container">
+		{% if not user.is_authenticated %}
+			<div class="text-center">
+				<h1>Login with one of your existing accounts</h1>
+
+				<p>To prevent spam, we require a login before adding an event.</p>
+			</div>
+
+			<div class="modal" id="login-modal-open" role="dialog" aria-labelledby="opened-login-window"
+			     aria-hidden="false" style="display: block !important; position: relative; overflow: hidden;">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<p>&nbsp;</p>
+						</div>
+						<div class="modal-body">
+							<a href="{% url 'social:begin' 'github' %}{% if next %}?next={{ next }}{% endif %}"
+							   class="btn btn-block btn-social btn-lg btn-github">
+								<i class="fa fa-github-square"></i> Sign in with Github
+							</a>
+							<a href="{% url 'social:begin' 'twitter' %}{% if next %}?next={{ next }}{% endif %}"
+							   class="btn btn-block btn-social btn-lg btn-twitter">
+								<i class="fa fa-twitter-square"></i> Sign in with Twitter
+							</a>
+							<a href="{% url 'social:begin' 'facebook' %}{% if next %}?next={{ next }}{% endif %}"
+							   class="btn btn-block btn-social btn-lg btn-facebook">
+								<i class="fa fa-facebook-square"></i> Sign in with Facebook
+							</a>
+							<a href="{% url 'social:begin' 'google' %}{% if next %}?next={{ next }}{% endif %}"
+							   class="btn btn-block btn-social btn-lg btn-google-plus">
+								<i class="fa fa-google-plus-square"></i> Sign in with Google
+							</a>
+						</div>
+						<div class="modal-footer">&nbsp;</div>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<div class="logged-in">
+				<div class="alert alert-info"><p>Looks like you're already logged in!</p></div>
+				{% avatar user 100 %}
+				<h1 class="username">
+					<a href="{% url 'profile' %}">
+						{% if user.first_name or user.last_name %}
+							{{ user.first_name }} {{ user.last_name }}
+						{% else %}
+							{{ user.username }}
+						{% endif %}
+					</a>
+				</h1>
+			</div>
+
+
+			<p>Take me out of here</p>
+			<a href="{% url 'logout' %}" class="btn btn-primary btn-directional fa-sign-out btn-sm">Logout</a></p>
+		{% endif %}
+
+		<hr />
+
+		<h1>
+			<a href="{% url 'web.guide' %}">How do I organize my own event?</a>
+		</h1>
+
+	</div>
+
+
 {% endblock content %}
+
+{% block custom_js %}
+	<script type="text/javascript">
+		//$('#login-modal').modal('show');
+	</script>
+	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
+
+{% endblock %}

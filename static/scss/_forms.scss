@@ -3,6 +3,15 @@
 	@include form-control-focus($color: $steel);
 }
 
+.form-group {
+
+	label {
+		i.fa-asterisk {
+			font-size: 8px;
+			vertical-align: text-top;
+		}
+	}
+}
 
 .input-with-icon {
 	position: relative;
@@ -13,13 +22,15 @@
 		}
 	}
 
+
 	input[type="text"] {
 		padding-left: 50px;
 	}
 
-	i {
+	i:not(.fa-asterisk) {
 		position: absolute;
-		top: 38px;
-		left: 15px;
+		margin-top: -28px;
+		margin-left: 15px;
 	}
 }
+

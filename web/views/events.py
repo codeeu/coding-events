@@ -21,7 +21,7 @@ from web.processors.event import get_country_from_user_ip
 from web.processors.event import list_countries
 from api.processors import get_approved_events
 from api.processors import get_pending_events
-from web.decorators.access_right import can_edit_event
+from web.decorators.events import can_edit_event
 
 """
 Do not Query the database directly from te view.
@@ -78,8 +78,7 @@ def add_event(request):
 			event_data = {}
 			event_data.update(event_form.cleaned_data)
 			event = create_or_update_event(**event_data)
-			event.save()
-			t = loader.get_template('pages/thankyou.html')
+			t = loader.get_template('alerts/thank_you.html')
 			c = Context({'event': event, })
 			messages.info(request, t.render(c))
 
@@ -105,7 +104,7 @@ def search_event(request):
 
 
 def thankyou(request):
-	return render_to_response('pages/thankyou.html')
+	return render_to_response('alerts/thank_you.html')
 
 @login_required
 @can_edit_event
@@ -118,6 +117,11 @@ def edit_event(request, event_id):
 	for tag in event.tags.all():
 		tags.append(tag.name)
 	event_data['tags'] = ",".join(tags)
+
+	# Making sure the right option ids are selected when form is loaded
+	event_data['audience'] = [audience.pk for audience in event.audience.all()]
+	event_data['theme'] = [theme.pk for theme in event.theme.all()]
+	
 	event_form = AddEventForm(data=event_data)
 
 	if request.method == "POST":
@@ -156,12 +160,12 @@ def list_pending_events(request, country_code):
 		messages.error(request, "You don't have permissions to see this page")
 		return HttpResponseRedirect(reverse("web.index"))
 	else:
-		return render_to_response("pages/list_events.html", {
-									'event_list': event_list,
-									'status': 'pending',
-									'country_code': country_code,
-									},
-									context_instance=RequestContext(request))
+		return render_to_response(
+			"pages/list_events.html", {
+				'event_list': event_list,
+				'status': 'pending',
+				'country_code': country_code,
+			}, context_instance=RequestContext(request))
 
 
 @login_required
