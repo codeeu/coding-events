@@ -1,0 +1,10 @@
+/**
+ * All the styles that are fitting no where else
+ *
+ */
+
+
+// Adding this, for debug toolbar to properly render, since we added bootstrap affix it has some issues
+#djDebug #djDebugToolbarHandle {
+	top: 30px !important;
+}

@@ -16,21 +16,25 @@ class EventCalendar(HTMLCalendar):
 
 	def __init__(self, start_day, end_day):
 		super(EventCalendar, self).__init__()
-		self.start_day = start_day.date().day
-		self.end_day = end_day.date().day
+		self.start_day = start_day.date()
+		self.end_day = end_day.date()
 
 	def formatday(self, day, weekday):
 		if day != 0:
 			cssclass = self.cssclasses[weekday]
 			if date.today() == date(self.year, self.month, day):
 				cssclass += ' today'
-			if self.start_day <= day <= self.end_day:
+			if self.start_day.month != self.end_day.month:
+				if self.start_day.day <= day:
+					cssclass += ' filled'
+					body = []
+					return self.day_cell(cssclass, '<span class="dayNumber">%d</span> %s' % (day, ''.join(body)))
+			if self.start_day.day <= day <= self.end_day.day:
 				cssclass += ' filled'
 				body = []
 				return self.day_cell(cssclass, '<span class="dayNumber">%d</span> %s' % (day, ''.join(body)))
 			return self.day_cell(cssclass, '<span class="dayNumberNoEvents">%d</span>' % (day))
 		return self.day_cell('noday', '&nbsp;')
-
 
 	def formatmonth(self, year, month):
 		self.year, self.month = year, month
@@ -52,4 +56,4 @@ def render_calendar(event_start_date, event_end_date):
 
 	cal = EventCalendar(event_start_date, event_end_date)
 
-	return mark_safe(cal.formatmonth(2014, 3))
+	return mark_safe(cal.formatmonth(event_start_date.year, event_start_date.month))
