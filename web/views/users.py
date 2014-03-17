@@ -11,7 +11,12 @@ from web.processors.event import get_country_from_user_ip
 
 
 def login(request):
-	return render_to_response('pages/login.html', {}, context_instance=RequestContext(request))
+
+	next_path = request.GET.get('next', None)
+	return render_to_response('pages/login.html', {
+		'next': next_path
+
+	}, context_instance=RequestContext(request))
 
 
 def user_profile(request):
