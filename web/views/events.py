@@ -80,7 +80,7 @@ def add_event(request):
         event_form = AddEventForm(data=request.POST, files=request.FILES)
         if event_form.is_valid():
 
-            if 'picture' in request.FILES:
+            if request.FILES.get('picture', None):
                 try:
                     verify_image_size(request.FILES['picture'].size)
 
