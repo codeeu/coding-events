@@ -21,7 +21,6 @@ class EventCalendar(HTMLCalendar):
 
 	def formatday(self, day, weekday):
 		if day != 0:
-			print day
 			cssclass = self.cssclasses[weekday]
 			if date.today() == date(self.year, self.month, day):
 				cssclass += ' today'
