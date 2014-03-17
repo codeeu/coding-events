@@ -78,7 +78,6 @@ def add_event(request):
 			event_data = {}
 			event_data.update(event_form.cleaned_data)
 			event = create_or_update_event(**event_data)
-
 			t = loader.get_template('alerts/thank_you.html')
 			c = Context({'event': event, })
 			messages.info(request, t.render(c))
@@ -118,6 +117,11 @@ def edit_event(request, event_id):
 	for tag in event.tags.all():
 		tags.append(tag.name)
 	event_data['tags'] = ",".join(tags)
+
+	# Making sure the right option ids are selected when form is loaded
+	event_data['audience'] = [audience.pk for audience in event.audience.all()]
+	event_data['theme'] = [theme.pk for theme in event.theme.all()]
+	
 	event_form = AddEventForm(data=event_data)
 
 	if request.method == "POST":

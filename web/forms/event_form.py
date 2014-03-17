@@ -11,7 +11,8 @@ class AddEventForm(forms.ModelForm):
 	class Meta:
 		model = Event
 		fields = ['title', 'organizer', 'description', 'geoposition', 'location', 'country', 'start_date', 'end_date',
-		          'picture', 'event_url', 'contact_person', 'tags']
+		          'picture', 'event_url', 'contact_person', 'audience', 'theme', 'tags']
+
 		widgets = {
 			'title': forms.TextInput(attrs={"class": "form-control"}),
 			'organizer': forms.TextInput(attrs={"class": "form-control"}),
@@ -22,6 +23,8 @@ class AddEventForm(forms.ModelForm):
 			'end_date': forms.TextInput(attrs={"id": "id_datepicker_end", "class": "form-control"}),
 			'event_url': forms.TextInput(attrs={"class": "form-control"}),
 			'contact_person': forms.TextInput(attrs={"class": "form-control"}),
+			'audience': forms.CheckboxSelectMultiple(),
+			'theme': forms.CheckboxSelectMultiple(),
 			'tags': forms.TextInput(attrs={"class": "form-control"}),
 		}
 
@@ -36,6 +39,8 @@ class AddEventForm(forms.ModelForm):
 		    'event_url': 'Do you have a website with more information about the event?',
 		    'contact_person': 'Would you like to display a contact email?',
 		    'picture': 'You can also upload an image to represent your event:',
+		    'audience': 'Who is the event for?',
+		   	'theme': 'Which aspect of coding will your event cover?',
 		   	'tags': 'Tags, separated by commas:',
 		}
 		error_messages = {
@@ -79,8 +84,16 @@ class AddEventForm(forms.ModelForm):
 		    'picture': {
 				'invalid': u'Make sure this is a valid image.',
 			},
+			'audience': {
+				'required': u'If unsure, choose Other and provide more information in the description.',
+				'invalid': u'Choose one or more of the provided choices.',
+			},
+			'theme': {
+				'required': u'If unsure, choose Other and provide more information in the description.',
+				'invalid': u'Choose one or more of the provided choices.',
+			},
 			'tags': {
-				'required': u'Please type in some tags to categorize the target audience and type of event',
+				'required': u'Please type in some tags to categorize the event',
 				'invalid': u'Please enter tags in plain text, separated by commas.',
 			},
 		}
