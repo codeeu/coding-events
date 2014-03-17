@@ -1,6 +1,8 @@
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.template import loader
+from django.template import Context
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -73,13 +75,12 @@ def index(request, country_code=None):
 @login_required
 def add_event(request):
     event_form = AddEventForm()
-    from django.template import loader, Context
 
     if request.method == 'POST':
         event_form = AddEventForm(data=request.POST, files=request.FILES)
         if event_form.is_valid():
-            if 'picture' in request.FILES:
 
+            if 'picture' in request.FILES:
                 try:
                     verify_image_size(request.FILES['picture'].size)
 
@@ -139,7 +140,7 @@ def edit_event(request, event_id):
         event_form = AddEventForm(data=request.POST, files=request.FILES)
         if event_form.is_valid():
 
-            if 'picture' in request.FILES:
+            if request.FILES.get('picture', None):
 
                 try:
                     verify_image_size(request.FILES['picture'].size)

@@ -61,7 +61,7 @@ def create_or_update_event(event_id=None, **event_data):
 			event_data.pop('tags')
 
 		#resize and convert the picture before uploading to db
-		if 'picture' in event_data:
+		if event_data.get('picture', None):
 			picture_db = media.process_image(event_data['picture'])
 			event_data['picture']= picture_db
 
@@ -85,8 +85,7 @@ def create_or_update_event(event_id=None, **event_data):
 		event.tags.set(*event_tags)
 
 	else:
-
-		if 'picture' in event_data:
+		if event_data.get('picture', None):
 			picture_db = media.process_image(event_data['picture'])
 			event_data['picture']= picture_db
 
