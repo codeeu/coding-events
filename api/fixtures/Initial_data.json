@@ -1,0 +1,114 @@
+[
+{
+    "pk": 1, 
+    "model": "api.eventaudience", 
+    "fields": {
+        "name": "Pre-school children"
+    }
+},
+{
+    "pk": 2, 
+    "model": "api.eventaudience", 
+    "fields": {
+        "name": "Elementary school students"
+    }
+},
+{
+    "pk": 3, 
+    "model": "api.eventaudience", 
+    "fields": {
+        "name": "High school students"
+    }
+},
+{
+    "pk": 4, 
+    "model": "api.eventaudience", 
+    "fields": {
+        "name": "Graduate students"
+    }
+},
+{
+    "pk": 5, 
+    "model": "api.eventaudience", 
+    "fields": {
+        "name": "Post graduate students"
+    }
+},
+{
+    "pk": 6, 
+    "model": "api.eventaudience", 
+    "fields": {
+        "name": "Employed adults"
+    }
+},
+{
+    "pk": 7, 
+    "model": "api.eventaudience", 
+    "fields": {
+        "name": "Unemployed adults"
+    }
+},
+{
+    "pk": 8, 
+    "model": "api.eventaudience", 
+    "fields": {
+        "name": "Other (more info in the event description)"
+    }
+},
+{
+    "pk": 1, 
+    "model": "api.eventtheme", 
+    "fields": {
+        "name": "Basic programming concepts"
+    }
+},
+{
+    "pk": 2, 
+    "model": "api.eventtheme", 
+    "fields": {
+        "name": "Web development"
+    }
+},
+{
+    "pk": 3, 
+    "model": "api.eventtheme", 
+    "fields": {
+        "name": "Native mobile app development"
+    }
+},
+{
+    "pk": 4, 
+    "model": "api.eventtheme", 
+    "fields": {
+        "name": "Other software development"
+    }
+},
+{
+    "pk": 5, 
+    "model": "api.eventtheme", 
+    "fields": {
+        "name": "Data manipulation and visualisation"
+    }
+},
+{
+    "pk": 6, 
+    "model": "api.eventtheme", 
+    "fields": {
+        "name": "Robotics"
+    }
+},
+{
+    "pk": 7, 
+    "model": "api.eventtheme", 
+    "fields": {
+        "name": "Hardware"
+    }
+},
+{
+    "pk": 8, 
+    "model": "api.eventtheme", 
+    "fields": {
+        "name": "Other (add more info to event description)"
+    }
+}
+]
