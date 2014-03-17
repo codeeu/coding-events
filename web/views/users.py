@@ -9,11 +9,12 @@ from web.views.events import get_client_ip
 from web.processors.user import get_ambassadors_for_countries
 from web.processors.event import get_country_from_user_ip
 
+
 def login(request):
 	return render_to_response('pages/login.html', {}, context_instance=RequestContext(request))
 
-def user_profile(request):
 
+def user_profile(request):
 	if request.method == 'POST':
 		# populate form with original instance and add post info on top of that
 		uform = UserForm(request.POST, instance=request.user)
@@ -35,8 +36,8 @@ def user_profile(request):
 	return render_to_response(
 		'pages/profile.html', context, context_instance=RequestContext(request))
 
-def ambassadors(request):
 
+def ambassadors(request):
 	try:
 		user_ip = get_client_ip(request)
 		user_country = get_country_from_user_ip(user_ip)
@@ -47,8 +48,8 @@ def ambassadors(request):
 
 	return render_to_response(
 		'pages/ambassadors.html', {
-			'user_country': user_country,
-			'countries': countries_ambassadors,
+		'user_country': user_country,
+		'countries': countries_ambassadors,
 		},
 		context_instance=RequestContext(request))
 
