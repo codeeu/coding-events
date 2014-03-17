@@ -53,7 +53,7 @@ NAVIGATION STYLES
 .dropdown {
 
 	.dropdown-menu {
-		a{
+		a {
 			padding: 3px 20px 3px 5px;
 		}
 
@@ -67,11 +67,10 @@ NAVIGATION STYLES
 	}
 }
 
-
 /*********************
 LOGIN MODAL WINDOW STYLES
 *********************/
-#login-modal{
+#login-modal {
 	.modal-header {
 		border-bottom: none;
 	}
@@ -82,12 +81,26 @@ LOGIN MODAL WINDOW STYLES
 
 .btn-social {
 
-	i{
+	i {
 		line-height: 68px !important;
 	}
 
 }
 
+/*********************
+LOGIN PAGE STYLES
+*********************/
+.logged-in {
+	margin: 50px 0;
+
+	img {
+		margin: 20px 20px 20px 0;
+	}
+
+	.username {
+		display: inline-block;
+	}
+}
 
 /*********************
 LANDING PAGE MAP STYLES
@@ -183,9 +196,14 @@ ADD/EDIT EVENT PAGE STYLES
 	font-style: italic;
 }
 
+.fileinput {
+	width: 100%;
+}
+
 .fileinput-preview {
 	img {
-		width: 100%;
+		//width: 100%;
+		max-height: 204px;
 	}
 }
 
@@ -258,8 +276,8 @@ VIEW EVENT STYLES
 }
 
 #view-event-map-wrapper {
-	width: 100%;
-	height: 300px;
+	height: 280px;
+	padding-top: 30px;
 }
 
 .about-event {
@@ -322,3 +340,5 @@ VIEW EVENT STYLES
 	}
 
 }
+
+

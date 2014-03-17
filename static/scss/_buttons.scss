@@ -144,3 +144,17 @@
 	padding: 5px 10px 5px 10px;
 	font-size: 12px;
 }
+
+.submit-button-wrapper{
+	padding: 0;
+	&.btn-lg {
+		input {
+			padding: 15px 120px 15px 30px;
+			background: transparent;
+			border: none;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+		}
+	}
+
+}
