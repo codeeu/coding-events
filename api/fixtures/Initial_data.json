@@ -52,7 +52,7 @@
     "pk": 8, 
     "model": "api.eventaudience", 
     "fields": {
-        "name": "Other (more info in the event description)"
+        "name": "Other (see description)"
     }
 },
 {
@@ -108,7 +108,7 @@
     "pk": 8, 
     "model": "api.eventtheme", 
     "fields": {
-        "name": "Other (add more info to event description)"
+        "name": "Other (see description)"
     }
 }
 ]
