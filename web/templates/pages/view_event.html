@@ -62,6 +62,22 @@
 				<strong>More information:</strong>
 				<p><a href="{{ event.event_url }}" target="_blank">{{ event.event_url }}</a></p>
 				{% endif %}
+				<strong>This event is for:</strong> 
+				<p>{% for entry in event.audience.all %}
+					{% if forloop.last %}
+						{{ entry.name }}
+					{% else %}
+						{{ entry.name }}, 
+					{% endif %}
+				{% endfor %}</p>
+				<strong>Main themes:</strong>
+				<p>{% for entry in event.theme.all %}
+					{% if forloop.last %}
+						{{ entry.name }}
+					{% else %}
+						{{ entry.name }}, 
+					{% endif %}
+				{% endfor %}</p>
 				{% if event.tags %}
 					<strong>Tags:</strong>
 					<p>
@@ -69,7 +85,7 @@
 							{% if forloop.last %}
 								{{ tag.name }}
 							{% else %}
-								{{ tag.name }}
+								{{ tag.name }}, 
 							{% endif %}
 						{% endfor %}
 					</p>

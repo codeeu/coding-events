@@ -78,7 +78,7 @@ def add_event(request):
 			event_data = {}
 			event_data.update(event_form.cleaned_data)
 			event = create_or_update_event(**event_data)
-
+			event.save()
 			t = loader.get_template('pages/thankyou.html')
 			c = Context({'event': event, })
 			messages.info(request, t.render(c))

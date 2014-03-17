@@ -75,6 +75,18 @@ class Event(models.Model):
 		except KeyError:
 			pass
 
+		try:
+			self.audiencelist = kwargs['audience']
+			del kwargs['audience']
+		except KeyError:
+			pass
+
+		try:
+			self.themelist = kwargs['theme']
+			del kwargs['theme']
+		except KeyError:
+			pass
+
 		super(Event, self).__init__(*args, **kwargs)
 
 	def save(self,*args,**kwargs):
@@ -85,6 +97,10 @@ class Event(models.Model):
 		try:
 			for tag in self.tag:
 				self.tags.add(tag)
+			for entry in self.audiencelist:
+				self.audience.add(entry)
+			for entry in self.themelist:
+				self.theme.add(entry)
 		except AttributeError:
 			pass
 
