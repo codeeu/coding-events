@@ -8,6 +8,24 @@ from taggit.managers import TaggableManager
 from geoposition.fields import GeopositionField
 from django_countries.fields import CountryField
 
+class EventAudience(models.Model):
+	name = models.CharField(max_length=255) 
+
+	def __unicode__(self):
+		return self.name
+
+	class Meta:
+		app_label='api'
+
+
+class EventTheme(models.Model):
+	name = models.CharField(max_length=255) 
+
+	def __unicode__(self):
+		return self.name
+
+	class Meta:
+		app_label='api'
 
 
 class Event(models.Model):
@@ -31,6 +49,8 @@ class Event(models.Model):
 	contact_person = models.EmailField(blank=True)
 	picture = models.ImageField(upload_to='event_picture', blank=True)
 	pub_date = models.DateTimeField(default=datetime.datetime.now())
+	audience = models.ManyToManyField(EventAudience, related_name='event_audience')
+	theme = models.ManyToManyField(EventTheme, related_name='event_theme')
 	tags = TaggableManager(blank=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
@@ -49,7 +69,6 @@ class Event(models.Model):
 		)
 
 	def __init__(self, *args, **kwargs):
-
 		try:
 			self.tag = kwargs['tags']
 			del kwargs['tags']
