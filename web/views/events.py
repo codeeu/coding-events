@@ -156,12 +156,12 @@ def list_pending_events(request, country_code):
 		messages.error(request, "You don't have permissions to see this page")
 		return HttpResponseRedirect(reverse("web.index"))
 	else:
-		return render_to_response("pages/list_events.html", {
-									'event_list': event_list,
-									'status': 'pending',
-									'country_code': country_code,
-									},
-									context_instance=RequestContext(request))
+		return render_to_response(
+			"pages/list_events.html", {
+				'event_list': event_list,
+				'status': 'pending',
+				'country_code': country_code,
+			}, context_instance=RequestContext(request))
 
 
 @login_required
