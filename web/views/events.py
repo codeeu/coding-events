@@ -11,8 +11,8 @@ from django.core.urlresolvers import reverse
 from django_countries import countries
 
 from api.models import Event
-from web.forms.event_form import AddEventForm
-from web.processors.event import get_event
+from web.forms.event_form import AddEventForm, SearchEventForm
+from web.processors.event import get_event, filter_events
 from web.processors.event import change_event_status
 from web.processors.event import create_or_update_event
 from web.processors.event import get_client_ip
@@ -54,16 +54,16 @@ def index(request, country_code=None):
 
 	latest_events = get_approved_events(limit=5, order='pub_date',
 	                                    country_code=country.get('country_code', None))
-	
+
 	all_countries = list_countries()
-	
+
 	return render_to_response(
 		template, {
-			'latest_events': latest_events,
-		    'map_events': map_events,
-		    'lan_lon': lan_lon,
-		    'country': country,
-		    'all_countries': all_countries,
+		'latest_events': latest_events,
+		'map_events': map_events,
+		'lan_lon': lan_lon,
+		'country': country,
+		'all_countries': all_countries,
 		},
 		context_instance=RequestContext(request))
 
@@ -72,6 +72,7 @@ def index(request, country_code=None):
 def add_event(request):
 	event_form = AddEventForm()
 	from django.template import loader, Context
+
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
 		if event_form.is_valid():
@@ -86,26 +87,22 @@ def add_event(request):
 			return HttpResponseRedirect(reverse('web.view_event', args=[event.pk, event.slug]))
 
 	return render_to_response("pages/add_event.html", {
-		'form': event_form,
+	'form': event_form,
 	}, context_instance=RequestContext(request))
 
 
 def view_event(request, event_id, slug):
-
 	event = get_object_or_404(Event, pk=event_id, slug=slug)
 
 	return render_to_response(
 		'pages/view_event.html', {
-			'event': event,
+		'event': event,
 		}, context_instance=RequestContext(request))
-
-
-def search_event(request):
-	pass
 
 
 def thankyou(request):
 	return render_to_response('alerts/thank_you.html')
+
 
 @login_required
 @can_edit_event
@@ -136,16 +133,15 @@ def edit_event(request, event_id):
 
 	return render_to_response(
 		"pages/add_event.html", {
-			"form": event_form,
-			"address": event_data['location'],
-		    "editing": True,
-		    "picture_url": event.picture,
+		"form": event_form,
+		"address": event_data['location'],
+		"editing": True,
+		"picture_url": event.picture,
 		}, context_instance=RequestContext(request))
 
 
 @login_required
 def list_pending_events(request, country_code):
-
 	"""
 	Display a list of pending events.
 	"""
@@ -158,20 +154,20 @@ def list_pending_events(request, country_code):
 	else:
 		return render_to_response(
 			"pages/list_events.html", {
-				'event_list': event_list,
-				'status': 'pending',
-				'country_code': country_code,
+			'event_list': event_list,
+			'status': 'pending',
+			'country_code': country_code,
 			}, context_instance=RequestContext(request))
 
 
 @login_required
-def list_approved_events(request,country_code):
+def list_approved_events(request, country_code):
 	"""
 	Display a list of approved events.
 	"""
 
-	event_list = get_approved_events(country_code = country_code)
-	context = {'event_list': event_list, 'status': 'approved','country_code': country_code}
+	event_list = get_approved_events(country_code=country_code)
+	context = {'event_list': event_list, 'status': 'approved', 'country_code': country_code}
 
 	return render_to_response("pages/list_events.html", context, context_instance=RequestContext(request))
 
@@ -180,12 +176,38 @@ def guide(request):
 	return render_to_response('pages/guide.html')
 
 
+def search_events(request):
+		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+		                        remote=request.META.get('REMOTE_ADDR'))
+		country = get_country_from_user_ip(user_ip)
+		template = 'pages/search_events.html'
+		form = SearchEventForm(initial=request.GET)
+		events = get_approved_events(country_code=country)
+
+		if request.is_ajax():
+			country = request.GET.get('country', None)
+			template = 'layout/pjax_search_events.html'
+			events = get_approved_events(country_code=country)
+			print events
+			# TODO: Improve search
+		else:
+			if request.method == 'POST':
+				form = SearchEventForm(request.POST)
+				if form.is_valid():
+					events = get_approved_events(country_code=form.cleaned_data['country'])
+			else:
+				events = get_approved_events(country_code=country['country_code'])
+
+		return render_to_response(
+			template, {
+				'events': events,
+				'form': form,
+			}, context_instance=RequestContext(request))
 
 
 @login_required
 @can_edit_event
 def change_status(request, event_id):
-
 	event = change_event_status(event_id)
 
 	return HttpResponseRedirect(reverse('web.view_event', args=[event_id, event.slug]))
