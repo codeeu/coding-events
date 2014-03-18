@@ -29,32 +29,8 @@
 		<h2>Latest #codeEU Events{% if country %} in <span id="country">{{ country.country_name }}</span>{% endif %}</h2>
 		<div class="clearfix" id="events-list">
 			{% if latest_events %}
-				{% for event in latest_events %}
-					<div class="col-sm-6 col-md-6 col-lg-4">
-						<div class="thumbnail">
-							<div class="title"><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></div>
-							<a href="{% url 'web.view_event' event.id event.slug %}" class="img-link">
-								<img src="//maps.googleapis.com/maps/api/staticmap?markers={{ event.geoposition }}&zoom=9&size=390x80&sensor=false">
-							</a>
-
-							<div class="caption">
-								<p>{{ event.description|truncatewords:20 }}</p>
-
-
-								<a href="{% url 'web.view_event' event.id event.slug %}"
-								   class="btn btn-primary btn-directional fa-arrow-right btn-sm"
-								   role="button">View</a>
-
-								<span class="countdown pull-right">
-									Happening in:
-									{{ event.start_date|timeuntil }}
-								</span>
-
-							</div>
-						</div>
-					</div>
-				{% endfor %}		
-			{% else %}
+			    {% include 'layout/all_events.html' %}
+            {% else %}
 				<p>
 					No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a>
 				<p>
@@ -87,6 +63,7 @@
 	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
 	<script src="{% static "js/markerclusterer.js" %}"></script>
 	<script src="{% static "lib//pjax/jquery.pjax.js" %}"></script>
+    <script src="{% static "js/jquery.infinitescroll.js" %}"></script>
 	<script type="text/javascript"
 	        src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
 	</script>
@@ -105,5 +82,11 @@
 		        div.style.display = 'block';
 		    }
 		};
-	</script>
+    </script>
+
+    {{ block.super }}
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="{% static "js/endless_pagination/endless-pagination.js" %}"></script>
+    <script>$.endlessPaginate();</script>
+
 {% endblock %}
