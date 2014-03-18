@@ -270,7 +270,7 @@ VIEW EVENT STYLES
 .event-jumbotron {
 	img {
 		width: 100%;
-		margin: 20px 0;
+		margin-bottom: 20px;
 	}
 
 }
@@ -339,6 +339,10 @@ VIEW EVENT STYLES
 		}
 	}
 
+}
+
+.event-time-place {
+	margin-top: 20px;
 }
 
 /*********************
