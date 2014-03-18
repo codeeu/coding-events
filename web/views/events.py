@@ -13,8 +13,8 @@ from django.core.urlresolvers import reverse
 from django_countries import countries
 
 from api.models import Event
-from web.forms.event_form import AddEventForm, SearchEventForm
-from web.processors.event import get_event, filter_events
+from web.forms.event_form import AddEventForm
+from web.processors.event import get_event
 from web.processors.event import change_event_status
 from web.processors.event import create_or_update_event
 from web.processors.event import get_client_ip
@@ -40,7 +40,7 @@ def index(request, country_code=None):
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
 
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
-							remote=request.META.get('REMOTE_ADDR'))
+	                        remote=request.META.get('REMOTE_ADDR'))
 
 	if country_code:
 		country_name = unicode(dict(countries)[country_code])
@@ -53,11 +53,13 @@ def index(request, country_code=None):
 
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
+		if not lan_lon:
+			lan_lon = (46.0608144, 14.497165600000017)
 	except GeoIPException:
 		lan_lon = (46.0608144, 14.497165600000017)
 
-	latest_events = get_approved_events(limit=5, order='pub_date',
-										country_code=country.get('country_code', None))
+    latest_events = get_approved_events(limit=5, order='pub_date',
+                                        country_code=country.get('country_code', None))
 
 	all_countries = list_countries()
 
@@ -136,9 +138,13 @@ def edit_event(request, event_id):
 	event_data['tags'] = ",".join(tags)
 	event_form = AddEventForm(data=event_data)
 
-	if request.method == "POST":
-		event_form = AddEventForm(data=request.POST, files=request.FILES)
-		if event_form.is_valid():
+    # Making sure the right option ids are selected when form is loaded
+    event_data['audience'] = [audience.pk for audience in event.audience.all()]
+    event_data['theme'] = [theme.pk for theme in event.theme.all()]
+    
+    if request.method == "POST":
+        event_form = AddEventForm(data=request.POST, files=request.FILES)
+        if event_form.is_valid():
 
 			if request.FILES.get('picture', None):
 
@@ -238,5 +244,6 @@ def search_events(request):
 @login_required
 @can_edit_event
 def change_status(request, event_id):
-	event = change_event_status(event_id)
-	return HttpResponseRedirect(reverse('web.view_event', args=[event_id, event.slug]))
+    event = change_event_status(event_id)
+
+    return HttpResponseRedirect(reverse('web.view_event', args=[event_id, event.slug]))

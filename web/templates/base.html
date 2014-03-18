@@ -11,7 +11,10 @@
 
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 	{% compress css %}
-
+		<link href="{% static 'lib/bootstrap-sass/stylesheets/bootstrap.scss' %}"
+		      media="screen" rel="stylesheet" type="text/x-scss" />
+		<link href="{% static 'scss/bootstrap-social.scss' %}"
+		      media="screen" rel="stylesheet" type="text/x-scss" />
 		<link href="{% static 'scss/style.scss' %}"
 		      media="screen" rel="stylesheet" type="text/x-scss" />
 		<link href="{% static 'css/custom.css' %}"
