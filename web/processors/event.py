@@ -6,6 +6,8 @@ from django.contrib.gis.geoip import GeoIP
 from api.models import Event
 from django_countries import countries
 
+from web.processors import media
+
 def get_client_ip(forwarded=None, remote=None):
 
 	if settings.DEBUG:
@@ -64,6 +66,11 @@ def create_or_update_event(event_id=None, **event_data):
 			event_tags = event_data['tags']
 			event_data.pop('tags')
 
+		#resize and convert the picture before uploading to db
+		if event_data.get('picture', None):
+			picture_db = media.process_image(event_data['picture'])
+			event_data['picture']= picture_db
+
 		#in case we have geoposition data in event_data
 		if 'geoposition' in event_data:
 			# updating geoposition field is a bit fussy
@@ -88,6 +95,10 @@ def create_or_update_event(event_id=None, **event_data):
 		event.tags.set(*event_tags)
 
 	else:
+		if event_data.get('picture', None):
+			picture_db = media.process_image(event_data['picture'])
+			event_data['picture']= picture_db
+
 		event = Event.objects.create(**event_data)
 	return event
 
