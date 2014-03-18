@@ -9,7 +9,6 @@ def check_pending_events(sender, user, request, **kwargs):
 		return None
 
 	if user.groups.filter(name='ambassadors').count():
-		print "CHECK CHECK"
 		if not user.profile.country:
 			t = loader.get_template('alerts/set_country_request.html')
 			c = Context({'user': user, })
