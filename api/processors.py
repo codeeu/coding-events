@@ -12,7 +12,7 @@ def get_event_by_id(event_id):
 	return event
 
 
-def get_approved_events(limit=None, order=None, country_code=None, past=False):
+def get_approved_events(limit=None, order=None, country_code=None, theme=None, past=False):
 	"""
 	Select all events which are approved and optionally limit and/or order them
 	"""

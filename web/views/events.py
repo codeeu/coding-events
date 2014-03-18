@@ -221,8 +221,7 @@ def search_events(request):
 			form = SearchEventForm(request.POST)
 			if form.is_valid():
 				events = get_approved_events(country_code=form.cleaned_data['country'])
-			else:
-				print 'nono'
+
 		else:
 			form = SearchEventForm()
 			events = get_approved_events(country_code=country['country_code'])
