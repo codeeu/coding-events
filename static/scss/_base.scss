@@ -351,4 +351,14 @@ SEARCH EVENTS STYLES
 .search-page {
 	margin: 60px 0;
 }
+.search-checkbox {
+	ul {
+		list-style-type: none;
+		padding-left: 0;
+
+		label {
+			font-weight: normal;
+		}
+	}
+}
 

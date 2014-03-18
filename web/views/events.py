@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template import loader
 from django.template import Context
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from django.core.urlresolvers import reverse
 from django_countries import countries
 
 from api.models import Event
-from web.forms.event_form import AddEventForm
+from web.forms.event_form import AddEventForm, SearchEventForm
 from web.processors.event import get_event
 from web.processors.event import change_event_status
 from web.processors.event import create_or_update_event
@@ -58,9 +58,8 @@ def index(request, country_code=None):
 	except GeoIPException:
 		lan_lon = (46.0608144, 14.497165600000017)
 
-    latest_events = get_approved_events(limit=5, order='pub_date',
+	latest_events = get_approved_events(limit=5, order='pub_date',
                                         country_code=country.get('country_code', None))
-
 	all_countries = list_countries()
 
 	return render_to_response(
@@ -136,15 +135,14 @@ def edit_event(request, event_id):
 	for tag in event.tags.all():
 		tags.append(tag.name)
 	event_data['tags'] = ",".join(tags)
-	event_form = AddEventForm(data=event_data)
+	event_form = AddEventForm(data=event_data) # Making sure the right option ids are selected when form is loaded
 
-    # Making sure the right option ids are selected when form is loaded
-    event_data['audience'] = [audience.pk for audience in event.audience.all()]
-    event_data['theme'] = [theme.pk for theme in event.theme.all()]
-    
-    if request.method == "POST":
-        event_form = AddEventForm(data=request.POST, files=request.FILES)
-        if event_form.is_valid():
+	event_data['audience'] = [audience.pk for audience in event.audience.all()]
+	event_data['theme'] = [theme.pk for theme in event.theme.all()]
+
+	if request.method == "POST":
+		event_form = AddEventForm(data=request.POST, files=request.FILES)
+		if event_form.is_valid():
 
 			if request.FILES.get('picture', None):
 
@@ -152,28 +150,28 @@ def edit_event(request, event_id):
 					verify_image_size(request.FILES['picture'].size)
 
 				except UploadImageError:
-						messages.error(request, "Image file is too large. Image size must be up to 256 kb")
+					messages.error(request, "Image file is too large. Image size must be up to 256 kb")
 
-						return render_to_response("pages/add_event.html", {
-								'form': event_form,
-						 }, context_instance=RequestContext(request))
+					return render_to_response("pages/add_event.html", {
+						'form': event_form,
+					}, context_instance=RequestContext(request))
 
-			event_data = event_form.cleaned_data
-			if not event_data['picture']:
-				event_data.pop('picture')
+		event_data = event_form.cleaned_data
+		if not event_data['picture']:
+			event_data.pop('picture')
 
-			event = create_or_update_event(event_id, **event_data)
+		event = create_or_update_event(event_id, **event_data)
 
-			url = reverse('web.view_event', kwargs={'event_id': event.id, 'slug': event.slug})
+		url = reverse('web.view_event', kwargs={'event_id': event.id, 'slug': event.slug})
 
-			return HttpResponseRedirect(url)
+		return HttpResponseRedirect(url)
 
 	return render_to_response(
 		"pages/add_event.html", {
-			"form": event_form,
-			"address": event_data['location'],
-			"editing": True,
-			"picture_url": event.picture,
+		"form": event_form,
+		"address": event_data['location'],
+		"editing": True,
+		"picture_url": event.picture,
 		}, context_instance=RequestContext(request))
 
 
@@ -217,25 +215,20 @@ def search_events(request):
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
 		country = get_country_from_user_ip(user_ip)
-		template = 'pages/search_events.html'
-		form = SearchEventForm(initial=request.GET)
 		events = get_approved_events(country_code=country)
 
-		if request.is_ajax():
-			country = request.GET.get('country', None)
-			template = 'layout/pjax_search_events.html'
-			events = get_approved_events(country_code=country)
-			# TODO: Improve search
-		else:
-			if request.method == 'POST':
-				form = SearchEventForm(request.POST)
-				if form.is_valid():
-					events = get_approved_events(country_code=form.cleaned_data['country'])
+		if request.method == 'POST':
+			form = SearchEventForm(request.POST)
+			if form.is_valid():
+				events = get_approved_events(country_code=form.cleaned_data['country'])
 			else:
-				events = get_approved_events(country_code=country['country_code'])
+				print 'nono'
+		else:
+			form = SearchEventForm()
+			events = get_approved_events(country_code=country['country_code'])
 
 		return render_to_response(
-			template, {
+			'pages/search_events.html', {
 				'events': events,
 				'form': form,
 			}, context_instance=RequestContext(request))

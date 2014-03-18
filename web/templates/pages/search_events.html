@@ -7,45 +7,29 @@
 	<div class="container">
 		<div class="search-page">
 			<div class="search-options">
-				<form action="{% url 'web.search_events' %}" method="POST" id="search-form">{% csrf_token %}
+				<form method="post" action="{% url 'web.search_events' %}" enctype="multipart/form-data">{% csrf_token %}
+					{{ form.non_field_errors }}
 					<div class="row">
 						<div class="form-group col-md-8">
-							<input type="text" class="form-control" id="id_search" placeholder="Search events">
+							{{ form.search }}
 						</div>
+						<div class="col-md-12"><hr></div>
 					</div>
 					<div class="row">
 						<div class="col-md-4">
-							<label>{{ form.fields.country.label }}</label>
-							<select class="form-control search-form-element" id="id_country" name="country">
-								{% for x,y in form.fields.country.choices %}
-									<option value="{{ x }}">{{ y }}</option>
-								{% endfor %}
-							</select>
+							<label for="id_country">{{ form.fields.country.label }}</label>
+							{{ form.country }}
 
-							<div class="search-theme">
+							<div class="search-checkbox">
 								<hr>
 								<label>{{ form.fields.theme.label }}</label>
-								{% for x,y in form.fields.theme.choices %}
-									<div class="checkbox">
-										<label for="id_theme_{{ x }}">
-											<input id="id_theme_{{ x }}"
-											       name="theme" type="checkbox" value="{{ x }}"> {{ y }}
-										</label>
-									</div>
-								{% endfor %}
+								{{ form.theme }}
 							</div>
 
-							<div class="search-theme">
+							<div class="search-checkbox">
 								<hr>
 								<label>{{ form.fields.audience.label }}</label>
-								{% for x,y in form.fields.audience.choices %}
-									<div class="checkbox">
-										<label for="id_theme_{{ x }}">
-											<input id="id_theme_{{ x }}"
-											       name="audience" type="checkbox" value="{{ x }}"> {{ y }}
-										</label>
-									</div>
-								{% endfor %}
+								{{ form.audience }}
 							</div>
 							<hr>
 							<input type="submit" class="btn btn-primary btn-sm" />
@@ -57,9 +41,9 @@
 										{% include 'layout/event_tile_long.html' %}
 									{% endfor %}
 								{% else %}
-									<p>
+									<h3>
 										Sorry, no events. Try with diferent criteria.
-									</p>
+									</h3>
 								{% endif %}
 							</div>
 						</div>
@@ -68,14 +52,5 @@
 			</div>
 		</div>
 	</div>
-{% endblock content %}
 
-{% block custom_js %}
-	<script type="text/javascript" src="{% static "lib/pjax/jquery.pjax.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/search-events.js" %}"></script>
-	<script type="text/javascript">
-		//Codeweek.Search.init('
-		//
-		{% url 'web.search_events' %}');
-	</script>
-{% endblock %}
+{% endblock content %}

@@ -101,7 +101,7 @@ class AddEventForm(forms.ModelForm):
 
 
 class SearchEventForm(forms.Form):
-	#print list_themes()
+
 	search = forms.CharField(
 		required=False,
 	    widget=forms.TextInput(attrs={'placeholder': 'Search some serious events', 'class': 'form-control'})
@@ -117,7 +117,7 @@ class SearchEventForm(forms.Form):
 		label='Theme',
 	    empty_label=None,
 	    required=False,
-	    widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control search-form-element'}),
+	    widget=forms.CheckboxSelectMultiple(attrs={'class': 'search-form-element'}),
 	)
 
 	audience = forms.ModelChoiceField(
@@ -125,7 +125,7 @@ class SearchEventForm(forms.Form):
 		label='Audience',
 	    empty_label=None,
 	    required=False,
-		widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control search-form-element'}),
+		widget=forms.CheckboxSelectMultiple(attrs={'class': 'search-form-element'}),
 	)
 
 	def __init__(self, *args, **kwargs):
