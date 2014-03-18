@@ -13,11 +13,27 @@ var Codeweek = window.Codeweek || {};
 
             if ($.support.pjax) {
                 $('.form-control').bind('change', function (e) {
-                    var categories = $('input[name="category"]:checked').map(function (_, el) {
-                        return $(el).val();
-                    }).get();
+                    var url_params = '',
+                        search = $('#id_search').val(),
+                        theme = $('input[name="theme"]:checked').map(function (_, el) {
+                            return $(el).val();
+                        }).get(),
+                        audience = $('input[name="audience"]:checked').map(function (_, el) {
+                            return $(el).val();
+                        }).get();
 
-                    $.pjax({url: url + '?search=' + $('#id_search').val() + '&country=' + $('#id_country').val() + '&category=' + categories.join(','), container: '#events-container'});
+                    if (search !== 'undefined' || search !== "") {
+
+                    }
+
+                    $.pjax({
+                        url: url + '?search=' + $('#id_search').val() + '&country=' + $('#id_country').val() + '&category=' + categories.join(','),
+                        container: '#events-container'
+                    });
+
+                    $(document).on('pjax:send', function () {
+                        console.log('sending');
+                    });
 
                     $(document).on('pjax:success', function () {
                         console.log('was ok');

@@ -2,6 +2,7 @@
 from django import forms
 from django_countries.fields import countries
 from api.models import Event
+from api.models.events import EventTheme, EventAudience
 
 
 class AddEventForm(forms.ModelForm):
@@ -100,6 +101,7 @@ class AddEventForm(forms.ModelForm):
 
 
 class SearchEventForm(forms.Form):
+	#print list_themes()
 	search = forms.CharField(
 		required=False,
 	    widget=forms.TextInput(attrs={'placeholder': 'Search some serious events', 'class': 'form-control'})
@@ -110,11 +112,20 @@ class SearchEventForm(forms.Form):
 	    widget=forms.Select(attrs={'class': 'form-control search-form-element'}),
 		choices=countries
 	)
-	category = forms.MultipleChoiceField(
-		label='Categories',
-	    required=False,
+	theme = forms.ModelChoiceField(
+		queryset=EventTheme.objects.all(),
+		label='Theme',
+	    empty_label=None,
+	    required=True,
+	    widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control search-form-element'}),
+	)
+
+	audience = forms.ModelChoiceField(
+		queryset=EventAudience.objects.all(),
+		label='Audience',
+	    empty_label=None,
+	    required=True,
 		widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control search-form-element'}),
-		choices=(('KIDS', 'Kids'), ('BOYS', 'Boys'), ('GIRLS', 'Girls')),
 	)
 
 	def __init__(self, *args, **kwargs):

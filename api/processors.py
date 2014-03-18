@@ -1,5 +1,6 @@
 import datetime
 from models.events import Event
+from models.events import EventTheme
 
 
 def get_all_events():
@@ -46,3 +47,9 @@ def get_pending_events(limit=None, order=None, country_code=None, past=False):
 		events = events = events[:limit]
 
 	return events
+
+
+def list_themes():
+	themes = EventTheme.objects.all()
+
+	return themes
