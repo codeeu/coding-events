@@ -30,7 +30,7 @@
 		<div class="clearfix" id="events-list">
 			{% if latest_events %}
 				{% for event in latest_events %}
-					<div class=" col-md-4 {% if forloop.first %}first{% endif %}">
+					<div class="col-sm-6 col-md-6 col-lg-4">
 						<div class="thumbnail">
 							<div class="title"><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></div>
 							<a href="{% url 'web.view_event' event.id event.slug %}" class="img-link">
