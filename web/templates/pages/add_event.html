@@ -30,7 +30,7 @@
 					{% if field.name == 'geoposition' %}
 						<span style="display:none">{{ field.label_tag }}{{ field }}</span>
 					{% elif field.name == 'location' %}
-						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6 first input-with-icon">
 							<label class="control-label" for="{{ field.auto_id }}">
 								{% if field.field.required %}<i class="fa fa-asterisk"></i>{% endif %}
 								{{ field.label }}
@@ -39,13 +39,13 @@
 							<i class="fa fa-map-marker"></i>
 							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
 						</div>
-						<div id="view-event-map-wrapper" class="col-md-8 pull-right">
+						<div id="view-event-map-wrapper" class="col-md-6 pull-right">
 							<div id="view-event-map">Loading map ...</div>
 						</div>
 					{% elif field.name == 'country' %}
 						<span class="hidden">{{ field }}</span>
 					{% elif field.name == 'start_date' %}
-						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6 first input-with-icon">
 							<label class="control-label" for="{{ field.auto_id }}">
 								{% if field.field.required %}
 									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
@@ -59,7 +59,7 @@
 						</div>
 					{% elif field.name == 'end_date' %}
 						<div class="clearfix">
-							<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
+							<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6 first input-with-icon">
 								<label class="control-label" for="{{ field.auto_id }}">
 									{% if field.field.required %}
 										<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
@@ -71,8 +71,68 @@
 								<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
 							</div>
 						</div>
+					
+					{% elif field.name == 'event_url' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6 first input-with-icon">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<i class="fa fa-globe"></i>
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
+
+					{% elif field.name == 'contact_person' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6 first input-with-icon">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<i class="fa fa-envelope"></i>
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
+					{% elif field.name == 'audience' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
+					{% elif field.name == 'theme' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
+					{% elif field.name == 'tags' %}
+						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6 first input-with-icon">
+							<label class="control-label" for="{{ field.auto_id }}">
+								{% if field.field.required %}
+									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
+									   title="This data is required"></i>
+								{% endif %}
+								{{ field.label }}</label>
+							{{ field }}
+							<i class="fa fa-tags"></i>
+							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
+						</div>
 					{% elif field.name == 'picture' %}
-						<div class="pull-right col-md-8">
+						<div class="pull-right col-md-6">
 							<label>{{ field.label }}</label>
 
 							<div class="fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %} "
@@ -91,44 +151,6 @@
 									<a href="#" class="btn btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
 								</div>
 							</div>
-						</div>
-					{% elif field.name == 'event_url' %}
-						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
-							<label class="control-label" for="{{ field.auto_id }}">
-								{% if field.field.required %}
-									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
-									   title="This data is required"></i>
-								{% endif %}
-								{{ field.label }}</label>
-							{{ field }}
-							<i class="fa fa-globe"></i>
-							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
-						</div>
-
-					{% elif field.name == 'contact_person' %}
-						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
-							<label class="control-label" for="{{ field.auto_id }}">
-								{% if field.field.required %}
-									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
-									   title="This data is required"></i>
-								{% endif %}
-								{{ field.label }}</label>
-							{{ field }}
-							<i class="fa fa-envelope"></i>
-							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
-						</div>
-
-					{% elif field.name == 'tags' %}
-						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-4 first input-with-icon">
-							<label class="control-label" for="{{ field.auto_id }}">
-								{% if field.field.required %}
-									<i class="fa fa-asterisk" data-toggle="tooltip" data-placement="left"
-									   title="This data is required"></i>
-								{% endif %}
-								{{ field.label }}</label>
-							{{ field }}
-							<i class="fa fa-tags"></i>
-							<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
 						</div>
 					{% else %}
 						<div class="form-group {% if field.errors %}has-error{% endif %}">
