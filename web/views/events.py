@@ -138,6 +138,10 @@ def edit_event(request, event_id):
     event_data['tags'] = ",".join(tags)
     event_form = AddEventForm(data=event_data)
 
+    # Making sure the right option ids are selected when form is loaded
+    event_data['audience'] = [audience.pk for audience in event.audience.all()]
+    event_data['theme'] = [theme.pk for theme in event.theme.all()]
+    
     if request.method == "POST":
         event_form = AddEventForm(data=request.POST, files=request.FILES)
         if event_form.is_valid():
