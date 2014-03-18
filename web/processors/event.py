@@ -6,6 +6,8 @@ from django.contrib.gis.geoip import GeoIP
 from api.models import Event
 from django_countries import countries
 
+from web.processors import media
+
 
 def get_client_ip(forwarded=None, remote=None):
 
@@ -54,11 +56,22 @@ def create_or_update_event(event_id=None, **event_data):
 	event = Event.objects.filter(id=event_id)
 	if event:
 		event = event[0]
+
+		# many to many fields have to updated after other fields are updated
+		new_audiences = event_data['audience']
+		event_data.pop('audience')
+		new_themes = event_data['theme']
+		event_data.pop('theme')
+
 		event_tags = []
-		#we have to update tags after the other fields are updated
 		if 'tags' in event_data:
 			event_tags = event_data['tags']
 			event_data.pop('tags')
+
+		#resize and convert the picture before uploading to db
+		if event_data.get('picture', None):
+			picture_db = media.process_image(event_data['picture'])
+			event_data['picture']= picture_db
 
 		#in case we have geoposition data in event_data
 		if 'geoposition' in event_data:
@@ -76,10 +89,18 @@ def create_or_update_event(event_id=None, **event_data):
 			event.__dict__.update(event_data)
 			event.save()
 
-		#delete old tags and store new ones
+		#delete old categories and tags and store new ones
+		event.audience.clear()
+		event.audience.add(*new_audiences)
+		event.theme.clear()
+		event.theme.add(*new_themes)
 		event.tags.set(*event_tags)
 
 	else:
+		if event_data.get('picture', None):
+			picture_db = media.process_image(event_data['picture'])
+			event_data['picture']= picture_db
+
 		event = Event.objects.create(**event_data)
 	return event
 
