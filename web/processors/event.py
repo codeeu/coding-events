@@ -54,8 +54,14 @@ def create_or_update_event(event_id=None, **event_data):
 	event = Event.objects.filter(id=event_id)
 	if event:
 		event = event[0]
+
+		# many to many fields have to updated after other fields are updated
+		new_audiences = event_data['audience']
+		event_data.pop('audience')
+		new_themes = event_data['theme']
+		event_data.pop('theme')
+
 		event_tags = []
-		#we have to update tags after the other fields are updated
 		if 'tags' in event_data:
 			event_tags = event_data['tags']
 			event_data.pop('tags')
@@ -81,7 +87,11 @@ def create_or_update_event(event_id=None, **event_data):
 			event.__dict__.update(event_data)
 			event.save()
 
-		#delete old tags and store new ones
+		#delete old categories and tags and store new ones
+		event.audience.clear()
+		event.audience.add(*new_audiences)
+		event.theme.clear()
+		event.theme.add(*new_themes)
 		event.tags.set(*event_tags)
 
 	else:
