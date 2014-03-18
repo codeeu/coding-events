@@ -10,6 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 from django_countries import countries
 
 from api.models import Event
@@ -47,23 +50,23 @@ def index(request, country_code=None):
         country = {'country_name': country_name, 'country_code': country_code}
     else:
         country = get_country_from_user_ip(user_ip)
-
-    if request.is_ajax():
-        template = 'pages/pjax_index.html'
+	if request.is_ajax():
+		if request.META.get('HTTP_X_PJAX', None):
+			template = 'pages/pjax_index.html'
+		else:
+			template = 'layout/all_events.html'
 
     try:
         lan_lon = get_lat_lon_from_user_ip(user_ip)
     except GeoIPException:
         lan_lon = (46.0608144, 14.497165600000017)
 
-    latest_events = get_approved_events(limit=5, order='pub_date',
-                                        country_code=country.get('country_code', None))
+    events = get_approved_events(order='pub_date', country_code=country.get('country_code', None))
 
     all_countries = list_countries()
-
     return render_to_response(
         template, {
-            'latest_events': latest_events,
+            'latest_events': events,
             'map_events': map_events,
             'lan_lon': lan_lon,
             'country': country,
