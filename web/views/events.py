@@ -35,41 +35,43 @@ then call your newly created function in view!!! .-Erika
 
 
 def index(request, country_code=None):
-    template = 'pages/index.html'
-    events = get_approved_events()
-    map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
+	template = 'pages/index.html'
+	events = get_approved_events()
+	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
 
-    user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
-                            remote=request.META.get('REMOTE_ADDR'))
+	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+	                        remote=request.META.get('REMOTE_ADDR'))
 
-    if country_code:
-        country_name = unicode(dict(countries)[country_code])
-        country = {'country_name': country_name, 'country_code': country_code}
-    else:
-        country = get_country_from_user_ip(user_ip)
+	if country_code:
+		country_name = unicode(dict(countries)[country_code])
+		country = {'country_name': country_name, 'country_code': country_code}
+	else:
+		country = get_country_from_user_ip(user_ip)
 
-    if request.is_ajax():
-        template = 'pages/pjax_index.html'
+	if request.is_ajax():
+		template = 'pages/pjax_index.html'
 
-    try:
-        lan_lon = get_lat_lon_from_user_ip(user_ip)
-    except GeoIPException:
-        lan_lon = (46.0608144, 14.497165600000017)
+	try:
+		lan_lon = get_lat_lon_from_user_ip(user_ip)
+		if not lan_lon:
+			lan_lon = (46.0608144, 14.497165600000017)
+	except GeoIPException:
+		lan_lon = (46.0608144, 14.497165600000017)
 
-    latest_events = get_approved_events(limit=5, order='pub_date',
-                                        country_code=country.get('country_code', None))
-
-    all_countries = list_countries()
-
-    return render_to_response(
-        template, {
-            'latest_events': latest_events,
-            'map_events': map_events,
-            'lan_lon': lan_lon,
-            'country': country,
-            'all_countries': all_countries,
-        },
-        context_instance=RequestContext(request))
+	latest_events = get_approved_events(limit=5, order='pub_date',
+	                                    country_code=country.get('country_code', None))
+	
+	all_countries = list_countries()
+	
+	return render_to_response(
+		template, {
+		    'latest_events': latest_events,
+		    'map_events': map_events,
+		    'lan_lon': lan_lon,
+		    'country': country,
+		    'all_countries': all_countries,
+		},
+		context_instance=RequestContext(request))
 
 
 @login_required
