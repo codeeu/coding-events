@@ -11,7 +11,7 @@ class AddEventForm(forms.ModelForm):
 	class Meta:
 		model = Event
 		fields = ['title', 'organizer', 'description', 'geoposition', 'location', 'country', 'start_date', 'end_date',
-		          'picture', 'event_url', 'contact_person', 'audience', 'theme', 'tags']
+		          'event_url', 'contact_person', 'audience', 'theme', 'picture', 'tags']
 
 		widgets = {
 			'title': forms.TextInput(attrs={"class": "form-control"}),
