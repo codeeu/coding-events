@@ -5,19 +5,57 @@
 
 {% block content %}
 	<div class="container">
-		<div class="search-options col-md-4">
-			<form action="{% url 'web.search_events' %}" method="POST" id="search-form">{% csrf_token %}
-				{{ form }}
-				{% comment %}
-				<input type="submit" />{% endcomment %}
-			</form>
-		</div>
-		<div id="events-container">
-			{% for event in events %}
-				{% include 'layout/event_tile.html' %}
-			{% endfor %}
-		</div>
+		<div class="search-page">
+			<div class="search-options">
+				<form action="{% url 'web.search_events' %}" method="POST" id="search-form">{% csrf_token %}
+					<div class="row">
+						<div class="form-group col-md-8">
+							<input type="text" class="form-control" id="id_search" placeholder="Search events">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
 
+							<select class="form-control search-form-element" id="id_country" name="country">
+								{% for x,y in form.fields.country.choices %}
+									<option value="{{ x }}">{{ y }}</option>
+								{% endfor %}
+							</select>
+
+							{% for x,y in form.fields.theme.choices %}
+								<div class="checkbox">
+									<label for="id_theme_{{ x }}">
+										<input class="form-control search-form-element" id="id_theme_{{ x }}"
+								       name="theme" type="checkbox" value="{{ x }}"> {{ y }}
+									</label>
+								</div>
+							{% endfor %}
+
+
+							{% for x,y in form.fields.audience.choices %}
+								<label for="id_theme_{{ x }}">{{ y }}</label>
+								<input class="form-control search-form-element" id="id_theme_{{ x }}"
+								       name="audience" type="checkbox" value="{{ x }}">
+							{% endfor %}
+
+						</div>
+					</div>
+					<input type="submit" class="btn btn-primary btn-sm" />
+				</form>
+
+			</div>
+			<div id="events-container">
+				{% if events %}
+					{% for event in events %}
+						{% include 'layout/event_tile.html' %}
+					{% endfor %}
+				{% else %}
+					<p>
+						Sorry, no events. Try with diferent criteria.
+					</p>
+				{% endif %}
+			</div>
+		</div>
 	</div>
 {% endblock content %}
 
@@ -25,6 +63,8 @@
 	<script type="text/javascript" src="{% static "lib/pjax/jquery.pjax.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/search-events.js" %}"></script>
 	<script type="text/javascript">
-		Codeweek.Search.init('{% url 'web.search_events' %}');
+		//Codeweek.Search.init('
+		//
+		{% url 'web.search_events' %}');
 	</script>
 {% endblock %}

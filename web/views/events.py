@@ -219,7 +219,6 @@ def search_events(request):
 			country = request.GET.get('country', None)
 			template = 'layout/pjax_search_events.html'
 			events = get_approved_events(country_code=country)
-			print events
 			# TODO: Improve search
 		else:
 			if request.method == 'POST':

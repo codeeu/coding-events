@@ -116,7 +116,7 @@ class SearchEventForm(forms.Form):
 		queryset=EventTheme.objects.all(),
 		label='Theme',
 	    empty_label=None,
-	    required=True,
+	    required=False,
 	    widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control search-form-element'}),
 	)
 
@@ -124,7 +124,7 @@ class SearchEventForm(forms.Form):
 		queryset=EventAudience.objects.all(),
 		label='Audience',
 	    empty_label=None,
-	    required=True,
+	    required=False,
 		widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control search-form-element'}),
 	)
 
