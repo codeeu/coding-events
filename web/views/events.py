@@ -212,6 +212,8 @@ def list_approved_events(request, country_code):
 def guide(request):
     return render_to_response('pages/guide.html')
 
+def about(request):
+    return render_to_response('pages/about.html')
 
 @login_required
 @can_edit_event
