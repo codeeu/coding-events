@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}- Website Credits{% endblock title %}
+
+{% block content %}
+	<div class="container">
+		<h1>Made with love by CodeCatz</h1>
+		<p>We are a group of programming kittens and several slightly more experienced cats. Mostly girls, learning to code together every Wednesday at <a href="http://www.zemanta.com">Zemanta</a> and other startups around Ljubljana, Slovenia.</p>
+		<p>Main contributing Catz:</p>
+		<ul>
+			<li>Erika Pogorelc (Lead Cat)</li>
+			<li>Mateja Verlič (Motivational Cat)</li>
+			<li>Goran Blažič (Honorary Cat)</li>
+			<li>Svetka Sapelova (Grumpy Cat)</li>
+			<li>Alja Isaković (Cube Cat)</li>
+			<li>Hana, Nina ... (Support Kittens)</li>
+		</ul>
+		<img src="{% static 'img/codecatz-logo.jpg' %}" alt="CodeCatz" class="codecatz-logo" />
+		<p>And hey, you can become a contributor too! Fork the project on <a href="https://github.com/codeeu/coding-events">GitHub</a> and send us a Pull request with improvements.</p>
+	</div>
+{% endblock content %}
