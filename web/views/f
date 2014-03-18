@@ -1,4 +1,0 @@
-Event.objects.create(description= 'loren ipsum', end_date= datetime.datetime.now(), title= 'The event 19', country= 'SI', geoposition= [Decimal('46.05645089999999'), Decimal('14.50807020000002')], location= 'Ljubljana, Slovenia', start_date= datetime.datetime.now(), organizer= 'svetka')
-
-
-Event.objects.create('description'= 'loren ipsum', 'end_date'= datetime.datetime.now(), 'title'= 'The event 19', 'country'= 'SI')
