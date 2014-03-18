@@ -58,7 +58,7 @@ def index(request, country_code=None):
 	except GeoIPException:
 		lan_lon = (46.0608144, 14.497165600000017)
 
-	latest_events = get_approved_events(limit=5, order='pub_date',
+	latest_events = get_approved_events(limit=6, order='pub_date',
 	                                    country_code=country.get('country_code', None))
 	
 	all_countries = list_countries()
