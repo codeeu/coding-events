@@ -107,7 +107,7 @@ class SearchEventForm(forms.Form):
 	    widget=forms.TextInput(attrs={'placeholder': 'Search some serious events', 'class': 'form-control'})
 	)
 	country = forms.ChoiceField(
-		label='Country',
+		label='Select country',
 	    required=False,
 	    widget=forms.Select(attrs={'class': 'form-control search-form-element'}),
 		choices=countries
