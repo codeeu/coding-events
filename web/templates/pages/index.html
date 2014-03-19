@@ -13,7 +13,7 @@
 		<div class="form-inline search-event-form col-md-4" role="form">
 			<div class="form-group">
 				<input type="text" class="form-control" id="search-event"
-				       placeholder="Search for events by location" autocomplete="off" data-pjax>
+					   placeholder="Search for events by location" autocomplete="off" data-pjax>
 				<a href="#" class="search-btn"><i class="fa fa-search"></i></a>
 			</div>
 		</div>
@@ -29,11 +29,11 @@
 		<h2>Latest #codeEU Events{% if country %} in <span id="country">{{ country.country_name }}</span>{% endif %}</h2>
 		<div class="clearfix" id="events-list">
 			{% if latest_events %}
-			    {% include 'layout/all_events.html' %}
-            {% else %}
-				<p>
-					No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a>
-				<p>
+				{% include 'layout/all_events.html' %}
+			{% else %}
+			<p>
+				No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a>
+			<p>
 			{% endif %}
 		</div>
 
@@ -64,7 +64,7 @@
 	<script src="{% static "js/markerclusterer.js" %}"></script>
 	<script src="{% static "lib//pjax/jquery.pjax.js" %}"></script>
 	<script type="text/javascript"
-	        src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
+			src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
 	</script>
 	<script type="text/javascript" src="{% static 'js/cw-maps.js' %}"></script>
 	<script type="text/javascript">
@@ -73,17 +73,17 @@
 	<script type="text/javascript">
 		var showCountries = document.getElementById('showcountries');
 		showCountries.onclick = function () {
-		    var div = document.getElementById('allcountries');
-		    if (div.style.display !== 'none') {
-		        div.style.display = 'none';
-		    }
-		    else {
-		        div.style.display = 'block';
-		    }
+			var div = document.getElementById('allcountries');
+			if (div.style.display !== 'none') {
+				div.style.display = 'none';
+			}
+			else {
+				div.style.display = 'block';
+			}
 		};
-    </script>
-        
-    <script src="{% static "js/endless_pagination/endless-pagination.js" %}"></script>
-    <script>$.endlessPaginate();</script>
+	</script>
+
+	<script src="{% static "js/endless_pagination/endless-pagination.js" %}"></script>
+	<script>$.endlessPaginate();</script>
 
 {% endblock %}

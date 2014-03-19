@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.utils.html import escape
-from django_countries import countries
+from django_countries.fields import countries
 from api.models import Event
-from taggit.forms import TagField
+from api.models.events import EventTheme, EventAudience
 
 
 class AddEventForm(forms.ModelForm):
-
 	class Meta:
 		model = Event
 		fields = ['title', 'organizer', 'description', 'geoposition', 'location', 'country', 'start_date', 'end_date',
@@ -100,9 +98,40 @@ class AddEventForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		super(AddEventForm, self).__init__(*args, **kwargs)
-		#self.fields['title'].widget.attrs['class'] = 'col-md-3'
 
-	
+
+class SearchEventForm(forms.Form):
+
+	search = forms.CharField(
+		required=False,
+	    widget=forms.TextInput(attrs={'placeholder': 'Search some serious events', 'class': 'form-control'})
+	)
+	country = forms.ChoiceField(
+		label='Select country',
+	    required=False,
+	    widget=forms.Select(attrs={'class': 'form-control search-form-element'}),
+		choices=countries
+	)
+	theme = forms.ModelChoiceField(
+		queryset=EventTheme.objects.all(),
+		label='Theme',
+	    empty_label=None,
+	    required=False,
+	    widget=forms.CheckboxSelectMultiple(attrs={'class': 'search-form-element'}),
+	)
+
+	audience = forms.ModelChoiceField(
+		queryset=EventAudience.objects.all(),
+		label='Audience',
+	    empty_label=None,
+	    required=False,
+		widget=forms.CheckboxSelectMultiple(attrs={'class': 'search-form-element'}),
+	)
+
+	def __init__(self, *args, **kwargs):
+		super(SearchEventForm, self).__init__(*args, **kwargs)
+
+
 
 
 

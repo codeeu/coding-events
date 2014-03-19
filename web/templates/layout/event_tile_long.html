@@ -1,0 +1,19 @@
+<a href="{% url 'web.view_event' event.id event.slug %}" class="thumbnail clearfix">
+	{% if event.picture %}
+		<img src="{{ event.picture.url }}" alt="{{ event.title }} Image" class="col-md-2 first">
+	{% endif %}
+	<h4>{{ event.title }}</h4>
+
+	<div class="caption">
+		<p>{{ event.description|truncatewords:20 }}</p>
+
+
+
+
+		<span class="countdown pull-right">
+			Happening in:
+			{{ event.start_date|timeuntil }}
+		</span>
+
+	</div>
+</a>

@@ -1,5 +1,6 @@
 import datetime
 from models.events import Event
+from models.events import EventTheme
 
 
 def get_all_events():
@@ -11,7 +12,7 @@ def get_event_by_id(event_id):
 	return event
 
 
-def get_approved_events(limit=None, order=None, country_code=None, past=False):
+def get_approved_events(limit=None, order=None, country_code=None, theme=None, past=False):
 	"""
 	Select all events which are approved and optionally limit and/or order them
 	"""
@@ -46,3 +47,9 @@ def get_pending_events(limit=None, order=None, country_code=None, past=False):
 		events = events = events[:limit]
 
 	return events
+
+
+def list_themes():
+	themes = EventTheme.objects.all()
+
+	return themes
