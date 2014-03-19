@@ -261,12 +261,6 @@ SOCIAL_AUTH_TWITTER_KEY = ''
 SOCIAL_AUTH_TWITTER_SECRET = ''
 ########## END ATHENTICATION CONFIGURATION
 
-
-#Customize "Show more" events button in index page
-
-ENDLESS_PAGINATION_LOADING = """<img src="/static/img/loader.gif" alt="loading" />"""
-
-
 ########## DJANGO-COUNTRIES CONFIGURATION
 # Try to exclude all the countries not in EU
 
