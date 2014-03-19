@@ -1,20 +1,7 @@
 .endless_more{
 
-	border: none;
-	font-family: inherit;
-	font-size: inherit;
-	color: inherit;
-	background: none;
-	cursor: pointer;
-	padding: 15px 30px;
-	display: inline-block;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	font-weight: 700;
-	outline: none;
-	position: relative;
-	border-radius: 0;
-	background: #428bca;
+	@extend .btn;
+
 }
 
 .endless_events{
