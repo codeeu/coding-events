@@ -6,7 +6,8 @@ var Codeweek = window.Codeweek || {};
 
     'use strict';
 
-    var map,
+    var i,
+        map,
         markers = {},
         place,
         placeinfowindow = null;
@@ -33,10 +34,10 @@ var Codeweek = window.Codeweek || {};
                 }
             });
         placeinfowindow = new google.maps.InfoWindow({
-                content: "loading..."
-    });
+            content: "loading..."
+        });
 
-        for (var i = 0; i <= markerData_len; i++) {
+        for (i = 0; i <= markerData_len; i = i + 1) {
             var markdata = markerData[i];
             if (markdata && typeof markdata === 'object') {
 
@@ -85,7 +86,7 @@ var Codeweek = window.Codeweek || {};
             if (!place.geometry) {
                 return;
             }
-            // If the place has a geometry, then present it on a map.
+
             if (place.geometry.viewport) {
                 map.map.fitBounds(place.geometry.viewport);
             } else {
@@ -97,7 +98,6 @@ var Codeweek = window.Codeweek || {};
                 country_name = '';
             if (place.address_components) {
                 var address = place.address_components;
-                //console.log(address);
                 for (var j = 0; j <= address.length; j++) {
                     if (address[j] && address[j].types[0] === 'country') {
                         country_code = address[j].short_name;
@@ -121,7 +121,7 @@ var Codeweek = window.Codeweek || {};
     function zoomCountry(current_country) {
         var zoomgeocoder = new google.maps.Geocoder();
         zoomgeocoder.geocode({'address': current_country}, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
+            if (status === google.maps.GeocoderStatus.OK) {
                 var ne = results[0].geometry.viewport.getNorthEast();
                 var sw = results[0].geometry.viewport.getSouthWest();
                 map.map.fitBounds(results[0].geometry.viewport);
@@ -147,28 +147,22 @@ var Codeweek = window.Codeweek || {};
             e.preventDefault();
         });
 
-        /*
-         if ($.support.pjax) {
-         $(document).bind('change', '[data-pjax]', function (event) {
-         event.preventDefault();
-         var container = $('[data-pjax-container]');
-
-         $.pjax({url: '/', container: container});
-         //$.pjax.click(event, {container: container});
-         });
-         }*/
     };
 
     var init = function (events, lon, lan) {
 
 
         $(function () {
-
+            // Initialize map on front page
             google.maps.event.addDomListener(window, 'load', function () {
                 initialize(events, lon, lan);
             });
 
+            // Handler to process search on index page
             search_events_handler();
+
+            // Initializing cookie consent
+            $.cookieCuttr();
 
         });
     };
