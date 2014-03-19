@@ -18,6 +18,8 @@ class EventTestCase(TestCase):
 		                     event_url="http://eee.com",
 		                     contact_person="ss@ss.com",
 		                     country="SI",
+		                     audience=[1],
+		                     theme=[1],		                     
 		                     pub_date=datetime.datetime.now(),
 		                     tags=["tag1", "tag2"])
 
@@ -77,6 +79,8 @@ class EventTestCase(TestCase):
 			"country": "SI",
 			"geoposition": Geoposition(46.05528,14.51444),
 			"location": "Ljubljana",
+			"audience": [1],
+			"theme": [1],
 			"tags": ["tag1", "tag2"]
 		}
 		test_event = create_or_update_event(**event_data)

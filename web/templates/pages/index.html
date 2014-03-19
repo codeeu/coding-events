@@ -31,7 +31,7 @@
 			{% if latest_events %}
 				{% for event in latest_events %}
 					{% include 'layout/event_tile.html' %}
-				{% endfor %}		
+				{% endfor %}
 			{% else %}
 				<p>
 					No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a>
@@ -45,7 +45,7 @@
 			</a>
 			<div id="allcountries" style="display:none" >
 				{% for each_country in all_countries %}
-				<a href="/{{each_country.1}}">{{each_country.0}}</a>
+				<a href="/{{each_country.1}}" class="country-link btn btn-primary btn-sm">{{each_country.0}}</a>
 				{% endfor %}
 			</div>
 		</div>
@@ -83,5 +83,9 @@
 		        div.style.display = 'block';
 		    }
 		};
-	</script>
+    </script>
+        
+    <script src="{% static "js/endless_pagination/endless-pagination.js" %}"></script>
+    <script>$.endlessPaginate();</script>
+
 {% endblock %}

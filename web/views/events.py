@@ -3,13 +3,16 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template import loader
 from django.template import Context
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 from django_countries import countries
 
 from api.models import Event
@@ -35,42 +38,42 @@ then call your newly created function in view!!! .-Erika
 
 
 def index(request, country_code=None):
-	template = 'pages/index.html'
-	events = get_approved_events()
-	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
+    template = 'pages/index.html'
+    events = get_approved_events()
+    map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
 
-	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
-	                        remote=request.META.get('REMOTE_ADDR'))
+    user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+                            remote=request.META.get('REMOTE_ADDR'))
 
-	if country_code:
-		country_name = unicode(dict(countries)[country_code])
-		country = {'country_name': country_name, 'country_code': country_code}
-	else:
-		country = get_country_from_user_ip(user_ip)
+    if country_code:
+        country_name = unicode(dict(countries)[country_code])
+        country = {'country_name': country_name, 'country_code': country_code}
+    else:
+        country = get_country_from_user_ip(user_ip)
+	
+    if request.is_ajax():
+		if request.META.get('HTTP_X_PJAX', None):
+			template = 'pages/pjax_index.html'
+		else:
+			template = 'layout/all_events.html'
 
-	if request.is_ajax():
-		template = 'pages/pjax_index.html'
+    try:
+        lan_lon = get_lat_lon_from_user_ip(user_ip)
+    except GeoIPException:
+        lan_lon = (46.0608144, 14.497165600000017)
 
-	try:
-		lan_lon = get_lat_lon_from_user_ip(user_ip)
-		if not lan_lon:
-			lan_lon = (46.0608144, 14.497165600000017)
-	except GeoIPException:
-		lan_lon = (46.0608144, 14.497165600000017)
+    events = get_approved_events(order='pub_date', country_code=country.get('country_code', None))
 
-	latest_events = get_approved_events(limit=5, order='pub_date',
-                                        country_code=country.get('country_code', None))
-	all_countries = list_countries()
-
-	return render_to_response(
-		template, {
-			'latest_events': latest_events,
-			'map_events': map_events,
-			'lan_lon': lan_lon,
-			'country': country,
-			'all_countries': all_countries,
-		},
-		context_instance=RequestContext(request))
+    all_countries = list_countries()
+    return render_to_response(
+        template, {
+            'latest_events': events,
+            'map_events': map_events,
+            'lan_lon': lan_lon,
+            'country': country,
+            'all_countries': all_countries,
+        },
+        context_instance=RequestContext(request))
 
 
 @login_required
@@ -174,7 +177,6 @@ def edit_event(request, event_id):
 		"picture_url": event.picture,
 		}, context_instance=RequestContext(request))
 
-
 @login_required
 def list_pending_events(request, country_code):
 	"""
@@ -232,6 +234,8 @@ def search_events(request):
 				'form': form,
 			}, context_instance=RequestContext(request))
 
+def about(request):
+    return render_to_response('pages/about.html')
 
 @login_required
 @can_edit_event
