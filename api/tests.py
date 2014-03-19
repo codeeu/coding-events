@@ -102,16 +102,17 @@ class EventTestCase(TestCase):
 		self.assertEqual(1, pending.count())
 
 	def test_get_pending_events_limit_to_one_ordered_by_location_desc(self):
-		Event.objects.create(organizer='asdasd1',
-		                     title='asdasd1',
-		                     description='asdsad1',
-		                     location='asdsad1',
-		                     start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-		                     end_date=datetime.datetime.now() + datetime.timedelta(days=2, hours=3),
-		                     event_url='http://eee.com',
-		                     contact_person='ss@ss.com',
-		                     country='SI',
-		                     pub_date=datetime.datetime.now())
+		Event.objects.create(
+			organizer='asdasd1',
+			title='asdasd1',
+			description='asdsad1',
+			location='asdsad1',
+			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=2, hours=3),
+			event_url='http://eee.com',
+			contact_person='ss@ss.com',
+			country='SI',
+			pub_date=datetime.datetime.now())
 
 		pending = get_pending_events(limit=1, order='-location')
 		self.assertEquals(1, pending.count())
