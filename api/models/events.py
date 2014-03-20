@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
 from geoposition.fields import GeopositionField
 from django_countries.fields import CountryField
+from django.conf import settings
 
 class EventAudience(models.Model):
 	name = models.CharField(max_length=255) 
@@ -47,7 +48,7 @@ class Event(models.Model):
 	end_date = models.DateTimeField()
 	event_url = models.URLField(blank=True)
 	contact_person = models.EmailField(blank=True)
-	picture = models.ImageField(upload_to='event_picture', blank=True)
+	picture = models.ImageField(upload_to=settings.MEDIA_UPLOAD_FOLDER, blank=True)
 	pub_date = models.DateTimeField(default=datetime.datetime.now())
 	audience = models.ManyToManyField(EventAudience, related_name='event_audience')
 	theme = models.ManyToManyField(EventTheme, related_name='event_theme')
@@ -103,6 +104,15 @@ class Event(models.Model):
 				self.theme.add(entry)
 		except AttributeError:
 			pass
+
+	def get_tags(self):
+		return ', '.join([e.name for e in self.tags.all()])
+
+	def get_audience_array(self):
+		return [audience.pk for audience in self.audience.all()]
+
+	def get_theme_array(self):
+		return [theme.pk for theme in self.theme.all()]
 
 
 

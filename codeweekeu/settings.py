@@ -110,6 +110,7 @@ MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
 
 # URL that handles the media served from MEDIA_ROOT.
 MEDIA_URL = '/media/'
+MEDIA_UPLOAD_FOLDER = 'event_picture'
 ########## END MEDIA CONFIGURATION
 
 
