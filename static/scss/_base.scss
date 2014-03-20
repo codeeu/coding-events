@@ -134,8 +134,8 @@ LANDING PAGE MAP STYLES
 .add-event-wrapper {
 	position: absolute;
 	bottom: 20px;
-	width: 100%;
-	text-align: center;
+	margin-left: -180px;
+	left: 50%;
 }
 
 /*********************
@@ -258,7 +258,7 @@ footer {
 		&.codecatz-logo {
 			width: 100px;
 			display: block;
-			padding: 10px 10px;
+			padding: 10px 0;
 		}
 	}
 }
