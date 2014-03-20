@@ -157,6 +157,15 @@ def edit_event(request, event_id):
 		}, context_instance=RequestContext(request))
 
 
+def view_event_by_country(request, country_code):
+	event_list = get_approved_events(country_code=country_code)
+
+	return render_to_response(
+		'pages/list_events.html', {
+			'event_list': event_list,
+		}, context_instance=RequestContext(request))
+
+
 def view_event(request, event_id, slug):
 	event = get_event_by_id(event_id)
 
