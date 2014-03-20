@@ -119,14 +119,6 @@ def view_event(request, event_id, slug):
         }, context_instance=RequestContext(request))
 
 
-def search_event(request):
-    pass
-
-
-def thankyou(request):
-    return render_to_response('alerts/thank_you.html')
-
-
 @login_required
 @can_edit_event
 def edit_event(request, event_id):
@@ -210,12 +202,6 @@ def list_approved_events(request, country_code):
 
     return render_to_response("pages/list_events.html", context, context_instance=RequestContext(request))
 
-
-def guide(request):
-    return render_to_response('pages/guide.html')
-
-def about(request):
-    return render_to_response('pages/about.html')
 
 @login_required
 @can_edit_event
