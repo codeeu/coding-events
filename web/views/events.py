@@ -126,6 +126,7 @@ def edit_event(request, event_id):
 
 	if event_form.is_valid():
 		picture = request.FILES.get('picture', None)
+		event_data = event_form.cleaned_data
 
 		try:
 			if picture:
@@ -133,8 +134,8 @@ def edit_event(request, event_id):
 					raise ImageSizeTooLargeException('Image size too large.')
 
 				process_image(picture)
-
-			event_data = event_form.cleaned_data
+			else:
+				del event_data['picture']
 
 			create_or_update_event(event_id, **event_data)
 

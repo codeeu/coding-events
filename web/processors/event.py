@@ -69,6 +69,9 @@ def create_or_update_event(event_id=None, **event_data):
 		del event_data['theme']
 		event_tags = event_data['tags']
 		del event_data['tags']
+		print event_data
+		#if event_data.get('picture', None):
+		#	del event_data['picture']
 
 		#in case we have geoposition data in event_data
 		if 'geoposition' in event_data:

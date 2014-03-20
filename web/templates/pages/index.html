@@ -26,9 +26,18 @@
 	{% include 'layout/top_navigation.html' %}
 	{% include 'layout/messages.html' %}
 	<div class="container index-content">
+		<div class="clearfix">
+			<h2 class="pull-left">
+				Latest #codeEU Events{% if country %} in <span id="country">{{ country.country_name }}</span>{% endif %}
+			</h2>
 
-		<h2>Latest #codeEU Events{% if country %} in <span id="country">{{ country.country_name }}</span>{% endif %}
-		</h2>
+			<div class="how-to">
+				<a href="{% url 'web.guide' %}" target="_blank" class="btn btn-sm pull-right">
+					How to organize your own event?
+				</a>
+			</div>
+		</div>
+
 
 		<div class="clearfix" id="events-list">
 			{% if latest_events %}
@@ -40,27 +49,24 @@
 			{% endif %}
 		</div>
 
+		<hr />
+
 		<div class="change-location-wrapper">
 			<a class="change-country-link btn btn-sm" id="showcountries">
 				See events in other countries
 			</a>
-
-			<div id="allcountries" style="display:none">
+			<div id="allcountries" class="clearfix">
 				{% for each_country in all_countries %}
-					<a href="/{{ each_country.1 }}" class="country-link btn btn-primary btn-sm">
-						<img src="/static/flags/{{ each_country.1|lower }}.gif" alt="{{ each_country.0 }}"/>
-						{{ each_country.0 }}
+					<a href="{% url 'web.index' each_country.1 %}" class="country-link">
+						<img src="/static/flags/{{ each_country.1|lower }}.gif" alt="{{ each_country.0 }}" />
+
+						<div class="icon-flag">
+							{{ each_country.0 }}
+						</div>
 					</a>
 				{% endfor %}
 			</div>
 		</div>
-
-		<hr />
-
-		<h1>
-			<a href="{% url 'web.guide' %}">How do I organize my own event?</a>
-		</h1>
-
 	</div>
 
 
