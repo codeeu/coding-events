@@ -4,6 +4,7 @@
 {% block title %}- Add Event{% endblock title %}
 
 {% block custom_css %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-datetimepicker.min.css" %}" />
 	<link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}" />
 	<link rel="stylesheet" type="text/css" href="{% static "css/jasny-bootstrap.min.css" %}" />
 {% endblock %}
@@ -71,7 +72,7 @@
 								<span class="help-block {% if field.errors %}{% endif %}">{{ field.errors }}</span>
 							</div>
 						</div>
-					
+
 					{% elif field.name == 'event_url' %}
 						<div class="form-group {% if field.errors %}has-error{% endif %} col-md-6 first input-with-icon">
 							<label class="control-label" for="{{ field.auto_id }}">
@@ -138,10 +139,12 @@
 							<div class="fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %} "
 							     data-provides="fileinput">
 								<div class="fileinput-new">
-									<img data-src="holder.js/100%x100%/text:Your image..." alt="..." style="max-height: 204px" >
+									<img data-src="holder.js/100%x100%/text:Your image..." alt="..."
+									     style="max-height: 204px">
 								</div>
 								<div class="fileinput-preview fileinput-exists">
-									<img src="{{ MEDIA_URL }}{{ picture_url }}" alt="{{ field.name }} Image" style="max-height: 204px" />
+									<img src="{{ MEDIA_URL }}{{ picture_url }}" alt="{{ field.name }} Image"
+									     style="max-height: 204px" />
 								</div>
 								<div>
 								<span class="btn btn-sm btn-file">
@@ -183,23 +186,16 @@
 
 {% block custom_js %}
 	<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/DateTimePicker.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/jquery.datetimepicker.js" %}"></script>
+	{% comment %}
+	<script type="text/javascript" src="{% static "js/jquery.datetimepicker.js" %}"></script>{% endcomment %}
+	<script type="text/javascript" src="{% static "js/bootstrap-datetimepicker.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "js/holder.js" %}"></script>
-
-	<script>
-		$('#id_datepicker_start').datetimepicker({
-			format: 'Y-m-d H:i',
-			dayOfWeekStart: 1,
-			lang: 'en'
-		});
-		$('#id_datepicker_end').datetimepicker({
-			format: 'Y-m-d H:i',
-			dayOfWeekStart: 1,
-			lang: 'en'
-		});
+	<script type="text/javascript" src="{% static "js/events.js" %}"></script>
+	<script type="text/javascript">
+		Codeweek.Event.add();
 	</script>
+
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false&libraries=places"></script>
 

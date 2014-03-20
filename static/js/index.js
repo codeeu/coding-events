@@ -161,8 +161,18 @@ var Codeweek = window.Codeweek || {};
             // Handler to process search on index page
             search_events_handler();
 
-            // Initializing cookie consent
-            $.cookieCuttr();
+            $.endlessPaginate();
+
+            var showCountries = document.getElementById('showcountries');
+			showCountries.onclick = function () {
+				var div = document.getElementById('allcountries');
+				if (div.style.display !== 'none') {
+					div.style.display = 'none';
+				}
+				else {
+					div.style.display = 'block';
+				}
+			};
 
         });
     };
