@@ -62,33 +62,29 @@ def create_or_update_event(event_id=None, **event_data):
 	event = Event.objects.filter(id=event_id)
 	if event:
 		event = event[0]
-
 		# many to many fields have to updated after other fields are updated
 		new_audiences = event_data['audience']
-		event_data.pop('audience')
+		del event_data['audience']
 		new_themes = event_data['theme']
-		event_data.pop('theme')
-
-		event_tags = []
-		if 'tags' in event_data:
-			event_tags = event_data['tags']
-			event_data.pop('tags')
+		del event_data['theme']
+		event_tags = event_data['tags']
+		del event_data['tags']
 
 		#in case we have geoposition data in event_data
 		if 'geoposition' in event_data:
 			# updating geoposition field is a bit fussy
 			event_latitude = event_data['geoposition'][0]
 			event_longitude = event_data['geoposition'][1]
-			event_data.pop('geoposition')
+			del event_data['geoposition']
 			# updating all other fields
 			event.__dict__.update(event_data)
 			#setting new values for geoposition
 			event.__dict__['geoposition'].latitude = event_latitude
 			event.__dict__['geoposition'].longitude = event_longitude
-			event.save()
 		else:
 			event.__dict__.update(event_data)
-			event.save()
+
+		event.save()
 
 		#delete old categories and tags and store new ones
 		event.audience.clear()
@@ -98,10 +94,6 @@ def create_or_update_event(event_id=None, **event_data):
 		event.tags.set(*event_tags)
 
 	else:
-		#if event_data.get('picture', None):
-		#	picture_db = media.process_image(event_data['picture'])
-		#	event_data['picture']= picture_db
-		print event_data
 		event = Event.objects.create(**event_data)
 	return event
 
