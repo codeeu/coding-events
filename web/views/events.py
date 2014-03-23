@@ -1,3 +1,4 @@
+import json
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -69,7 +70,7 @@ def index(request, country_code=None):
 	return render_to_response(
 		template, {
 			'latest_events': events,
-			'map_events': map_events,
+			'map_events': json.dumps(map_events),
 			'lan_lon': lan_lon,
 			'country': country,
 			'all_countries': all_countries,
