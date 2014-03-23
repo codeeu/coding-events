@@ -33,40 +33,47 @@ class EventTestCase(TestCase):
 		self.assertEqual(1, all_events.count())
 
 	def test_get_all_events_with_two_events(self):
-		Event.objects.create(
+		event = Event.objects.create(
 			organizer='asdasd1',
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
-			start_date=datetime.datetime.now(),
-			end_date=datetime.datetime.now(),
+			start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
 			event_url='http://eee.com',
 			contact_person='ss@ss.com',
-			audience=[1],
 			country='SI',
 			pub_date=datetime.datetime.now())
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
 
 		all_events = get_all_events()
 		self.assertEqual(2, all_events.count())
 
 	def test_get_all_events_with_different_statuses(self):
-		new_event = Event.objects.create(
+		event = Event.objects.create(
 			organizer='asdasd1',
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
-			start_date=datetime.datetime.now(),
-			end_date=datetime.datetime.now(),
+			start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
 			event_url='http://eee.com',
 			contact_person='ss@ss.com',
 			country='SI',
-			audience=[1],
 			pub_date=datetime.datetime.now())
-		new_event.status = 'APPROVED'
-		new_event.save()
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
+
+		event.status = 'APPROVED'
+		event.save()
 
 		self.assertEqual('PENDING', get_event_by_id(1).status)
-		self.assertEqual('APPROVED', new_event.status)
+		self.assertEqual('APPROVED', event.status)
 
 		all_events = get_all_events()
 		self.assertEqual(2, all_events.count())
@@ -79,20 +86,24 @@ class EventTestCase(TestCase):
 		self.assertEqual('APPROVED', test_event.status)
 
 	def test_get_approved_events_limited_to_one_ordered_by_title_desc(self):
-		new_event = Event.objects.create(
+		event = Event.objects.create(
 			organizer='asdasd1',
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
-			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+			start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
 			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
 			event_url='http://eee.com',
 			contact_person='ss@ss.com',
-			audience=[1],
 			country='SI',
 			pub_date=datetime.datetime.now())
-		new_event.status = 'APPROVED'
-		new_event.save()
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
+
+		event.status = 'APPROVED'
+		event.save()
 		approved = get_approved_events(limit=1, order='-title')
 		self.assertEquals(1, approved.count())
 		self.assertEquals('asdasd1', approved[0].title)
@@ -112,18 +123,22 @@ class EventTestCase(TestCase):
 		self.assertEqual(1, pending.count())
 
 	def test_get_pending_events_limit_to_one_ordered_by_location_desc(self):
-		Event.objects.create(
+		event = Event.objects.create(
 			organizer='asdasd1',
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
-			start_date=datetime.datetime.now() + datetime.timedelta(days=-1, hours=3),
-			end_date=datetime.datetime.now() + datetime.timedelta(days=2, hours=3),
+			start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
 			event_url='http://eee.com',
 			contact_person='ss@ss.com',
-			audience=[1],
 			country='SI',
 			pub_date=datetime.datetime.now())
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
+
 
 		pending = get_pending_events(limit=1, order='-location')
 		self.assertEquals(1, pending.count())
@@ -139,24 +154,26 @@ class EventTestCase(TestCase):
 
 
 	def test_get_filtered_events_with_no_search_filter(self):
-		new_event = Event.objects.create(
+		event = Event.objects.create(
 			organizer='asdasd1',
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
-			start_date=datetime.datetime.now() - datetime.timedelta(hours=1),
-			end_date=datetime.datetime.now() + datetime.timedelta(days=2, hours=3),
+			start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
 			event_url='http://eee.com',
 			contact_person='ss@ss.com',
-			audience=[1],
-			theme=[1],
 			country='SI',
 			pub_date=datetime.datetime.now())
-		new_event.status = 'APPROVED'
-		new_event.save()
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
+
+		event.status = 'APPROVED'
+		event.save()
 		events = get_filtered_events()
 		self.assertEquals('asdasd1', events[0].title)
-
 
 
 	def test_get_filtered_events_with_search_filter_when_no_aproved_event(self):
@@ -190,6 +207,103 @@ class EventTestCase(TestCase):
 		self.assertEquals('asdasd', events[0].title)
 
 
+	def test_get_filtered_events_with_search_filter_searching_title(self):
+		event = Event.objects.create(
+			organizer='CodeCatz',
+			title='Programming for dummies',
+			description='Learn basics about programming in python',
+			location='Ljubljana',
+			start_date=datetime.datetime.now() - datetime.timedelta(hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			event_url='http://example.com',
+			contact_person='admin@example.com',
+			country='SI',
+			pub_date=datetime.datetime.now() - datetime.timedelta(hours=4))
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
+		event.status = 'APPROVED'
+		event.save()
+
+		search_filter = "dummies"
+		events = get_filtered_events(search_filter=search_filter)
+		self.assertEquals(1, events.count())
+		self.assertEquals('Programming for dummies', events[0].title)
+
+
+	def test_get_filtered_events_with_search_filter_searching_organizer(self):
+		event = Event.objects.create(
+			organizer='CodeCatz',
+			title='Programming for dummies',
+			description='Learn basics about programming in python',
+			location='Ljubljana',
+			start_date=datetime.datetime.now() - datetime.timedelta(hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			event_url='http://example.com',
+			contact_person='admin@example.com',
+			country='SI',
+			pub_date=datetime.datetime.now() - datetime.timedelta(hours=4))
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
+		event.status = 'APPROVED'
+		event.save()
+
+		search_filter = "Catz"
+		events = get_filtered_events(search_filter=search_filter)
+		self.assertEquals(1, events.count())
+		self.assertEquals('CodeCatz', events[0].organizer)
+
+
+	def test_get_filtered_events_with_search_filter_searching_description(self):
+		event = Event.objects.create(
+			organizer='CodeCatz',
+			title='Programming for dummies',
+			description='Learn basics about programming in python',
+			location='Ljubljana',
+			start_date=datetime.datetime.now() - datetime.timedelta(hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			event_url='http://example.com',
+			contact_person='admin@example.com',
+			country='SI',
+			pub_date=datetime.datetime.now() - datetime.timedelta(hours=4))
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
+		event.status = 'APPROVED'
+		event.save()
+
+		search_filter = "python"
+		events = get_filtered_events(search_filter=search_filter)
+		self.assertEquals(1, events.count())
+		self.assertEquals(2, events[0].pk)
+
+	def test_get_filtered_events_with_search_filter_searching_description_when_no_approved_event(self):
+		event = Event.objects.create(
+			organizer='CodeCatz',
+			title='Programming for dummies',
+			description='Learn basics about programming in python',
+			location='Ljubljana',
+			start_date=datetime.datetime.now() - datetime.timedelta(hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			event_url='http://example.com',
+			contact_person='admin@example.com',
+			country='SI',
+			pub_date=datetime.datetime.now() - datetime.timedelta(hours=4))
+		theme = EventTheme.objects.filter(pk=1)
+		audience = EventAudience.objects.filter(pk=1)
+		event.theme.add(*theme)
+		event.audience.add(*audience)
+		event.save()
+
+		search_filter = "python"
+		events = get_filtered_events(search_filter=search_filter)
+		self.assertEquals(0, events.count())
+
+
 	def test_get_filtered_events_with_country_filter_with_approved_event(self):
 		test_event = Event.objects.get(title='asdasd')
 		test_event.status = 'APPROVED'
@@ -216,6 +330,29 @@ class EventTestCase(TestCase):
 		test_event.save()
 		audience_filter = EventAudience.objects.filter(pk=1)
 		events = get_filtered_events(audience_filter=audience_filter)
+		self.assertEquals(1, events.count())
+		self.assertEquals('asdasd', events[0].title)
+
+
+	def test_get_filtered_events_with_search_filter_and_theme_filter_with_approved_event(self):
+		test_event = Event.objects.get(title='asdasd')
+		test_event.status = 'APPROVED'
+		test_event.save()
+		search_filter="asd"
+		theme_filter = EventTheme.objects.filter(pk=1)
+		events = get_filtered_events(search_filter=search_filter, theme_filter=theme_filter)
+		self.assertEquals(1, events.count())
+		self.assertEquals('asdasd', events[0].title)
+
+
+	def test_get_filtered_events_with_search_filter_and_country_filter_with_approved_event(self):
+		test_event = Event.objects.get(title='asdasd')
+		test_event.status = 'APPROVED'
+		test_event.save()
+		search_filter="asd"
+		country_filter = "SI"
+		theme_filter = EventTheme.objects.filter(pk=1)
+		events = get_filtered_events(search_filter=search_filter, country_filter=country_filter)
 		self.assertEquals(1, events.count())
 		self.assertEquals('asdasd', events[0].title)
 
