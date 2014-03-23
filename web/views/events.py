@@ -28,6 +28,7 @@ from web.processors.media import verify_image_size
 from web.processors.media import UploadImageError
 from api.processors import get_approved_events
 from api.processors import get_pending_events
+from api.processors import get_filtered_events
 from web.decorators.events import can_edit_event
 
 """
@@ -40,7 +41,7 @@ then call your newly created function in view!!! .-Erika
 def index(request, country_code=None):
 	template = 'pages/index.html'
 	events = get_approved_events()
-	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
+	map_events = serializers.serialize('json', events, fields=('geoposition','title', 'pk', 'slug'))
 
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 							remote=request.META.get('REMOTE_ADDR'))
@@ -221,9 +222,14 @@ def search_events(request):
 
 		if request.method == 'POST':
 			form = SearchEventForm(request.POST)
-			if form.is_valid():
-				events = get_approved_events(country_code=form.cleaned_data['country'])
 
+			if form.is_valid():
+				search_filter = form.cleaned_data.get('search', None)
+				country_filter = form.cleaned_data.get('country', None)
+				theme_filter = form.cleaned_data.get('theme', None)
+				audience_filter = form.cleaned_data.get('audience', None)
+
+				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter)
 		else:
 			form = SearchEventForm()
 			events = get_approved_events(country_code=country['country_code'])
