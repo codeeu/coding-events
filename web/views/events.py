@@ -47,7 +47,7 @@ def index(request, country_code=None):
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 							remote=request.META.get('REMOTE_ADDR'))
 
-	if country_code:
+	if country_code and 'media' not in country_code:
 		country_name = unicode(dict(countries)[country_code])
 		country = {'country_name': country_name, 'country_code': country_code}
 	else:

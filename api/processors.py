@@ -52,6 +52,7 @@ def get_pending_events(limit=None, order=None, country_code=None, past=False):
 
 
 def get_filtered_events(search_filter=None, country_filter=None, theme_filter=None, audience_filter=None):
+
 	"""
 	Filter events by given filter
 	"""

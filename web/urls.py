@@ -10,7 +10,7 @@ urlpatterns = patterns(
 	url(r'^add/$', 'events.add_event', name='web.add_event'),
 	url(r'^edit/(?P<event_id>\d+)/$', 'events.edit_event', name='web.edit_event'),
 	url(r'^view/(?P<event_id>\d+)/(?P<slug>[-\w]+)/$', 'events.view_event', name='web.view_event'),
-    url(r'^search/$', 'events.search_events', name='web.search_events'),
+	url(r'^search/$', 'events.search_events', name='web.search_events'),
 	url(r'^thankyou/$', 'events.thankyou', name='web.thankyou'),
 	url(r'^approved/(?P<country_code>\w{2,3})/$', 'events.list_approved_events', name='web.list_events'),
 	url(r'^pending/(?P<country_code>\w{2,3})/$', 'events.list_pending_events', name='web.pending_events'),
@@ -19,6 +19,6 @@ urlpatterns = patterns(
 	url(r'^login/$', 'users.login', name='web.login'),
 	url(r'^ambassadors/$', 'users.ambassadors', name='web.ambassadors'),
 	url(r'^change_status/(?P<event_id>\d+)/$', 'events.change_status', name='web.change_status'),
-    # Note: do not place any url after this one of it will not work
-    url(r'^(?P<country_code>\w+)/$', 'events.index', name='web.index'),
+	# Note: do not place any url after this one of it will not work
+	url(r'^(?P<country_code>\w+)/$', 'events.index', name='web.index'),
 )
