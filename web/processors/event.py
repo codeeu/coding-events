@@ -8,6 +8,7 @@ from django_countries import countries
 
 from web.processors import media
 
+
 def get_client_ip(forwarded=None, remote=None):
 
 	if settings.DEBUG:
@@ -33,6 +34,7 @@ def get_country_from_user_ip(ip):
 	g = GeoIP()
 	return g.country(ip)
 
+
 def list_countries():
 	all_countries = []
 	for code, name in list(countries):
@@ -55,44 +57,45 @@ def create_or_update_event(event_id=None, **event_data):
 	if event:
 		event = event[0]
 
-		# many to many fields have to updated after other fields are updated
-		new_audiences = event_data['audience']
-		event_data.pop('audience')
-		new_themes = event_data['theme']
-		event_data.pop('theme')
+		if event_data:
+			# many to many fields have to updated after other fields are updated
+			new_audiences = event_data['audience']
+			event_data.pop('audience')
+			new_themes = event_data['theme']
+			event_data.pop('theme')
 
-		event_tags = []
-		if 'tags' in event_data:
-			event_tags = event_data['tags']
-			event_data.pop('tags')
+			event_tags = []
+			if 'tags' in event_data:
+				event_tags = event_data['tags']
+				event_data.pop('tags')
 
-		#resize and convert the picture before uploading to db
-		if event_data.get('picture', None):
-			picture_db = media.process_image(event_data['picture'])
-			event_data['picture']= picture_db
+			#resize and convert the picture before uploading to db
+			if event_data.get('picture', None):
+				picture_db = media.process_image(event_data['picture'])
+				event_data['picture']= picture_db
 
-		#in case we have geoposition data in event_data
-		if 'geoposition' in event_data:
-			# updating geoposition field is a bit fussy
-			event_latitude = event_data['geoposition'][0]
-			event_longitude = event_data['geoposition'][1]
-			event_data.pop('geoposition')
-			# updating all other fields
-			event.__dict__.update(event_data)
-			#setting new values for geoposition
-			event.__dict__['geoposition'].latitude = event_latitude
-			event.__dict__['geoposition'].longitude = event_longitude
-			event.save()
-		else:
-			event.__dict__.update(event_data)
-			event.save()
+			#in case we have geoposition data in event_data
+			if 'geoposition' in event_data and event_data['geoposition'] != '':
+				# updating geoposition field is a bit fuzzy
+				event_latitude = event_data['geoposition'][0]
+				event_longitude = event_data['geoposition'][1]
+				event_data.pop('geoposition')
+				# updating all other fields
+				event.__dict__.update(event_data)
+				#setting new values for geoposition
+				event.__dict__['geoposition'].latitude = event_latitude
+				event.__dict__['geoposition'].longitude = event_longitude
+				event.save()
+			else:
+				event.__dict__.update(event_data)
+				event.save()
 
-		#delete old categories and tags and store new ones
-		event.audience.clear()
-		event.audience.add(*new_audiences)
-		event.theme.clear()
-		event.theme.add(*new_themes)
-		event.tags.set(*event_tags)
+			#delete old categories and tags and store new ones
+			event.audience.clear()
+			event.audience.add(*new_audiences)
+			event.theme.clear()
+			event.theme.add(*new_themes)
+			event.tags.set(*event_tags)
 
 	else:
 		if event_data.get('picture', None):
@@ -113,4 +116,7 @@ def change_event_status(event_id):
 
 	event.save()
 	return event
+
+
+
 

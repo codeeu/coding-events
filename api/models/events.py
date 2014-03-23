@@ -8,6 +8,7 @@ from taggit.managers import TaggableManager
 from geoposition.fields import GeopositionField
 from django_countries.fields import CountryField
 
+
 class EventAudience(models.Model):
 	name = models.CharField(max_length=255) 
 
@@ -15,7 +16,7 @@ class EventAudience(models.Model):
 		return self.name
 
 	class Meta:
-		app_label='api'
+		app_label = 'api'
 
 
 class EventTheme(models.Model):
@@ -25,7 +26,7 @@ class EventTheme(models.Model):
 		return self.name
 
 	class Meta:
-		app_label='api'
+		app_label = 'api'
 
 
 class Event(models.Model):
@@ -54,7 +55,6 @@ class Event(models.Model):
 	tags = TaggableManager(blank=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now_add=True)
-
 
 	def __unicode__(self):
 		return self.title
@@ -89,10 +89,10 @@ class Event(models.Model):
 
 		super(Event, self).__init__(*args, **kwargs)
 
-	def save(self,*args,**kwargs):
+	def save(self, *args, **kwargs):
 		if not self.id:
 			self.slug = slugify(self.title)
-		super(Event,self).save(*args,**kwargs)
+		super(Event, self).save(*args, **kwargs)
 
 		try:
 			for tag in self.tag:
