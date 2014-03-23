@@ -134,8 +134,8 @@ var Codeweek = window.Codeweek || {};
         map = createMap(events, lon, lan, 4);
         setAutocomplete();
         if (location.pathname != "/") {
-        var current_country = document.getElementById('country').innerHTML;
-        zoomCountry(current_country); 
+            var current_country = document.getElementById('country').innerHTML;
+            zoomCountry(current_country); 
         }
     }
 
@@ -161,16 +161,13 @@ var Codeweek = window.Codeweek || {};
 
     var init = function (events, lon, lan) {
 
-
         $(function () {
-
-            google.maps.event.addDomListener(window, 'load', function () {
-                initialize(events, lon, lan);
+            if (!events) return;
+                google.maps.event.addDomListener(window, 'load', function () {
+                    initialize(events, lon, lan);
+                });
+                search_events_handler();
             });
-
-            search_events_handler();
-
-        });
     };
 
     Codeweek.Index = {};
