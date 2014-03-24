@@ -188,14 +188,14 @@ INDEX PAGE STYLES
 
 .country-link {
 	margin: 1em 0;
-	height: 128px;
-	width: 128px;
+	height: 80px;
+	width: 80px;
 	float: left;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	text-align: center;
 	border: 1px solid $silver;
-	padding-top: 25px;
+	padding-top: 5px;
 	font-weight: bold;
 	@include transition(all 0.5s linear);
 
@@ -204,8 +204,12 @@ INDEX PAGE STYLES
 	}
 
 	img {
-		width: 64px;
+		width: 34px;
 		margin-bottom: 10px;
+	}
+
+	.icon-flag {
+		font-size: 11px;
 	}
 }
 
@@ -236,15 +240,16 @@ ADD/EDIT EVENT PAGE STYLES
 VIEW EVENT PAGE STYLES
 *********************/
 
-.share-event-wrapper{
+.share-event-wrapper {
 	margin: 15px 0;
-	.fb-share-button{
+	.fb-share-button {
 		margin-right: 15px;
 	}
-	#twitter-widget-0{
+	#twitter-widget-0 {
 		width: 90px !important;
 	}
 }
+
 /*********************
 FOOTER STYLES
 *********************/
@@ -403,6 +408,7 @@ SEARCH EVENTS STYLES
 .search-page {
 	margin: 60px 0;
 }
+
 .search-checkbox {
 	ul {
 		list-style-type: none;
