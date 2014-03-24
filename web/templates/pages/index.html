@@ -55,9 +55,9 @@
 			<a class="change-country-link btn btn-sm" id="showcountries">
 				See events in other countries
 			</a>
-			<div id="allcountries" class="clearfix">
+			<div id="allcountries" class="clearfix" style="display:none">
 				{% for each_country in all_countries %}
-					<a href="{% url 'web.view_event_by_country' each_country.1 %}" class="country-link">
+					<a href="{% url 'web.index' each_country.1 %}" class="country-link">
 						<img src="/static/flags/{{ each_country.1|lower }}.gif" alt="{{ each_country.0 }}" />
 
 						<div class="icon-flag">
@@ -82,6 +82,7 @@
 		<script type="text/javascript" src="{% static "lib/pjax/jquery.pjax.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/endless_pagination/endless-pagination.js" %}"></script>
 		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
 		<script type="text/javascript">
 			Codeweek.Index.init('{{map_events|safe}}', {{ lan_lon.0 }}, {{ lan_lon.1 }})
 		</script>
