@@ -4,32 +4,29 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template import loader
 from django.template import Context
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator
-from django.core.paginator import EmptyPage
-from django.core.paginator import PageNotAnInteger
 from django_countries import countries
 
-from api.models import Event
-from web.forms.event_form import AddEventForm, SearchEventForm
-from web.processors.event import get_event
+from api.processors import get_event_by_id
+from api.processors import get_filtered_events
+from api.processors import get_approved_events
+from api.processors import get_pending_events
+from web.forms.event_form import AddEventForm
+from web.forms.event_form import SearchEventForm
+from web.processors.event import get_initial_data
 from web.processors.event import change_event_status
 from web.processors.event import create_or_update_event
 from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import get_country_from_user_ip
 from web.processors.event import list_countries
-from web.processors.media import verify_image_size
+from web.processors.media import process_image
+from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
-from api.processors import get_approved_events
-from api.processors import get_pending_events
-from api.processors import get_filtered_events
 from web.decorators.events import can_edit_event
 
 """
@@ -42,17 +39,17 @@ then call your newly created function in view!!! .-Erika
 def index(request, country_code=None):
 	template = 'pages/index.html'
 	events = get_approved_events()
-	map_events = serializers.serialize('json', events, fields=('geoposition','title', 'pk', 'slug'))
+	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
 
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
-							remote=request.META.get('REMOTE_ADDR'))
+	                        remote=request.META.get('REMOTE_ADDR'))
 
 	if country_code and 'media' not in country_code:
 		country_name = unicode(dict(countries)[country_code])
 		country = {'country_name': country_name, 'country_code': country_code}
 	else:
 		country = get_country_from_user_ip(user_ip)
-	
+
 	if request.is_ajax():
 		if request.META.get('HTTP_X_PJAX', None):
 			template = 'pages/pjax_index.html'
@@ -84,18 +81,16 @@ def add_event(request):
 
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
-		if event_form.is_valid():
 
-			if request.FILES.get('picture', None):
-				try:
-					verify_image_size(request.FILES['picture'].size)
+	if event_form.is_valid():
+		picture = request.FILES['picture']
 
-				except UploadImageError:
-						messages.error(request, "Image file is too large. Image size must be up to 256 kb")
+		try:
+			if picture:
+				if picture.size > (256 * 1024):
+					raise ImageSizeTooLargeException('Image size too large.')
 
-						return render_to_response("pages/add_event.html", {
-								'form': event_form,
-						 }, context_instance=RequestContext(request))
+				process_image(picture)
 
 			event_data = {}
 			event_data.update(event_form.cleaned_data)
@@ -107,77 +102,80 @@ def add_event(request):
 
 			return HttpResponseRedirect(reverse('web.view_event', args=[event.pk, event.slug]))
 
+		except ImageSizeTooLargeException:
+			messages.error(request, 'The image is just a bit too big for us. '
+			                        'Please reduce your image size and try agin.')
+		except UploadImageError as e:
+			messages.error(request, e.message)
+
 	return render_to_response("pages/add_event.html", {
 		'form': event_form,
 	}, context_instance=RequestContext(request))
 
 
+@login_required
+@can_edit_event
+def edit_event(request, event_id):
+	event = get_event_by_id(event_id)
+	initial = get_initial_data(event)
+
+	event_data = {}
+
+	if request.method == 'POST':
+		event_form = AddEventForm(data=request.POST, files=request.FILES)
+	else:
+		event_form = AddEventForm(initial=initial)
+
+	if event_form.is_valid():
+		picture = request.FILES.get('picture', None)
+		event_data = event_form.cleaned_data
+
+		try:
+			if picture:
+				if picture.size > (256 * 1024):
+					raise ImageSizeTooLargeException('Image size too large.')
+
+				process_image(picture)
+			else:
+				del event_data['picture']
+
+			create_or_update_event(event_id, **event_data)
+
+			return HttpResponseRedirect(reverse('web.view_event',
+			                                    kwargs={'event_id': event.id, 'slug': event.slug}))
+
+		except ImageSizeTooLargeException:
+			messages.error(request, 'The image is just a bit too big for us. '
+			                        'Please reduce your image size and try agin.')
+		except UploadImageError:
+			messages.error(request, 'Image file is too large. Image size must be up to 256 kb')
+
+	return render_to_response(
+		'pages/add_event.html', {
+			'form': event_form,
+			'address': event_data.get('location', None),
+			'editing': True,
+			'picture_url': event.picture,
+		}, context_instance=RequestContext(request))
+
+
+def view_event_by_country(request, country_code):
+	event_list = get_approved_events(country_code=country_code)
+
+	return render_to_response(
+		'pages/list_events.html', {
+			'event_list': event_list,
+		}, context_instance=RequestContext(request))
+
+
 def view_event(request, event_id, slug):
-	event = get_object_or_404(Event, pk=event_id, slug=slug)
+	event = get_event_by_id(event_id)
 
 	return render_to_response(
 		'pages/view_event.html', {
 			'event': event,
 		}, context_instance=RequestContext(request))
 
-
-def search_event(request):
-	pass
-
-
-def thankyou(request):
-	return render_to_response('alerts/thank_you.html')
-
-
-@login_required
-@can_edit_event
-def edit_event(request, event_id):
-	event = get_event(event_id)
-	# Create a dictionary out of db data to populate the edit form
-	event_data = event.__dict__
-	tags = []
-
-	for tag in event.tags.all():
-		tags.append(tag.name)
-	event_data['tags'] = ",".join(tags)
-	event_form = AddEventForm(data=event_data) # Making sure the right option ids are selected when form is loaded
-
-	event_data['audience'] = [audience.pk for audience in event.audience.all()]
-	event_data['theme'] = [theme.pk for theme in event.theme.all()]
-
-	if request.method == "POST":
-		event_form = AddEventForm(data=request.POST, files=request.FILES)
-		if event_form.is_valid():
-
-			if request.FILES.get('picture', None):
-
-				try:
-					verify_image_size(request.FILES['picture'].size)
-
-				except UploadImageError:
-					messages.error(request, "Image file is too large. Image size must be up to 256 kb")
-
-					return render_to_response("pages/add_event.html", {
-						'form': event_form,
-					}, context_instance=RequestContext(request))
-
-		event_data = event_form.cleaned_data
-		if not event_data['picture']:
-			event_data.pop('picture')
-
-		event = create_or_update_event(event_id, **event_data)
-
-		url = reverse('web.view_event', kwargs={'event_id': event.id, 'slug': event.slug})
-
-		return HttpResponseRedirect(url)
-
-	return render_to_response(
-		"pages/add_event.html", {
-		"form": event_form,
-		"address": event_data['location'],
-		"editing": True,
-		"picture_url": event.picture,
-		}, context_instance=RequestContext(request))
 
 @login_required
 def list_pending_events(request, country_code):
@@ -186,17 +184,13 @@ def list_pending_events(request, country_code):
 	"""
 
 	event_list = get_pending_events(country_code=country_code)
-	user = request.user
-	if not user.profile.is_ambassador():
-		messages.error(request, "You don't have permissions to see this page")
-		return HttpResponseRedirect(reverse("web.index"))
-	else:
-		return render_to_response(
-			"pages/list_events.html", {
-				'event_list': event_list,
-				'status': 'pending',
-				'country_code': country_code,
-			}, context_instance=RequestContext(request))
+
+	return render_to_response(
+		'pages/list_events.html', {
+			'event_list': event_list,
+			'status': 'pending',
+			'country_code': country_code,
+		}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -206,18 +200,17 @@ def list_approved_events(request, country_code):
 	"""
 
 	event_list = get_approved_events(country_code=country_code)
-	context = {'event_list': event_list, 'status': 'approved', 'country_code': country_code}
 
-	return render_to_response("pages/list_events.html", context, context_instance=RequestContext(request))
-
-
-def guide(request):
-	return render_to_response('pages/guide.html')
+	return render_to_response('pages/list_events.html', {
+		'event_list': event_list,
+		'status': 'approved',
+		'country_code': country_code
+	}, context_instance=RequestContext(request))
 
 
 def search_events(request):
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
-								remote=request.META.get('REMOTE_ADDR'))
+		                        remote=request.META.get('REMOTE_ADDR'))
 		country = get_country_from_user_ip(user_ip)
 		events = get_approved_events(country_code=country)
 
@@ -241,8 +234,6 @@ def search_events(request):
 				'form': form,
 			}, context_instance=RequestContext(request))
 
-def about(request):
-	return render_to_response('pages/about.html')
 
 @login_required
 @can_edit_event

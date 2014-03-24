@@ -44,9 +44,15 @@ def list_countries():
 	return all_countries
 
 
-def get_event(event_id):
-	event = Event.objects.get(id=event_id)
-	return event
+def get_initial_data(event):
+	"""
+	Processing event to fill in form data
+	"""
+	initial = event.__dict__
+	initial['tags'] = event.get_tags()
+	initial['audience'] = event.get_audience_array()
+	initial['theme'] = event.get_theme_array()
+	return initial
 
 
 def create_or_update_event(event_id=None, **event_data):
@@ -68,11 +74,6 @@ def create_or_update_event(event_id=None, **event_data):
 			if 'tags' in event_data:
 				event_tags = event_data['tags']
 				event_data.pop('tags')
-
-			#resize and convert the picture before uploading to db
-			if event_data.get('picture', None):
-				picture_db = media.process_image(event_data['picture'])
-				event_data['picture']= picture_db
 
 			#in case we have geoposition data in event_data
 			if 'geoposition' in event_data and event_data['geoposition'] != '':
@@ -98,11 +99,8 @@ def create_or_update_event(event_id=None, **event_data):
 			event.tags.set(*event_tags)
 
 	else:
-		if event_data.get('picture', None):
-			picture_db = media.process_image(event_data['picture'])
-			event_data['picture']= picture_db
-
 		event = Event.objects.create(**event_data)
+
 	return event
 
 

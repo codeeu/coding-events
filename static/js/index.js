@@ -6,13 +6,14 @@ var Codeweek = window.Codeweek || {};
 
     'use strict';
 
-    var map,
+    var i,
+        map,
         markers = {},
         place,
         placeinfowindow = null;
 
     function createMap(events, lat, lng, zoomVal) {
-        var markerData = JSON.parse(events),
+        var markerData = events,
             markerData_len = markerData.length,
             markerClusterOptions = {gridSize: 30, maxZoom: 10},
             map = new google.maps.Map(document.getElementById('events-map'), {
@@ -24,7 +25,7 @@ var Codeweek = window.Codeweek || {};
                 zoomControl: true,
                 zoomControlOptions: {
                     style: google.maps.ZoomControlStyle.LARGE,
-                    position: google.maps.ControlPosition.RIGHT_CENTER
+                    position: google.maps.ControlPosition.RIGHT_BOTTOM
                 },
                 scaleControl: true,
                 streetViewControl: false,
@@ -33,10 +34,10 @@ var Codeweek = window.Codeweek || {};
                 }
             });
         placeinfowindow = new google.maps.InfoWindow({
-                content: "loading..."
-    });
+            content: "loading..."
+        });
 
-        for (var i = 0; i <= markerData_len; i++) {
+        for (i = 0; i <= markerData_len; i = i + 1) {
             var markdata = markerData[i];
             if (markdata && typeof markdata === 'object') {
 
@@ -97,7 +98,6 @@ var Codeweek = window.Codeweek || {};
                 country_name = '';
             if (place.address_components) {
                 var address = place.address_components;
-                //console.log(address);
                 for (var j = 0; j <= address.length; j++) {
                     if (address[j] && address[j].types[0] === 'country') {
                         country_code = address[j].short_name;
@@ -133,9 +133,9 @@ var Codeweek = window.Codeweek || {};
     function initialize(events, lon, lan) {
         map = createMap(events, lon, lan, 4);
         setAutocomplete();
-        if (location.pathname != "/") {
-            var current_country = document.getElementById('country').innerHTML;
-            zoomCountry(current_country); 
+        if (location.pathname !== "/") {
+        var current_country = document.getElementById('country').innerHTML;
+        zoomCountry(current_country); 
         }
     }
 
@@ -147,27 +147,19 @@ var Codeweek = window.Codeweek || {};
             e.preventDefault();
         });
 
-        /*
-         if ($.support.pjax) {
-         $(document).bind('change', '[data-pjax]', function (event) {
-         event.preventDefault();
-         var container = $('[data-pjax-container]');
-
-         $.pjax({url: '/', container: container});
-         //$.pjax.click(event, {container: container});
-         });
-         }*/
     };
 
     var init = function (events, lon, lan) {
 
         $(function () {
-            if (!events) return;
-                google.maps.event.addDomListener(window, 'load', function () {
-                    initialize(events, lon, lan);
-                });
-                search_events_handler();
+            // Initialize map on front page
+            google.maps.event.addDomListener(window, 'load', function () {
+                initialize(events, lon, lan);
             });
+            
+            search_events_handler();
+
+        });
     };
 
     Codeweek.Index = {};

@@ -25,7 +25,9 @@
 						<div class="alert alert-info">
 							This event is nice and approved. You can revert it to
 							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a> or check other
-							<a href="{% url 'web.pending_events' user.profile.country %}"><strong><a href="{% url 'web.pending_events' user.profile.country %}">pending events in {{ user.profile.country.name }}</a></strong>.
+							<a href="{% url 'web.pending_events' user.profile.country %}"><strong><a
+									href="{% url 'web.pending_events' user.profile.country %}">pending events
+							                                                                   in {{ user.profile.country.name }}</a></strong>.
 						</div>
 					{% endif %}
 				</div>
@@ -62,20 +64,22 @@
 					<strong>More information:</strong>
 					<p><a href="{{ event.event_url }}" target="_blank">{{ event.event_url }}</a></p>
 				{% endif %}
-				<strong>This event is for:</strong> 
+				<strong>This event is for:</strong>
+
 				<p>{% for entry in event.audience.all %}
 					{% if forloop.last %}
 						{{ entry.name }}
 					{% else %}
-						{{ entry.name }}, 
+						{{ entry.name }},
 					{% endif %}
 				{% endfor %}</p>
 				<strong>Main themes:</strong>
+
 				<p>{% for entry in event.theme.all %}
 					{% if forloop.last %}
 						{{ entry.name }}
 					{% else %}
-						{{ entry.name }}, 
+						{{ entry.name }},
 					{% endif %}
 				{% endfor %}</p>
 				{% if event.tags %}
@@ -85,20 +89,25 @@
 							{% if forloop.last %}
 								{{ tag.name }}
 							{% else %}
-								{{ tag.name }}, 
+								{{ tag.name }},
 							{% endif %}
 						{% endfor %}
 					</p>
 				{% endif %}
 
 				<strong>Share the event:</strong>
+				<div class="share-event-wrapper">
+					<div class="fb-share-button"
+					     data-href="http://events.codeweek.eu/{% url 'web.view_event' event.pk event.slug %}"
+					     data-type="button_count"></div>
+					<a href="https://twitter.com/share" class="twitter-share-button"
+					   data-url="http://events.codeweek.eu"
+					   data-text="Check out {{ event.title }} event at" data-via="CodeWeekEU"
+					   data-hashtags="codeEU">Tweet</a>
 
-				<div class="fb-share-button" data-href="http://developers.facebook.com/docs/plugins/"
-				     data-type="button_count"></div>
-
+					<div class="g-plusone" data-size="medium" data-href="http://events.codeweek.eu"></div>
+				</div>
 			</div>
-
-
 			<div class="col-md-4 event-time-place">
 				{% if event.picture %}
 					<div class="event-jumbotron">
@@ -125,7 +134,19 @@
 	<script type="text/javascript"
 	        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
 	</script>
-
+	<script>!function (d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+		if (!d.getElementById(id)) {
+			js = d.createElement(s);
+			js.id = id;
+			js.src = p + '://platform.twitter.com/widgets.js';
+			fjs.parentNode.insertBefore(js, fjs);
+		}
+	}(document, 'script', 'twitter-wjs');</script>
+	<!-- Place this tag in your head or just before your close body tag. -->
+	<script type="text/javascript" src="https://apis.google.com/js/platform.js">
+		{lang: 'en-GB'}
+	</script>
 	<script type="text/javascript">
 
 		function initialize() {

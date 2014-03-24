@@ -5,13 +5,13 @@ from django.contrib.auth.views import login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
-from web.processors.event import get_event
+from api.processors import get_event_by_id
 from web.processors.user import get_user_profile
 
 
 def can_edit_event(func):
 	def decorator(request, *args, **kwargs):
-		event = get_event(kwargs['event_id'])
+		event = get_event_by_id(kwargs['event_id'])
 		user = get_user_profile(request.user.id)
 		if user.is_ambassador():
 			return func(request, *args, **kwargs)

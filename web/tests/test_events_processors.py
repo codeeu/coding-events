@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.db import IntegrityError
 from models.events import Event
 from geoposition import Geoposition
-from web.processors.event import get_event
+from api.processors import get_event_by_id
 from web.processors.event import create_or_update_event
 
 
@@ -25,7 +25,7 @@ class EventTestCase(TestCase):
 
 	def test_get_event(self):
 		test_event = Event.objects.get(title="asdasd")
-		self.assertEqual(test_event, get_event(event_id=1))
+		self.assertEqual(test_event, get_event_by_id(event_id=1))
 
 	def test_create_or_update_event(self):
 		test_event = create_or_update_event(event_id=1)
