@@ -150,7 +150,13 @@
 	<script type="text/javascript">
 
 		function initialize() {
-			var myLatlng = new google.maps.LatLng({{ event.geoposition.latitude }}, {{ event.geoposition.longitude }});
+			//localization fix!
+			var latitude = "{{ event.geoposition.latitude }}"
+			latitude = latitude.replace(',','.');
+			var longitude = "{{ event.geoposition.longitude }}"
+			longitude = longitude.replace(',','.');
+
+			var myLatlng = new google.maps.LatLng(latitude, longitude);
 			var mapOptions = {
 				zoom: 15,
 				center: myLatlng

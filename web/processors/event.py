@@ -62,41 +62,52 @@ def create_or_update_event(event_id=None, **event_data):
 	event = Event.objects.filter(id=event_id)
 	if event:
 		event = event[0]
-		# many to many fields have to updated after other fields are updated
-		new_audiences = event_data['audience']
-		del event_data['audience']
-		new_themes = event_data['theme']
-		del event_data['theme']
-		event_tags = event_data['tags']
-		del event_data['tags']
-		print event_data
-		#if event_data.get('picture', None):
-		#	del event_data['picture']
 
-		#in case we have geoposition data in event_data
-		if 'geoposition' in event_data:
-			# updating geoposition field is a bit fussy
-			event_latitude = event_data['geoposition'][0]
-			event_longitude = event_data['geoposition'][1]
-			del event_data['geoposition']
-			# updating all other fields
-			event.__dict__.update(event_data)
-			#setting new values for geoposition
-			event.__dict__['geoposition'].latitude = event_latitude
-			event.__dict__['geoposition'].longitude = event_longitude
-		else:
-			event.__dict__.update(event_data)
+		if event_data:
+			# many to many fields have to updated after other fields are updated
+			new_audiences = event_data['audience']
+			event_data.pop('audience')
+			new_themes = event_data['theme']
+			event_data.pop('theme')
 
-		event.save()
+			event_tags = []
+			if 'tags' in event_data:
+				event_tags = event_data['tags']
+				event_data.pop('tags')
 
-		#delete old categories and tags and store new ones
-		event.audience.clear()
-		event.audience.add(*new_audiences)
-		event.theme.clear()
-		event.theme.add(*new_themes)
-		event.tags.set(*event_tags)
+			#resize and convert the picture before uploading to db
+			if event_data.get('picture', None):
+				picture_db = media.process_image(event_data['picture'])
+				event_data['picture']= picture_db
+
+			#in case we have geoposition data in event_data
+			if 'geoposition' in event_data and event_data['geoposition'] != '':
+				# updating geoposition field is a bit fuzzy
+				event_latitude = event_data['geoposition'][0]
+				event_longitude = event_data['geoposition'][1]
+				event_data.pop('geoposition')
+				# updating all other fields
+				event.__dict__.update(event_data)
+				#setting new values for geoposition
+				event.__dict__['geoposition'].latitude = event_latitude
+				event.__dict__['geoposition'].longitude = event_longitude
+				event.save()
+			else:
+				event.__dict__.update(event_data)
+				event.save()
+
+			#delete old categories and tags and store new ones
+			event.audience.clear()
+			event.audience.add(*new_audiences)
+			event.theme.clear()
+			event.theme.add(*new_themes)
+			event.tags.set(*event_tags)
 
 	else:
+		if event_data.get('picture', None):
+			picture_db = media.process_image(event_data['picture'])
+			event_data['picture']= picture_db
+
 		event = Event.objects.create(**event_data)
 	return event
 
@@ -111,4 +122,7 @@ def change_event_status(event_id):
 
 	event.save()
 	return event
+
+
+
 

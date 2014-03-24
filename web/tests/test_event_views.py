@@ -29,7 +29,7 @@ class EventViewsTestCase(TestCase):
 		response = self.client.get(reverse('web.index'), {}, REMOTE_ADDR='93.103.53.11')
 
 		self.assertEquals(200, response.status_code)
-		self.assertJSONEqual('[]', response.context['map_events'])
+		self.assertJSONEqual('[]', json.loads(response.context['map_events']))
 		self.assertEquals((46.0, 15.0), response.context['lan_lon'])
 		self.assertQuerysetEqual([], response.context['latest_events'])
 		self.assertTemplateUsed(response, 'pages/index.html')
@@ -68,7 +68,7 @@ class EventViewsTestCase(TestCase):
 		])
 
 		#assert
-		self.assertJSONEqual(expected_map_events_result, response.context['map_events'])
+		self.assertJSONEqual(expected_map_events_result, json.loads(response.context['map_events']))
 		self.assertEquals('SI', response.context['country']['country_code'])
 		self.assertEquals(1, len(response.context['latest_events']))
 		self.assertEquals(aproved.title, response.context['latest_events'][0].title)

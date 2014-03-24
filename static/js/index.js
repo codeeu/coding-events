@@ -86,7 +86,7 @@ var Codeweek = window.Codeweek || {};
             if (!place.geometry) {
                 return;
             }
-
+            // If the place has a geometry, then present it on a map.
             if (place.geometry.viewport) {
                 map.map.fitBounds(place.geometry.viewport);
             } else {
@@ -121,7 +121,7 @@ var Codeweek = window.Codeweek || {};
     function zoomCountry(current_country) {
         var zoomgeocoder = new google.maps.Geocoder();
         zoomgeocoder.geocode({'address': current_country}, function (results, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
+            if (status == google.maps.GeocoderStatus.OK) {
                 var ne = results[0].geometry.viewport.getNorthEast();
                 var sw = results[0].geometry.viewport.getSouthWest();
                 map.map.fitBounds(results[0].geometry.viewport);
@@ -151,28 +151,12 @@ var Codeweek = window.Codeweek || {};
 
     var init = function (events, lon, lan) {
 
-
         $(function () {
             // Initialize map on front page
             google.maps.event.addDomListener(window, 'load', function () {
                 initialize(events, lon, lan);
-            });
-
-            // Handler to process search on index page
+            
             search_events_handler();
-
-            $.endlessPaginate();
-
-            var showCountries = document.getElementById('showcountries');
-			showCountries.onclick = function () {
-				var div = document.getElementById('allcountries');
-				if (div.style.display !== 'none') {
-					div.style.display = 'none';
-				}
-				else {
-					div.style.display = 'block';
-				}
-			};
 
         });
     };

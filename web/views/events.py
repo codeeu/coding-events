@@ -1,3 +1,4 @@
+import json
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -13,6 +14,8 @@ from django_countries import countries
 from api.processors import get_event_by_id
 from api.processors import get_approved_events
 from api.processors import get_pending_events
+from web.forms.event_form import AddEventForm
+from web.forms.event_form import SearchEventForm
 from web.processors.event import get_initial_data
 from web.processors.event import change_event_status
 from web.processors.event import create_or_update_event
@@ -23,7 +26,8 @@ from web.processors.event import list_countries
 from web.processors.media import process_image
 from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
-from web.forms.event_form import AddEventForm
+from api.processors import get_approved_events
+from api.processors import get_pending_events
 from web.decorators.events import can_edit_event
 
 """
@@ -36,17 +40,19 @@ then call your newly created function in view!!! .-Erika
 def index(request, country_code=None):
 	template = 'pages/index.html'
 	events = get_approved_events()
-	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
+	map_events = serializers.serialize('json', events, fields=('geoposition','title', 'pk', 'slug'))
 
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+							remote=request.META.get('REMOTE_ADDR'))
+	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
-	country_code = 'SI'
-	if country_code:
+	
+	if country_code and 'media' not in country_code:
 		country_name = unicode(dict(countries)[country_code])
 		country = {'country_name': country_name, 'country_code': country_code}
 	else:
 		country = get_country_from_user_ip(user_ip)
-
+	
 	if request.is_ajax():
 		if request.META.get('HTTP_X_PJAX', None):
 			template = 'pages/pjax_index.html'
@@ -64,7 +70,7 @@ def index(request, country_code=None):
 	return render_to_response(
 		template, {
 			'latest_events': events,
-			'map_events': map_events,
+			'map_events': json.dumps(map_events),
 			'lan_lon': lan_lon,
 			'country': country,
 			'all_countries': all_countries,
@@ -157,24 +163,6 @@ def edit_event(request, event_id):
 		}, context_instance=RequestContext(request))
 
 
-def view_event_by_country(request, country_code):
-	event_list = get_approved_events(country_code=country_code)
-
-	return render_to_response(
-		'pages/list_events.html', {
-			'event_list': event_list,
-		}, context_instance=RequestContext(request))
-
-
-def view_event(request, event_id, slug):
-	event = get_event_by_id(event_id)
-
-	return render_to_response(
-		'pages/view_event.html', {
-			'event': event,
-		}, context_instance=RequestContext(request))
-
-
 @login_required
 def list_pending_events(request, country_code):
 	"""
@@ -193,18 +181,44 @@ def list_pending_events(request, country_code):
 
 @login_required
 def list_approved_events(request, country_code):
-	"""
+    """
 	Display a list of approved events.
 	"""
 
-	event_list = get_approved_events(country_code=country_code)
-
-	return render_to_response('pages/list_events.html', {
+    event_list = get_approved_events(country_code=country_code)
+	
+    return render_to_response('pages/list_events.html', {
 		'event_list': event_list,
 		'status': 'approved',
 		'country_code': country_code
 	}, context_instance=RequestContext(request))
 
+
+def search_events(request):
+		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+								remote=request.META.get('REMOTE_ADDR'))
+		country = get_country_from_user_ip(user_ip)
+		events = get_approved_events(country_code=country)
+
+		if request.method == 'POST':
+			form = SearchEventForm(request.POST)
+
+			if form.is_valid():
+				search_filter = form.cleaned_data.get('search', None)
+				country_filter = form.cleaned_data.get('country', None)
+				theme_filter = form.cleaned_data.get('theme', None)
+				audience_filter = form.cleaned_data.get('audience', None)
+
+				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter)
+		else:
+			form = SearchEventForm()
+			events = get_approved_events(country_code=country['country_code'])
+
+		return render_to_response(
+			'pages/search_events.html', {
+				'events': events,
+				'form': form,
+			}, context_instance=RequestContext(request))
 
 @login_required
 @can_edit_event
