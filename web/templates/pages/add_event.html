@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load compress %}
 
 {% block title %}- Add Event{% endblock title %}
 
@@ -184,17 +185,16 @@
 {% endblock content %}
 
 {% block custom_js %}
-	<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/bootstrap-datetimepicker.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/holder.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/events.js" %}"></script>
-	<script type="text/javascript">
-		Codeweek.Event.add();
-	</script>
-
-
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false&libraries=places"></script>
-
+	{% compress js %}
+		<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/bootstrap-datetimepicker.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/holder.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/events.js" %}"></script>
+		<script type="text/javascript">
+			Codeweek.Event.add();
+		</script>
+	{% endcompress %}
 
 {% endblock custom_js %}
