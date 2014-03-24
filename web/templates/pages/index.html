@@ -57,7 +57,7 @@
 			</a>
 			<div id="allcountries" class="clearfix" style="display:none">
 				{% for each_country in all_countries %}
-					<a href="{% url 'web.view_event_by_country' each_country.1 %}" class="country-link">
+					<a href="/{{each_country.1}}" class="country-link">
 						<img src="/static/flags/{{ each_country.1|lower }}.gif" alt="{{ each_country.0 }}" />
 
 						<div class="icon-flag">
