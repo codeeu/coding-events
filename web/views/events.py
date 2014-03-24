@@ -67,7 +67,7 @@ def index(request, country_code=None):
 	return render_to_response(
 		template, {
 			'latest_events': events,
-			'map_events': json.dumps(map_events),
+			'map_events': map_events,
 			'lan_lon': lan_lon,
 			'country': country,
 			'all_countries': all_countries,

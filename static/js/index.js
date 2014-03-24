@@ -13,7 +13,7 @@ var Codeweek = window.Codeweek || {};
         placeinfowindow = null;
 
     function createMap(events, lat, lng, zoomVal) {
-        var markerData = events,
+        var markerData = JSON.parse(events),
             markerData_len = markerData.length,
             markerClusterOptions = {gridSize: 30, maxZoom: 10},
             map = new google.maps.Map(document.getElementById('events-map'), {
