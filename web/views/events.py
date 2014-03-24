@@ -12,6 +12,7 @@ from django.core.urlresolvers import reverse
 from django_countries import countries
 
 from api.processors import get_event_by_id
+from api.processors import get_filtered_events
 from api.processors import get_approved_events
 from api.processors import get_pending_events
 from web.forms.event_form import AddEventForm
@@ -26,8 +27,6 @@ from web.processors.event import list_countries
 from web.processors.media import process_image
 from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
-from api.processors import get_approved_events
-from api.processors import get_pending_events
 from web.decorators.events import can_edit_event
 
 """
@@ -40,19 +39,17 @@ then call your newly created function in view!!! .-Erika
 def index(request, country_code=None):
 	template = 'pages/index.html'
 	events = get_approved_events()
-	map_events = serializers.serialize('json', events, fields=('geoposition','title', 'pk', 'slug'))
+	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
 
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
-							remote=request.META.get('REMOTE_ADDR'))
-	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
-	
+
 	if country_code and 'media' not in country_code:
 		country_name = unicode(dict(countries)[country_code])
 		country = {'country_name': country_name, 'country_code': country_code}
 	else:
 		country = get_country_from_user_ip(user_ip)
-	
+
 	if request.is_ajax():
 		if request.META.get('HTTP_X_PJAX', None):
 			template = 'pages/pjax_index.html'
@@ -116,7 +113,6 @@ def add_event(request):
 	}, context_instance=RequestContext(request))
 
 
-
 @login_required
 @can_edit_event
 def edit_event(request, event_id):
@@ -163,6 +159,24 @@ def edit_event(request, event_id):
 		}, context_instance=RequestContext(request))
 
 
+def view_event_by_country(request, country_code):
+	event_list = get_approved_events(country_code=country_code)
+
+	return render_to_response(
+		'pages/list_events.html', {
+			'event_list': event_list,
+		}, context_instance=RequestContext(request))
+
+
+def view_event(request, event_id, slug):
+	event = get_event_by_id(event_id)
+
+	return render_to_response(
+		'pages/view_event.html', {
+			'event': event,
+		}, context_instance=RequestContext(request))
+
+
 @login_required
 def list_pending_events(request, country_code):
 	"""
@@ -181,13 +195,13 @@ def list_pending_events(request, country_code):
 
 @login_required
 def list_approved_events(request, country_code):
-    """
+	"""
 	Display a list of approved events.
 	"""
 
-    event_list = get_approved_events(country_code=country_code)
-	
-    return render_to_response('pages/list_events.html', {
+	event_list = get_approved_events(country_code=country_code)
+
+	return render_to_response('pages/list_events.html', {
 		'event_list': event_list,
 		'status': 'approved',
 		'country_code': country_code
@@ -196,7 +210,7 @@ def list_approved_events(request, country_code):
 
 def search_events(request):
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
-								remote=request.META.get('REMOTE_ADDR'))
+		                        remote=request.META.get('REMOTE_ADDR'))
 		country = get_country_from_user_ip(user_ip)
 		events = get_approved_events(country_code=country)
 
@@ -219,6 +233,7 @@ def search_events(request):
 				'events': events,
 				'form': form,
 			}, context_instance=RequestContext(request))
+
 
 @login_required
 @can_edit_event

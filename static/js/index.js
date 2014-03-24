@@ -13,7 +13,7 @@ var Codeweek = window.Codeweek || {};
         placeinfowindow = null;
 
     function createMap(events, lat, lng, zoomVal) {
-        var markerData = JSON.parse(events),
+        var markerData = events,
             markerData_len = markerData.length,
             markerClusterOptions = {gridSize: 30, maxZoom: 10},
             map = new google.maps.Map(document.getElementById('events-map'), {
@@ -133,7 +133,7 @@ var Codeweek = window.Codeweek || {};
     function initialize(events, lon, lan) {
         map = createMap(events, lon, lan, 4);
         setAutocomplete();
-        if (location.pathname != "/") {
+        if (location.pathname !== "/") {
         var current_country = document.getElementById('country').innerHTML;
         zoomCountry(current_country); 
         }
@@ -155,6 +155,7 @@ var Codeweek = window.Codeweek || {};
             // Initialize map on front page
             google.maps.event.addDomListener(window, 'load', function () {
                 initialize(events, lon, lan);
+            });
             
             search_events_handler();
 
