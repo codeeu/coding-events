@@ -81,7 +81,7 @@ def add_event(request):
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
 
 	if event_form.is_valid():
-		picture = request.FILES.get('picture')
+		picture = request.FILES.get('picture', None)
 
 		try:
 			if picture:
@@ -125,6 +125,7 @@ def edit_event(request, event_id):
 		event_form = AddEventForm(initial=initial)
 
 	if event_form.is_valid():
+		print request.FILES
 		picture = request.FILES.get('picture', None)
 		event_data = event_form.cleaned_data
 
