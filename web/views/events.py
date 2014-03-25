@@ -125,7 +125,6 @@ def edit_event(request, event_id):
 		event_form = AddEventForm(initial=initial)
 
 	if event_form.is_valid():
-		print request.FILES
 		picture = request.FILES.get('picture', None)
 		event_data = event_form.cleaned_data
 
