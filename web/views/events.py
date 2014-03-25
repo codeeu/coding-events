@@ -141,14 +141,14 @@ def edit_event(request, event_id):
 
 			create_or_update_event(event_id, **event_data)
 
-			return HttpResponseRedirect(reverse('web.view_event',
-			                                    kwargs={'event_id': event.id, 'slug': event.slug}))
-
 		except ImageSizeTooLargeException:
-			messages.error(request, 'The image is just a bit too big for us. '
+			messages.error(request, 'The image is just a bit too big for us (must be up to 256 kb). '
 			                        'Please reduce your image size and try agin.')
-		except UploadImageError:
-			messages.error(request, 'Image file is too large. Image size must be up to 256 kb')
+		except UploadImageError as e:
+			messages.error(request, e.message)
+
+		return HttpResponseRedirect(reverse('web.view_event',
+		                                    kwargs={'event_id': event.id, 'slug': event.slug}))
 
 	return render_to_response(
 		'pages/add_event.html', {
