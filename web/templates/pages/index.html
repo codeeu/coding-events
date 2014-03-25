@@ -84,7 +84,7 @@
 		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 		<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
 		<script type="text/javascript">
-			Codeweek.Index.init('{{map_events|safe}}', {{ lan_lon.0 }}, {{ lan_lon.1 }})
+			Codeweek.Index.init(JSON.stringify({{ map_events|safe }}), {{ lan_lon.0 }}, {{ lan_lon.1 }})
 		</script>
 	{% endcompress %}
 {% endblock %}
