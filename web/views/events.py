@@ -225,7 +225,7 @@ def search_events(request):
 
 				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter)
 		else:
-			form = SearchEventForm()
+			form = SearchEventForm(country_code=country['country_code'])
 			events = get_approved_events(country_code=country['country_code'])
 
 		return render_to_response(
