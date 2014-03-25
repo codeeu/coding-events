@@ -83,7 +83,7 @@ def add_event(request):
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
 
 	if event_form.is_valid():
-		picture = request.FILES['picture']
+		picture = request.FILES.get('picture')
 
 		try:
 			if picture:
