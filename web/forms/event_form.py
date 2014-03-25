@@ -127,8 +127,10 @@ class SearchEventForm(forms.Form):
 	)
 
 	def __init__(self, *args, **kwargs):
+		country_code = kwargs.pop('country_code', None)
 		super(SearchEventForm, self).__init__(*args, **kwargs)
-
+		if country_code:
+			self.fields['country'].initial = country_code
 
 
 

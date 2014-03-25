@@ -76,9 +76,9 @@ def get_filtered_events(search_filter=None, country_filter=None, theme_filter=No
 		filter_kwargs['audience__in'] = audience_filter
 
 	if len(filter_args) > 0:
-		events = Event.objects.filter(*filter_args, **filter_kwargs)
+		events = Event.objects.filter(*filter_args, **filter_kwargs).distinct()
 	else:
-		events = Event.objects.filter(**filter_kwargs)
+		events = Event.objects.filter(**filter_kwargs).distinct()
 
 	return events
 
