@@ -32,9 +32,9 @@ def process_image(image_file):
 
 		im.save(new_image_url, "png")
 
-	except IOError:
-		msg = 'Failed while processing image (image_file=%s, image_name=%s, image_new_url=%s).' \
-		      % (image_file, image_name, new_image_url, )
+	except IOError as e:
+		msg = 'Failed while processing image (image_file=%s, image_name=%s, image_new_url=%s, error_number=%s, error=%s).' \
+		      % (image_file, image_name, new_image_url, e.errno, e.strerror, )
 		raise UploadImageError(msg)
 
 	return new_image_url

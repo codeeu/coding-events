@@ -1,4 +1,3 @@
-import json
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -40,7 +39,6 @@ def index(request, country_code=None):
 	template = 'pages/index.html'
 	events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
-
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 
@@ -83,7 +81,7 @@ def add_event(request):
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
 
 	if event_form.is_valid():
-		picture = request.FILES['picture']
+		picture = request.FILES.get('picture')
 
 		try:
 			if picture:
@@ -145,10 +143,10 @@ def edit_event(request, event_id):
 			                                    kwargs={'event_id': event.id, 'slug': event.slug}))
 
 		except ImageSizeTooLargeException:
-			messages.error(request, 'The image is just a bit too big for us. '
+			messages.error(request, 'The image is just a bit too big for us (must be up to 256 kb). '
 			                        'Please reduce your image size and try agin.')
-		except UploadImageError:
-			messages.error(request, 'Image file is too large. Image size must be up to 256 kb')
+		except UploadImageError as e:
+			messages.error(request, e.message)
 
 	return render_to_response(
 		'pages/add_event.html', {
