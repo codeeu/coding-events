@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}- List of events{% endblock title %}
+
+
+{% block content %}
+	<div class="container">
+		<h1>All events created by {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{ user.username }}{% endif %}</h1>
+
+		{% if not event_list %}
+		<div class="row">
+			<p>You haven't added any events yet. Why don't you <a href="{% url 'web.add_event' %}">add one now</a> or read our <a href="{% url 'web.guide' %}">guide for organizers</a>?</p>
+		</div>
+		{% endif %}
+
+		<div class="row">
+			{% for event in event_list %}
+				<div class=" col-md-4">
+					<div class="thumbnail">
+
+						<div class="title"><a
+								href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a> ({{event.status}})</div>
+						<a href="{% url 'web.view_event' event.id event.slug %}" class="img-link">
+							<img src="//maps.googleapis.com/maps/api/staticmap?markers={{ event.geoposition }}&zoom=9&size=390x80&sensor=false">
+						</a>
+
+						<div class="caption">
+							<p>{{ event.description|truncatewords:20 }}</p>
+
+
+							<a href="{% url 'web.view_event' event.id event.slug %}"
+							   class="btn btn-primary btn-directional fa-arrow-right btn-sm"
+							   role="button">View</a>
+
+								<span class="countdown pull-right">
+									Happening in:
+									{{ event.start_date|timeuntil }}
+								</span>
+
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock content %}

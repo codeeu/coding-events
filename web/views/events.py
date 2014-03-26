@@ -14,6 +14,7 @@ from api.processors import get_event_by_id
 from api.processors import get_filtered_events
 from api.processors import get_approved_events
 from api.processors import get_pending_events
+from api.processors import get_created_events
 from web.forms.event_form import AddEventForm
 from web.forms.event_form import SearchEventForm
 from web.processors.event import get_initial_data
@@ -209,6 +210,20 @@ def list_approved_events(request, country_code):
 		'status': 'approved',
 		'country_code': country_code
 	}, context_instance=RequestContext(request))
+
+
+@login_required
+def created_events(request):
+	"""
+	Display a list of pending events.
+	"""
+	creator = request.user
+	event_list = get_created_events(creator=creator)
+
+	return render_to_response(
+		'pages/list_user_events.html', {
+			'event_list': event_list,
+		}, context_instance=RequestContext(request))
 
 
 def search_events(request):
