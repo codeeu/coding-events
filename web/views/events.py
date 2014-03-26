@@ -29,6 +29,8 @@ from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
 from web.decorators.events import can_edit_event
 from web.decorators.events import can_moderate_event
+from web.decorators.events import is_ambassador
+
 
 """
 Do not Query the database directly from te view.
@@ -181,6 +183,7 @@ def view_event(request, event_id, slug):
 
 
 @login_required
+@is_ambassador
 def list_pending_events(request, country_code):
 	"""
 	Display a list of pending events.
@@ -200,6 +203,7 @@ def list_pending_events(request, country_code):
 
 
 @login_required
+@is_ambassador
 def list_approved_events(request, country_code):
 	"""
 	Display a list of approved events.
