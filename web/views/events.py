@@ -27,6 +27,7 @@ from web.processors.media import process_image
 from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
 from web.decorators.events import can_edit_event
+from web.decorators.events import can_moderate_event
 
 """
 Do not Query the database directly from te view.
@@ -93,8 +94,6 @@ def add_event(request):
 			event_data = {}
 			event_data.update(event_form.cleaned_data)
 			event_data['creator'] = request.user
-			print "ADD ADD ADD ADD ADD"
-			print event_data['creator']
 			event = create_or_update_event(**event_data)
 
 			t = loader.get_template('alerts/thank_you.html')
@@ -132,8 +131,7 @@ def edit_event(request, event_id):
 		event_data = event_form.cleaned_data
 
 		event_data['creator'] = request.user
-		print "EDIT EDIT EDIT EDIT EDIT"
-		print event_data['creator']
+
 		try:
 			if picture:
 				if picture.size > (256 * 1024):
@@ -182,6 +180,7 @@ def view_event(request, event_id, slug):
 
 
 @login_required
+@can_moderate_event
 def list_pending_events(request, country_code):
 	"""
 	Display a list of pending events.
@@ -240,7 +239,7 @@ def search_events(request):
 
 
 @login_required
-@can_edit_event
+@can_moderate_event
 def change_status(request, event_id):
 	event = change_event_status(event_id)
 
