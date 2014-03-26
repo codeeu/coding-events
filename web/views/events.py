@@ -92,6 +92,9 @@ def add_event(request):
 
 			event_data = {}
 			event_data.update(event_form.cleaned_data)
+			event_data['creator'] = request.user
+			print "ADD ADD ADD ADD ADD"
+			print event_data['creator']
 			event = create_or_update_event(**event_data)
 
 			t = loader.get_template('alerts/thank_you.html')
@@ -128,6 +131,9 @@ def edit_event(request, event_id):
 		picture = request.FILES.get('picture', None)
 		event_data = event_form.cleaned_data
 
+		event_data['creator'] = request.user
+		print "EDIT EDIT EDIT EDIT EDIT"
+		print event_data['creator']
 		try:
 			if picture:
 				if picture.size > (256 * 1024):
