@@ -181,7 +181,6 @@ def view_event(request, event_id, slug):
 
 
 @login_required
-@can_moderate_event
 def list_pending_events(request, country_code):
 	"""
 	Display a list of pending events.
@@ -189,11 +188,14 @@ def list_pending_events(request, country_code):
 
 	event_list = get_pending_events(country_code=country_code)
 
+	country_name = unicode(dict(countries)[country_code])
+
 	return render_to_response(
 		'pages/list_events.html', {
 			'event_list': event_list,
 			'status': 'pending',
 			'country_code': country_code,
+			'country_name': country_name,
 		}, context_instance=RequestContext(request))
 
 
@@ -205,10 +207,13 @@ def list_approved_events(request, country_code):
 
 	event_list = get_approved_events(country_code=country_code)
 
+	country_name = unicode(dict(countries)[country_code])
+
 	return render_to_response('pages/list_events.html', {
 		'event_list': event_list,
 		'status': 'approved',
-		'country_code': country_code
+		'country_code': country_code,
+		'country_name': country_name
 	}, context_instance=RequestContext(request))
 
 
