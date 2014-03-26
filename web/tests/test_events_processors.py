@@ -1,16 +1,36 @@
 import datetime
 from django.test import TestCase
-
 from django.db import IntegrityError
+
 from models.events import Event
 from django.contrib.auth.models import User
-
 from api.models import UserProfile
+
 from geoposition import Geoposition
 from api.processors import get_event_by_id
 from web.processors.event import create_or_update_event
+from api.processors import get_approved_events
 
 class EventTestCase(TestCase):
+	def create_event(self, title="Event title", start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
+	                 end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+	                 country_code="SI", status="PENDING",creator=User.objects.filter(pk=1)[0]):
+		event_data = {
+			"end_date": start_date,
+			"start_date": end_date,
+			"organizer": "Test organizer",
+			"creator": User.objects.filter(pk=1)[0],
+			"title": title,
+			"pub_date": datetime.datetime.now(),
+			"country": country_code,
+			"geoposition": Geoposition(46.05528, 14.51444),
+			"location": "Ljubljana",
+			"audience": [1],
+			"theme": [1],
+		    "status": status,
+		}
+		return create_or_update_event(**event_data)
+
 	def setUp(self):
 		self.u1 = User.objects.create(username='user1')
 		self.up1 = UserProfile.objects.create(user=self.u1)
@@ -100,3 +120,55 @@ class EventTestCase(TestCase):
 		self.assertEqual("46.05528", str(test_event.geoposition.latitude))
 		self.assertIn("tag1", test_event.tags.names())
 		self.assertIn("tag2", test_event.tags.names())
+
+	def test_get_approved_event_without_filter_returns_zero(self):
+
+		events = get_approved_events()
+		self.assertQuerysetEqual([], events)
+
+	def test_get_approved_event_without_filter_with_pending_event(self):
+		self.create_event(start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
+		                  end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+		                  status="APPROVED",)
+		events = get_approved_events()
+		self.assertEqual(1, len(events))
+
+	def test_get_approved_event_without_filter_with_approved_event_but_passed_date(self):
+		self.create_event(start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
+		                  end_date=datetime.datetime.now() - datetime.timedelta(days=2, hours=3),
+		                  status="APPROVED")
+		events = get_approved_events()
+		self.assertEqual(0, len(events))
+
+	def test_get_approved_event_with_filter_country_code_with_approved_event(self):
+		self.create_event(country_code="IS", status="APPROVED")
+		events = get_approved_events(country_code="IS")
+		self.assertEqual(1, len(events))
+		self.assertEqual("IS", events[0].country.code)
+
+	def test_get_approved_event_with_filter_country_code_and_order_with_approved_event(self):
+		countries = ["IS", "DK", "FI", "FI", "LI"]
+		for index, country in enumerate(countries):
+			self.create_event(title="Testing event" + str(index + 1), country_code=country, status="APPROVED",
+			                  start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=index + 1),
+			                  end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=index + 1))
+
+		events = get_approved_events(order="start_date")
+		self.assertEqual(5, len(events))
+		self.assertEqual("IS", events[0].country.code)
+		self.assertEqual("DK", events[1].country.code)
+		self.assertEqual("FI", events[2].country.code)
+		self.assertEqual("FI", events[3].country.code)
+		self.assertEqual("LI", events[4].country.code)
+
+	def test_get_approved_event_with_filter_country_code_and_order_and_limit__with_approved_event(self):
+		countries = ["IS", "DK", "FI", "FI", "FI"]
+		for index, country in enumerate(countries):
+			self.create_event(title="Testing event" + str(index + 1), country_code=country, status="APPROVED",
+			                  start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=index + 1),
+			                  end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=index + 1))
+
+		events = get_approved_events(order="start_date", limit=2, country_code="FI")
+		self.assertEqual(2, len(events))
+		self.assertEqual("Testing event3", events[0].title)
+		self.assertEqual("Testing event4", events[1].title)
