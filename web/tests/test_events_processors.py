@@ -1,21 +1,25 @@
 import datetime
 from django.test import TestCase
 from django.db import IntegrityError
+
 from models.events import Event
+from django.contrib.auth.models import User
+from api.models import UserProfile
+
 from geoposition import Geoposition
 from api.processors import get_event_by_id
 from web.processors.event import create_or_update_event
 from api.processors import get_approved_events
 
-
 class EventTestCase(TestCase):
 	def create_event(self, title="Event title", start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
 	                 end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-	                 country_code="SI", status="PENDING"):
+	                 country_code="SI", status="PENDING",creator=User.objects.filter(pk=1)[0]):
 		event_data = {
 			"end_date": start_date,
 			"start_date": end_date,
 			"organizer": "Test organizer",
+			"creator": User.objects.filter(pk=1)[0],
 			"title": title,
 			"pub_date": datetime.datetime.now(),
 			"country": country_code,
@@ -28,7 +32,11 @@ class EventTestCase(TestCase):
 		return create_or_update_event(**event_data)
 
 	def setUp(self):
+		self.u1 = User.objects.create(username='user1')
+		self.up1 = UserProfile.objects.create(user=self.u1)
+
 		Event.objects.create(organizer="asdasd",
+							 creator=User.objects.filter(pk=1)[0],
 		                     title="asdasd",
 		                     description="asdsad",
 		                     location="asdsad",
@@ -41,6 +49,8 @@ class EventTestCase(TestCase):
 		                     theme=[1],		                     
 		                     pub_date=datetime.datetime.now(),
 		                     tags=["tag1", "tag2"])
+
+
 
 	def test_get_event(self):
 		test_event = Event.objects.get(title="asdasd")
@@ -81,6 +91,7 @@ class EventTestCase(TestCase):
 				"end_date": datetime.datetime.now(),
 				"start_date": datetime.datetime.now(),
 				"organizer": "some organizer",
+				"creator": User.objects.filter(pk=1)[0],
 				"title": "event title",
 				"pub_date": datetime.datetime.now(),
 		}
@@ -93,6 +104,7 @@ class EventTestCase(TestCase):
 			"end_date": datetime.datetime.now(),
 			"start_date": datetime.datetime.now(),
 			"organizer": "some organizer",
+			"creator": User.objects.filter(pk=1)[0],
 			"title": "event title",
 			"pub_date": datetime.datetime.now(),
 			"country": "SI",
@@ -117,7 +129,7 @@ class EventTestCase(TestCase):
 	def test_get_approved_event_without_filter_with_pending_event(self):
 		self.create_event(start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
 		                  end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-		                  status="APPROVED")
+		                  status="APPROVED",)
 		events = get_approved_events()
 		self.assertEqual(1, len(events))
 

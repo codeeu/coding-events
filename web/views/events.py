@@ -14,6 +14,7 @@ from api.processors import get_event_by_id
 from api.processors import get_filtered_events
 from api.processors import get_approved_events
 from api.processors import get_pending_events
+from api.processors import get_created_events
 from web.forms.event_form import AddEventForm
 from web.forms.event_form import SearchEventForm
 from web.processors.event import get_initial_data
@@ -27,6 +28,9 @@ from web.processors.media import process_image
 from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
 from web.decorators.events import can_edit_event
+from web.decorators.events import can_moderate_event
+from web.decorators.events import is_ambassador
+
 
 """
 Do not Query the database directly from te view.
@@ -92,6 +96,7 @@ def add_event(request):
 
 			event_data = {}
 			event_data.update(event_form.cleaned_data)
+			event_data['creator'] = request.user
 			event = create_or_update_event(**event_data)
 
 			t = loader.get_template('alerts/thank_you.html')
@@ -127,6 +132,8 @@ def edit_event(request, event_id):
 	if event_form.is_valid():
 		picture = request.FILES.get('picture', None)
 		event_data = event_form.cleaned_data
+
+		event_data['creator'] = request.user
 
 		try:
 			if picture:
@@ -176,6 +183,7 @@ def view_event(request, event_id, slug):
 
 
 @login_required
+@is_ambassador
 def list_pending_events(request, country_code):
 	"""
 	Display a list of pending events.
@@ -183,15 +191,19 @@ def list_pending_events(request, country_code):
 
 	event_list = get_pending_events(country_code=country_code)
 
+	country_name = unicode(dict(countries)[country_code])
+
 	return render_to_response(
 		'pages/list_events.html', {
 			'event_list': event_list,
 			'status': 'pending',
 			'country_code': country_code,
+			'country_name': country_name,
 		}, context_instance=RequestContext(request))
 
 
 @login_required
+@is_ambassador
 def list_approved_events(request, country_code):
 	"""
 	Display a list of approved events.
@@ -199,11 +211,28 @@ def list_approved_events(request, country_code):
 
 	event_list = get_approved_events(country_code=country_code)
 
+	country_name = unicode(dict(countries)[country_code])
+
 	return render_to_response('pages/list_events.html', {
 		'event_list': event_list,
 		'status': 'approved',
-		'country_code': country_code
+		'country_code': country_code,
+		'country_name': country_name
 	}, context_instance=RequestContext(request))
+
+
+@login_required
+def created_events(request):
+	"""
+	Display a list of pending events.
+	"""
+	creator = request.user
+	event_list = get_created_events(creator=creator)
+
+	return render_to_response(
+		'pages/list_user_events.html', {
+			'event_list': event_list,
+		}, context_instance=RequestContext(request))
 
 
 def search_events(request):
@@ -234,7 +263,7 @@ def search_events(request):
 
 
 @login_required
-@can_edit_event
+@can_moderate_event
 def change_status(request, event_id):
 	event = change_event_status(event_id)
 

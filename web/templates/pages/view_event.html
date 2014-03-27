@@ -9,9 +9,6 @@
 		<div id="fb-root"></div>
 		{% if user.profile.is_ambassador and user.profile.country == event.country %}
 			<div class="edit-toolbar">
-				<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
-					<i class="fa fa-pencil-square-o"></i>Edit event</a>
-
 				<div id="change_status">
 					{% if event.status == 'PENDING' %}
 						<div class="alert alert-warning">
@@ -26,14 +23,23 @@
 							This event is nice and approved. You can revert it to
 							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a> or check other
 							<a href="{% url 'web.pending_events' user.profile.country %}"><strong><a
-									href="{% url 'web.pending_events' user.profile.country %}">pending events
-							                                                                   in {{ user.profile.country.name }}</a></strong>.
+									href="{% url 'web.pending_events' user.profile.country %}">pending events</a>.
 						</div>
 					{% endif %}
 				</div>
 			</div>
 		{% endif %}
-
+		{% if event.creator.id == request.user.id %}
+		<div class="edit-toolbar">
+			<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
+					<i class="fa fa-pencil-square-o"></i>Edit event</a>
+			{% if event.status == 'PENDING' %}
+						<div class="alert alert-warning">
+							<strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
+						</div>
+			{% endif %}
+		</div>	
+		{% endif %}
 
 
 

@@ -1,8 +1,13 @@
 import datetime
 from django.test import TestCase
+from django.db import IntegrityError
+
 from api.models import Event
 from api.models import EventTheme
 from api.models import EventAudience
+from django.contrib.auth.models import User
+from api.models import UserProfile
+
 from api.processors import get_all_events
 from api.processors import get_approved_events
 from api.processors import get_pending_events
@@ -12,8 +17,12 @@ from api.processors import get_filtered_events
 
 class EventTestCase(TestCase):
 	def setUp(self):
+		self.u1 = User.objects.create(username='user1')
+		self.up1 = UserProfile.objects.create(user=self.u1)
+
 		event = Event.objects.create(
 			organizer='asdasd',
+			creator=User.objects.filter(pk=1)[0],
 			title='asdasd',
 			description='asdsad',
 			location='asdsad',
@@ -29,6 +38,8 @@ class EventTestCase(TestCase):
 		event.theme.add(*theme)
 		event.audience.add(*audience)
 
+
+
 	def test_get_all_events_with_one_event(self):
 		all_events = get_all_events()
 		self.assertEqual(1, all_events.count())
@@ -36,6 +47,7 @@ class EventTestCase(TestCase):
 	def test_get_all_events_with_two_events(self):
 		event = Event.objects.create(
 			organizer='asdasd1',
+			creator=User.objects.filter(pk=1)[0],
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
@@ -56,6 +68,7 @@ class EventTestCase(TestCase):
 	def test_get_all_events_with_different_statuses(self):
 		event = Event.objects.create(
 			organizer='asdasd1',
+			creator=User.objects.filter(pk=1)[0],
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
@@ -103,6 +116,7 @@ class EventTestCase(TestCase):
 	def test_get_pending_events_limit_to_one_ordered_by_location_desc(self):
 		event = Event.objects.create(
 			organizer='asdasd1',
+			creator=User.objects.filter(pk=1)[0],
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
@@ -133,6 +147,7 @@ class EventTestCase(TestCase):
 	def test_get_filtered_events_with_no_search_filter(self):
 		event = Event.objects.create(
 			organizer='asdasd1',
+			creator=User.objects.filter(pk=1)[0],
 			title='asdasd1',
 			description='asdsad1',
 			location='asdsad1',
@@ -184,6 +199,7 @@ class EventTestCase(TestCase):
 	def test_get_filtered_events_with_search_filter_searching_title(self):
 		event = Event.objects.create(
 			organizer='CodeCatz',
+			creator=User.objects.filter(pk=1)[0],
 			title='Programming for dummies',
 			description='Learn basics about programming in python',
 			location='Ljubljana',
@@ -208,6 +224,7 @@ class EventTestCase(TestCase):
 	def test_get_filtered_events_with_search_filter_searching_organizer(self):
 		event = Event.objects.create(
 			organizer='CodeCatz',
+			creator=User.objects.filter(pk=1)[0],
 			title='Programming for dummies',
 			description='Learn basics about programming in python',
 			location='Ljubljana',
@@ -232,6 +249,7 @@ class EventTestCase(TestCase):
 	def test_get_filtered_events_with_search_filter_searching_description(self):
 		event = Event.objects.create(
 			organizer='CodeCatz',
+			creator=User.objects.filter(pk=1)[0],
 			title='Programming for dummies',
 			description='Learn basics about programming in python',
 			location='Ljubljana',
@@ -256,6 +274,7 @@ class EventTestCase(TestCase):
 	def test_get_filtered_events_with_search_filter_searching_description_when_no_approved_event(self):
 		event = Event.objects.create(
 			organizer='CodeCatz',
+			creator=User.objects.filter(pk=1)[0],
 			title='Programming for dummies',
 			description='Learn basics about programming in python',
 			location='Ljubljana',
@@ -326,6 +345,7 @@ class EventTestCase(TestCase):
 	def test_get_filtered_events_with_theme_filter_and_audience_filter_with_more_approved_event(self):
 		event = Event.objects.create(
 			organizer='CodeCatz',
+			creator=User.objects.filter(pk=1)[0],
 			title='Programming for dummies',
 			description='Learn basics about programming in python',
 			location='Ljubljana',
@@ -349,3 +369,23 @@ class EventTestCase(TestCase):
 		audience_filter = EventAudience.objects.filter(pk=1)
 		events = get_filtered_events(theme_filter=theme_filter, audience_filter=audience_filter)
 		self.assertEquals(2, events.count())
+
+	def test_event_without_creator_returns_exception(self):
+		with self.assertRaises(IntegrityError):
+			event = Event.objects.create(
+				organizer='asdasd1',
+				title='asdasd1',
+				description='asdsad1',
+				location='asdsad1',
+				start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
+				end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+				event_url='http://eee.com',
+				contact_person='ss@ss.com',
+				country='SI',
+				pub_date=datetime.datetime.now())
+			theme = EventTheme.objects.filter(pk=1)
+			audience = EventAudience.objects.filter(pk=1)
+			event.theme.add(*theme)
+			event.audience.add(*audience)
+
+

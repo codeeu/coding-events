@@ -4,14 +4,18 @@ from django.test import TestCase
 from django.test import Client
 from django.core.urlresolvers import reverse
 
-
 from models.events import Event
-
+from django.contrib.auth.models import User
+from api.models import UserProfile
 
 class EventViewsTestCase(TestCase):
 	def setUp(self):
+		self.u1 = User.objects.create(username='user1')
+		self.up1 = UserProfile.objects.create(user=self.u1)
+
 		pending = Event.objects.create(
 			organizer="Organizer 1",
+			creator=User.objects.filter(pk=1)[0],
 			title="Event 1 - Pending",
 			description="Some description - Pending",
 			location="Near here",
@@ -24,6 +28,7 @@ class EventViewsTestCase(TestCase):
 			tags=["tag1", "tag2"])
 
 		client = Client()
+
 
 	def test_index_view_without_approved_events(self):
 		response = self.client.get(reverse('web.index'), {}, REMOTE_ADDR='93.103.53.11')
@@ -48,6 +53,7 @@ class EventViewsTestCase(TestCase):
 		aproved = Event.objects.create(
 			status="APPROVED",
 			organizer="Organizer 1",
+			creator=User.objects.filter(pk=1)[0],
 			title="Event 1 - Approved",
 			description="Some description - Approved",
 			location="Near here",
@@ -72,5 +78,3 @@ class EventViewsTestCase(TestCase):
 		self.assertEquals('SI', response.context['country']['country_code'])
 		self.assertEquals(1, len(response.context['latest_events']))
 		self.assertEquals(aproved.title, response.context['latest_events'][0].title)
-
-
