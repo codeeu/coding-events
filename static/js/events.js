@@ -10,31 +10,34 @@ var Codeweek = window.Codeweek || {};
             end_date = $('#id_datepicker_end'),
             now = new Date(),
             localdate = (
-                now.getFullYear() + '-' +
-                    (now.getMonth() + 1) + '-' +
+                now.getFullYear() + '/' +
+                    (now.getMonth() + 1) + '/' +
                     now.getDate() + ' ' +
                     now.getHours() + ':' +
                     now.getMinutes()
             );
 
-        start_date.datetimepicker({
-            format: "yyyy-mm-dd hh:ii",
-            autoclose: true,
-            todayBtn: true,
-            startDate: localdate,
-            minuteStep: 10
-        });
         end_date.datetimepicker({
-            format: "yyyy-mm-dd hh:ii",
-            autoclose: true,
-            todayBtn: true,
-            startDate: localdate,
-            minuteStep: 10
+            format: "Y-m-d H:i",
+            lazyInit: true
         });
-        end_date.on('changeDate', function (ev) {
-            console.log(start_date.val());
-            if (ev.date.valueOf() < start_date.valueOf()) {
-                console.log('no can do');
+
+        start_date.datetimepicker({
+            format: "Y-m-d H:i",
+            minDate: 0,
+            closeOnDateSelect: true,
+            onSelectDate: function (current_time, $input) {
+                /*end_date.datetimepicker({
+                    format: "Y-m-d H:i",
+                    lazyInit: true,
+                    minDate: current_time
+                });*/
+                //var date_arr = current_time.split(" ");
+                //var expireDate = new Date(expireDateArr[2], expireDateArr[0], expireDateArr[1]);
+                var myRe = /\d+/;
+                var myArray = myRe.exec(end_date.val());
+                var m = end_date.val().match(/^(\d{4})\-(\d{1,2})\-(\d{1,2})$/);
+                console.log(m ? new Date(m[3], m[2] - 1, m[1]) : null);
             }
         });
     },
