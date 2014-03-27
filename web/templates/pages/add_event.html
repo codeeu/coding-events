@@ -139,7 +139,7 @@
 							<div class="fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %} "
 							     data-provides="fileinput">
 								<div class="fileinput-new">
-									<img data-src="holder.js/100%x100%/text:Your image..." alt="..."
+									<img src="{% static 'img/image_placeholder.png' %}" alt="Image Placeholder"
 									     style="max-height: 204px">
 								</div>
 								<div class="fileinput-preview fileinput-exists">
@@ -150,7 +150,7 @@
 								<span class="btn btn-sm btn-file">
 									<span class="fileinput-new">Select image</span>
 									<span class="fileinput-exists">Change</span>
-									<input type="file" name="{{ field.name }}"></span>
+									<input type="file" name="{{ field.name }}"/></span>
 									<a href="#" class="btn btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
 								</div>
 							</div>
@@ -178,7 +178,7 @@
 
 		<div class="event-footnote">
 			Note: Events will be checked by one of our
-			<a href="{% url 'web.ambassadors' %}" target="_blank">Local Ambassadors</a>
+			<a href="{% url 'web.ambassadors' %}" target="_blank">National Ambassadors</a>
 			before appearing on the map.
 		</div>
 	</div>
@@ -190,7 +190,6 @@
 		<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/bootstrap-datetimepicker.min.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
-		<script type="text/javascript" src="{% static "js/holder.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/events.js" %}"></script>
 		<script type="text/javascript">
 			Codeweek.Event.add();

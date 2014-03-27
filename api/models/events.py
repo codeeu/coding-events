@@ -8,7 +8,7 @@ from taggit.managers import TaggableManager
 from geoposition.fields import GeopositionField
 from django_countries.fields import CountryField
 from django.conf import settings
-
+from django.contrib.auth.models import User
 
 class EventAudience(models.Model):
 	name = models.CharField(max_length=255) 
@@ -40,6 +40,7 @@ class Event(models.Model):
 	status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='PENDING')
 	title = models.CharField(max_length=255, default=None)
 	slug = models.SlugField(max_length=255, null=True, blank=True)
+	creator = models.ForeignKey(User)
 	organizer = models.CharField(max_length=255, default=None)
 	description = models.TextField(max_length=1000)
 	geoposition = GeopositionField()
@@ -90,7 +91,7 @@ class Event(models.Model):
 
 		super(Event, self).__init__(*args, **kwargs)
 
-	def save(self, *args, **kwargs):
+	def save(self, *args, **kwargs):		
 		if not self.id:
 			self.slug = slugify(self.title)
 		super(Event, self).save(*args, **kwargs)

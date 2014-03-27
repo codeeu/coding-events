@@ -15,6 +15,7 @@ urlpatterns = patterns(
 	url(r'^search/$', 'events.search_events', name='web.search_events'),
 	url(r'^approved/(?P<country_code>\w{2,3})/$', 'events.list_approved_events', name='web.list_events'),
 	url(r'^pending/(?P<country_code>\w{2,3})/$', 'events.list_pending_events', name='web.pending_events'),
+	url(r'^my/$', 'events.created_events', name='web.created_events'),
 	url(r'^guide/$', TemplateView.as_view(template_name="pages/guide.html"), name='web.guide'),
 	url(r'^about/$', TemplateView.as_view(template_name="pages/about.html"), name='web.about'),
 	url(r'^login/$', 'users.login', name='web.login'),
