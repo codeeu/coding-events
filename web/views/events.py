@@ -181,7 +181,10 @@ def list_pending_events(request, country_code):
 	Display a list of pending events.
 	"""
 
-	event_list = get_pending_events(country_code=country_code)
+	if request.user.is_staff:
+		event_list = get_pending_events()
+	else:
+		event_list = get_pending_events(country_code=country_code)
 
 	return render_to_response(
 		'pages/list_events.html', {

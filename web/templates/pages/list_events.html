@@ -8,8 +8,7 @@
 		<h1>All {{ status }} events in {{ user.profile.country.name }}</h1>
 
 		{% if status == 'pending' and not event_list %}<p>
-			Well done, nothing to check here. Take a look at all <a href="{% url 'web.list_events' country_code %}">approved
-			                                                                                                        events</a>?
+			Well done, nothing to check here. Take a look at all <a href="{% url 'web.list_events' country_code %}">approved events</a>?
 			</p>{% endif %}
 		{% if status == 'approved' and not event_list %}<p>
 			No approved events yet, check for <a href="{% url 'web.pending_events' country_code %}">pending ones</a>?
