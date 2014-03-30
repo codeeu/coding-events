@@ -21,7 +21,7 @@ def get_approved_events(limit=None, order=None, country_code=None, past=False):
 
 	events = Event.objects.filter(status='APPROVED')
 	if not past:
-		events = events.filter(start_date__gte=datetime.datetime.now())
+		events = events.filter(end_date__gte=datetime.datetime.now())
 	if country_code:
 		events = events.filter(country=country_code)
 	if order:
