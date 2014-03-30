@@ -116,9 +116,9 @@ class Event(models.Model):
 	def get_theme_array(self):
 		return [theme.pk for theme in self.theme.all()]
 
-	def hasStarted(self):
+	def has_started(self):
 		return timezone.now() > self.start_date
 
-	def hasEnded(self):
-		return datetime.datetime.now() > self.end_date
+	def has_ended(self):
+		return timezone.now() > self.end_date
 
