@@ -3,7 +3,6 @@
 var Codeweek = window.Codeweek || {};
 
 (function ($, Codeweek) {
-
     'use strict';
     var datetime_handler = function () {
         var start_date = $('#id_datepicker_start'),
@@ -17,24 +16,17 @@ var Codeweek = window.Codeweek || {};
                     now.getMinutes()
             );
 
-        start_date.datetimepicker({
-            format: "yyyy-mm-dd hh:ii",
-            autoclose: true,
-            todayBtn: true,
-            startDate: localdate,
-            minuteStep: 10
+        $("#id_datepicker_start").datetimepicker({
+            format: "Y-m-d H:i",
+            minDate: 0
         });
-        end_date.datetimepicker({
-            format: "yyyy-mm-dd hh:ii",
-            autoclose: true,
-            todayBtn: true,
-            startDate: localdate,
-            minuteStep: 10
-        });
-        end_date.on('changeDate', function (ev) {
-            console.log(start_date.val());
-            if (ev.date.valueOf() < start_date.valueOf()) {
-                console.log('no can do');
+        
+        $('#id_datepicker_end').datetimepicker({
+            format: "Y-m-d H:i",
+            onShow:function( ct ){ 
+                this.setOptions({
+                    minDate:$("#id_datepicker_start").val()?$("#id_datepicker_start").val():false
+                })
             }
         });
     },

@@ -17,7 +17,7 @@ class AddEventForm(forms.ModelForm):
 			'description': forms.Textarea(attrs={"class": "form-control"}),
 			'location': forms.TextInput(attrs={"id": "autocomplete", "placeholder": "Search for your address",
 											   "class": "form-control"}),
-			'start_date': forms.TextInput(attrs={"id": "id_datepicker_start", "class": "form-control"}),
+			'start_date': forms.TextInput(attrs={"id": "id_datepicker_start", "class": "form-control",}),
 			'end_date': forms.TextInput(attrs={"id": "id_datepicker_end", "class": "form-control"}),
 			'event_url': forms.TextInput(attrs={"class": "form-control"}),
 			'contact_person': forms.TextInput(attrs={"class": "form-control"}),
