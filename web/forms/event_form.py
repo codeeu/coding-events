@@ -11,51 +11,37 @@ class AddEventForm(forms.ModelForm):
 		fields = ['title', 'organizer', 'description', 'geoposition', 'location', 'country', 'start_date', 'end_date',
 				  'event_url', 'contact_person', 'audience', 'theme', 'picture', 'tags']
 
-		help_texts = {
-			'start_date': 'When does this event start?',
-		    'end_date': 'When does this event end',
-			'audience': 'Who is this event for?',
-		    'theme': 'Which aspect of coding will your event cover?',
-		    'event_url': 'Do you have a website with more information about the event?',
-		    'contact_person': 'Would you like to display a contact email?',
-		    'picture': 'You can also upload an image to represent your event',
-		}
-
 		widgets = {
-			'title': forms.TextInput(attrs={"class": "form-control",
-			                                "placeholder": "How will you call this event?"}),
-			'organizer': forms.TextInput(attrs={"class": "form-control",
-			                                    "placeholder": "Who's organizing this event?"}),
-			'description': forms.Textarea(attrs={"class": "form-control",
-			                                     "placeholder": "How would you describe this event?"}),
-			'location': forms.TextInput(attrs={"id": "autocomplete",
-			                                   "placeholder": "Where will this event be taking place?",
-			                                   "class": "form-control"}),
+			'title': forms.TextInput(attrs={"class": "form-control"}),
+			'organizer': forms.TextInput(attrs={"class": "form-control"}),
+			'description': forms.Textarea(attrs={"class": "form-control"}),
+			'location': forms.TextInput(attrs={"id": "autocomplete", "placeholder": "Search for your address",
+											   "class": "form-control"}),
 			'start_date': forms.TextInput(attrs={"id": "id_datepicker_start", "class": "form-control",
-			                                     "autocomplete": "off"}),
+			                                     "autocomplete": "off", "placeholder": "YYYY/MM/DD h:m"}),
 			'end_date': forms.TextInput(attrs={"id": "id_datepicker_end", "class": "form-control",
-			                                   "autocomplete": "off"}),
-			'event_url': forms.TextInput(attrs={"class": "form-control", "placeholder": "http(s)://example.com"}),
-			'contact_person': forms.TextInput(attrs={"class": "form-control", "placeholder": "me@example.com"}),
+			                                   "autocomplete": "off", "placeholder": "YYYY/MM/DD h:m"}),
+			'event_url': forms.TextInput(attrs={"class": "form-control"}),
+			'contact_person': forms.TextInput(attrs={"class": "form-control"}),
 			'audience': forms.CheckboxSelectMultiple(),
 			'theme': forms.CheckboxSelectMultiple(),
-			'tags': forms.TextInput(attrs={"class": "form-control", "placeholder": "Python, web development, Django"}),
+			'tags': forms.TextInput(attrs={"class": "form-control"}),
 		}
 
 		labels = {
-			'title': 'Title',
-			'organizer': 'Organizer',
-			'description': 'Description',
-			'location': 'Address',
+			'title': 'Your event\'s title:',
+			'organizer': 'Who\'s organizing this event?',
+			'description': 'Short event description:',
+			'location': 'Where will the event be taking place?',
 			'country': 'Event\'s country:',
-			'start_date': 'Start date',
-			'end_date': 'End date',
-			'event_url': 'Link',
-			'contact_person': 'Email',
-			'picture': 'Picture',
-			'audience': 'Audience',
-			'theme': 'Theme',
-			'tags': 'Tags',
+			'start_date': 'When does the event start?',
+			'end_date': 'When does the event end?',
+			'event_url': 'Do you have a website with more information about the event?',
+			'contact_person': 'Would you like to display a contact email?',
+			'picture': 'You can also upload an image to represent your event:',
+			'audience': 'Who is the event for?',
+			'theme': 'Which aspect of coding will your event cover?',
+			'tags': 'Tags, separated by commas:',
 		}
 		error_messages = {
 			'title': {
@@ -63,11 +49,11 @@ class AddEventForm(forms.ModelForm):
 				'invalid': u'Can you please check if this is a valid title?',
 			},
 			'organizer': {
-				'required': u'Please tell us who is organizing this event.',
+				'required': u'Please enter an organizer.',
 				'invalid': u'Can you please check if this is a valid organizer?',
 			},
 			'description': {
-				'required': u'Please tell us what this event is about.',
+				'required': u'Please write a short description of what the event is about.',
 				'invalid': u'Please check if the description only contains regular text.',
 			},
 			'geoposition': {
@@ -112,11 +98,19 @@ class AddEventForm(forms.ModelForm):
 			},
 		}
 
+	def clean(self):
+		cleaned_data = super(AddEventForm, self).clean()
+		start_date = cleaned_data.get('start_date')
+		end_date = cleaned_data.get('end_date')
+
+		if end_date < start_date:
+			msg = u'End date should be greater than start date.'
+			self._errors['end_date'] = self.error_class([msg])
+
+		return cleaned_data
+
 	def __init__(self, *args, **kwargs):
 		super(AddEventForm, self).__init__(*args, **kwargs)
-
-	def save(self, commit=True):
-		pass
 
 
 class SearchEventForm(forms.Form):

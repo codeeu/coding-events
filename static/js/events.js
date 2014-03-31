@@ -5,39 +5,45 @@ var Codeweek = window.Codeweek || {};
 (function ($, Codeweek) {
 
     'use strict';
+
     var datetime_handler = function () {
         var start_date = $('#id_datepicker_start'),
             end_date = $('#id_datepicker_end'),
-            now = new Date(),
-            localdate = (
-                now.getFullYear() + '/' +
-                    (now.getMonth() + 1) + '/' +
-                    now.getDate() + ' ' +
-                    now.getHours() + ':' +
-                    now.getMinutes()
-            );
+            get_date_range = function (input) {
+                var value = input.val() ? input.val() : false,
+                    parsed_value = [];
 
-        end_date.datetimepicker({
-            format: "Y-m-d H:i",
-            lazyInit: true
-        });
+                if (value) {
+                    parsed_value = /\d{4}-\d{2}-\d{2}/.exec(value);
+                }
+                if (parsed_value && parsed_value.length > 0) {
+                    return parsed_value[0];
+                }
+                return false;
+            };
 
         start_date.datetimepicker({
             format: "Y-m-d H:i",
+            formatDate: "Y-m-d",
+            formatTime: "H:i",
             minDate: 0,
             closeOnDateSelect: true,
-            onSelectDate: function (current_time, $input) {
-                /*end_date.datetimepicker({
-                    format: "Y-m-d H:i",
-                    lazyInit: true,
-                    minDate: current_time
-                });*/
-                //var date_arr = current_time.split(" ");
-                //var expireDate = new Date(expireDateArr[2], expireDateArr[0], expireDateArr[1]);
-                var myRe = /\d+/;
-                var myArray = myRe.exec(end_date.val());
-                var m = end_date.val().match(/^(\d{4})\-(\d{1,2})\-(\d{1,2})$/);
-                console.log(m ? new Date(m[3], m[2] - 1, m[1]) : null);
+            onShow: function () {
+                this.setOptions({
+                    maxDate: get_date_range(end_date)
+                });
+            }
+        });
+        end_date.datetimepicker({
+            format: "Y-m-d H:i",
+            formatDate: "Y-m-d",
+            formatTime: "H:i",
+            minDate: 0,
+            closeOnDateSelect: true,
+            onShow: function () {
+                this.setOptions({
+                    minDate: get_date_range(start_date)
+                });
             }
         });
     },

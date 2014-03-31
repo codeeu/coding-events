@@ -5,7 +5,7 @@
 {% block title %}- Add Event{% endblock title %}
 
 {% block custom_css %}
-	<link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-datetimepicker.min.css" %}" />
+	<link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}" />
 	<link rel="stylesheet" type="text/css" href="{% static "css/jasny-bootstrap.min.css" %}" />
 {% endblock %}
 
@@ -188,7 +188,7 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false&libraries=places"></script>
 	{% compress js %}
 		<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
-		<script type="text/javascript" src="{% static "js/bootstrap-datetimepicker.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/jquery.datetimepicker.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/events.js" %}"></script>
 		<script type="text/javascript">
