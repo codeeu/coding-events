@@ -43,7 +43,8 @@ class AddEventForm(forms.ModelForm):
 			                                         "placeholder": "Would you like to display a contact email?"}),
 			'audience': forms.CheckboxSelectMultiple(),
 			'theme': forms.CheckboxSelectMultiple(),
-			'tags': forms.TextInput(attrs={"class": "form-control"}),
+			'tags': forms.TextInput(attrs={"class": "form-control",
+			                               "placeholder": "example: Python, Django, Slovenia"}),
 		}
 
 		labels = {
@@ -59,7 +60,7 @@ class AddEventForm(forms.ModelForm):
 			'picture': 'Image',
 			'audience': 'Audience',
 			'theme': 'Theme',
-			'tags': 'Tags, separated by commas:',
+			'tags': 'Tags',
 		}
 
 		help_texts = {
