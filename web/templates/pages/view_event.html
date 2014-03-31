@@ -21,9 +21,12 @@
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
 							This event is nice and approved. You can revert it to
-							<a href="{% url 'web.change_status' event.pk %}"><strong>pending</strong></a> or check other
-							<a href="{% url 'web.pending_events' user.profile.country %}"><strong><a
-									href="{% url 'web.pending_events' user.profile.country %}">pending events</a>.
+							<a href="{% url 'web.change_status' event.pk %}">
+								<strong>pending</strong> 
+							</a> or check other
+							<a href="{% url 'web.pending_events' user.profile.country %}">
+								<strong>pending events</strong>
+							</a>.
 						</div>
 					{% endif %}
 				</div>
