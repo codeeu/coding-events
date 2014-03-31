@@ -81,6 +81,14 @@ form {
 		margin-top: -15px;
 		margin-bottom: 15px;
 	}
+
+	#view-event-map i.fa {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		margin-left: -18px;
+		margin-top: -21px;
+	}
 }
 
 /*********************
@@ -242,12 +250,11 @@ ADD/EDIT EVENT PAGE STYLES
 }
 
 .fileinput {
-	width: 100%;
+	//width: 100%;
 }
 
 .fileinput-preview {
 	img {
-		//width: 100%;
 		max-height: 204px;
 	}
 }

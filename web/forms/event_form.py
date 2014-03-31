@@ -8,41 +8,68 @@ from api.models.events import EventTheme, EventAudience
 class AddEventForm(forms.ModelForm):
 	class Meta:
 		model = Event
-		fields = ['title', 'organizer', 'description', 'geoposition', 'location', 'country', 'start_date', 'end_date',
-				  'event_url', 'contact_person', 'audience', 'theme', 'picture', 'tags']
+		fields = ['title',
+		          'organizer',
+		          'description',
+		          'geoposition',
+		          'location',
+		          'country',
+		          'start_date',
+		          'end_date',
+		          'event_url',
+		          'contact_person',
+		          'audience',
+		          'theme',
+		          'picture',
+		          'tags']
 
 		widgets = {
-			'title': forms.TextInput(attrs={"class": "form-control"}),
-			'organizer': forms.TextInput(attrs={"class": "form-control"}),
-			'description': forms.Textarea(attrs={"class": "form-control"}),
-			'location': forms.TextInput(attrs={"id": "autocomplete", "placeholder": "Search for your address",
-											   "class": "form-control"}),
+			'title': forms.TextInput(attrs={"class": "form-control",
+				                       "placeholder": "How do you call this event?"}),
+			'organizer': forms.TextInput(attrs={"class": "form-control",
+				                       "placeholder": "Who is organizing this event?"}),
+			'description': forms.Textarea(attrs={"class": "form-control",
+			                                     "placeholder": "Tell us a bit about your event"}),
+			'location': forms.TextInput(attrs={"id": "autocomplete", "class": "form-control",
+			                                   "placeholder": "Where will the event be taking place?", }),
 			'start_date': forms.TextInput(attrs={"id": "id_datepicker_start", "class": "form-control",
-			                                     "autocomplete": "off", "placeholder": "YYYY/MM/DD h:m"}),
+			                                     "autocomplete": "off",
+			                                     "placeholder": "When does it start?"}),
 			'end_date': forms.TextInput(attrs={"id": "id_datepicker_end", "class": "form-control",
-			                                   "autocomplete": "off", "placeholder": "YYYY/MM/DD h:m"}),
-			'event_url': forms.TextInput(attrs={"class": "form-control"}),
-			'contact_person': forms.TextInput(attrs={"class": "form-control"}),
+			                                   "autocomplete": "off", "placeholder": "When does it end?"}),
+			'event_url': forms.TextInput(attrs={"class": "form-control",
+			                                    "placeholder": "Do you have a website with more information about the event?"}),
+			'contact_person': forms.TextInput(attrs={"class": "form-control",
+			                                         "placeholder": "Would you like to display a contact email?"}),
 			'audience': forms.CheckboxSelectMultiple(),
 			'theme': forms.CheckboxSelectMultiple(),
 			'tags': forms.TextInput(attrs={"class": "form-control"}),
 		}
 
 		labels = {
-			'title': 'Your event\'s title:',
-			'organizer': 'Who\'s organizing this event?',
-			'description': 'Short event description:',
-			'location': 'Where will the event be taking place?',
-			'country': 'Event\'s country:',
-			'start_date': 'When does the event start?',
-			'end_date': 'When does the event end?',
-			'event_url': 'Do you have a website with more information about the event?',
-			'contact_person': 'Would you like to display a contact email?',
-			'picture': 'You can also upload an image to represent your event:',
-			'audience': 'Who is the event for?',
-			'theme': 'Which aspect of coding will your event cover?',
+			'title': 'Title',
+			'organizer': 'Organizer',
+			'description': 'Description',
+			'location': 'Location',
+			'country': 'Country',
+			'start_date': 'Start date',
+			'end_date': 'End date',
+			'event_url': 'URL',
+			'contact_person': 'Contact',
+			'picture': 'Image',
+			'audience': 'Audience',
+			'theme': 'Theme',
 			'tags': 'Tags, separated by commas:',
 		}
+
+		help_texts = {
+			'start_date': "Example: YYYY/MM/DD h:m",
+		    'end_date': "Example: YYYY/MM/DD h:m",
+		    'audience': "Who is the event for?",
+		    'theme': "Which aspect of coding will your event cover?",
+		    'picture': 'You can also upload an image to represent your event:',
+		}
+
 		error_messages = {
 			'title': {
 				'required': u'Please enter a title for your event.',
