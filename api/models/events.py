@@ -2,6 +2,7 @@
 Models for the event
 """
 import datetime
+from django.utils import timezone
 from django.db import models
 from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
@@ -115,5 +116,9 @@ class Event(models.Model):
 	def get_theme_array(self):
 		return [theme.pk for theme in self.theme.all()]
 
+	def has_started(self):
+		return timezone.now() > self.start_date
 
+	def has_ended(self):
+		return timezone.now() > self.end_date
 

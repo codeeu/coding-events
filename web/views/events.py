@@ -227,7 +227,7 @@ def created_events(request):
 	Display a list of pending events.
 	"""
 	creator = request.user
-	event_list = get_created_events(creator=creator)
+	event_list = get_created_events(creator=creator, past=True)
 
 	return render_to_response(
 		'pages/list_user_events.html', {
