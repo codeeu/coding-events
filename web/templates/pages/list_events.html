@@ -32,10 +32,9 @@
 							   class="btn btn-primary btn-directional fa-arrow-right btn-sm"
 							   role="button">View</a>
 
-								<span class="countdown pull-right">
-									Happening in:
-									{{ event.start_date|timeuntil }}
-								</span>
+							<span class="countdown pull-right">
+								{% include 'layout/time_to_event.html' %}
+							</span>
 
 						</div>
 					</div>

@@ -1,0 +1,11 @@
+{% if event.has_started %}
+	{% if event.has_ended %}
+		Event ended
+	{% else %}
+		Ending in:
+		{{ event.end_date|timeuntil }}
+	{% endif %}
+{% else %}
+		Happening in:
+		{{ event.start_date|timeuntil }}
+{% endif %}
