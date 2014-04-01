@@ -6,11 +6,6 @@ body {
 
 }
 
-.form-control {
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
 .first {
 	padding-left: 0;
 }
@@ -64,6 +59,35 @@ NAVIGATION STYLES
 			margin-right: 2px;
 			width: 30px;
 		}
+	}
+}
+
+/*********************
+FORM STYLES
+**********************/
+form {
+	margin-top: 20px;
+	border: 1px solid $silver;
+	padding: 20px;
+	.help-block {
+		font-style: italic;
+		font-size: 0.8em;
+		font-weight: bold;
+	}
+
+	.event-map {
+		padding: 0;
+		height: 280px;
+		margin-top: -15px;
+		margin-bottom: 15px;
+	}
+
+	#view-event-map i.fa {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		margin-left: -18px;
+		margin-top: -21px;
 	}
 }
 
@@ -226,12 +250,11 @@ ADD/EDIT EVENT PAGE STYLES
 }
 
 .fileinput {
-	width: 100%;
+	//width: 100%;
 }
 
 .fileinput-preview {
 	img {
-		//width: 100%;
 		max-height: 204px;
 	}
 }
