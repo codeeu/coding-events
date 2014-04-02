@@ -444,3 +444,50 @@ SEARCH EVENTS STYLES
 	}
 }
 
+/*********************
+ABOUT SITE STYLES
+*********************/
+.team-member {
+	@include make-sm-column(6);
+	.header{
+		background: #B0CC55;
+		padding: 10px;
+		font-size: 25px;
+		text-shadow: 1px 1px #ddd;
+		margin-bottom: 10px;
+	}
+	img{
+		float: left;
+        margin-right: 25px;
+	}
+	.description{
+		overflow: hidden;
+        padding: 10px;
+	}
+	.social-icons{
+		list-style-type: none;
+		padding-left: 0;
+		li{
+			float: left;
+			padding: 0;
+		}
+	}
+}
+.supporters{
+	list-style-type: none;
+	padding: 0;
+	margin: 20px 0;
+	li{
+		@include make-sm-column(2);
+	}
+	a{
+		display: table-cell;
+		height: 100px;
+		text-align: center;
+		vertical-align: bottom;
+	}
+	img{
+		max-width: 100%;
+	}
+}
+
