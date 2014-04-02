@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}- Whoa, 500!{% endblock title %}
+
+{% block content %}
+	<div class="container">
+		<h1>How did we get here?</h1>
+		<p>Not sure what happened here, it seems like we stumbled upon a <strong>HTTP 404 Not Found error</strong>.
+
+		<div class="alert alert-info">
+		<p><strong><i class="fa fa-lightbulb-o"></i> Let's make this a learning opportunity! What does this error mean?</strong></p>
+		<p>
+			<input type="button" value="The link you tried to follow was wrong" onclick="showDiv('Correct!')" />
+			<input type="button" value="Somebody hacked our servers" onclick="showDiv('Hmm... maybe. Let\'s hope not. Are the other links still working?')" />
+			<input type="button" value="You did something wrong" onclick="showDiv('Nah. Not likely. Just keep clicking.')" />
+			<input type="button" value="A cat stole our server's mouse" onclick="showDiv('Ha, good guess. But no, it\'s still here and the cat is napping.')" />
+		</p>
+		<p id="feedback"></p>
+		</div>	
+		<p>And while we're at it, why don't you find a <a href="{% url 'web.index' %}">coding event nearby</a> and help us <a href="https://github.com/codeeu/coding-events" target="_blank">fix the code</a>?</p>
+	</div>
+{% endblock content %}
+
+{% block custom_js %}
+	<script type="text/javascript">
+	function showDiv(value) {
+	   document.getElementById('feedback').innerHTML = value;
+		}
+	</script>
+{% endblock %}
