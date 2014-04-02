@@ -1,3 +1,4 @@
+from boto.exception import S3ResponseError
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -140,7 +141,7 @@ def edit_event(request, event_id):
 				if picture.size > (256 * 1024):
 					raise ImageSizeTooLargeException('Image size too large.')
 
-				process_image(picture)
+				event_data['picture'] = process_image(picture)
 			else:
 				del event_data['picture']
 
@@ -154,6 +155,8 @@ def edit_event(request, event_id):
 			                        'Please reduce your image size and try agin.')
 		except UploadImageError as e:
 			messages.error(request, e.message)
+		except S3ResponseError as e:
+			messages.error(request, '%s Something went wrong. Please try again.' % e.msg)
 
 	return render_to_response(
 		'pages/add_event.html', {
