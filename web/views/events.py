@@ -1,4 +1,3 @@
-from boto.exception import S3ResponseError
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -154,9 +153,7 @@ def edit_event(request, event_id):
 			                        'Please reduce your image size and try agin.')
 		except UploadImageError as e:
 			messages.error(request, e.message)
-		except S3ResponseError as e:
-			messages.error(request, '%s Something went wrong. Please try again.' % e.msg)
-
+		
 	return render_to_response(
 		'pages/add_event.html', {
 			'form': event_form,
