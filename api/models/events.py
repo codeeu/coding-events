@@ -123,3 +123,4 @@ class Event(models.Model):
 		return timezone.now() > self.end_date
 
 
+
