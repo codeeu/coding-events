@@ -5,20 +5,29 @@ from api.processors import get_pending_events
 
 
 def check_pending_events(sender, user, request, **kwargs):
-	if not user.profile.is_ambassador:
-		return None
 
-	if user.groups.filter(name='ambassadors').count():
+
+	if request.user.profile.is_ambassador():
+
 		if not user.profile.country:
 			t = loader.get_template('alerts/set_country_request.html')
 			c = Context({'user': user, })
 			messages.warning(request, t.render(c))
 		else:
-			pending_events = get_pending_events(country_code=user.profile.country.code)
+
+			args = {}
+
+			if not request.user.is_staff:
+				args['country']=user.profile.country.code
+
+			pending_events = get_pending_events(**args)
 
 			if pending_events:
 				t = loader.get_template('alerts/pending_events.html')
 				c = Context({'user': user, })
 				messages.warning(request, t.render(c))
+	else:
+		return None
+
 
 user_logged_in.connect(check_pending_events)

@@ -188,7 +188,11 @@ def list_pending_events(request, country_code):
 	Display a list of pending events.
 	"""
 
-	event_list = get_pending_events(country_code=country_code)
+	if request.user.is_staff:
+		event_list = get_pending_events()
+		event_list = sorted(event_list, key=lambda a: a.country.code)
+	else:
+		event_list = get_pending_events(country_code=country_code)
 
 	country_name = unicode(dict(countries)[country_code])
 

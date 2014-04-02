@@ -122,3 +122,4 @@ class Event(models.Model):
 	def has_ended(self):
 		return timezone.now() > self.end_date
 
+
