@@ -7,7 +7,8 @@
 
 	<div class="container">
 		<div id="fb-root"></div>
-		{% if user.profile.is_ambassador and user.profile.country == event.country %}
+		{% if user.profile.is_ambassador %}
+		{% if user.profile.country == event.country or user.is_staff %}
 			<div class="edit-toolbar">
 				<div id="change_status">
 					{% if event.status == 'PENDING' %}
@@ -28,6 +29,7 @@
 					{% endif %}
 				</div>
 			</div>
+		{% endif %}
 		{% endif %}
 		{% if event.creator.id == request.user.id %}
 		<div class="edit-toolbar">
