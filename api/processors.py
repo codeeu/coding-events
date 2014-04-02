@@ -46,8 +46,7 @@ def get_pending_events(limit=None, order=None, country_code=None, past=False):
 	if order:
 		events = events.order_by(order)
 	if limit:
-		events = events = events[:limit]
-
+		events = events[:limit]
 	return events
 
 
