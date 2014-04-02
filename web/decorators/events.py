@@ -12,6 +12,16 @@ from web.processors.user import get_user_profile
 def can_edit_event(func):
 	def decorator(request, *args, **kwargs):
 		event = get_event_by_id(kwargs['event_id'])
+		if request.user.id == event.creator.id:
+			return func(request, *args, **kwargs)
+		else:
+			return HttpResponseRedirect(reverse('web.index'))
+
+	return decorator
+
+def can_moderate_event(func):
+	def decorator(request, *args, **kwargs):
+		event = get_event_by_id(kwargs['event_id'])
 		user = get_user_profile(request.user.id)
 		if user.is_ambassador():
 			return func(request, *args, **kwargs)
@@ -20,6 +30,15 @@ def can_edit_event(func):
 
 	return decorator
 
+def is_ambassador(func):
+	def decorator(request, *args, **kwargs):
+		user = get_user_profile(request.user.id)
+		if user.is_ambassador():
+			return func(request, *args, **kwargs)
+		else:
+			return HttpResponseRedirect(reverse('web.index'))
+
+	return decorator
 
 def login_required_ajax(function=None, redirect_field_name=None):
 	"""

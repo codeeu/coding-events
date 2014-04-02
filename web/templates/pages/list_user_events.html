@@ -5,21 +5,21 @@
 
 {% block content %}
 	<div class="container">
-		<h1>All {{ status }} events in {{ country_name }}</h1>
+		<h1>All events created by {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{ user.username }}{% endif %}</h1>
 
-		{% if status == 'pending' and not event_list %}<p>
-			Well done, nothing to check here. Take a look at all <a href="{% url 'web.list_events' country_code %}">approved</a>?
-			</p>{% endif %}
-		{% if status == 'approved' and not event_list %}<p>
-			No approved events yet, check for <a href="{% url 'web.pending_events' country_code %}">pending ones</a>?
-			</p>{% endif %}
+		{% if not event_list %}
+		<div class="row">
+			<p>You haven't added any events yet. Why don't you <a href="{% url 'web.add_event' %}">add one now</a> or read our <a href="{% url 'web.guide' %}">guide for organizers</a>?</p>
+		</div>
+		{% endif %}
 
 		<div class="row">
 			{% for event in event_list %}
 				<div class=" col-md-4">
 					<div class="thumbnail">
+
 						<div class="title"><a
-								href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></div>
+								href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a> ({{event.status}})</div>
 						<a href="{% url 'web.view_event' event.id event.slug %}" class="img-link">
 							<img src="//maps.googleapis.com/maps/api/staticmap?markers={{ event.geoposition }}&zoom=9&size=390x80&sensor=false">
 						</a>
@@ -32,9 +32,9 @@
 							   class="btn btn-primary btn-directional fa-arrow-right btn-sm"
 							   role="button">View</a>
 
-							<span class="countdown pull-right">
-								{% include 'layout/time_to_event.html' %}
-							</span>
+								<span class="countdown pull-right">
+									{% include 'layout/time_to_event.html' %}
+								</span>
 
 						</div>
 					</div>

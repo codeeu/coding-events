@@ -3,30 +3,47 @@
 var Codeweek = window.Codeweek || {};
 
 (function ($, Codeweek) {
+
     'use strict';
+
     var datetime_handler = function () {
         var start_date = $('#id_datepicker_start'),
             end_date = $('#id_datepicker_end'),
-            now = new Date(),
-            localdate = (
-                now.getFullYear() + '-' +
-                    (now.getMonth() + 1) + '-' +
-                    now.getDate() + ' ' +
-                    now.getHours() + ':' +
-                    now.getMinutes()
-            );
+            get_date_range = function (input) {
+                var value = input.val() ? input.val() : false,
+                    parsed_value = [];
 
-        $("#id_datepicker_start").datetimepicker({
+                if (value) {
+                    parsed_value = /\d{4}-\d{2}-\d{2}/.exec(value);
+                }
+                if (parsed_value && parsed_value.length > 0) {
+                    return parsed_value[0];
+                }
+                return false;
+            };
+
+        start_date.datetimepicker({
             format: "Y-m-d H:i",
-            minDate: 0
-        });
-        
-        $('#id_datepicker_end').datetimepicker({
-            format: "Y-m-d H:i",
-            onShow:function( ct ){ 
+            formatDate: "Y-m-d",
+            formatTime: "H:i",
+            minDate: 0,
+            closeOnDateSelect: true,
+            onShow: function () {
                 this.setOptions({
-                    minDate:$("#id_datepicker_start").val()?$("#id_datepicker_start").val():false
-                })
+                    maxDate: get_date_range(end_date)
+                });
+            }
+        });
+        end_date.datetimepicker({
+            format: "Y-m-d H:i",
+            formatDate: "Y-m-d",
+            formatTime: "H:i",
+            minDate: 0,
+            closeOnDateSelect: true,
+            onShow: function () {
+                this.setOptions({
+                    minDate: get_date_range(start_date)
+                });
             }
         });
     },

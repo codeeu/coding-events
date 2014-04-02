@@ -17,8 +17,7 @@
 						   role="button">View</a>
 
 								<span class="countdown pull-right">
-									Happening in:
-									{{ event.start_date|timeuntil }}
+									{% include 'layout/time_to_event.html' %}
 								</span>
 
 					</div>

@@ -7,12 +7,8 @@
 	<div class="caption">
 		<p>{{ event.description|truncatewords:20 }}</p>
 
-
-
-
 		<span class="countdown pull-right">
-			Happening in:
-			{{ event.start_date|timeuntil }}
+			{% include 'layout/time_to_event.html' %}
 		</span>
 
 	</div>
