@@ -87,15 +87,14 @@ def add_event(request):
 
 	if event_form.is_valid():
 		picture = request.FILES.get('picture', None)
-
+		event_data = {}
 		try:
 			if picture:
 				if picture.size > (256 * 1024):
 					raise ImageSizeTooLargeException('Image size too large.')
 
-				process_image(picture)
+				event_data['picture'] = process_image(picture)
 
-			event_data = {}
 			event_data.update(event_form.cleaned_data)
 			event_data['creator'] = request.user
 			event = create_or_update_event(**event_data)
