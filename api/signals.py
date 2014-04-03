@@ -18,7 +18,7 @@ def check_pending_events(sender, user, request, **kwargs):
 			args = {}
 
 			if not request.user.is_staff:
-				args['country']=user.profile.country.code
+				args['country_code']=user.profile.country.code
 
 			pending_events = get_pending_events(**args)
 
