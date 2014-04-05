@@ -1,11 +1,9 @@
 {% if event.has_started %}
 	{% if event.has_ended %}
-		Event ended
+		{{ event.start_date|date:"F j, Y" }} at {{ event.start_date|date:"H:i" }}
 	{% else %}
-		Ending in:
-		{{ event.end_date|timeuntil }}
+		In progress
 	{% endif %}
 {% else %}
-		Happening in:
-		{{ event.start_date|timeuntil }}
+		{{ event.start_date|date:"F j, Y" }} at {{ event.start_date|date:"H:i" }}
 {% endif %}
