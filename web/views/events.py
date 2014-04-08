@@ -1,4 +1,3 @@
-from boto.exception import S3ResponseError
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -154,9 +153,7 @@ def edit_event(request, event_id):
 			                        'Please reduce your image size and try agin.')
 		except UploadImageError as e:
 			messages.error(request, e.message)
-		except S3ResponseError as e:
-			messages.error(request, '%s Something went wrong. Please try again.' % e.msg)
-
+		
 	return render_to_response(
 		'pages/add_event.html', {
 			'form': event_form,
@@ -191,7 +188,11 @@ def list_pending_events(request, country_code):
 	Display a list of pending events.
 	"""
 
-	event_list = get_pending_events(country_code=country_code)
+	if request.user.is_staff:
+		event_list = get_pending_events()
+		event_list = sorted(event_list, key=lambda a: a.country.code)
+	else:
+		event_list = get_pending_events(country_code=country_code)
 
 	country_name = unicode(dict(countries)[country_code])
 

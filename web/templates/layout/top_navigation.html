@@ -34,7 +34,11 @@
 										{% if user.profile.country %}
 											<a href="{% url 'web.pending_events' user.profile.country %}">
 												<i class="fa fa-clock-o"></i>
-												Pending events in {{ user.profile.country.name }}</a>
+												{% if user.is_staff %}
+													Pending events
+												{% else %}
+													Pending events in {{ user.profile.country.name }}
+												{% endif %}</a>
 										{% else %}
 											<a href="{% url 'profile' %}"><i class="fa fa-map-marker"></i>
 												Set your country</a>
