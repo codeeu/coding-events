@@ -126,7 +126,7 @@ var Codeweek = window.Codeweek || {};
                 var sw = results[0].geometry.viewport.getSouthWest();
                 map.map.fitBounds(results[0].geometry.viewport);
                 map.map.setCenter(results[0].geometry.location);
-				$("#country").html(current_country);
+				$("#country").html("in " + current_country);
             }
         });
     }
@@ -134,12 +134,16 @@ var Codeweek = window.Codeweek || {};
     function initialize(events, lon, lan) {
         map = createMap(events, lon, lan, 4);
         setAutocomplete();
-		console.log(window.location.hash);
-        if (location.pathname !== "/") {
-        var current_country = document.getElementById('country').innerHTML;
-        zoomCountry(current_country); 
-        }
-    }
+		if (location.hash !== '') {
+			var country = $('#' + location.hash.replace('#', '').replace('!', ''));
+			if (country.length) {
+				zoomCountry(country[0].innerText)
+			}
+		} else if (location.pathname !== "/") {
+			var current_country = document.getElementById('country').innerHTML;
+			zoomCountry(current_country);
+		}
+	}
 
     var search_events_handler = function () {
         var serch_query_input = $('#search-event'),
