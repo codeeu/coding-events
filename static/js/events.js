@@ -170,6 +170,7 @@ var Codeweek = window.Codeweek || {};
 
         $(function () {
             google.maps.event.addDomListener(window, 'load', function () {
+                address = document.getElementById('autocomplete').value;
                 initialize(address);
             });
 
