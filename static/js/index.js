@@ -165,4 +165,10 @@ var Codeweek = window.Codeweek || {};
     Codeweek.Index = {};
     Codeweek.Index.init = init;
 
+	$(".countryflag").click(function(sender){
+		zoomCountry(sender.currentTarget.innerText);
+		document.location.href = "#!" + sender.currentTarget.id;
+	});
+
 }(jQuery, Codeweek));
+

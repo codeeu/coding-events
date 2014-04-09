@@ -57,13 +57,12 @@
 			</a>
 			<div id="allcountries" class="clearfix" style="display:none">
 				{% for each_country in all_countries %}
-					<a href="{% url 'web.index' each_country.1 %}" class="country-link">
-						<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
-
-						<div class="icon-flag">
-							{{ each_country.0 }}
-						</div>
-					</a>
+				<div class="country-link countryflag" id="{{ each_country.1 }}">
+					<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
+					<div class="icon-flag">
+						{{ each_country.0 }}
+					</div>
+				</div>
 				{% endfor %}
 			</div>
 		</div>
