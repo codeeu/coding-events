@@ -76,6 +76,15 @@ def index(request, country_code=None):
 		},
 		context_instance=RequestContext(request))
 
+def all (request):
+	events = get_approved_events(country_code='SI')
+
+	return render_to_response(
+		'pages/all.html', {
+			'events': events,
+		},
+		context_instance=RequestContext(request))
+
 
 @login_required
 def add_event(request):

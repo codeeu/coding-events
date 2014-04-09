@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns(
 	'web.views',
 	url(r'^$', 'events.index', name='web.index'),
+	url(r'^all/$', 'events.all', name='web.all'),
 	url(r'^add/$', 'events.add_event', name='web.add_event'),
 	url(r'^edit/(?P<event_id>\d+)/$', 'events.edit_event', name='web.edit_event'),
 	url(r'^view/(?P<event_id>\d+)/(?P<slug>[-\w]+)/$', 'events.view_event', name='web.view_event'),
