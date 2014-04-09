@@ -139,9 +139,11 @@ var Codeweek = window.Codeweek || {};
 			if (country.length) {
 				zoomCountry(country[0].innerText)
 			}
-		} else if (location.pathname !== "/") {
+		} else {
 			var current_country = document.getElementById('country').innerHTML;
-			zoomCountry(current_country);
+			if (current_country.trim() !== '') {
+				zoomCountry(current_country);
+			}
 		}
 	}
 
