@@ -8,13 +8,13 @@ This is an app that let's you add [Code Week](http://events.codeweek.eu/) events
 
 Contributing
 =======
-Fork this repository, and clone it to your local machine:
+Fork this repository, and clone it to your local machine (of course, use your own username instead of {username}):
 <pre>
-git clone https://github.com/codeeu/coding-events.git
+git clone https://github.com/{username}/coding-events.git
 cd coding-events
 </pre>
 
-Make your changes, push to your fork and create new Pull Request.
+Make your changes, push to your fork and create a new Pull Request.
 
 (Thanks!).
 
