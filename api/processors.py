@@ -20,6 +20,7 @@ def get_approved_events(limit=None, order=None, country_code=None, past=False):
 	"""
 
 	events = Event.objects.filter(status='APPROVED')
+
 	if not past:
 		events = events.filter(end_date__gte=datetime.datetime.now())
 	if country_code:
@@ -28,7 +29,7 @@ def get_approved_events(limit=None, order=None, country_code=None, past=False):
 		events = events.order_by(order)
 	if limit:
 		events = events[:limit]
-
+	
 	return events
 
 
