@@ -25,9 +25,9 @@ class AddEventForm(forms.ModelForm):
 
 		widgets = {
 			'title': forms.TextInput(attrs={"class": "form-control",
-				                       "placeholder": "How do you call this event?"}),
+				                       		"placeholder": "How do you call this event?"}),
 			'organizer': forms.TextInput(attrs={"class": "form-control",
-				                       "placeholder": "Who is organizing this event?"}),
+				                       			"placeholder": "Who is organizing this event?"}),
 			'description': forms.Textarea(attrs={"class": "form-control",
 			                                     "placeholder": "Tell us a bit about your event"}),
 			'location': forms.TextInput(attrs={"id": "autocomplete", "class": "form-control",
