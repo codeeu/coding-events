@@ -16,7 +16,7 @@
 	<div class="container index-content">
 		<div class="clearfix">
 			<h2 class="pull-left">
-				Upcoming #codeEU Events{% if country %} in <span id="country">{{ country.country_name }}</span>{% endif %}
+				Upcoming #codeEU Events <span id="country">{% if country %}in {{ country.country_name }}{% endif %}</span>
 			</h2>
 
 			<div class="how-to">
@@ -42,13 +42,12 @@
 		<div class="change-location-wrapper">
 			<div id="showcountries" class="clearfix">
 				{% for each_country in all_countries %}
-					<a href="{% url 'web.index' each_country.1 %}" class="country-link">
-						<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
-
-						<div class="icon-flag">
-							{{ each_country.0 }}
-						</div>
-					</a>
+				<div class="country-link countryflag" id="{{ each_country.1 }}">
+					<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
+					<div class="icon-flag">
+						{{ each_country.0 }}
+					</div>
+				</div>
 				{% endfor %}
 			</div>
 		</div>
