@@ -10,18 +10,6 @@
 		<div class="events-map-wrapper">
 			<div id="events-map"></div>
 		</div>
-		<div class="index-heading"><h1>#codeEU Map of Events</h1></div>
-		<div class="form-inline search-event-form col-md-4" role="form">
-			<div class="form-group">
-				<input type="text" class="form-control" id="search-event"
-					   placeholder="Search for events by location" autocomplete="off" data-pjax>
-				<a href="#" class="search-btn"><i class="fa fa-search"></i></a>
-			</div>
-		</div>
-		<div class="add-event-wrapper">
-			<a href="{% url 'web.add_event' %}" class="add-event-btn btn btn-primary btn-icon btn-lg fa-map-marker">
-				Add Your Own Event</a>
-		</div>
 	</div>
 	{% include 'layout/top_navigation.html' %}
 	{% include 'layout/messages.html' %}
@@ -52,10 +40,7 @@
 		<hr />
 
 		<div class="change-location-wrapper">
-			<a class="change-country-link btn btn-sm" id="showcountries">
-				See events in other countries
-			</a>
-			<div id="allcountries" class="clearfix" style="display:none">
+			<div id="showcountries" class="clearfix">
 				{% for each_country in all_countries %}
 				<div class="country-link countryflag" id="{{ each_country.1 }}">
 					<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
