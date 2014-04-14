@@ -3,7 +3,7 @@
 {% load compress %}
 {% block title %}- Map of Events{% endblock title %}
 
-{% block main_navigation %}{% endblock %}
+
 {% block messages %}{% endblock %}
 {% block content %}
 	<div class="landing-wrapper">
@@ -11,45 +11,38 @@
 			<div id="events-map"></div>
 		</div>
 	</div>
-	{% include 'layout/top_navigation.html' %}
-	{% include 'layout/messages.html' %}
+
 	<div class="container index-content">
 		<div class="clearfix">
-			<h2 class="pull-left">
-				Upcoming #codeEU Events <span id="country">{% if country %}in {{ country.country_name }}{% endif %}</span>
-			</h2>
-
-			<div class="how-to">
-				<a href="{% url 'web.guide' %}" target="_blank" class="btn btn-sm pull-right">
-					How to organize your own event?
+			<div id="search-events-link">
+				<a class="btn btn-primary btn-lg"
+				   href="{% url 'web.search_events' %}?country_code={{ country.country_code }}">
+					Find Evens <span id="country">{% if country %}in {{ country.country_name }}{% endif %}</span>
+					<i class="fa fa-angle-double-right"></i>
 				</a>
 			</div>
 		</div>
 
+		<div class="change-location-wrapper">
+			<div id="showcountries" class="clearfix">
+				{% for each_country in all_countries %}
+					<div class="country-link" id="{{ each_country.1 }}" data-name="{{ each_country.0 }}">
+						<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
 
-		<div class="clearfix" id="events-list">
-			{% if latest_events %}
-				{% include 'layout/all_events.html' %}
-			{% else %}
-				<p>
-					No events yet. <a href="{% url 'web.guide' %}">Why don't you organize your own?</a>
-				<p>
-			{% endif %}
+						<div class="icon-flag">
+							{{ each_country.0 }}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 
 		<hr />
 
-		<div class="change-location-wrapper">
-			<div id="showcountries" class="clearfix">
-				{% for each_country in all_countries %}
-				<div class="country-link countryflag" id="{{ each_country.1 }}">
-					<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
-					<div class="icon-flag">
-						{{ each_country.0 }}
-					</div>
-				</div>
-				{% endfor %}
-			</div>
+		<div class="how-to">
+			<a href="{% url 'web.guide' %}" target="_blank" class="btn btn-sm">
+				How to organize your own event?
+			</a>
 		</div>
 	</div>
 
@@ -60,15 +53,14 @@
 	<script type="text/javascript"
 	        src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
 	</script>
-	{% compress js %}
-		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
-		<script type="text/javascript" src="{% static "js/markerclusterer.js" %}"></script>
-		<script type="text/javascript" src="{% static "lib/pjax/jquery.pjax.js" %}"></script>
-		<script type="text/javascript" src="{% static "js/endless_pagination/endless-pagination.js" %}"></script>
-		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
-		<script type="text/javascript">
-			Codeweek.Index.init(JSON.stringify({{ map_events|safe }}), {{ lan_lon.0 }}, {{ lan_lon.1 }})
-		</script>
-	{% endcompress %}
+
+	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
+	<script type="text/javascript" src="{% static "js/markerclusterer.js" %}"></script>
+	<script type="text/javascript" src="{% static "lib/pjax/jquery.pjax.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/endless_pagination/endless-pagination.js" %}"></script>
+	<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+	<script type="text/javascript">
+		Codeweek.Index.init(JSON.stringify({{ map_events|safe }}), {{ lan_lon.0 }}, {{ lan_lon.1 }})
+	</script>
+
 {% endblock %}

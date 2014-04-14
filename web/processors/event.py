@@ -104,6 +104,16 @@ def create_or_update_event(event_id=None, **event_data):
 	return event
 
 
+def get_country(country_code, user_ip):
+
+	if country_code and 'media' not in country_code:
+		country_name = unicode(dict(countries).get(country_code, 'EU'))
+		country = {'country_name': country_name, 'country_code': country_code}
+	else:
+		country = get_country_from_user_ip(user_ip)
+	return country
+
+
 def change_event_status(event_id):
 	event = Event.objects.get(pk=event_id)
 

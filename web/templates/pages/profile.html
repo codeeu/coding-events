@@ -3,23 +3,126 @@
 
 {% block content %}
 	<div class="container">
-		<h2>{% if user.first_name or user.last_name %}
-				{{ user.first_name }} {{ user.last_name }}
-			{% else %}
-				{{ user.username }}
-			{% endif %}'s Profile</h2>
-		{% for field in form %}
-			{{ field.error }}
-		{% endfor %}
 
-		<form action="{% url 'profile' %}" method="POST">{% csrf_token %}
-			{{ uform.as_p }}
-			{{ pform.as_p }}
-			<input type="submit" value="Update profile"  class="btn btn-primary" />
-		</form>
-		<p><br />
-		<a href="{% url 'avatar_change' %}">{% avatar user %}</a>
-		<a href="{% url 'avatar_delete' %}">Delete avatar</a>
-		</p>
+		<div class="row">
+			<div class="col-md-6">
+				<h2>{% if user.first_name or user.last_name %}
+							{{ user.first_name }} {{ user.last_name }}
+					{% else %}
+							{{ user.username }}
+					{% endif %}'s Profile</h2>
+					{% for field in form %}
+						{{ field.error }}
+					{% endfor %}
+			</div>
+			</div>
+		<div class="row">
+			<div class="col-md-offset-9">
+				<a href="{% url 'avatar_change' %}">{% avatar user %}</a>
+				<a href="{% url 'avatar_delete' %}">Delete avatar</a>
+			</div>
+		</div>
+
+		<div class="row bottom-buffer">
+			<form enctype="multipart/form-data" class="form-horizontal clearfix" role="form" action="{% url 'profile' %}" method="POST">{% csrf_token %}
+				<div class="clearfix">
+				<div class="row bottom-buffer">
+					<div class="col-md-6 first">
+						<div class="form-group {% if uform.first_name.errors %}has-error{% endif %}">
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ uform.first_name.help_text }}</span>
+							<label for="{{ uform.first_name.auto_id }}" class="col-sm-3 control-label">
+								{% if uform.first_name.field.required %}*{% endif %}
+									{{ uform.first_name.label }}
+							</label>
+
+							<div class="col-sm-9">
+								{{ uform.first_name }}
+							</div>
+						</div>
+
+						<div class="form-group {% if uform.last_name.errors %}has-error{% endif %}">
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ uform.last_name.help_text }}</span>
+							<label for="{{ uform.last_name.auto_id }}" class="col-sm-3 control-label">
+								{% if uform.last_name.field.required %}*{% endif %}
+								{{ uform.last_name.label }}
+							</label>
+
+							<div class="col-sm-9">
+								{{ uform.last_name }}
+							</div>
+						</div>
+
+						<div class="form-group {% if uform.email.errors %}has-error{% endif %}">
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ uform.email.help_text }}</span>
+							<label for="{{ uform.email.auto_id }}" class="col-sm-3 control-label">
+								{% if uform.email.field.required %}*{% endif %}
+								{{ uform.email.label }}
+							</label>
+
+							<div class="col-sm-9">
+								{{ uform.email }}
+							</div>
+						</div>
+
+						<div class="form-group {% if pform.country.errors %}has-error{% endif %}">
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ pform.country.help_text }}</span>
+							<label for="{{ pform.country.auto_id }}" class="col-sm-3 control-label">
+								{% if pform.country.field.required %}*{% endif %}
+								{{ pform.country.label }}
+							</label>
+
+							<div class="col-sm-9">
+								{{ pform.country }}
+							</div>
+						</div>
+
+						<div class="form-group {% if pform.twitter.errors %}has-error{% endif %}">
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ pform.twitter.help_text }}</span>
+							<label for="{{ pform.twitter.auto_id }}" class="col-sm-3 control-label">
+								{% if pform.twitter.field.required %}*{% endif %}
+								{{ pform.twitter.label }}
+							</label>
+
+							<div class="col-sm-9">
+								{{ pform.twitter }}
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-6">
+						<div class="form-group {% if pform.website.errors %}has-error{% endif %}">
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ pform.website.help_text }}</span>
+							<label for="{{ pform.website.auto_id }}" class="col-sm-3 control-label">
+								{% if pform.website.field.required %}*{% endif %}
+								{{ pform.website.label }}
+							</label>
+
+							<div class="col-sm-9">
+								{{ pform.website }}
+							</div>
+						</div>
+
+						<div class="form-group {% if pform.bio.errors %}has-error{% endif %}">
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ pform.bio.help_text }}</span>
+							<label for="{{ pform.bio.auto_id }}" class="col-sm-3 control-label">
+								{% if pform.bio.field.required %}*{% endif %}
+								{{ pform.bio.label }}
+							</label>
+
+							<div class="col-sm-9">
+								{{ pform.bio }}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-offset-5">
+						<input type="submit" value="Update profile"  class="btn" />
+					</div>
+				</div>
+				</div>
+			</form>
+		</div>
+
 	</div>
 {% endblock content %}

@@ -1,0 +1,159 @@
+.cweu-navbar {
+	background-color: $primary-color;
+	font-family: $primary-font-family;
+	border: none;
+	padding-top: 15px;
+	margin-bottom: 0;
+	border-radius: 0;
+
+	a {
+		color: $white;
+
+	}
+
+	.navbar-brand {
+		padding: 15px 100px 15px 50px;
+		font-weight: bold;
+		font-size: 27px;
+	}
+
+	.cweu-navbar-list {
+		font-size: 20px;
+		margin-top: 1px;
+
+		li {
+			border-left: 5px solid $primary-color;
+
+			&:first-child {
+				border: none;
+			}
+			a {
+				padding-left: 30px;
+				padding-right: 30px;
+				@include transition(all 0.3s linear);
+
+				&:hover, &:focus, &.active {
+					background-color: $secondary-color !important;
+					color: $primary-color !important;
+
+				}
+			}
+		}
+	}
+
+	.dropdown {
+
+		.dropdown-menu {
+			@include box-shadow(none);
+
+			a {
+				padding: 3px 20px 3px 5px;
+			}
+
+			i {
+				font-size: 18px;
+				border-right: 1px dotted #999;
+				padding: 5px;
+				margin-right: 2px;
+				width: 30px;
+			}
+		}
+	}
+
+	.avatar {
+		padding: 9px;
+
+		&:hover, &:focus {
+			background-color: transparent;
+
+			img {
+				@include filter(grayscale, 0%);
+			}
+		}
+
+		img {
+			@include filter(grayscale, 100%);
+			@include transition(all 0.3s linear);
+		}
+	}
+
+	.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+		background-color: transparent;
+		border-color: none;
+	}
+}
+
+.cweu-submenu {
+	margin-bottom: 0;
+	padding-left: 387px;
+	background-color: $secondary-color;
+	border-radius: 0;
+	.submenu-wrapper{
+		width: 715px;
+	}
+
+	.navbar-nav {
+		width: 100%;
+	}
+	li {
+
+		a {
+			font-size: 16px;
+			color: $primary-color;
+			@include transition(all 0.3s linear);
+
+			&:hover, &:focus, &.active {
+				background-color: $secondary-color;
+				color: $white;
+				.fa-circle {
+					color: #FFBB34;
+				}
+			}
+		}
+	}
+	.fa-stack {
+		margin-right: 10px;
+		.fa-circle {
+			color: $primary-color;
+			@include transition(all 0.3s linear);
+		}
+	}
+	.search-wrapper {
+		position: absolute;
+		width: 715px;
+		top: 0;
+		z-index: 1;
+		height: 100%;
+	}
+
+	#search-input {
+		height: 100%;
+		border: none;
+		border-radius: 0;
+		padding-right: 50px;
+		text-transform: uppercase;
+		font-size: 20px;
+	}
+
+	.search-btn {
+		position: absolute;
+		top: 0;
+		z-index: 2;
+		right: 10px;
+		line-height: 100%;
+		padding: 20px 0;
+
+		&:hover {
+			background-color: transparent;
+		}
+		.fa-times {
+			color: $silver;
+		}
+		&.active{
+			.fa {
+				color: $primary-color;
+			}
+		}
+	}
+
+}
