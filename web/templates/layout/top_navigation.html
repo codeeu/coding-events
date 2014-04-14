@@ -15,25 +15,23 @@
 		<ul class="nav navbar-nav cweu-navbar-list">
 			<li class="dropdown open">
 				<a href="{% url 'web.index' %}" class="active">Events</a>
-				<ul class="dropdown-menu visible-xs visible-sm" role="menu">
-					<ul class="nav navbar-nav" role="menu">
-						<li>
-							<a href="{% url 'web.index' %}" class="{% current 'web.index' %}">
-								Map
-							</a>
-						</li>
-						<li>
-							<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
-								Add Event
-							</a>
-						</li>
-						<li class="pull-right">
-							<a href="{% if search_button %}#{% else %}{% url 'web.search_events' %}{% endif %}"
-							   class="search-btn {% if search_active %}active{% endif %}">
-								<i class="fa fa-search fa-2x fa-inverse"></i>
-							</a>
-						</li>
-					</ul>
+				<ul class="nav dropdown-menu visible-xs visible-sm" role="menu">
+					<li>
+						<a href="{% url 'web.index' %}" class="{% current 'web.index' %}">
+							Map
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
+							Add Event
+						</a>
+					</li>
+					<li>
+						<a href="{% if search_button %}#{% else %}{% url 'web.search_events' %}{% endif %}"
+						   class="search-btn {% if search_active %}active{% endif %}">
+							Search
+						</a>
+					</li>
 				</ul>
 			</li>
 			<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/learn">Resources</a></li>
