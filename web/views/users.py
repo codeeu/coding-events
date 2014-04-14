@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.context_processors import csrf
+from django.contrib import messages
 
 from web.forms.user_profile import UserForm, UserProfileForm
 from web.views.events import get_client_ip
@@ -28,6 +29,7 @@ def user_profile(request):
 		if uform.is_valid() and pform.is_valid():
 			uform.save()
 			pform.save()
+			messages.success(request, 'Profile details updated')
 	else:
 		user = request.user
 		uform = UserForm(instance=user)
