@@ -7,7 +7,8 @@
 
 	<div class="container">
 		<div id="fb-root"></div>
-		{% if user.profile.is_ambassador and user.profile.country == event.country %}
+		{% if user.profile.is_ambassador %}
+		{% if user.profile.country == event.country or user.is_staff %}
 			<div class="edit-toolbar">
 				<div id="change_status">
 					{% if event.status == 'PENDING' %}
@@ -31,6 +32,7 @@
 					{% endif %}
 				</div>
 			</div>
+		{% endif %}
 		{% endif %}
 		{% if event.creator.id == request.user.id %}
 		<div class="edit-toolbar">
@@ -61,8 +63,8 @@
 					{{ event.location }}
 				</address>
 				<p>
-					<strong>From</strong> {{ event.start_date|date:"l, M d, Y" }} at {{ event.start_date|date:"H:i" }}
-					<strong>to</strong> {{ event.end_date|date:"l, M d, Y" }} at {{ event.end_date|date:"H:i" }}
+					<strong>From</strong> {{ event.start_date|date:"l, F j, Y" }} at {{ event.start_date|date:"H:i" }}
+					<strong>to</strong> {{ event.end_date|date:"l, F j, Y" }} at {{ event.end_date|date:"H:i" }}
 				</p>
 				<strong>Description:</strong>
 
@@ -106,12 +108,12 @@
 
 				<strong>Share the event:</strong>
 				<div class="share-event-wrapper">
-					<div class="fb-share-button"
-					     data-href="http://events.codeweek.eu/{% url 'web.view_event' event.pk event.slug %}"
-					     data-type="button_count"></div>
+
+					<div class="fb-like" 
+						data-href="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" data-layout="button_count" data-action="recommend" data-show-faces="false" data-share="true"></div>
 					<a href="https://twitter.com/share" class="twitter-share-button"
-					   data-url="http://events.codeweek.eu"
-					   data-text="Check out {{ event.title }} event at" data-via="CodeWeekEU"
+					   data-url="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}"
+					   data-text="Check out {{ event.title }} at" data-via="CodeWeekEU"
 					   data-hashtags="codeEU">Tweet</a>
 
 					<div class="g-plusone" data-size="medium" data-href="http://events.codeweek.eu"></div>
@@ -193,12 +195,13 @@
 
 	</script>
 
-	<script>(function (d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s);
-		js.id = id;
-		js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=219052144964057";
-		fjs.parentNode.insertBefore(js, fjs);
+
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=1415375708710844";
+	  fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));</script>
+
 {% endblock %}

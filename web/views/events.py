@@ -86,15 +86,14 @@ def add_event(request):
 
 	if event_form.is_valid():
 		picture = request.FILES.get('picture', None)
-
+		event_data = {}
 		try:
 			if picture:
 				if picture.size > (256 * 1024):
 					raise ImageSizeTooLargeException('Image size too large.')
 
-				process_image(picture)
+				event_data['picture'] = process_image(picture)
 
-			event_data = {}
 			event_data.update(event_form.cleaned_data)
 			event_data['creator'] = request.user
 			event = create_or_update_event(**event_data)
@@ -140,7 +139,7 @@ def edit_event(request, event_id):
 				if picture.size > (256 * 1024):
 					raise ImageSizeTooLargeException('Image size too large.')
 
-				process_image(picture)
+				event_data['picture'] = process_image(picture)
 			else:
 				del event_data['picture']
 
@@ -154,7 +153,7 @@ def edit_event(request, event_id):
 			                        'Please reduce your image size and try agin.')
 		except UploadImageError as e:
 			messages.error(request, e.message)
-
+		
 	return render_to_response(
 		'pages/add_event.html', {
 			'form': event_form,
@@ -189,7 +188,11 @@ def list_pending_events(request, country_code):
 	Display a list of pending events.
 	"""
 
-	event_list = get_pending_events(country_code=country_code)
+	if request.user.is_staff:
+		event_list = get_pending_events()
+		event_list = sorted(event_list, key=lambda a: a.country.code)
+	else:
+		event_list = get_pending_events(country_code=country_code)
 
 	country_name = unicode(dict(countries)[country_code])
 

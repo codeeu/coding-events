@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}- Whoa, 500!{% endblock title %}
+
+{% block content %}
+	<div class="container">
+		<h1>Something went wrong.</h1>
+		<p>Well, this is embarrassing. Why don't you find a <a href="{% url 'web.index' %}">coding event nearby</a> and help us <a href="https://github.com/codeeu/coding-events" target="_blank">fix the code</a>?</p>
+	</div>
+{% endblock content %}

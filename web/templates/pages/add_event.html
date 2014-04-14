@@ -211,8 +211,10 @@
 								     style="max-height: 204px; max-width: 100%">
 							</div>
 							<div class="fileinput-preview fileinput-exists">
-								<img src="{{ MEDIA_URL }}{{ picture_url }}" alt="{{ form.picture.name }} Image"
+								{% if picture_url %}
+								<img src="{{ picture_url.url }}" alt="{{ form.picture.name }} Image"
 								     style="max-height: 204px; max-width: 100%" />
+								{% endif %}
 							</div>
 							<div>
 							<span class="btn btn-sm btn-file">

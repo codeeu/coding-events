@@ -74,7 +74,7 @@ TIME_ZONE = 'Europe/Ljubljana'
 # http://www.i18nguy.com/unicode/language-identifiers.html.
 LANGUAGE_CODE = 'sl'
 
-USE_TZ = True
+USE_TZ = False
 
 # Dummy function, so that "makemessages" can find strings which should be translated.
 _ = lambda s: s
