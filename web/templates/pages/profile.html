@@ -2,7 +2,7 @@
 {% load avatar_tags %}
 
 {% block content %}
-	<div class="container ">
+	<div class="container">
 
 		<div class="row">
 			<div class="col-md-6">
@@ -17,16 +17,16 @@
 			</div>
 			</div>
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-offset-9">
 				<a href="{% url 'avatar_change' %}">{% avatar user %}</a>
 				<a href="{% url 'avatar_delete' %}">Delete avatar</a>
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row bottom-buffer">
 			<form enctype="multipart/form-data" class="form-horizontal clearfix" role="form" action="{% url 'profile' %}" method="POST">{% csrf_token %}
 				<div class="clearfix">
-				<div class="row">
+				<div class="row bottom-buffer">
 					<div class="col-md-6 first">
 						<div class="form-group {% if uform.first_name.errors %}has-error{% endif %}">
 							<span class="help-block col-sm-9 col-sm-offset-3">{{ uform.first_name.help_text }}</span>
@@ -116,12 +116,13 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-offset-4">
-						<input type="submit" value="Update profile"  class="btn btn-primary" />
+					<div class="col-md-offset-5">
+						<input type="submit" value="Update profile"  class="btn" />
 					</div>
 				</div>
 				</div>
 			</form>
 		</div>
+
 	</div>
 {% endblock content %}

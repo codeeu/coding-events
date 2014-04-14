@@ -7,6 +7,11 @@ class UserForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ['first_name', 'last_name', 'email']
+		widgets = {
+			'first_name': forms.TextInput(attrs={"class": "form-control"}),
+			'last_name': forms.TextInput(attrs={"class": "form-control"}),
+			'email': forms.EmailInput(attrs={"class": "form-control"}),
+		}
 		labels = {
 			'first_name': 'Your first name:',
 			'last_name': 'Your last name:',
@@ -23,6 +28,14 @@ class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = ('country', 'bio', 'website', 'twitter')
+
+		widgets = {
+			'country': forms.Select(attrs={"class": "form-control"}),
+			'bio': forms.Textarea(attrs={"class": "form-control","placeholder": "Tell us a bit about yourself"}),
+			'website': forms.TextInput(attrs={"class": "form-control"}),
+			'twitter': forms.TextInput(attrs={"class": "form-control"}),
+		}
+
 		labels = {
 			'country': 'Your country:',
 			'bio': 'Short bio:',
@@ -38,3 +51,4 @@ class UserProfileForm(forms.ModelForm):
 				'invalid': 'Please enter a valid web address',
 			},
 			}
+
