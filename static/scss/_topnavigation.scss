@@ -61,7 +61,7 @@
 	}
 
 	.avatar {
-		padding: 9px;
+		padding: 8px 9px 9px 9px;;
 
 		&:hover, &:focus {
 			background-color: transparent;
@@ -152,6 +152,18 @@
 		&.active{
 			.fa {
 				color: $primary-color;
+			}
+		}
+	}
+
+}
+.signin-menu{
+
+	li{
+		a {
+			margin-top: 1px;
+			&:hover {
+				background-color: $secondary-color;
 			}
 		}
 	}
