@@ -12,10 +12,59 @@
 			{{ field.error }}
 		{% endfor %}
 
-		<form action="{% url 'profile' %}" method="POST">{% csrf_token %}
-			{{ uform.as_p }}
-			{{ pform.as_p }}
-			<input type="submit" value="Update profile"  class="btn btn-primary" />
+		<form enctype="multipart/form-data" role="form" action="{% url 'profile' %}" method="POST" class="form-horizontal clearfix">{% csrf_token %}
+            <div class="clearfix">
+               <div class="col-md-6 first">
+                  <div class="form-group">
+                    <label for="{{ uform.first_name.auto_id }}" class="col-sm-3 control-label">
+							{% if uform.first_name.field.required %}*{% endif %}
+							{{ uform.first_name.label }}
+					</label>
+
+                   <div class="col-sm-9">
+                    {{ uform.first_name }}
+                    </div>
+                  </div>
+
+
+                   <div class="form-group">
+                    <label for="{{ uform.last_name.auto_id }}" class="col-sm-3 control-label">
+							{% if uform.last_name.field.required %}*{% endif %}
+							{{ uform.last_name.label }}
+					</label>
+
+                   <div class="col-sm-9">
+                    {{ uform.last_name }}
+                    </div>
+                  </div>
+
+
+                   <div class="form-group">
+                    <label for="{{ uform.email.auto_id }}" class="col-sm-3 control-label">
+							{% if uform.email.field.required %}*{% endif %}
+							{{ uform.email.label }}
+					</label>
+
+                   <div class="col-sm-9">
+                    {{ uform.email }}
+                    </div>
+                  </div>
+
+                   <div class="form-group">
+                    <label for="{{ pform.country.auto_id }}" class="col-sm-3 control-label">
+							{% if pform.country.field.required %}*{% endif %}
+							{{ pform.country.label }}
+					</label>
+
+                   <div class="col-sm-9">
+                    {{ pform.country }}
+                    </div>
+                  </div>
+
+			    {{ pform.as_p }}
+               </div>
+			    <input type="submit" value="Update profile"  class="btn btn-primary" />
+            </div>
 		</form>
 		<p><br />
 		<a href="{% url 'avatar_change' %}">{% avatar user %}</a>
