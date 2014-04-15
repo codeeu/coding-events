@@ -3,7 +3,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.contrib import messages
-#from django.contrib.auth.decorators import login_required
 
 from web.forms.user_profile import UserForm, UserProfileForm
 from web.views.events import get_client_ip
