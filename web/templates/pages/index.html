@@ -17,7 +17,7 @@
 			<div id="search-events-link">
 				<a class="btn btn-primary btn-lg"
 				   href="{% url 'web.search_events' %}?country_code={{ country.country_code }}">
-					Find Evens <span id="country">{% if country %}in {{ country.country_name }}{% endif %}</span>
+					Explore Events {% if country %}in <span id="country"> {{ country.country_name }}</span>{% endif %}
 					<i class="fa fa-angle-double-right"></i>
 				</a>
 			</div>
