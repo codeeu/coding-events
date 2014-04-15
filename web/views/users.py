@@ -21,7 +21,7 @@ def login(request):
 
 	}, context_instance=RequestContext(request))
 
-@login_required
+
 def user_profile(request):
 	if request.method == 'POST':
 		# populate form with original instance and add post info on top of that
