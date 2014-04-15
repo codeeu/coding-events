@@ -125,8 +125,7 @@ var Codeweek = window.Codeweek || {};
             if ($.support.pjax) {
                 $.pjax({url: '/' + country_code, container: event_list_container});
                 $(document).on('pjax:success', function () {
-                    $('.search-wrapper').toggleClass('hidden');
-                    $('.search-btn').find('.fa').toggleClass('fa-search, fa-times');
+
                 });
 
             }
@@ -160,21 +159,6 @@ var Codeweek = window.Codeweek || {};
         }
     }
 
-    var search_events_handler = function () {
-        var serch_query_input = $('.search-wrapper'),
-            search_event_btn = $('.search-btn'),
-            search_btn_icon = search_event_btn.find('.fa');
-
-        search_event_btn.on('click', function (e) {
-            e.preventDefault();
-            serch_query_input.toggleClass('hidden');
-            search_btn_icon.toggleClass('fa-search, fa-times');
-            if (serch_query_input.is(':visible')) {
-                $('#search-input').focus();
-            }
-        });
-
-    };
 
     var init = function (events, lon, lan) {
 
@@ -199,8 +183,6 @@ var Codeweek = window.Codeweek || {};
                 search_button.attr('href', new_location);
                 $('#country').html(country_name);
             });
-
-            search_events_handler();
 
         });
     };
