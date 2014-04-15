@@ -3,13 +3,13 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 
 from web.forms.user_profile import UserForm, UserProfileForm
 from web.views.events import get_client_ip
 
 from web.processors.user import get_ambassadors_for_countries
 from web.processors.event import get_country_from_user_ip
+from web.decorators.events import login_required
 
 
 def login(request):
@@ -21,7 +21,7 @@ def login(request):
 
 	}, context_instance=RequestContext(request))
 
-
+@login_required
 def user_profile(request):
 	if request.method == 'POST':
 		# populate form with original instance and add post info on top of that
