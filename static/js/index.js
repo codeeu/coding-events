@@ -12,6 +12,7 @@ var Codeweek = window.Codeweek || {};
         place,
         placeinfowindow = null;
 
+
     function createMap(events, lat, lng, zoomVal) {
         var markerData = JSON.parse(events),
             markerData_len = markerData.length,
@@ -62,24 +63,36 @@ var Codeweek = window.Codeweek || {};
             position: myLatLng,
             map: map,
             title: markTitle,
-            html: '<a href="' + markUrl + '"><h4>' + markTitle + '</h4></a>'
+            html: '<a href="' + markUrl + '" class="map-marker"><h4>' + markTitle + '</h4></a>'
         });
-        google.maps.event.addListener(marker, 'click', function() {
-                placeinfowindow.setContent(this.html);
-                placeinfowindow.open(this.map, this);
-         });
+        google.maps.event.addListener(marker, 'click', function () {
+            placeinfowindow.setContent(this.html);
+            placeinfowindow.open(this.map, this);
+        });
 
         return marker;
     }
 
     function setAutocomplete() {
+
         var input = /** @type {HTMLInputElement} */(
-            document.getElementById('search-event'));
-        var event_list_container = /** @type {HTMLInputElement} */(
-            document.getElementById('events-list'));
-        var autocomplete = new google.maps.places.Autocomplete(input);
+                document.getElementById('search-input')
+                ),
+            options = {
+                types: ['(regions)'],
+                bounds: new google.maps.Circle({
+                    center: new google.maps.LatLng(54.977614, 15.292969),
+                    radius: 2700
+                }).getBounds()
+            },
+            event_list_container = /** @type {HTMLInputElement} */(
+                document.getElementById('search-events-link')
+                ),
+            autocomplete = new google.maps.places.Autocomplete(input, options),
+            infowindow = new google.maps.InfoWindow();
+
         autocomplete.bindTo('bounds', map);
-        var infowindow = new google.maps.InfoWindow();
+
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
             infowindow.close();
             place = autocomplete.getPlace();
@@ -94,7 +107,7 @@ var Codeweek = window.Codeweek || {};
                 map.map.setZoom(17);  // Why 17? Because it looks good.
             }
 
-            var country_code = 'CZ',
+            var country_code = '',
                 country_name = '';
             if (place.address_components) {
                 var address = place.address_components;
@@ -112,21 +125,23 @@ var Codeweek = window.Codeweek || {};
             if ($.support.pjax) {
                 $.pjax({url: '/' + country_code, container: event_list_container});
                 $(document).on('pjax:success', function () {
-                    $('#country').html(country_name);
+                    $('.search-wrapper').toggleClass('hidden');
+                    $('.search-btn').find('.fa').toggleClass('fa-search, fa-times');
                 });
 
             }
         });
     }
-    function zoomCountry(current_country) {
+
+    function zoomCountry(country_code, country_name) {
         var zoomgeocoder = new google.maps.Geocoder();
-        zoomgeocoder.geocode({'address': current_country}, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var ne = results[0].geometry.viewport.getNorthEast();
-                var sw = results[0].geometry.viewport.getSouthWest();
+        zoomgeocoder.geocode({'address': country_name}, function (results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
                 map.map.fitBounds(results[0].geometry.viewport);
                 map.map.setCenter(results[0].geometry.location);
-				$("#country").html("in " + current_country);
+                if(map.map.getZoom() < 5){
+                    map.map.setZoom(4);
+                }
             }
         });
     }
@@ -134,23 +149,29 @@ var Codeweek = window.Codeweek || {};
     function initialize(events, lon, lan) {
         map = createMap(events, lon, lan, 4);
         setAutocomplete();
-		if (location.hash !== '') {
-			var country = $('#' + location.hash.replace('#', '').replace('!', ''));
-			if (country.length) {
-				zoomCountry(country[0].innerText)
-			}
-		} else if (location.pathname !== "/") {
-			var current_country = document.getElementById('country').innerHTML;
-			zoomCountry(current_country);
-		}
-	}
+        if (location.hash !== '') {
+            var country = $('#' + location.hash.replace('#', '').replace('!', ''));
+            if (country.length) {
+                zoomCountry(country[0].innerText);
+            }
+        } else if (location.pathname !== "/") {
+            var current_country = document.getElementById('country').innerHTML;
+            zoomCountry(current_country);
+        }
+    }
 
     var search_events_handler = function () {
-        var serch_query_input = $('#search-event'),
-            search_event_btn = $('search-btn');
+        var serch_query_input = $('.search-wrapper'),
+            search_event_btn = $('.search-btn'),
+            search_btn_icon = search_event_btn.find('.fa');
 
         search_event_btn.on('click', function (e) {
             e.preventDefault();
+            serch_query_input.toggleClass('hidden');
+            search_btn_icon.toggleClass('fa-search, fa-times');
+            if (serch_query_input.is(':visible')) {
+                $('#search-input').focus();
+            }
         });
 
     };
@@ -162,7 +183,23 @@ var Codeweek = window.Codeweek || {};
             google.maps.event.addDomListener(window, 'load', function () {
                 initialize(events, lon, lan);
             });
-            
+
+
+            $(".country-link").click(function (event) {
+                event.preventDefault();
+                var that = this,
+                    country_code = $(that).attr('id'),
+                    country_name = $(that).attr('data-name'),
+                    search_button = $('#search-events-link').find('a'),
+                    search_button_location = search_button.attr('href'),
+                    new_location = search_button_location.replace(/([A-Z]{2})/, country_code);
+
+                zoomCountry(country_code, country_name);
+                document.location.href = "#!" + country_code;
+                search_button.attr('href', new_location);
+                $('#country').html(country_name);
+            });
+
             search_events_handler();
 
         });
@@ -171,10 +208,6 @@ var Codeweek = window.Codeweek || {};
     Codeweek.Index = {};
     Codeweek.Index.init = init;
 
-	$(".countryflag").click(function(sender){
-		zoomCountry(sender.currentTarget.innerText);
-		document.location.href = "#!" + sender.currentTarget.id;
-	});
 
 }(jQuery, Codeweek));
 

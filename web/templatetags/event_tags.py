@@ -2,6 +2,7 @@ from calendar import HTMLCalendar
 from django import template
 from datetime import date
 from itertools import groupby
+from django.core import urlresolvers
 
 from django.utils.html import conditional_escape as esc
 
@@ -57,3 +58,24 @@ def render_calendar(event_start_date, event_end_date):
 	cal = EventCalendar(event_start_date, event_end_date)
 
 	return mark_safe(cal.formatmonth(event_start_date.year, event_start_date.month))
+
+@register.simple_tag(takes_context=True)
+def current(context, url_name, return_value=' active', **kwargs):
+	matches = current_url_equals(context, url_name, **kwargs)
+	return return_value if matches else ''
+
+
+def current_url_equals(context, url_name, **kwargs):
+	resolved = False
+	try:
+		resolved = urlresolvers.resolve(context.get('request').path)
+	except:
+		pass
+	matches = resolved and resolved.url_name == url_name
+	if matches and kwargs:
+		for key in kwargs:
+			kwarg = kwargs.get(key)
+			resolved_kwarg = resolved.kwargs.get(key)
+			if not resolved_kwarg or kwarg != resolved_kwarg:
+				return False
+	return matches

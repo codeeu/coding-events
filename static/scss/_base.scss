@@ -3,7 +3,7 @@ MAIN STYLES
 *********************/
 
 body {
-
+	font-family: $primary-font-family;
 }
 
 .first {
@@ -12,54 +12,6 @@ body {
 
 .last {
 	padding-right: 0;
-}
-
-/*********************
-NAVIGATION STYLES
-*********************/
-
-.navbar {
-
-	margin-bottom: 0;
-	border-radius: 0;
-
-	&.affix {
-		width: 100%;
-		top: 0;
-		left: 0;
-		z-index: 10000;
-	}
-
-}
-
-.navbar-glass {
-	background-color: rgba(0, 0, 0, 0.2);
-}
-
-.navbar-nav {
-	a {
-
-		&.avatar {
-			padding: 9px;
-		}
-	}
-}
-
-.dropdown {
-
-	.dropdown-menu {
-		a {
-			padding: 3px 20px 3px 5px;
-		}
-
-		i {
-			font-size: 18px;
-			border-right: 1px dotted #999;
-			padding: 5px;
-			margin-right: 2px;
-			width: 30px;
-		}
-	}
 }
 
 /*********************
@@ -145,14 +97,9 @@ LANDING PAGE MAP STYLES
 	z-index: 0;
 }
 
-.search-event-form {
-	position: absolute;
-	top: 20px;
-	left: 20px;
-
-	input {
-		width: 400px;
-	}
+#search-events-link {
+	text-align: center;
+	margin-top: 20px;
 }
 
 .add-event-wrapper {
@@ -197,7 +144,7 @@ INDEX PAGE STYLES
 		right: 0;
 		height: 100%;
 		font-size: 20px;
-		color: $slate;
+		color: $light-blue;
 		border: none;
 		background: transparent;
 		padding: 0 15px;
@@ -209,7 +156,10 @@ INDEX PAGE STYLES
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 }
-
+#showcountries{
+	background-color: $whitesmoke;
+	padding-bottom: 25px;
+}
 .country-link {
 	margin: 1em 0;
 	height: 80px;
@@ -218,18 +168,16 @@ INDEX PAGE STYLES
 	margin-right: 10px;
 	margin-bottom: 10px;
 	text-align: center;
-	border: 1px solid $silver;
 	padding-top: 5px;
 	font-weight: bold;
-	@include transition(all 0.5s linear);
+	cursor: pointer;
+	@include filter(opacity, 0.6);
+	@include transition(all 0.3s linear);
 
 	&:hover {
 		border-color: $brand-primary;
-	}
-
-	img {
-		width: 34px;
-		margin-bottom: 10px;
+		text-decoration: underline;
+		@include filter(opacity, 1);
 	}
 
 	.icon-flag {
@@ -241,7 +189,7 @@ INDEX PAGE STYLES
 ADD/EDIT EVENT PAGE STYLES
 *********************/
 .how-to {
-	margin-top: 25px;
+	margin: 25px 0;
 }
 
 .event-footnote {
@@ -280,22 +228,48 @@ FOOTER STYLES
 
 footer {
 	width: 100%;
-	background-color: $slate;
+	background-color: $dark-blue;
 	color: $silver;
+	padding-top: 20px;
+
+	a {
+		color: $white;
+		&:hover {
+			color: $silver;
+		}
+	}
+
+	i {
+		&:not(.fa-inverse) {
+			color: $silver;
+		}
+
+		&.fa-inverse {
+			color: $black;
+		}
+	}
+
+	.footer-navigation {
+		list-style-type: none;
+		padding-left: 0;
+		padding-right: 30px;
+
+		li {
+			line-height: 32px;
+			border-bottom: 1px dotted $silver;
+		}
+	}
 
 	.maker-introduction {
 		margin: 20px 0;
 
 	}
 	.fork-github {
-		margin: 20px 0;
-		text-align: center;
+		text-align: justify;
 		a {
 			display: block;
 		}
 		i {
-			margin-top: 10px;
-			font-size: 50px;
 			color: $silver;
 		}
 	}
@@ -307,7 +281,7 @@ footer {
 		}
 		i {
 			padding: 10px 10px;
-			font-size: 50px;
+			font-size: 40px;
 			color: $silver;
 		}
 
@@ -317,10 +291,16 @@ footer {
 			margin: 20px 0;
 		}
 		&.codecatz-logo {
-			width: 100px;
+			width: 38px;
 			display: block;
-			padding: 10px 0;
 		}
+	}
+	.icon-title{
+		line-height: 40px;
+	}
+	.fa-stack {
+		margin-right: 0;
+		height: 50px;
 	}
 }
 
@@ -441,6 +421,54 @@ SEARCH EVENTS STYLES
 		label {
 			font-weight: normal;
 		}
+	}
+}
+
+/*********************
+ABOUT SITE STYLES
+*********************/
+.team-member {
+	@include make-sm-column(6);
+	.header {
+		background: #B0CC55;
+		padding: 10px;
+		font-size: 25px;
+		text-shadow: 1px 1px #ddd;
+		margin-bottom: 10px;
+	}
+	img {
+		float: left;
+		margin-right: 25px;
+	}
+	.description {
+		overflow: hidden;
+		padding: 10px;
+	}
+	.social-icons {
+		list-style-type: none;
+		padding-left: 0;
+		li {
+			float: left;
+			padding: 0;
+		}
+	}
+}
+
+.supporters {
+	list-style-type: none;
+	padding: 0;
+	margin: 20px 0;
+	li {
+		@include make-sm-column(2);
+	}
+	a {
+		display: table-cell;
+		height: 100px;
+		text-align: center;
+		vertical-align: bottom;
+	}
+	img {
+		max-width: 100%;
 	}
 }
 

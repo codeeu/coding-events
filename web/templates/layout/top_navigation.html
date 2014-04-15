@@ -1,65 +1,117 @@
-{% block modal_login %}
-	{% load avatar_tags %}
-	{% include 'layout/login_modal_window.html' %}
+{% load event_tags %}
+{% load avatar_tags %}
+{% include 'layout/login_modal_window.html' %}
 
-	<nav class="navbar navbar-inverse" role="navigation" data-spy="affix" data-offset-top="450">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-				        data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">Europe Code Week</a>
-			</div>
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
-						<a href="{% url 'web.index' %}">Events</a>
+<nav class="navbar cweu-navbar" role="navigation">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse"
+		        data-target="#bs-example-navbar-collapse-1">
+			<span class="sr-only">Toggle navigation</span>
+			<i class="fa fa-bars"></i>
+		</button>
+		<a class="navbar-brand" href="/">Europe Code Week</a>
+	</div>
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="nav navbar-nav cweu-navbar-list">
+			<li class="dropdown open">
+				<a href="{% url 'web.index' %}" class="active">Events</a>
+				<ul class="nav dropdown-menu visible-xs visible-sm" role="menu">
+					<li>
+						<a href="{% url 'web.index' %}" class="{% current 'web.index' %}">
+							Map
+						</a>
 					</li>
-					<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/learn">Resources</a></li>
-					<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/code">Why coding?</a></li>
-					<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/about/">About</a></li>
-					<li class="toggle-topbar menu-icon"><a href="http://blog.codeweek.eu/">News</a></li>
-					<li class="dropdown">
-						{% if user.is_authenticated %}
-							<a href="{% url 'profile' %}" class="dropdown-toggle avatar" data-toggle="dropdown">
-								{% avatar user 30 %}
-							</a>
-							<ul class="dropdown-menu" role="menu">
-								{% if user.profile.is_ambassador %}
-									<li>
-										{% if user.profile.country %}
-											<a href="{% url 'web.pending_events' user.profile.country %}">
-												<i class="fa fa-clock-o"></i>
-												{% if user.is_staff %}
-													Pending events
-												{% else %}
-													Pending events in {{ user.profile.country.name }}
-												{% endif %}</a>
-										{% else %}
-											<a href="{% url 'profile' %}"><i class="fa fa-map-marker"></i>
-												Set your country</a>
-										{% endif %}
-									</li>
-									<li><a href="{% url 'profile' %}"><i class="fa fa-pencil-square-o"></i>
-										Edit your profile</a></li>
-									<li class="divider"></li>
-								{% endif %}
-								<li><a href="{% url 'web.created_events' %}"><i
-										class="fa fa-user"></i> Your events</a></li>
-								<li><a href="{% url 'logout' %}?next={% firstof request.path '/' %}"><i
-										class="fa fa-sign-out"></i> Sign out</a></li>
-							</ul>
-						{% else %}
-							<a href="{% if not modal %}{% url 'profile' %}{% else %}{% url 'web.login' %}{% endif %}" {% if not modal %}data-toggle="modal" data-target="#login-modal"{% endif %}>Login</a>
-						{% endif %}
+					<li>
+						<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
+							Add Event
+						</a>
+					</li>
+					<li>
+						<a href="{% if search_button %}#{% else %}{% url 'web.search_events' %}{% endif %}"
+						   class="search-btn {% if search_active %}active{% endif %}">
+							Search
+						</a>
 					</li>
 				</ul>
-			</div>
+			</li>
+			<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/learn">Resources</a></li>
+			<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/code">Why coding?</a></li>
+			<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/about/">About</a></li>
+			<li class="toggle-topbar menu-icon"><a href="http://blog.codeweek.eu/">News</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right signin-menu">
+			<li class="dropdown">
+				{% if user.is_authenticated %}
+					<a href="{% url 'profile' %}" class="dropdown-toggle avatar" data-toggle="dropdown">
+						{% avatar user 30 %}
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						{% if user.profile.is_ambassador %}
+							<li>
+								{% if user.profile.country %}
+									<a href="{% url 'web.pending_events' user.profile.country %}">
+										<i class="fa fa-clock-o"></i>
+										{% if user.is_staff %}
+											Pending events
+										{% else %}
+											Pending events in {{ user.profile.country.name }}
+										{% endif %}</a>
+								{% else %}
+									<a href="{% url 'profile' %}"><i class="fa fa-map-marker"></i>
+										Set your country</a>
+								{% endif %}
+							</li>
+							<li><a href="{% url 'profile' %}"><i class="fa fa-pencil-square-o"></i>
+								Edit your profile</a></li>
+							<li class="divider"></li>
+						{% endif %}
+						<li><a href="{% url 'web.created_events' %}"><i
+								class="fa fa-user"></i> Your events</a></li>
+						<li><a href="{% url 'logout' %}?next={% firstof request.path '/' %}"><i
+								class="fa fa-sign-out"></i> Sign out</a></li>
+					</ul>
+				{% else %}
+					<a href="{% if not modal %}{% url 'profile' %}{% else %}{% url 'web.login' %}{% endif %}"
+					   {% if not modal %}data-toggle="modal" data-target="#login-modal"{% endif %}>
+						<i class="fa fa-sign-in"></i>
+						Sign in</a>
+				{% endif %}
+			</li>
+		</ul>
+	</div>
+</nav>
+<nav class="navbar cweu-submenu visible-md visible-lg">
+	<div class="submenu-wrapper">
+		<div class="search-wrapper hidden">
+			<input type="email" class="form-control " id="search-input" placeholder="START TYPING...">
 		</div>
-	</nav>
-{% endblock modal_login %}
+		<ul class="nav navbar-nav" role="menu">
+			<li>
+				<a href="{% url 'web.index' %}" class="{% current 'web.index' %}">
+					<span class="fa-stack fa-lg">
+					  <i class="fa fa-circle fa-stack-2x"></i>
+					  <i class="fa fa-map-marker fa-stack-1x fa-inverse"></i>
+					</span>
+					Map
+				</a>
+			</li>
+			<li>
+				<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
+					<span class="fa-stack fa-lg">
+					  <i class="fa fa-circle fa-stack-2x"></i>
+					  <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+					</span>
+					Add Event
+				</a>
+			</li>
+			<li class="pull-right">
+				<a href="{% if search_button %}#{% else %}{% url 'web.search_events' %}{% endif %}"
+				   class="search-btn {% if search_active %}active{% endif %}">
+					<i class="fa fa-search fa-2x fa-inverse"></i>
+				</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+
 

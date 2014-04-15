@@ -11,9 +11,7 @@ of the styles inside media queries.
 ******************************************************************/
 
 // IMPORTING FONT
-@import url(http://fonts.googleapis.com/css?family=Bubbler+One&subset=latin,latin-ext);
-@import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
-@import url(http://fonts.googleapis.com/css?family=Kreon:300,400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700&subset=latin,latin-ext,greek-ext,cyrillic-ext);
 @import "bootstrap-social";
 
 // import normalize
@@ -32,6 +30,7 @@ of the styles inside media queries.
 @import "type";
 @import "filter";
 @import "forms";
+@import "topnavigation";
 
 // Components
 @import "thumbnails";
@@ -51,9 +50,9 @@ of the styles inside media queries.
 MOBILE DEVICES
 This is for devices like an iPhone.
 */
-@media only screen and (min-device-width : 321px){
+@media only screen and (min-device-width : 320px){
   // styles in 381up.scss
-  //@import "_321up";
+  @import "_321up";
 
 }
 /*

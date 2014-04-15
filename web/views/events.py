@@ -24,6 +24,7 @@ from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import get_country_from_user_ip
 from web.processors.event import list_countries
+from web.processors.event import get_country
 from web.processors.media import process_image
 from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
@@ -46,17 +47,14 @@ def index(request, country_code=None):
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 
-	if country_code and 'media' not in country_code:
-		country_name = unicode(dict(countries)[country_code])
-		country = {'country_name': country_name, 'country_code': country_code}
-	else:
-		country = get_country_from_user_ip(user_ip)
+	country = get_country(country_code, user_ip)
 
 	if request.is_ajax():
 		if request.META.get('HTTP_X_PJAX', None):
 			template = 'pages/pjax_index.html'
 		else:
 			template = 'layout/all_events.html'
+		country = get_country(country_code, user_ip)
 
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
@@ -73,6 +71,7 @@ def index(request, country_code=None):
 			'lan_lon': lan_lon,
 			'country': country,
 			'all_countries': all_countries,
+		    'search_button': True
 		},
 		context_instance=RequestContext(request))
 
@@ -241,7 +240,8 @@ def created_events(request):
 def search_events(request):
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
-		country = get_country_from_user_ip(user_ip)
+		country_code = request.GET.get('country_code', None)
+		country = get_country(country_code, user_ip)
 		events = get_approved_events(country_code=country)
 
 		if request.method == 'POST':
@@ -254,6 +254,7 @@ def search_events(request):
 				audience_filter = form.cleaned_data.get('audience', None)
 
 				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter)
+				country = {'country_code': country_filter}
 		else:
 			form = SearchEventForm(country_code=country['country_code'])
 			events = get_approved_events(country_code=country['country_code'])
@@ -262,6 +263,8 @@ def search_events(request):
 			'pages/search_events.html', {
 				'events': events,
 				'form': form,
+			    'country': country['country_code'],
+			    'search_active': True,
 			}, context_instance=RequestContext(request))
 
 
