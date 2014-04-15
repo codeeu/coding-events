@@ -133,7 +133,7 @@ var Codeweek = window.Codeweek || {};
         });
     }
 
-    function zoomCountry(country_code, country_name) {
+    function zoomCountry(country_name) {
         var zoomgeocoder = new google.maps.Geocoder();
         zoomgeocoder.geocode({'address': country_name}, function (results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
@@ -194,7 +194,7 @@ var Codeweek = window.Codeweek || {};
                     search_button_location = search_button.attr('href'),
                     new_location = search_button_location.replace(/([A-Z]{2})/, country_code);
 
-                zoomCountry(country_code, country_name);
+                zoomCountry(country_name);
                 document.location.href = "#!" + country_code;
                 search_button.attr('href', new_location);
                 $('#country').html(country_name);
