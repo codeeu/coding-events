@@ -71,7 +71,7 @@ def index(request, country_code=None):
 			'lan_lon': lan_lon,
 			'country': country,
 			'all_countries': all_countries,
-		    'search_button': True
+		    'search_input': True
 		},
 		context_instance=RequestContext(request))
 

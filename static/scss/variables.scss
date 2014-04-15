@@ -10,8 +10,9 @@ $white:                     #ffffff;
 $whitesmoke:                #f5f5f5;
 $brand-primary:             #428BCA;
 $golden:                    #FCD04B;
-$dark-blue:					#198182;
-$light-blue:				#26BCBB;
+
+$dark-blue:					#478ac8;//#198182;
+$light-blue:				#386ea0;//lighten(#386ea0, 20%);//#26BCBB;
 
 $primary-color: 			$dark-blue;
 $secondary-color:			$light-blue;
@@ -60,7 +61,7 @@ $font-size-h4:              ceil(($font-size-base * 1.25)) !default; // ~18px
 $font-size-h5:               $font-size-base !default;
 $font-size-h6:              ceil(($font-size-base * 0.85)) !default; // ~12px
 
-$primary-font-family: 		"Roboto Slab", Arial, sans-serif !default;
+$primary-font-family: 		"Carrois Gothic", Arial, sans-serif !default;
 
 //** Unit-less `line-height` for use in components like buttons.
 $line-height-base:          1.428571429 !default; // 20/14

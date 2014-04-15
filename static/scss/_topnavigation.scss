@@ -12,14 +12,15 @@
 	}
 
 	.navbar-brand {
-		padding: 15px 100px 15px 50px;
-		font-weight: bold;
-		font-size: 27px;
+		padding-top: 0;
+		img {
+			width: 250px;
+		}
 	}
 
 	.cweu-navbar-list {
-		font-size: 20px;
-		margin-top: 1px;
+		font-size: 16px;
+		margin-top: 10px;
 
 		li {
 			border-left: 5px solid $primary-color;
@@ -28,14 +29,12 @@
 				border: none;
 			}
 			a {
-				padding-left: 30px;
-				padding-right: 30px;
 				@include transition(all 0.3s linear);
 
 				&:hover, &:focus, &.active {
-					background-color: $secondary-color !important;
-					color: $primary-color !important;
-
+					background-color: transparent !important;
+					color: $white !important;
+					text-decoration: underline;
 				}
 			}
 		}
@@ -60,22 +59,6 @@
 		}
 	}
 
-	.avatar {
-		padding: 8px 9px 9px 9px;;
-
-		&:hover, &:focus {
-			background-color: transparent;
-
-			img {
-				@include filter(grayscale, 0%);
-			}
-		}
-
-		img {
-			@include filter(grayscale, 100%);
-			@include transition(all 0.3s linear);
-		}
-	}
 
 	.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
 		background-color: transparent;
@@ -85,12 +68,8 @@
 
 .cweu-submenu {
 	margin-bottom: 0;
-	padding-left: 387px;
 	background-color: $secondary-color;
 	border-radius: 0;
-	.submenu-wrapper{
-		width: 715px;
-	}
 
 	.navbar-nav {
 		width: 100%;
@@ -99,7 +78,7 @@
 
 		a {
 			font-size: 16px;
-			color: $primary-color;
+			color: $white;
 			@include transition(all 0.3s linear);
 
 			&:hover, &:focus, &.active {
@@ -110,6 +89,33 @@
 				}
 			}
 		}
+
+		&:first-child{
+			a{
+				padding-left: 0;
+			}
+		}
+
+		&.open{
+			a, a:hover, a:focus{
+				background-color: $primary-color;
+			}
+		}
+	}
+	.dropdown-menu{
+		background-color: $secondary-color;
+		border: none;
+		margin-top: 3px !important;
+		li{
+			a{
+				background-color: $secondary-color;
+				padding: 15px;
+			}
+		}
+
+		.divider{
+			background-color: $primary-color;
+		}
 	}
 	.fa-stack {
 		margin-right: 10px;
@@ -119,17 +125,13 @@
 		}
 	}
 	.search-wrapper {
-		position: absolute;
-		width: 715px;
-		top: 0;
-		z-index: 1;
-		height: 100%;
+		position: relative;
+		top: 5px;
 	}
 
 	#search-input {
 		height: 100%;
 		border: none;
-		border-radius: 0;
 		padding-right: 50px;
 		text-transform: uppercase;
 		font-size: 20px;
@@ -139,27 +141,40 @@
 		position: absolute;
 		top: 0;
 		z-index: 2;
-		right: 10px;
-		line-height: 100%;
-		padding: 20px 0;
+		right: 0;
+		padding: 4px;
+		background-color: $primary-color;
 
 		&:hover {
 			background-color: transparent;
 		}
-		.fa-times {
-			color: $silver;
-		}
-		&.active{
+		&.active {
 			.fa {
 				color: $primary-color;
 			}
 		}
 	}
 
-}
-.signin-menu{
+	.avatar {
+		padding: 8px 9px 9px 9px;
 
-	li{
+		&:hover, &:focus {
+			background-color: transparent;
+		}
+
+		img {
+			padding: 2px;
+			background-color: $white;
+			margin-top: 3px;
+			margin-left: 15px;
+		}
+	}
+
+}
+
+.signin-menu {
+
+	li {
 		a {
 			margin-top: 1px;
 			&:hover {

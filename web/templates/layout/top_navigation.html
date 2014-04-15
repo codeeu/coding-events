@@ -1,49 +1,92 @@
+{% load static %}
 {% load event_tags %}
 {% load avatar_tags %}
-{% include 'layout/login_modal_window.html' %}
 
 <nav class="navbar cweu-navbar" role="navigation">
-	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse"
-		        data-target="#bs-example-navbar-collapse-1">
-			<span class="sr-only">Toggle navigation</span>
-			<i class="fa fa-bars"></i>
-		</button>
-		<a class="navbar-brand" href="/">Europe Code Week</a>
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+			        data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<i class="fa fa-bars"></i>
+			</button>
+			<a class="navbar-brand" href="/"><img src="{% static 'img/new_logo_white.png' %}" alt="Codeweek EU Logo" /></a>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right cweu-navbar-list">
+				<li class="dropdown open">
+					<a href="{% url 'web.index' %}" class="active">Events</a>
+					<ul class="nav dropdown-menu visible-xs visible-sm" role="menu">
+						<li>
+							<a href="{% url 'web.index' %}" class="{% current 'web.index' %}">
+								Map
+							</a>
+						</li>
+						<li>
+							<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
+								Add Event
+							</a>
+						</li>
+						<li>
+							<a href="{% if search_button %}#{% else %}{% url 'web.search_events' %}{% endif %}"
+							   class="search-btn {% if search_active %}active{% endif %}">
+								Search
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/learn">Resources</a></li>
+				<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/code">Why coding?</a></li>
+				<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/about/">About</a></li>
+				<li class="toggle-topbar menu-icon"><a href="http://blog.codeweek.eu/">News</a></li>
+			</ul>
+		</div>
 	</div>
-	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		<ul class="nav navbar-nav cweu-navbar-list">
-			<li class="dropdown open">
-				<a href="{% url 'web.index' %}" class="active">Events</a>
-				<ul class="nav dropdown-menu visible-xs visible-sm" role="menu">
-					<li>
-						<a href="{% url 'web.index' %}" class="{% current 'web.index' %}">
-							Map
-						</a>
-					</li>
-					<li>
-						<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
-							Add Event
-						</a>
-					</li>
-					<li>
-						<a href="{% if search_button %}#{% else %}{% url 'web.search_events' %}{% endif %}"
-						   class="search-btn {% if search_active %}active{% endif %}">
-							Search
-						</a>
-					</li>
-				</ul>
+</nav>
+<nav class="navbar cweu-submenu visible-md visible-lg">
+	<div class="container">
+
+
+		<ul class="nav navbar-nav" role="menu">
+			<li>
+				<a href="{% url 'web.index' %}" class="{% current 'web.index' %} first">
+					<span class="fa-stack fa-lg">
+					  <i class="fa fa-circle fa-stack-2x"></i>
+					  <i class="fa fa-map-marker fa-stack-1x fa-inverse"></i>
+					</span>
+					Map
+				</a>
 			</li>
-			<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/learn">Resources</a></li>
-			<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/code">Why coding?</a></li>
-			<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/about/">About</a></li>
-			<li class="toggle-topbar menu-icon"><a href="http://blog.codeweek.eu/">News</a></li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right signin-menu">
-			<li class="dropdown">
+			<li>
+				<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
+					<span class="fa-stack fa-lg">
+					  <i class="fa fa-circle fa-stack-2x"></i>
+					  <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+					</span>
+					Add Event
+				</a>
+			</li>
+			<li {% if search_input %}class="col-md-6"{% endif %}>
+				{% if search_input %}
+					<div class="search-wrapper">
+						<input type="email" class="form-control " id="search-input" placeholder="Where do you want to go?">
+					</div>
+				{% else %}
+					<a href="{% url 'web.search_events' %}" class="{% current 'web.search_events' %}">
+					<span class="fa-stack fa-lg">
+					  <i class="fa fa-circle fa-stack-2x"></i>
+					  <i class="fa fa-search fa-stack-1x fa-inverse"></i>
+					</span>
+						Search Events
+					</a>
+				{% endif %}
+			</li>
+			<li class="dropdown pull-right">
 				{% if user.is_authenticated %}
 					<a href="{% url 'profile' %}" class="dropdown-toggle avatar" data-toggle="dropdown">
+						Hi, {{ user.username }}
 						{% avatar user 30 %}
+						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu" role="menu">
 						{% if user.profile.is_ambassador %}
@@ -71,46 +114,13 @@
 								class="fa fa-sign-out"></i> Sign out</a></li>
 					</ul>
 				{% else %}
-					<a href="{% if not modal %}{% url 'profile' %}{% else %}{% url 'web.login' %}{% endif %}"
-					   {% if not modal %}data-toggle="modal" data-target="#login-modal"{% endif %}>
+					<a href="{% url 'web.login' %}">
 						<i class="fa fa-sign-in"></i>
 						Sign in</a>
 				{% endif %}
 			</li>
 		</ul>
-	</div>
-</nav>
-<nav class="navbar cweu-submenu visible-md visible-lg">
-	<div class="submenu-wrapper">
-		<div class="search-wrapper hidden">
-			<input type="email" class="form-control " id="search-input" placeholder="START TYPING...">
-		</div>
-		<ul class="nav navbar-nav" role="menu">
-			<li>
-				<a href="{% url 'web.index' %}" class="{% current 'web.index' %}">
-					<span class="fa-stack fa-lg">
-					  <i class="fa fa-circle fa-stack-2x"></i>
-					  <i class="fa fa-map-marker fa-stack-1x fa-inverse"></i>
-					</span>
-					Map
-				</a>
-			</li>
-			<li>
-				<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
-					<span class="fa-stack fa-lg">
-					  <i class="fa fa-circle fa-stack-2x"></i>
-					  <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-					</span>
-					Add Event
-				</a>
-			</li>
-			<li class="pull-right">
-				<a href="{% if search_button %}#{% else %}{% url 'web.search_events' %}{% endif %}"
-				   class="search-btn {% if search_active %}active{% endif %}">
-					<i class="fa fa-search fa-2x fa-inverse"></i>
-				</a>
-			</li>
-		</ul>
+
 	</div>
 </nav>
 
