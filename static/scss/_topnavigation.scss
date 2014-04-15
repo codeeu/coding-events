@@ -13,14 +13,11 @@
 
 	.navbar-brand {
 		padding-top: 0;
-		img {
-			width: 250px;
-		}
 	}
 
 	.cweu-navbar-list {
 		font-size: 16px;
-		margin-top: 10px;
+		margin-top: 20px;
 
 		li {
 			border-left: 5px solid $primary-color;
@@ -35,6 +32,7 @@
 					background-color: transparent !important;
 					color: $white !important;
 					text-decoration: underline;
+					font-weight: bold;					;
 				}
 			}
 		}
@@ -131,13 +129,20 @@
 	.search-wrapper {
 		position: relative;
 		top: 5px;
+
+		.fa-search {
+			position: absolute;
+		    color: #478AC8;
+		    top: 5px;
+		    left: 10px;
+		    opacity: 0.7;
+		}
 	}
 
 	#search-input {
 		height: 100%;
 		border: none;
-		padding-right: 50px;
-		text-transform: uppercase;
+		padding-left: 50px;
 		font-size: 20px;
 	}
 

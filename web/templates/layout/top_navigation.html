@@ -10,7 +10,10 @@
 				<span class="sr-only">Toggle navigation</span>
 				<i class="fa fa-bars"></i>
 			</button>
-			<a class="navbar-brand" href="/"><img src="{% static 'img/new_logo_white.png' %}" alt="Codeweek EU Logo" /></a>
+			<a class="navbar-brand" href="/">
+				<img src="{% static 'img/new_logo_white_tilted.png' %}" alt="Codeweek EU Logo" width="250"
+				     height="50" />
+			</a>
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right cweu-navbar-list">
@@ -69,7 +72,9 @@
 			<li {% if search_input %}class="col-md-6"{% endif %}>
 				{% if search_input %}
 					<div class="search-wrapper">
-						<input type="email" class="form-control " id="search-input" placeholder="Where do you want to go?">
+						<i class="fa fa-search fa-2x"></i>
+						<input type="email" class="form-control " id="search-input"
+						       placeholder="Where do you want to go?">
 					</div>
 				{% else %}
 					<a href="{% url 'web.search_events' %}" class="{% current 'web.search_events' %}">

@@ -171,13 +171,13 @@ INDEX PAGE STYLES
 	padding-top: 5px;
 	font-weight: bold;
 	cursor: pointer;
-	@include filter(opacity, 0.6);
-	@include transition(all 0.3s linear);
+	@include filter(opacity, 1);
+	@include transition(all 0.1s linear);
 
 	&:hover {
 		border-color: $brand-primary;
 		text-decoration: underline;
-		@include filter(opacity, 1);
+		@include filter(opacity, 0.4);
 	}
 
 	.icon-flag {
