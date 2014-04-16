@@ -181,36 +181,45 @@ var Codeweek = window.Codeweek || {};
     }
 
 
-    var init = function (events, lon, lan) {
+	var init = function (events, lon, lan) {
 
-        $(function () {
-            // Initialize map on front page
-            google.maps.event.addDomListener(window, 'load', function () {
-                initialize(events, lon, lan);
-            });
+		$(function () {
+			// Initialize map on front page
+			google.maps.event.addDomListener(window, 'load', function () {
+				initialize(events, lon, lan);
+			});
 
+			$(".country-link").click(function (event) {
+				event.preventDefault();
+				var that = this,
+					country_code = $(that).attr('id'),
+					country_name = $(that).attr('data-name'),
+					search_button = $('#search-events-link').find('a'),
+					search_button_location = search_button.attr('href'),
+					new_location = search_button_location.replace(/([A-Z]{2})/, country_code);
 
-            $(".country-link").click(function (event) {
-                event.preventDefault();
-                var that = this,
-                    country_code = $(that).attr('id'),
-                    country_name = $(that).attr('data-name'),
-                    search_button = $('#search-events-link').find('a'),
-                    search_button_location = search_button.attr('href'),
-                    new_location = search_button_location.replace(/([A-Z]{2})/, country_code);
+				zoomCountry(country_name);
+				document.location.hash = "!" + country_code;
+				search_button.attr('href', new_location);
+				$('#country').html(country_name);
+			});
 
-                zoomCountry(country_name);
-                document.location.href = "#!" + country_code;
-                search_button.attr('href', new_location);
-                $('#country').html(country_name);
-            });
+			$("#zoomEU").click(function (event) {
+				event.preventDefault();
+				var search_button = $('#search-events-link').find('a'),
+					search_button_location = search_button.attr('href'),
+					new_location = search_button_location.replace(/([A-Z]{2})/, 'EU');
 
-        });
-    };
+				zoomCountry('Europe');
+				document.location.hash = '';
+				search_button.attr('href', new_location);
+				$('#country').html('Europe');
+			});
+		});
+	};
 
-    Codeweek.Index = {};
-    Codeweek.Index.init = init;
-
+	Codeweek.Index = {};
+	Codeweek.Index.init = init;
 
 }(jQuery, Codeweek));
 
