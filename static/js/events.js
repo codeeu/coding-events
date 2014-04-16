@@ -26,8 +26,9 @@ var Codeweek = window.Codeweek || {};
             format: "Y-m-d H:i",
             formatDate: "Y-m-d",
             formatTime: "H:i",
-            minDate: 0,
+            minDate: "2014-01-01",
             closeOnDateSelect: true,
+            dayOfWeekStart:1,
             onShow: function () {
                 this.setOptions({
                     maxDate: get_date_range(end_date)
@@ -40,6 +41,7 @@ var Codeweek = window.Codeweek || {};
             formatTime: "H:i",
             minDate: 0,
             closeOnDateSelect: true,
+            dayOfWeekStart:1,
             onShow: function () {
                 this.setOptions({
                     minDate: get_date_range(start_date)
