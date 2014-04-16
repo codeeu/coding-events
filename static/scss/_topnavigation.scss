@@ -5,6 +5,7 @@
 	padding-top: 15px;
 	margin-bottom: 0;
 	border-radius: 0;
+	position: relative;
 
 	a {
 		color: $white;
@@ -13,14 +14,23 @@
 
 	.navbar-brand {
 		padding-top: 0;
-		img {
-			width: 250px;
+	}
+
+	.nav-item-intro {
+		position: absolute;
+		top: -30px;
+		right: 0;
+		color: $white;
+		a{
+			display: inline-table;
+			padding-left: 5px;
 		}
 	}
 
 	.cweu-navbar-list {
 		font-size: 16px;
-		margin-top: 10px;
+		margin-top: 25px;
+		position: relative;
 
 		li {
 			border-left: 5px solid $primary-color;
@@ -35,6 +45,7 @@
 					background-color: transparent !important;
 					color: $white !important;
 					text-decoration: underline;
+					font-weight: bold;;
 				}
 			}
 		}
@@ -58,11 +69,6 @@
 			}
 		}
 	}
-
-	.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-		background-color: transparent;
-		border-color: none;
-	}
 }
 
 .cweu-submenu {
@@ -83,6 +89,11 @@
 			&:hover, &:focus, &.active {
 				background-color: $secondary-color;
 				color: $white;
+				.fa-circle {
+					color: #FF854E;
+				}
+			}
+			&.active{
 				.fa-circle {
 					color: #FFBB34;
 				}
@@ -126,36 +137,6 @@
 		.fa-circle {
 			color: $primary-color;
 			@include transition(all 0.3s linear);
-		}
-	}
-	.search-wrapper {
-		position: relative;
-		top: 5px;
-	}
-
-	#search-input {
-		height: 100%;
-		border: none;
-		padding-right: 50px;
-		text-transform: uppercase;
-		font-size: 20px;
-	}
-
-	.search-btn {
-		position: absolute;
-		top: 0;
-		z-index: 2;
-		right: 0;
-		padding: 4px;
-		background-color: $primary-color;
-
-		&:hover {
-			background-color: transparent;
-		}
-		&.active {
-			.fa {
-				color: $primary-color;
-			}
 		}
 	}
 

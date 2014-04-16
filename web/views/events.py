@@ -71,7 +71,6 @@ def index(request, country_code=None):
 			'lan_lon': lan_lon,
 			'country': country,
 			'all_countries': all_countries,
-		    'search_input': True
 		},
 		context_instance=RequestContext(request))
 
@@ -264,7 +263,6 @@ def search_events(request):
 				'events': events,
 				'form': form,
 			    'country': country['country_code'],
-			    'search_active': True,
 			}, context_instance=RequestContext(request))
 
 
