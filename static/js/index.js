@@ -192,13 +192,26 @@ var Codeweek = window.Codeweek || {};
 		});
 	}
 
+	function setSearchParams(country_code, country_name) {
+		var search_button = $('#search-events-link').find('a'),
+			search_button_location = search_button.attr('href'),
+			new_location = search_button_location.replace(/=[A-Z]{0,2}$/, "=" + country_code);
+
+			search_button.attr('href', new_location);
+			$('#country').html(country_name);
+	}
+
 	function initialize(events, lon, lan) {
 		map = createMap(events, lon, lan, 3);
 		//setAutocomplete();
 		if (location.hash !== '') {
-			var country = $('#' + location.hash.replace('#', '').replace('!', ''));
+			var country_code = location.hash.replace('#', '').replace('!', '');
+			var country = $('#' + country_code);
 			if (country.length) {
-				zoomCountry(country[0].innerText);
+				var country_name = country[0].innerText;
+
+				zoomCountry(country_name);
+				setSearchParams(country_code, country_name);
 			}
 		} else if (location.pathname !== "/") {
 			var current_country = document.getElementById('country').innerHTML;
@@ -219,27 +232,19 @@ var Codeweek = window.Codeweek || {};
 				event.preventDefault();
 				var that = this,
 					country_code = $(that).attr('id'),
-					country_name = $(that).attr('data-name'),
-					search_button = $('#search-events-link').find('a'),
-					search_button_location = search_button.attr('href'),
-					new_location = search_button_location.replace(/([A-Z]{2})/, country_code);
+					country_name = $(that).attr('data-name');
 
 				zoomCountry(country_name);
+				setSearchParams(country_code, country_name);
 				document.location.hash = "!" + country_code;
-				search_button.attr('href', new_location);
-				$('#country').html(country_name);
 			});
 
 			$("#zoomEU").click(function (event) {
 				event.preventDefault();
-				var search_button = $('#search-events-link').find('a'),
-					search_button_location = search_button.attr('href'),
-					new_location = search_button_location.replace(/([A-Z]{2})/, '');
 
 				zoomCountry('Europe');
+				setSearchParams('', 'Europe');
 				document.location.hash = '';
-				search_button.attr('href', new_location);
-				$('#country').html('Europe');
 			});
 		});
 	};
