@@ -5,6 +5,7 @@
 	padding-top: 15px;
 	margin-bottom: 0;
 	border-radius: 0;
+	position: relative;
 
 	a {
 		color: $white;
@@ -15,9 +16,21 @@
 		padding-top: 0;
 	}
 
+	.nav-item-intro {
+		position: absolute;
+		top: -30px;
+		right: 0;
+		color: $white;
+		a{
+			display: inline-table;
+			padding-left: 5px;
+		}
+	}
+
 	.cweu-navbar-list {
 		font-size: 16px;
-		margin-top: 20px;
+		margin-top: 25px;
+		position: relative;
 
 		li {
 			border-left: 5px solid $primary-color;
@@ -32,7 +45,7 @@
 					background-color: transparent !important;
 					color: $white !important;
 					text-decoration: underline;
-					font-weight: bold;					;
+					font-weight: bold;;
 				}
 			}
 		}
@@ -56,11 +69,6 @@
 			}
 		}
 	}
-
-	.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-		background-color: transparent;
-		border-color: none;
-	}
 }
 
 .cweu-submenu {
@@ -81,6 +89,11 @@
 			&:hover, &:focus, &.active {
 				background-color: $secondary-color;
 				color: $white;
+				.fa-circle {
+					color: #FF854E;
+				}
+			}
+			&.active{
 				.fa-circle {
 					color: #FFBB34;
 				}
@@ -132,10 +145,10 @@
 
 		.fa-search {
 			position: absolute;
-		    color: #478AC8;
-		    top: 5px;
-		    left: 10px;
-		    opacity: 0.7;
+			color: #478AC8;
+			top: 5px;
+			left: 10px;
+			opacity: 0.7;
 		}
 	}
 
