@@ -74,7 +74,6 @@ def add_event(request):
 
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
-
 	if event_form.is_valid():
 		picture = request.FILES.get('picture', None)
 		event_data = {}
@@ -180,10 +179,10 @@ def list_pending_events(request, country_code):
 	"""
 
 	if request.user.is_staff:
-		event_list = get_pending_events()
+		event_list = get_pending_events(past=True)
 		event_list = sorted(event_list, key=lambda a: a.country.code)
 	else:
-		event_list = get_pending_events(country_code=country_code)
+		event_list = get_pending_events(country_code=country_code, past=True)
 
 	country_name = unicode(dict(countries)[country_code])
 
@@ -203,7 +202,7 @@ def list_approved_events(request, country_code):
 	Display a list of approved events.
 	"""
 
-	event_list = get_approved_events(country_code=country_code)
+	event_list = get_approved_events(country_code=country_code, past=True)
 
 	country_name = unicode(dict(countries)[country_code])
 

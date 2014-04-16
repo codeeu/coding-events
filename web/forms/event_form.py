@@ -88,7 +88,7 @@ class AddEventForm(forms.ModelForm):
 				'invalid': u'Please enter valid coordinates.'
 			},
 			'location': {
-				'required': u'Please enter a location or use online for web-based events.',
+				'required': u'Please enter a location.',
 				'invalid': u'Please check your event\'s location',
 			},
 			'country': {

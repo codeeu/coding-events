@@ -22,31 +22,33 @@ var Codeweek = window.Codeweek || {};
 				return false;
 			};
 
-		start_date.datetimepicker({
-			format: "Y-m-d H:i",
-			formatDate: "Y-m-d",
-			formatTime: "H:i",
-			minDate: 0,
-			closeOnDateSelect: true,
-			onShow: function () {
-				this.setOptions({
-					maxDate: get_date_range(end_date)
-				});
-			}
-		});
-		end_date.datetimepicker({
-			format: "Y-m-d H:i",
-			formatDate: "Y-m-d",
-			formatTime: "H:i",
-			minDate: 0,
-			closeOnDateSelect: true,
-			onShow: function () {
-				this.setOptions({
-					minDate: get_date_range(start_date)
-				});
-			}
-		});
-	},
+        start_date.datetimepicker({
+            format: "Y-m-d H:i",
+            formatDate: "Y-m-d",
+            formatTime: "H:i",
+            minDate: "2014-01-01",
+            closeOnDateSelect: true,
+            dayOfWeekStart:1,
+            onShow: function () {
+                this.setOptions({
+                    maxDate: get_date_range(end_date)
+                });
+            }
+        });
+        end_date.datetimepicker({
+            format: "Y-m-d H:i",
+            formatDate: "Y-m-d",
+            formatTime: "H:i",
+            minDate: 0,
+            closeOnDateSelect: true,
+            dayOfWeekStart:1,
+            onShow: function () {
+                this.setOptions({
+                    minDate: get_date_range(start_date)
+                });
+            }
+        });
+    },
 
 		placeSearch,
 		autocomplete,
