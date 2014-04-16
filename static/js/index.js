@@ -76,22 +76,24 @@ var Codeweek = window.Codeweek || {};
             placeinfowindow.close();
 
             var infoWindowContent = placeinfowindow.getContent(),
-                iWC = '<div><h4><a href="' + markUrl + '" class="map-marker">' + markTitle + '</a></h4>' +
-                    '<div>';
+                buble_content = '',
+                image = '';
 
             if (markImg !== "") {
-                iWC += '<img src="' + Codeweek.Index.media_url + markImg + '" class="img-polaroid" style="float:left; width:50px; margin-right: 15px;">';
+                image += '<img src="' + Codeweek.Index.media_url + markImg + '" class="img-polaroid marker-buble-img">';
             }
 
             if (markDesc.length > 15) {
                 markDesc = markDesc.substring(0, 150) + '... ';
             }
-            iWC += '<p style="overflow:hidden;">' + markDesc +
-                   '&nbsp;<a href="' + markUrl + '" class="map-marker"><span>More...</span></a></p>' +
-                   '</div></div>';
+
+            buble_content += '<div><h4><a href="' + markUrl + '" class="map-marker">' + markTitle + '</a></h4><div>' +
+                              image +
+                              '<p style="overflow:hidden;">' + markDesc +
+                              '&nbsp;<a href="' + markUrl + '" class="map-marker"><span>More...</span></a></p>';
 
 
-            placeinfowindow.setContent(iWC);
+            placeinfowindow.setContent(buble_content);
             placeinfowindow.open(this.map, this);
         });
 

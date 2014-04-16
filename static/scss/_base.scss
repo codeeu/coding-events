@@ -126,29 +126,10 @@ INDEX PAGE STYLES
 .index-content {
 
 }
-
-.search-event-form {
-	.form-group {
-		width: 100%;
-		position: relative;
-	}
-	input[type="text"] {
-		width: 100% !important;
-		margin: 0;
-		border-radius: 0;
-	}
-
-	.search-btn {
-		position: absolute;
-		top: 0;
-		right: 0;
-		height: 100%;
-		font-size: 20px;
-		color: $light-blue;
-		border: none;
-		background: transparent;
-		padding: 0 15px;
-	}
+.marker-buble-img {
+	float:left;
+	width:50px;
+	margin-right: 15px;
 }
 
 .change-location-wrapper, .change-country-link {
