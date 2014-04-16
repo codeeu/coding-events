@@ -234,7 +234,7 @@ var Codeweek = window.Codeweek || {};
 				event.preventDefault();
 				var search_button = $('#search-events-link').find('a'),
 					search_button_location = search_button.attr('href'),
-					new_location = search_button_location.replace(/([A-Z]{2})/, 'EU');
+					new_location = search_button_location.replace(/([A-Z]{2})/, '');
 
 				zoomCountry('Europe');
 				document.location.hash = '';
