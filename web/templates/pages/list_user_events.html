@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load endless %}
 
 {% block title %}- List of events{% endblock title %}
 
@@ -14,10 +15,12 @@
 		{% endif %}
 
 		<div class="row">
-			{% for event in event_list %}
+			{% paginate 6 event_list as user_events %}
+			{% for event in user_events %}
 				{% include 'layout/event_tile.html' %}
 			{% endfor %}
 		</div>
+		{% show_pages %}
 	</div>
 
 {% endblock content %}

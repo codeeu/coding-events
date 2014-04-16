@@ -178,6 +178,8 @@ def list_pending_events(request, country_code):
 	Display a list of pending events.
 	"""
 
+	active_page = request.GET.get('page','')
+
 	if request.user.is_staff:
 		event_list = get_pending_events(past=True)
 		event_list = sorted(event_list, key=lambda a: a.country.code)
@@ -192,6 +194,7 @@ def list_pending_events(request, country_code):
 			'status': 'pending',
 			'country_code': country_code,
 			'country_name': country_name,
+			'active_page': active_page
 		}, context_instance=RequestContext(request))
 
 
