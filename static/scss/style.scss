@@ -10,9 +10,7 @@ and is called at the beginning, after that we call the rest
 of the styles inside media queries.
 ******************************************************************/
 
-// IMPORTING FONT
-//@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700&subset=latin,latin-ext,greek-ext,cyrillic-ext);
-@import url(http://fonts.googleapis.com/css?family=Carrois+Gothic);
+
 @import "bootstrap-social";
 
 // import normalize
