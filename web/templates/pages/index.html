@@ -6,43 +6,46 @@
 
 {% block messages %}{% endblock %}
 {% block content %}
-	<div class="landing-wrapper">
-		<div class="events-map-wrapper">
-			<div id="events-map"></div>
+	<div class="landing-outter">
+		<div class="landing-wrapper">
+			<div class="events-map-wrapper">
+				<div id="events-map"></div>
+			</div>
 		</div>
-	</div>
 
-	<div class="container index-content">
-		<div class="clearfix">
-			<div id="search-events-link">
-				<a class="btn btn-primary btn-lg"
-				   href="{% url 'web.search_events' %}?country_code={{ country.country_code }}">
-					Explore Events {% if country %}in <span id="country"> {{ country.country_name }}</span>{% endif %}
-					<i class="fa fa-angle-double-right"></i>
+		<div class="container index-content">
+			<div class="clearfix">
+				<div id="search-events-link">
+					<a class="btn btn-primary btn-lg"
+					   href="{% url 'web.search_events' %}?country_code={{ country.country_code }}">
+						Explore Events {% if country %}in
+						<span id="country"> {{ country.country_name }}</span>{% endif %}
+						<i class="fa fa-angle-double-right"></i>
+					</a>
+				</div>
+			</div>
+
+			<div class="change-location-wrapper">
+				<div id="showcountries" class="clearfix">
+					{% for each_country in all_countries %}
+						<div class="country-link" id="{{ each_country.1 }}" data-name="{{ each_country.0 }}">
+							<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
+
+							<div class="icon-flag">
+								{{ each_country.0 }}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<hr />
+
+			<div class="how-to">
+				<a href="{% url 'web.guide' %}" target="_blank" class="btn btn-sm">
+					How to organize your own event?
 				</a>
 			</div>
-		</div>
-
-		<div class="change-location-wrapper">
-			<div id="showcountries" class="clearfix">
-				{% for each_country in all_countries %}
-					<div class="country-link" id="{{ each_country.1 }}" data-name="{{ each_country.0 }}">
-						<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
-
-						<div class="icon-flag">
-							{{ each_country.0 }}
-						</div>
-					</div>
-				{% endfor %}
-			</div>
-		</div>
-
-		<hr />
-
-		<div class="how-to">
-			<a href="{% url 'web.guide' %}" target="_blank" class="btn btn-sm">
-				How to organize your own event?
-			</a>
 		</div>
 	</div>
 
