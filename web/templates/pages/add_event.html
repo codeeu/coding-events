@@ -103,7 +103,7 @@
 				</div>
 				<div class="col-md-6">
 
-					<div class="form-group {% if form.location.errors %}has-error{% endif %}">
+					<div class="form-group {% if form.location.errors or form.country.errors %}has-error{% endif %}">
 						<label for="{{ form.location.auto_id }}" class="col-sm-3 control-label">
 							{% if form.location.field.required %}*{% endif %}
 							{{ form.location.label }}
@@ -112,8 +112,8 @@
 						<div class="col-sm-9 first last">
 							{{ form.location }}
 						</div>
-						{% if form.location.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.location.errors }}</span>
+						{% if form.location.errors or form.country.errors %}
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.location.errors }}{{form.country.errors}}</span>
 						{% endif %}
 					</div>
 					<div id="view-event-map-wrapper" class="event-map col-sm-9 col-sm-offset-3">
