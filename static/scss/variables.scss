@@ -45,7 +45,7 @@ $link-hover-color:          darken($link-color, 15%) !default;
 
 
 $font-family-sans-serif:    "Carrois Gothic", Arial, sans-serif !default;
-$font-family-serif:         "Kreon", serif !default;
+$font-family-serif:         "Carrois Gothic", serif !default;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 $font-family-monospace:     Menlo, Monaco, Consolas, "Courier New", monospace !default;
 $font-family-base:          $font-family-sans-serif !default;
@@ -69,7 +69,7 @@ $line-height-base:          1.428571429 !default; // 20/14
 $line-height-computed:    floor(($font-size-base * $line-height-base)) !default; // ~20px
 
 //** By default, this inherits from the `<body>`.
-$headings-font-family:      "Kreon", serif !default;
+$headings-font-family:      "Carrois Gothic", serif !default;
 $headings-font-weight:      500 !default;
 $headings-line-height:      1.1 !default;
 $headings-color:            inherit !default;
