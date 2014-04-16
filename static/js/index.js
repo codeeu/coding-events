@@ -82,15 +82,15 @@ var Codeweek = window.Codeweek || {};
                     '<div>';
 
             if (markImg !== "") {
-                iWC += '<img src="' + Codeweek.Index.media_url + markImg + '" class="img-polaroid" style="float:left; width:50px;">';
+                iWC += '<img src="' + Codeweek.Index.media_url + markImg + '" class="img-polaroid" style="float:left; width:50px; margin-right: 15px;">';
             }
 
             if (markDesc.length > 15) {
-                markDesc = markDesc.substring(0, 150) + '... ' +
-                    '<a href="' + markUrl + '" class="map-marker"><span>Continue reading</span></a></p>';
+                markDesc = markDesc.substring(0, 150) + '... ';
             }
             iWC += '<p style="overflow:hidden;">' + markDesc +
-                '</div></div>';
+                   '&nbsp;<a href="' + markUrl + '" class="map-marker"><span>More...</span></a></p>' +
+                   '</div></div>';
 
 
             placeinfowindow.setContent(iWC);
