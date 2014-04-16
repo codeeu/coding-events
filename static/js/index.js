@@ -59,8 +59,8 @@ var Codeweek = window.Codeweek || {};
 		google.maps.event.addListener(map, 'zoom_changed', function () {
 			if (map.getZoom() > 15) {
 				map.setZoom(15);
-			} else if (map.getZoom() < 4) {
-				map.setZoom(4);
+			} else if (map.getZoom() < 3) {
+				map.setZoom(3);
 			}
 		});
 
@@ -185,15 +185,15 @@ var Codeweek = window.Codeweek || {};
 			if (status === google.maps.GeocoderStatus.OK) {
 				map.map.fitBounds(results[0].geometry.viewport);
 				map.map.setCenter(results[0].geometry.location);
-				if (map.map.getZoom() < 5) {
-					map.map.setZoom(4);
+				if (map.map.getZoom() < 3) {
+					map.map.setZoom(3);
 				}
 			}
 		});
 	}
 
 	function initialize(events, lon, lan) {
-		map = createMap(events, lon, lan, 4);
+		map = createMap(events, lon, lan, 3);
 		//setAutocomplete();
 		if (location.hash !== '') {
 			var country = $('#' + location.hash.replace('#', '').replace('!', ''));
