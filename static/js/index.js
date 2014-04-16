@@ -66,12 +66,13 @@ var Codeweek = window.Codeweek || {};
     }
 
     function createMarker(markTitle, markLat, markLng, markUrl, markDesc, markImg) {
-        var myLatLng = new google.maps.LatLng(parseFloat(markLat), parseFloat(markLng));
-        var marker = new google.maps.Marker({
-            position: myLatLng,
-            map: map,
-            title: markTitle
-        });
+        var myLatLng = new google.maps.LatLng(parseFloat(markLat), parseFloat(markLng)),
+            marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: markTitle
+            });
+
         google.maps.event.addListener(marker, 'click', function () {
             placeinfowindow.close();
 
