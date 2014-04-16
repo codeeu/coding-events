@@ -52,8 +52,6 @@ var Codeweek = window.Codeweek || {};
                     markDesc = markerData[i].fields.description,
                     markImg = markerData[i].fields.picture;
 
-                console.log(markerData[i]);
-
                 markers[map_event_id] = createMarker(markTitle, markLat, markLng, markUrl, markDesc, markImg);
             }
         }
