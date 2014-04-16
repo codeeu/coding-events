@@ -43,18 +43,11 @@ then call your newly created function in view!!! .-Erika
 def index(request, country_code=None):
 	template = 'pages/index.html'
 	events = get_approved_events()
-	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug'))
+	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug', 'description', 'picture'))
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 
 	country = get_country(country_code, user_ip)
-
-	if request.is_ajax():
-		if request.META.get('HTTP_X_PJAX', None):
-			template = 'pages/pjax_index.html'
-		else:
-			template = 'layout/all_events.html'
-		country = get_country(country_code, user_ip)
 
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
