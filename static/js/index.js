@@ -48,25 +48,52 @@ var Codeweek = window.Codeweek || {};
                     markLng = map_position[1],
                     map_event_id = markerData[i].pk,
                     map_event_slug = markerData[i].fields.slug,
-                    markUrl = "/view/" + map_event_id + "/" + map_event_slug;
+                    markUrl = "/view/" + map_event_id + "/" + map_event_slug,
+                    markDesc = markerData[i].fields.description,
+                    markImg = markerData[i].fields.picture;
 
-                markers[map_event_id] = createMarker(markTitle, markLat, markLng, markUrl);
+                markers[map_event_id] = createMarker(markTitle, markLat, markLng, markUrl, markDesc, markImg);
             }
         }
+
+        google.maps.event.addListener(map, 'zoom_changed', function () {
+            if (map.getZoom() > 15) {
+                map.setZoom(15);
+            }
+        });
 
         return new MarkerClusterer(map, markers, markerClusterOptions);
     }
 
-    function createMarker(markTitle, markLat, markLng, markUrl) {
+    function createMarker(markTitle, markLat, markLng, markUrl, markDesc, markImg) {
         var myLatLng = new google.maps.LatLng(parseFloat(markLat), parseFloat(markLng));
         var marker = new google.maps.Marker({
             position: myLatLng,
             map: map,
-            title: markTitle,
-            html: '<a href="' + markUrl + '" class="map-marker"><h4>' + markTitle + '</h4></a>'
+            title: markTitle
         });
         google.maps.event.addListener(marker, 'click', function () {
-            placeinfowindow.setContent(this.html);
+            placeinfowindow.close();
+
+            var infoWindowContent = placeinfowindow.getContent(),
+                buble_content = '',
+                image = '';
+
+            if (markImg !== "") {
+                image += '<img src="' + Codeweek.Index.media_url + markImg + '" class="img-polaroid marker-buble-img">';
+            }
+
+            if (markDesc.length > 15) {
+                markDesc = markDesc.substring(0, 150) + '... ';
+            }
+
+            buble_content += '<div><h4><a href="' + markUrl + '" class="map-marker">' + markTitle + '</a></h4><div>' +
+                              image +
+                              '<p style="overflow:hidden;">' + markDesc +
+                              '&nbsp;<a href="' + markUrl + '" class="map-marker"><span>More...</span></a></p>';
+
+
+            placeinfowindow.setContent(buble_content);
             placeinfowindow.open(this.map, this);
         });
 
@@ -122,13 +149,6 @@ var Codeweek = window.Codeweek || {};
             infowindow.open(map.map);
             infowindow.close();
 
-            if ($.support.pjax) {
-                $.pjax({url: '/' + country_code, container: event_list_container});
-                $(document).on('pjax:success', function () {
-
-                });
-
-            }
         });
     }
 
@@ -138,7 +158,7 @@ var Codeweek = window.Codeweek || {};
             if (status === google.maps.GeocoderStatus.OK) {
                 map.map.fitBounds(results[0].geometry.viewport);
                 map.map.setCenter(results[0].geometry.location);
-                if(map.map.getZoom() < 5){
+                if (map.map.getZoom() < 5) {
                     map.map.setZoom(4);
                 }
             }
@@ -147,7 +167,7 @@ var Codeweek = window.Codeweek || {};
 
     function initialize(events, lon, lan) {
         map = createMap(events, lon, lan, 4);
-        setAutocomplete();
+        //setAutocomplete();
         if (location.hash !== '') {
             var country = $('#' + location.hash.replace('#', '').replace('!', ''));
             if (country.length) {
