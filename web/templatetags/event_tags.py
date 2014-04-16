@@ -90,3 +90,4 @@ def events_from_selected_country(event_list, current_country_code):
 			return country
 
 	return {'grouper':'','list':[]}
+	
