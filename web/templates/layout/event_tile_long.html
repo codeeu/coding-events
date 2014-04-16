@@ -1,6 +1,9 @@
+{% load static %}
 <a href="{% url 'web.view_event' event.id event.slug %}" class="thumbnail clearfix">
 	{% if event.picture %}
 		<img src="{{ event.picture.url }}" alt="{{ event.title }} Image" class="col-md-2 first">
+	{% else %}
+		<img src="{% static 'img/event_default_picture.png' %}" alt="{{ event.title }} Image" class="col-md-2 first">
 	{% endif %}
 	<h4>{{ event.title }}</h4>
 
