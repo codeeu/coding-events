@@ -1,14 +1,37 @@
 .collapsed {
 	margin: 3px 5px 0 0;
 }
+
 .cweu-navbar {
-	.navbar-brand{
-		padding: 0 15px 15px;
+	.navbar-brand {
+		padding: 5px 10px;
 		height: initial;
 	}
 }
+
 .navbar-toggle {
 	font-size: 25px;
 	color: $white;
 	margin: 3px;
+}
+
+.landing-wrapper {
+	margin: 0 20px;
+	margin-left: 80px;
+}
+
+.btn-lg {
+	padding: 15px 30px;
+}
+
+#showcountries {
+	position: absolute;
+	width: 100px;
+	top: 0;
+	left: 0;
+	height: 450px;
+	overflow-y: scroll;
+	z-index: 0;
+	background-color: $secondary-color;
+	color: $white;
 }

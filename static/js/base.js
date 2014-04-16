@@ -4,20 +4,20 @@ var Codeweek = window.Codeweek || {};
 
 (function ($, Codeweek) {
 
-    'use strict';
+	'use strict';
 
-    var init = function () {
+	var init = function () {
 
-        $(function () {
+		$(function () {
 
-            // Initializing cookie consent
-            $.cookieCuttr();
+			// Initializing cookie consent
+			$.cookieCuttr();
 
-        });
-    };
+		});
+	};
 
-    Codeweek.Base = {};
-    Codeweek.Base.init = init;
+	Codeweek.Base = {};
+	Codeweek.Base.init = init;
 
 }(jQuery, Codeweek));
 

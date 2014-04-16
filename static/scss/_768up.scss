@@ -2,3 +2,19 @@
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
+.landing-wrapper{
+	margin: 0;
+}
+
+#showcountries {
+	position: relative;
+	width: 100%;
+	top: 0;
+	left: 10px;
+	height: initial;
+	overflow-y: inherit;
+	z-index: 0;
+	background-color: $whitesmoke;
+	color: $black;
+	padding-left: 25px;
+}
