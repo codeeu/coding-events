@@ -53,14 +53,14 @@
 	<script type="text/javascript"
 	        src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
 	</script>
-
-	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
-	<script type="text/javascript" src="{% static "js/markerclusterer.js" %}"></script>
-	<script type="text/javascript" src="{% static "lib/pjax/jquery.pjax.js" %}"></script>
-	<script type="text/javascript" src="{% static "js/endless_pagination/endless-pagination.js" %}"></script>
-	<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
-	<script type="text/javascript">
-		Codeweek.Index.init(JSON.stringify({{ map_events|safe }}), {{ lan_lon.0 }}, {{ lan_lon.1 }})
-	</script>
+	{% compress js %}
+		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
+		<script type="text/javascript" src="{% static "js/markerclusterer.js" %}"></script>
+		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+		<script type="text/javascript">
+			Codeweek.Index.init(JSON.stringify({{ map_events|safe }}), {{ lan_lon.0 }}, {{ lan_lon.1 }});
+			Codeweek.Index.media_url = {{ MEDIA_URL|escapejs }};
+		</script>
+	{% endcompress %}
 
 {% endblock %}
