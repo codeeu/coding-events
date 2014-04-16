@@ -55,13 +55,6 @@ LOGIN MODAL WINDOW STYLES
 	}
 }
 
-.btn-social {
-
-	i {
-		line-height: 68px !important;
-	}
-
-}
 
 /*********************
 LOGIN PAGE STYLES
@@ -154,15 +147,12 @@ INDEX PAGE STYLES
 	margin-bottom: 10px;
 	text-align: center;
 	padding-top: 5px;
-	font-weight: bold;
+	font-weight: 700;
 	cursor: pointer;
-	@include filter(opacity, 1);
-	@include transition(all 0.1s linear);
 
 	&:hover {
 		border-color: $brand-primary;
 		text-decoration: underline;
-		@include filter(opacity, 0.4);
 	}
 
 	.icon-flag {
