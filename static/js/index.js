@@ -59,7 +59,33 @@ var Codeweek = window.Codeweek || {};
 		google.maps.event.addListener(map, 'zoom_changed', function () {
 			if (map.getZoom() > 15) {
 				map.setZoom(15);
+			} else if (map.getZoom() < 4) {
+				map.setZoom(4);
 			}
+		});
+
+		// Bounds for Europe
+		var allowedBounds = new google.maps.LatLngBounds(
+			new google.maps.LatLng(34.54, -24.58),
+			new google.maps.LatLng(71.32, 34.68));
+
+		google.maps.event.addListener(map, 'dragend', function() {
+			if (allowedBounds.contains(map.getCenter())) return;
+
+			var c = map.getCenter(),
+				x = c.lng(),
+				y = c.lat(),
+				maxX = allowedBounds.getNorthEast().lng(),
+				maxY = allowedBounds.getNorthEast().lat(),
+				minX = allowedBounds.getSouthWest().lng(),
+				minY = allowedBounds.getSouthWest().lat();
+
+			if (x < minX) x = minX;
+			if (x > maxX) x = maxX;
+			if (y < minY) y = minY;
+			if (y > maxY) y = maxY;
+
+			map.setCenter(new google.maps.LatLng(y, x));
 		});
 
 		return new MarkerClusterer(map, markers, markerClusterOptions);
@@ -189,7 +215,6 @@ var Codeweek = window.Codeweek || {};
 				initialize(events, lon, lan);
 			});
 
-
 			$(".country-link").click(function (event) {
 				event.preventDefault();
 				var that = this,
@@ -200,17 +225,27 @@ var Codeweek = window.Codeweek || {};
 					new_location = search_button_location.replace(/([A-Z]{2})/, country_code);
 
 				zoomCountry(country_name);
-				document.location.href = "#!" + country_code;
+				document.location.hash = "!" + country_code;
 				search_button.attr('href', new_location);
 				$('#country').html(country_name);
 			});
 
+			$("#zoomEU").click(function (event) {
+				event.preventDefault();
+				var search_button = $('#search-events-link').find('a'),
+					search_button_location = search_button.attr('href'),
+					new_location = search_button_location.replace(/([A-Z]{2})/, 'EU');
+
+				zoomCountry('Europe');
+				document.location.hash = '';
+				search_button.attr('href', new_location);
+				$('#country').html('Europe');
+			});
 		});
 	};
 
 	Codeweek.Index = {};
 	Codeweek.Index.init = init;
-
 
 }(jQuery, Codeweek));
 
