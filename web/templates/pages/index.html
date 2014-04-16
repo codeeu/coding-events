@@ -59,7 +59,7 @@
 		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 		<script type="text/javascript">
 			Codeweek.Index.init(JSON.stringify({{ map_events|safe }}), {{ lan_lon.0 }}, {{ lan_lon.1 }});
-			Codeweek.Index.media_url = {{ MEDIA_URL|escapejs }};
+			Codeweek.Index.media_url = '{{ MEDIA_URL|escapejs }}';
 		</script>
 	{% endcompress %}
 
