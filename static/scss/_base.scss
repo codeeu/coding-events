@@ -3,7 +3,7 @@ MAIN STYLES
 *********************/
 
 body {
-	font-family: $primary-font-family;
+	font-family: "Roboto Slab", Arial, sans-serif;
 }
 
 .first {
@@ -232,7 +232,7 @@ FOOTER STYLES
 
 footer {
 	width: 100%;
-	background-color: $dark-blue;
+	background-color: $slate;
 	color: $silver;
 
 	.maker-introduction {
@@ -247,7 +247,7 @@ footer {
 		}
 		i {
 			margin-top: 10px;
-			font-size: 40px;
+			font-size: 50px;
 			color: $silver;
 		}
 	}
@@ -259,7 +259,7 @@ footer {
 		}
 		i {
 			padding: 10px 10px;
-			font-size: 40px;
+			font-size: 50px;
 			color: $silver;
 		}
 
@@ -269,7 +269,7 @@ footer {
 			margin: 20px 0;
 		}
 		&.codecatz-logo {
-			width: 70px;
+			width: 100px;
 			display: block;
 			padding: 10px 0;
 		}
