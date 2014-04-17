@@ -3,7 +3,7 @@
 {% load compress %}
 {% block title %}- Map of Events{% endblock title %}
 
-
+{% block main_navigation %}{% endblock %}
 {% block messages %}{% endblock %}
 {% block content %}
 	<div class="landing-wrapper">
@@ -23,7 +23,7 @@
 				Add Your Own Event</a>
 		</div>
 	</div>
-
+	{% include 'layout/top_navigation.html' %}
 	{% include 'layout/messages.html' %}
 	<div class="container index-content">
 		<div class="clearfix">

@@ -2,26 +2,27 @@
 	{% load avatar_tags %}
 	{% include 'layout/login_modal_window.html' %}
 
-	<nav class="navbar cweu-navbar" role="navigation">
+	<nav class="navbar navbar-inverse" role="navigation" data-spy="affix" data-offset-top="450">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			        <span class="sr-only">Toggle navigation</span>
-			        <i class="fa fa-bars"></i>
-      			</button>
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+				        data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
 				<a class="navbar-brand" href="/">Europe Code Week</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav cweu-navbar-list">
+				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<a href="{% url 'web.index' %}">Events</a>
 					</li>
 					<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/learn">Resources</a></li>
 					<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/code">Why coding?</a></li>
 					<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/about/">About</a></li>
-					<li class="toggle-topbar menu-icon"><a href="http://blog.codeweek.eu/">News</a></li>					
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
+					<li class="toggle-topbar menu-icon"><a href="http://blog.codeweek.eu/">News</a></li>
 					<li class="dropdown">
 						{% if user.is_authenticated %}
 							<a href="{% url 'profile' %}" class="dropdown-toggle avatar" data-toggle="dropdown">

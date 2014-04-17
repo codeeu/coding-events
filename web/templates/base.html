@@ -30,6 +30,7 @@
 <body>
 {% block main_navigation %}
 	{% include 'layout/top_navigation.html' %}
+
 {% endblock %}
 
 {% block messages %}
@@ -46,7 +47,6 @@
 {% compress js %}
 	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/dropdown.js' %}"></script>
 	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/modal.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/collapse.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/jquery.cookiecuttr.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/base.js' %}"></script>

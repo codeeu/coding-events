@@ -15,6 +15,54 @@ body {
 }
 
 /*********************
+NAVIGATION STYLES
+*********************/
+
+.navbar {
+
+	margin-bottom: 0;
+	border-radius: 0;
+
+	&.affix {
+		width: 100%;
+		top: 0;
+		left: 0;
+		z-index: 10000;
+	}
+
+}
+
+.navbar-glass {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar-nav {
+	a {
+
+		&.avatar {
+			padding: 9px;
+		}
+	}
+}
+
+.dropdown {
+
+	.dropdown-menu {
+		a {
+			padding: 3px 20px 3px 5px;
+		}
+
+		i {
+			font-size: 18px;
+			border-right: 1px dotted #999;
+			padding: 5px;
+			margin-right: 2px;
+			width: 30px;
+		}
+	}
+}
+
+/*********************
 FORM STYLES
 **********************/
 form {
