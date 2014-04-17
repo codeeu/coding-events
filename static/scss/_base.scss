@@ -149,7 +149,7 @@ INDEX PAGE STYLES
 		right: 0;
 		height: 100%;
 		font-size: 20px;
-		color: $light-blue;
+		color: $slate;
 		border: none;
 		background: transparent;
 		padding: 0 15px;
@@ -237,9 +237,6 @@ footer {
 
 	a {
 		color: $black;
-		&:hover {
-			color: $white;
-		}
 	}
 
 	.maker-introduction {
