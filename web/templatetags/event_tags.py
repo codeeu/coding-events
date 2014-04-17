@@ -1,3 +1,5 @@
+import ast
+
 from calendar import HTMLCalendar
 from django import template
 from datetime import date
@@ -79,3 +81,13 @@ def current_url_equals(context, url_name, **kwargs):
 			if not resolved_kwarg or kwarg != resolved_kwarg:
 				return False
 	return matches
+
+
+@register.filter('from_current_country')
+def events_from_selected_country(event_list, current_country_code):
+	for country in event_list:
+		if country['grouper'].code == current_country_code:
+			return country
+
+	return {'grouper':'','list':[]}
+	
