@@ -18,9 +18,8 @@
 				<div id="search-events-link">
 					<a class="btn btn-primary btn-lg"
 					   href="{% url 'web.search_events' %}?country_code={{ country.country_code }}">
-						Explore Events {% if country %}in
+						<i class="fa fa-list"></i> List all events {% if country %}in
 						<span id="country"> {{ country.country_name }}</span>{% endif %}
-						<i class="fa fa-angle-double-right"></i>
 					</a>
 				</div>
 			</div>
