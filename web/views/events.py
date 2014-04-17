@@ -52,7 +52,7 @@ def index(request, country_code=None):
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
 	except GeoIPException:
-		lan_lon = (46.0608144, 14.497165600000017)
+		lan_lon = (58.08695, 5.58121)
 
 	events = get_approved_events(order='pub_date', country_code=country.get('country_code', None))
 
