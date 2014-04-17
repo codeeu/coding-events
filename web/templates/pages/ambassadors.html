@@ -13,7 +13,7 @@
 		</div>
 		{% if user_country %}<p>Your current country: <a href="#{{ user_country.country_name }}">{{ user_country.country_name }}</a></p>{% endif %}
 		{% for country,ambassadors in countries %}
-			<h2><a name="{{country}}"></a>{{country}}</h2>		
+			<h2 class="acountry"><a name="{{country}}"></a>{{country}}</h2>		
 			{% if ambassadors|length != 0 %}
 			{% for ambassador in ambassadors %}
 			<div class="ambassador">
