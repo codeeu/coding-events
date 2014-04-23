@@ -29,7 +29,7 @@ class AddEventForm(forms.ModelForm):
 			'organizer': forms.TextInput(attrs={"class": "form-control",
 				                       			"placeholder": "Who is organizing this event?"}),
 			'description': forms.Textarea(attrs={"class": "form-control",
-			                                     "placeholder": "Tell us a bit about your event"}),
+			                                     "placeholder": "Tell us a bit about your event."}),
 			'location': forms.TextInput(attrs={"id": "autocomplete", "class": "form-control",
 			                                   "placeholder": "Where will the event be taking place?", }),
 			'start_date': forms.TextInput(attrs={"id": "id_datepicker_start", "class": "form-control",
@@ -38,7 +38,7 @@ class AddEventForm(forms.ModelForm):
 			'end_date': forms.TextInput(attrs={"id": "id_datepicker_end", "class": "form-control",
 			                                   "autocomplete": "off", "placeholder": "When does it end?"}),
 			'event_url': forms.TextInput(attrs={"class": "form-control",
-			                                    "placeholder": "Do you have a website with more information about the event?"}),
+			                                    "placeholder": "Do you have a website with more information?"}),
 			'contact_person': forms.TextInput(attrs={"class": "form-control",
 			                                         "placeholder": "Would you like to display a contact email?"}),
 			'audience': forms.CheckboxSelectMultiple(),
@@ -48,14 +48,14 @@ class AddEventForm(forms.ModelForm):
 		}
 
 		labels = {
-			'title': 'Title',
-			'organizer': 'Organizer',
+			'title': 'Event title',
+			'organizer': 'Organizer(s)',
 			'description': 'Description',
 			'location': 'Location',
 			'country': 'Country',
 			'start_date': 'Start date',
 			'end_date': 'End date',
-			'event_url': 'URL',
+			'event_url': 'Website',
 			'contact_person': 'Contact',
 			'picture': 'Image',
 			'audience': 'Audience',
@@ -68,7 +68,7 @@ class AddEventForm(forms.ModelForm):
 		    'end_date': "Example: YYYY/MM/DD h:m",
 		    'audience': "Who is the event for?",
 		    'theme': "Which aspect of coding will your event cover?",
-		    'picture': 'You can also upload an image to represent your event:',
+		    'picture': 'Larger images will be resized to 256 x 512 pixels. Maximum upload size is 256 x 1024.',
 		}
 
 		error_messages = {

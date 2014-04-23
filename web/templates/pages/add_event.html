@@ -14,14 +14,14 @@
 	<div class="container">
 		<div class="clearfix">
 			<h1 class="pull-left">{% if editing %}Edit{% else %}Add {% endif %} your #codeEU event</h1>
-
 			<div class="how-to">
 				<a href="{% url 'web.guide' %}" target="_blank"
 				   class="btn btn-sm pull-right">How to organize your own event?
 				</a>
 			</div>
-
 		</div>
+		<p class="aluminum">Required fields are marked with an * asterisk. Feel free to add the event listing in your local language.</p>
+		
 
 
 		<form enctype="multipart/form-data" method="post" id="event" role="form" class="form-horizontal clearfix">{% csrf_token %}
@@ -217,12 +217,13 @@
 								{% endif %}
 							</div>
 							<div>
+							<span class="help-block">{{ form.picture.help_text }}</span>
 							<span class="btn btn-sm btn-file">
 								<span class="fileinput-new">Select image</span>
 								<span class="fileinput-exists">Change</span>
 								<input type="file" name="{{ form.picture.name }}"/></span>
 								<a href="#" class="btn btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
-							</div>
+							</div>		
 						</div>
 					</div>
 				</div>
