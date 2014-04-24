@@ -106,7 +106,8 @@ def add_event(request):
 			messages.error(request, e.message)
 
 	return render_to_response("pages/add_event.html", {
-		'form': event_form, 'user_form': user_form,
+		'form': event_form,
+		'user_form': user_form,
 	}, context_instance=RequestContext(request))
 
 
