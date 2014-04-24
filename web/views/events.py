@@ -17,6 +17,7 @@ from api.processors import get_pending_events
 from api.processors import get_created_events
 from web.forms.event_form import AddEventForm
 from web.forms.event_form import SearchEventForm
+from web.forms.user_profile import UserEmailForm
 from web.processors.event import get_initial_data
 from web.processors.event import change_event_status
 from web.processors.event import create_or_update_event
@@ -71,10 +72,13 @@ def index(request, country_code=None):
 @login_required
 def add_event(request):
 	event_form = AddEventForm()
+	user = request.user
+	user_form = UserEmailForm(instance=user)
 
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
-	if event_form.is_valid():
+		user_form = UserEmailForm(request.POST, instance=request.user)
+	if event_form.is_valid() and user_form.is_valid():
 		picture = request.FILES.get('picture', None)
 		event_data = {}
 		try:
@@ -87,6 +91,7 @@ def add_event(request):
 			event_data.update(event_form.cleaned_data)
 			event_data['creator'] = request.user
 			event = create_or_update_event(**event_data)
+			user_form.save()
 
 			t = loader.get_template('alerts/thank_you.html')
 			c = Context({'event': event, })
@@ -101,7 +106,7 @@ def add_event(request):
 			messages.error(request, e.message)
 
 	return render_to_response("pages/add_event.html", {
-		'form': event_form,
+		'form': event_form, 'user_form': user_form,
 	}, context_instance=RequestContext(request))
 
 
@@ -115,10 +120,13 @@ def edit_event(request, event_id):
 
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
+		user_form = UserEmailForm(request.POST, instance=request.user)
 	else:
 		event_form = AddEventForm(initial=initial)
+		user = request.user
+		user_form = UserEmailForm(instance=user)
 
-	if event_form.is_valid():
+	if event_form.is_valid() and user_form.is_valid():
 		picture = request.FILES.get('picture', None)
 		event_data = event_form.cleaned_data
 
@@ -134,6 +142,7 @@ def edit_event(request, event_id):
 				del event_data['picture']
 
 			create_or_update_event(event_id, **event_data)
+			user_form.save()
 
 			return HttpResponseRedirect(reverse('web.view_event',
 			                                    kwargs={'event_id': event.id, 'slug': event.slug}))
@@ -150,6 +159,7 @@ def edit_event(request, event_id):
 			'address': event_data.get('location', None),
 			'editing': True,
 			'picture_url': event.picture,
+			 'user_form': user_form,
 		}, context_instance=RequestContext(request))
 
 

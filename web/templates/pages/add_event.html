@@ -230,7 +230,27 @@
 
 				<div class="hidden">{{ form.geoposition }}{{ form.country }}</div>
 			</div>
-
+			<div class="clearfix well well-sm">
+				<h3>Your contact information</h3>
+				<div class="aluminum">
+					This information will only be visible to
+					<a href="{% url 'web.ambassadors' %}" target="_blank">EU Code Week Ambassadors</a>, who will check your event before it appears on the map and might contact you if edits are necessary.
+				</div>
+				<div class="col-md-6 first">
+					<div class="form-group {% if user_form.email.errors %}has-error{% endif %}">
+						<span class="help-block col-sm-9 col-sm-offset-3">{{ user_form.email.help_text }}</span>
+						<label for="{{ user_form.email.auto_id }}" class="col-sm-3 control-label">
+							{% if user_form.email.field.required %}*{% endif %} {{ user_form.email.label }}
+						</label>
+						<div class="col-sm-9">
+							{{ user_form.email }}
+						</div>
+						{% if user_form.email.errors %}
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ user_form.email.errors }}</span>
+						{% endif %}
+					</div>
+				</div>
+			</div>
 			<div class="col-md-6 first">
 				<div class="col-sm-9 col-sm-offset-3">
 					<div class="btn btn-primary btn-directional fa-plus-circle btn-lg submit-button-wrapper">
@@ -239,12 +259,6 @@
 				</div>
 			</div>
 		</form>
-
-		<div class="event-footnote">
-			Note: Events will be checked by one of our
-			<a href="{% url 'web.ambassadors' %}" target="_blank">EU Code Week Ambassadors</a>
-			before appearing on the map.
-		</div>
 	</div>
 {% endblock content %}
 

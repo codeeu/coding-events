@@ -17,7 +17,7 @@
 							If it looks good then
 							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
 								approve
-							</a> it.
+							</a> it{% if event.creator.email %} or contact the event creator <a href="mailto:{{event.creator.email}}?subject=Your Code Week event">by email</a>{% endif %}.
 						</div>
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
