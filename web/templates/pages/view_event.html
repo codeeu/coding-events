@@ -6,16 +6,21 @@
 {% block social %}
 	<meta name="description" content="{{ event.description }}" />
 
-	<meta name="og:title" content="{{ event.title }}" />
-	<meta name="og:type" content="website" />
-	<meta name="og:image" content="{{ event.picture.url }}" />
-	<meta name="og:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
-	<meta name="og:description" content="{{ event.description }}" />
+	<meta property="og:title" content="{{ event.title }}" />
+	<meta property="og:type" content="website" />
+	{% if event.picture %}
+	<meta property="og:image" content="{{ event.picture.url }}" />
+	{% endif %}
+	<meta property="og:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
+	<meta property="og:description" content="{{ event.description }}" />
 
 	<meta name="twitter:card" content="summary" />
 	<meta name="twitter:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
 	<meta name="twitter:title" content="{{ event.title }}" />
 	<meta name="twitter:description" content="{{ event.description }}" />
+	{% if event.picture %}
+	<meta name="twitter:image" content="{{ event.picture.url }}" />
+	{% endif %}
 {% endblock social %}
 
 {% block content %}
