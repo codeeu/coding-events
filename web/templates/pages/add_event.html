@@ -237,16 +237,16 @@
 					<a href="{% url 'web.ambassadors' %}" target="_blank">EU Code Week Ambassadors</a>, who will check your event before it appears on the map and might contact you if edits are necessary.
 				</div>
 				<div class="col-md-6 first">
-					<div class="form-group {% if user_form.email.errors %}has-error{% endif %}">
-						<span class="help-block col-sm-9 col-sm-offset-3">{{ user_form.email.help_text }}</span>
-						<label for="{{ user_form.email.auto_id }}" class="col-sm-3 control-label">
-							{% if user_form.email.field.required %}*{% endif %} {{ user_form.email.label }}
+					<div class="form-group {% if form.user_email.errors %}has-error{% endif %}">
+						<span class="help-block col-sm-9 col-sm-offset-3">{{ form.user_email.help_text }}</span>
+						<label for="{{ form.user_email.auto_id }}" class="col-sm-3 control-label">
+							{% if form.user_email.field.required %}*{% endif %} {{ form.user_email.label }}
 						</label>
 						<div class="col-sm-9">
-							{{ user_form.email }}
+							{{ form.user_email }}
 						</div>
-						{% if user_form.email.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ user_form.email.errors }}</span>
+						{% if form.user_email.errors %}
+							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.user_email.errors }}</span>
 						{% endif %}
 					</div>
 				</div>

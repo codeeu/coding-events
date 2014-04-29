@@ -51,23 +51,3 @@ class UserProfileForm(forms.ModelForm):
 				'invalid': 'Please enter a valid web address',
 			},
 			}
-
-class UserEmailForm(forms.ModelForm):
-	class Meta:
-		model = User
-		fields = ['email']
-		widgets = {
-			'email': forms.EmailInput(attrs={"class": "form-control"}),
-		}
-		labels = {
-		    'email': 'Your contact email:',
-		}
-		error_messages = {
-			'email': {
-				'required': u'Please enter a valid email, so we can contact you in case of questions.',
-				'invalid': u'Can you please check if this is a valid email address?',
-			},
-		}
-	def __init__(self, *args, **kwargs):
-		super(UserEmailForm, self).__init__(*args, **kwargs)
-		self.fields['email'].required = True

@@ -17,10 +17,10 @@ from api.processors import get_pending_events
 from api.processors import get_created_events
 from web.forms.event_form import AddEventForm
 from web.forms.event_form import SearchEventForm
-from web.forms.user_profile import UserEmailForm
 from web.processors.event import get_initial_data
 from web.processors.event import change_event_status
 from web.processors.event import create_or_update_event
+from web.processors.user import update_user_email
 from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import get_country_from_user_ip
@@ -71,14 +71,12 @@ def index(request, country_code=None):
 
 @login_required
 def add_event(request):
-	event_form = AddEventForm()
+	event_form = AddEventForm(initial={'user_email': request.user.email})
 	user = request.user
-	user_form = UserEmailForm(instance=user)
 
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
-		user_form = UserEmailForm(request.POST, instance=request.user)
-	if event_form.is_valid() and user_form.is_valid():
+	if event_form.is_valid():
 		picture = request.FILES.get('picture', None)
 		event_data = {}
 		try:
@@ -89,9 +87,14 @@ def add_event(request):
 				event_data['picture'] = process_image(picture)
 
 			event_data.update(event_form.cleaned_data)
-			event_data['creator'] = request.user
+			event_data['creator'] = user
+
+			# checking if user entered a different email than in her profile
+			if user.email != event_data['user_email']:
+				update_user_email(user.id, event_data['user_email'])
+			event_data.pop('user_email')
+
 			event = create_or_update_event(**event_data)
-			user_form.save()
 
 			t = loader.get_template('alerts/thank_you.html')
 			c = Context({'event': event, })
@@ -107,7 +110,6 @@ def add_event(request):
 
 	return render_to_response("pages/add_event.html", {
 		'form': event_form,
-		'user_form': user_form,
 	}, context_instance=RequestContext(request))
 
 
@@ -115,23 +117,28 @@ def add_event(request):
 @can_edit_event
 def edit_event(request, event_id):
 	event = get_event_by_id(event_id)
+	user = request.user
 	initial = get_initial_data(event)
+	initial['user_email'] = request.user.email
 
 	event_data = {}
 
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
-		user_form = UserEmailForm(request.POST, instance=request.user)
 	else:
 		event_form = AddEventForm(initial=initial)
-		user = request.user
-		user_form = UserEmailForm(instance=user)
 
-	if event_form.is_valid() and user_form.is_valid():
+
+	if event_form.is_valid():
 		picture = request.FILES.get('picture', None)
 		event_data = event_form.cleaned_data
 
 		event_data['creator'] = request.user
+
+		# checking if user entered a different email than in her profile
+		if user.email != event_data['user_email']:
+			update_user_email(user.id, event_data['user_email'])
+		event_data.pop('user_email')
 
 		try:
 			if picture:
@@ -143,7 +150,6 @@ def edit_event(request, event_id):
 				del event_data['picture']
 
 			create_or_update_event(event_id, **event_data)
-			user_form.save()
 
 			return HttpResponseRedirect(reverse('web.view_event',
 			                                    kwargs={'event_id': event.id, 'slug': event.slug}))
@@ -160,7 +166,6 @@ def edit_event(request, event_id):
 			'address': event_data.get('location', None),
 			'editing': True,
 			'picture_url': event.picture,
-			 'user_form': user_form,
 		}, context_instance=RequestContext(request))
 
 
