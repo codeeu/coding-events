@@ -3,6 +3,30 @@
 
 {% block title %}- Event Details{% endblock title %}
 
+{% block social %}
+	<meta name="description" content="{{ event.description }}" />
+
+	<meta property="og:title" content="{{ event.title }}" />
+	<meta property="og:type" content="website" />
+	{% if event.picture %}
+	<meta property="og:image" content="{{ event.picture.url }}" />
+	{% else %}
+	<meta property="og:image" content="http://events.codeweek.eu/static/img/social_default_picture.png" />
+	{% endif %}
+	<meta property="og:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
+	<meta property="og:description" content="{{ event.description }}" />
+
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
+	<meta name="twitter:title" content="{{ event.title }}" />
+	<meta name="twitter:description" content="{{ event.description }}" />
+	{% if event.picture %}
+	<meta name="twitter:image" content="{{ event.picture.url }}" />
+	{% else %}
+	<meta property="og:image" content="http://events.codeweek.eu/static/img/social_default_picture.png" />
+	{% endif %}
+{% endblock social %}
+
 {% block content %}
 
 	<div class="container">
