@@ -41,7 +41,7 @@
 							If it looks good then
 							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
 								approve
-							</a> it.
+							</a> it otherwise <a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">reject</a> it.
 						</div>
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">

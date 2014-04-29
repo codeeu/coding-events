@@ -119,12 +119,10 @@ def change_event_status(event_id):
 
 	if event.status == 'APPROVED':
 		event.status = 'PENDING'
+	elif event.status == 'REJECTED':
+		event.status = 'PENDING'
 	else:
 		event.status = 'APPROVED'
 
 	event.save()
 	return event
-
-
-
-
