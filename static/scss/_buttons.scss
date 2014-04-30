@@ -98,7 +98,8 @@
 		left: auto;
 		right: 10px;
 		z-index: 2;
-		line-height: 2.4;
+		line-height: 4;
+		pointer-events: none;
 	}
 
 	&:after {
@@ -114,6 +115,7 @@
 	}
 
 	&:hover:after {
+		pointer-events: none;
 		width: 40%;
 	}
 
@@ -152,6 +154,7 @@
 			border: none;
 			text-transform: uppercase;
 			letter-spacing: 2px;
+			outline: none;
 		}
 	}
 

@@ -263,7 +263,7 @@ def search_events(request):
 
 @login_required
 @can_moderate_event
-def change_status(request, event_id):
-	event = change_event_status(event_id)
+def change_status(request, event_id, status):
+	event = change_event_status(event_id, status)
 
 	return HttpResponseRedirect(reverse('web.view_event', args=[event_id, event.slug]))

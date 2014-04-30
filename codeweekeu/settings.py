@@ -522,6 +522,7 @@ GEOIP_PATH = normpath(join(DJANGO_ROOT, 'geoip'))
 
 ########## DJANGO COMPRESSOR SETTINGS
 
+COMPRESS_ENABLED = False
 COMPRESS_CSS_FILTERS = ('compressor.filters.cssmin.CSSMinFilter',)
 COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 
