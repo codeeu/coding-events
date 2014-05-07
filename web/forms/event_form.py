@@ -6,6 +6,16 @@ from api.models.events import EventTheme, EventAudience
 
 
 class AddEventForm(forms.ModelForm):
+	email_errors = {
+		'required': u'Please enter a valid email, so we can contact you in case of questions.',
+		'invalid': u'Can you please check if this is a valid email address?',
+			}
+	user_email = forms.EmailField(required=True,
+								  label='Your contact email',
+								  widget=forms.EmailInput(attrs={"class": "form-control"}),
+								  error_messages = email_errors,
+									)
+
 	class Meta:
 		model = Event
 		fields = ['title',
@@ -21,7 +31,9 @@ class AddEventForm(forms.ModelForm):
 		          'audience',
 		          'theme',
 		          'picture',
-		          'tags']
+		          'tags',
+		          'user_email',
+		          ]
 
 		widgets = {
 			'title': forms.TextInput(attrs={"class": "form-control",

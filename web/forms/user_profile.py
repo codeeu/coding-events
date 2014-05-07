@@ -51,4 +51,3 @@ class UserProfileForm(forms.ModelForm):
 				'invalid': 'Please enter a valid web address',
 			},
 			}
-

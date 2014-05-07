@@ -28,3 +28,9 @@ def get_ambassadors_for_countries():
 		countries_ambassadors.append((readable_name,found_ambassadors))
 	countries_ambassadors.sort()
 	return countries_ambassadors
+
+def update_user_email(user_id, new_email):
+	user = User.objects.get(id=user_id)
+	user.email = new_email
+	user.save(update_fields=["email"]) 
+	return user

@@ -40,8 +40,19 @@
 							This event is stil <strong>Pending</strong>.
 							If it looks good then
 							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk 1 %}">
-								approve
-							</a> it otherwise <a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk 0 %}">reject</a> it.
+								approve 
+							</a> 
+							it
+							{% if event.creator.email %} or contact the event creator 
+							<a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
+								by email
+							</a>{% endif %}.
+
+							Otherwise 
+							<a class="btn btn-sm" href="{% url 'web.change_status' event.pk 0 %}">
+								reject
+							</a> it.
+
 						</div>
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
