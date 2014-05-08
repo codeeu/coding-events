@@ -121,7 +121,7 @@ var Codeweek = window.Codeweek || {};
 			}
 
 			buble_content = '<div><h4><a href="' + marker.url + '" class="map-marker">' + marker.title + '</a></h4><div>' +
-							  marker.image +
+							  image +
 							  '<p style="overflow:hidden;">' + marker.description +
 							  '&nbsp;<a href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
 
