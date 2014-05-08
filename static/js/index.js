@@ -36,7 +36,7 @@ var Codeweek = window.Codeweek || {};
 				}
 			});
 		overlapSpiderifier = new OverlappingMarkerSpiderfier(map,
-			{markersWontMove: true, markersWontHide: true, keepSpiderfied: true});
+			{markersWontMove: true, markersWontHide: true, keepSpiderfied: true, circleSpiralSwitchover: 5});
 		placeinfowindow = new google.maps.InfoWindow({
 			content: "loading..."
 		});
