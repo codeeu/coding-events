@@ -11,7 +11,7 @@ def get_user_profile(user_id):
 
 def get_ambassadors():
 	ambassadors = []
-	aambassadors = User.objects.filter(groups__name='ambassadors')
+	aambassadors = User.objects.filter(groups__name='ambassadors').order_by('date_joined')
 	for ambassador in aambassadors:
 		ambassadors.append(ambassador.profile)
 	return ambassadors
