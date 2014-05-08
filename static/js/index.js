@@ -110,19 +110,22 @@ var Codeweek = window.Codeweek || {};
 
 			var infoWindowContent = '',
 				buble_content = '',
-				image = '';
+				image = '',
+				description = '';
 
 			if (marker.image !== "") {
 				image += '<img src="' + Codeweek.Index.media_url + marker.image + '" class="img-polaroid marker-buble-img">';
 			}
 
-			if (marker.description.length > 15) {
-				markDesc = marker.description.substring(0, 150) + '... ';
+			if (marker.description.length > 150) {
+				description = marker.description.substring(0, 150) + '... ';
+			} else {
+				description = marker.description;
 			}
 
 			buble_content = '<div><h4><a href="' + marker.url + '" class="map-marker">' + marker.title + '</a></h4><div>' +
 							  image +
-							  '<p style="overflow:hidden;">' + marker.description +
+							  '<p style="overflow:hidden;">' + description +
 							  '&nbsp;<a href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
 
 
