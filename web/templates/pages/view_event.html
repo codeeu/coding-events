@@ -39,7 +39,7 @@
 						<div class="alert alert-warning">
 							This event is stil <strong>Pending</strong>.
 							If it looks good then
-							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk 1 %}">
+							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
 								approve 
 							</a> 
 							it
@@ -49,7 +49,7 @@
 							</a>{% endif %}.
 
 							Otherwise 
-							<a class="btn btn-sm" href="{% url 'web.change_status' event.pk 0 %}">
+							<a class="btn btn-sm" href="{% url 'web.reject_status' event.pk %}">
 								reject
 							</a> it.
 
@@ -57,7 +57,7 @@
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
 							This event is nice and approved. You can revert it to
-							<a href="{% url 'web.change_status' event.pk 2 %}">
+							<a href="{% url 'web.change_status' event.pk %}">
 								<strong>pending</strong> 
 							</a> or check other
 							<a href="{% url 'web.pending_events' user.profile.country %}">
@@ -66,7 +66,7 @@
 					{% elif event.status == 'REJECTED' %}
 						<div class="alert alert-info">
 							This event is rejected. You can revert it to
-							<a href="{% url 'web.change_status' event.pk 2 %}">
+							<a href="{% url 'web.change_status' event.pk %}">
 								<strong>pending</strong> 
 							</a> or check other
 							<a href="{% url 'web.pending_events' user.profile.country %}">
