@@ -10,7 +10,8 @@ var Codeweek = window.Codeweek || {};
 		map,
 		markers = {},
 		place,
-		placeinfowindow = null;
+		placeinfowindow = null,
+		overlapSpiderifier = null;
 
 
 	function createMap(events, lat, lng, zoomVal) {
@@ -34,6 +35,8 @@ var Codeweek = window.Codeweek || {};
 					position: google.maps.ControlPosition.RIGHT_BOTTOM
 				}
 			});
+		overlapSpiderifier = new OverlappingMarkerSpiderfier(map,
+			{markersWontMove: true, markersWontHide: true, keepSpiderfied: true, circleSpiralSwitchover: 5});
 		placeinfowindow = new google.maps.InfoWindow({
 			content: "loading..."
 		});
@@ -96,33 +99,41 @@ var Codeweek = window.Codeweek || {};
 			marker = new google.maps.Marker({
 				position: myLatLng,
 				map: map,
-				title: markTitle
+				title: markTitle,
+				description: markDesc,
+				image: markImg,
+				url: markUrl
 			});
 
-		google.maps.event.addListener(marker, 'click', function () {
+		overlapSpiderifier.addListener('click', function(marker) {
 			placeinfowindow.close();
 
-			var infoWindowContent = placeinfowindow.getContent(),
+			var infoWindowContent = '',
 				buble_content = '',
-				image = '';
+				image = '',
+				description = '';
 
-			if (markImg !== "") {
-				image += '<img src="' + Codeweek.Index.media_url + markImg + '" class="img-polaroid marker-buble-img">';
+			if (marker.image !== "") {
+				image += '<img src="' + Codeweek.Index.media_url + marker.image + '" class="img-polaroid marker-buble-img">';
 			}
 
-			if (markDesc.length > 15) {
-				markDesc = markDesc.substring(0, 150) + '... ';
+			if (marker.description.length > 150) {
+				description = marker.description.substring(0, 150) + '... ';
+			} else {
+				description = marker.description;
 			}
 
-			buble_content += '<div><h4><a href="' + markUrl + '" class="map-marker">' + markTitle + '</a></h4><div>' +
+			buble_content = '<div><h4><a href="' + marker.url + '" class="map-marker">' + marker.title + '</a></h4><div>' +
 							  image +
-							  '<p style="overflow:hidden;">' + markDesc +
-							  '&nbsp;<a href="' + markUrl + '" class="map-marker"><span>More...</span></a></p>';
+							  '<p style="overflow:hidden;">' + description +
+							  '&nbsp;<a href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
 
 
 			placeinfowindow.setContent(buble_content);
-			placeinfowindow.open(this.map, this);
+			placeinfowindow.open(marker.map, marker);
 		});
+
+		overlapSpiderifier.addMarker(marker);
 
 		return marker;
 	}

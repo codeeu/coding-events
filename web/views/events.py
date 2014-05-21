@@ -24,7 +24,6 @@ from web.processors.event import create_or_update_event
 from web.processors.user import update_user_email
 from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
-from web.processors.event import get_country_from_user_ip
 from web.processors.event import list_countries
 from web.processors.event import get_country
 from web.processors.media import process_image
