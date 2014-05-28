@@ -50,6 +50,30 @@ def get_pending_events(limit=None, order=None, country_code=None, past=False):
 		events = events[:limit]
 	return events
 
+def get_next_or_prev (event, country_code=None, past=False, direction=True):
+
+	"""
+	Get next or previous pending event
+	"""
+
+	next_event=None
+	events = Event.objects.filter(status='PENDING')
+
+	if direction:
+		events = events.filter(id__gt=event.id).order_by("id")
+	else:
+		events = events.filter(id__lt=event.id).order_by("-id")
+
+	if not past:
+		events = events.filter(end_date__gte=datetime.datetime.now())
+	if country_code:
+		events = events.filter(country=country_code)
+
+	if events:
+		next_event=events[0]
+
+	return next_event
+
 
 def get_filtered_events(search_filter=None, country_filter=None, theme_filter=None, audience_filter=None):
 

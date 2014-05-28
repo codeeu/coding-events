@@ -37,11 +37,18 @@
 				<div id="change_status">
 					{% if event.status == 'PENDING' %}
 						<div class="alert alert-warning">
-							This event is stil <strong>Pending</strong>.
+							This event is still <strong>Pending</strong>.
 							If it looks good then
 							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
 								approve
 							</a> it{% if event.creator.email %} or contact the event creator <a href="mailto:{{event.creator.email}}?subject=Your Code Week event">by email</a>{% endif %}.
+							
+							{% if next_event%}
+							<div class="pull-right">
+								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
+							</div>
+							{% endif %}
+
 						</div>
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
@@ -51,7 +58,12 @@
 							</a> or check other
 							<a href="{% url 'web.pending_events' user.profile.country %}">
 								<strong>pending events</strong>
-							</a>.
+							</a>
+							{% if next_event%}
+							<div class="pull-right">
+								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
+							</div>
+							{% endif %}
 						</div>
 					{% endif %}
 				</div>
