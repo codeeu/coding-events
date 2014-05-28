@@ -40,12 +40,32 @@
 							This event is stil <strong>Pending</strong>.
 							If it looks good then
 							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
-								approve
-							</a> it{% if event.creator.email %} or contact the event creator <a href="mailto:{{event.creator.email}}?subject=Your Code Week event">by email</a>{% endif %}.
+								approve 
+							</a> 
+							it
+							{% if event.creator.email %} or contact the event creator 
+							<a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
+								by email
+							</a>{% endif %}.
+
+							Otherwise 
+							<a class="btn btn-sm" href="{% url 'web.reject_status' event.pk %}">
+								reject
+							</a> it.
+
 						</div>
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
 							This event is nice and approved. You can revert it to
+							<a href="{% url 'web.change_status' event.pk %}">
+								<strong>pending</strong> 
+							</a> or check other
+							<a href="{% url 'web.pending_events' user.profile.country %}">
+								<strong>pending events</strong>
+							</a>.
+					{% elif event.status == 'REJECTED' %}
+						<div class="alert alert-info">
+							This event is rejected. You can revert it to
 							<a href="{% url 'web.change_status' event.pk %}">
 								<strong>pending</strong> 
 							</a> or check other

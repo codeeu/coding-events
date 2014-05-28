@@ -91,14 +91,24 @@
 
 .btn-directional {
 
-	padding: 15px 120px 15px 30px;;
+	padding: 15px 120px 15px 30px;
 	overflow: hidden;
 
 	&:before {
 		left: auto;
 		right: 10px;
 		z-index: 2;
-		line-height: 2.4;
+		pointer-events: none;
+	}
+
+	&.fa-plus-circle {
+		&:before {
+		line-height: 4;
+		}
+	}
+
+	&.fa-arrow-right {
+		line-height: 2.2;
 	}
 
 	&:after {
@@ -114,6 +124,7 @@
 	}
 
 	&:hover:after {
+		pointer-events: none;
 		width: 40%;
 	}
 
