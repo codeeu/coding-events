@@ -20,6 +20,7 @@ from web.forms.event_form import AddEventForm
 from web.forms.event_form import SearchEventForm
 from web.processors.event import get_initial_data
 from web.processors.event import change_event_status
+from web.processors.event import reject_event_status
 from web.processors.event import create_or_update_event
 from web.processors.user import update_user_email
 from web.processors.event import get_client_ip
@@ -285,3 +286,12 @@ def change_status(request, event_id):
 	event = change_event_status(event_id)
 
 	return HttpResponseRedirect(reverse('web.view_event', args=[event_id, event.slug]))
+
+@login_required
+@can_moderate_event
+def reject_status(request, event_id):
+	event = reject_event_status(event_id)
+
+	return HttpResponseRedirect(reverse('web.view_event', args=[event_id, event.slug]))
+
+

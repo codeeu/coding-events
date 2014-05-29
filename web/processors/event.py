@@ -116,15 +116,23 @@ def get_country(country_code, user_ip):
 
 def change_event_status(event_id):
 	event = Event.objects.get(pk=event_id)
-
+		
 	if event.status == 'APPROVED':
 		event.status = 'PENDING'
-	else:
-		event.status = 'APPROVED'
+
+	else: event.status = 'APPROVED'
 
 	event.save()
 	return event
 
+def reject_event_status(event_id):
+	event = Event.objects.get(pk=event_id)
+		
+	if event.status == 'REJECTED':
+		event.status = 'PENDING'
 
+	else: event.status = 'REJECTED'
 
+	event.save()
+	return event
 
