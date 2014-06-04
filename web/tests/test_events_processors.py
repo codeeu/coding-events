@@ -2,7 +2,7 @@ import datetime
 from django.test import TestCase
 from django.db import IntegrityError
 
-from models.events import Event
+from api.models.events import Event
 from django.contrib.auth.models import User
 from api.models import UserProfile
 
@@ -11,6 +11,7 @@ from api.processors import get_event_by_id
 from web.processors.event import create_or_update_event
 from api.processors import get_approved_events
 from api.processors import get_next_or_previous
+
 
 class EventTestCase(TestCase):
 	def create_event(self, title="Event title", start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
@@ -50,8 +51,6 @@ class EventTestCase(TestCase):
 		                     theme=[1],		                     
 		                     pub_date=datetime.datetime.now(),
 		                     tags=["tag1", "tag2"])
-
-
 
 	def test_get_event(self):
 		test_event = Event.objects.get(title="asdasd")
