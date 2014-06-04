@@ -68,9 +68,10 @@ class EventViewsTestCase(TestCase):
 		response = self.client.get(reverse('web.index'), {}, REMOTE_ADDR='93.103.53.11')
 
 		expected_map_events_result = json.dumps([
-			{'fields': {'geoposition': '0,0', 'slug': 'event-1-approved', 'title': 'Event 1 - Approved'},
-			 'model': 'api.event',
-			 'pk': 2}
+			{'pk': 2, 'model': 'api.event', 'fields': 
+			{'picture': '', 'slug': 'event-1-approved', 'title': 'Event 1 - Approved', 
+			'description': 'Some description - Approved', 'geoposition': '0,0', },	 
+			 }
 		])
 
 		#assert
