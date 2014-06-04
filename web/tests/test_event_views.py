@@ -4,9 +4,10 @@ from django.test import TestCase
 from django.test import Client
 from django.core.urlresolvers import reverse
 
-from models.events import Event
+from api.models.events import Event
 from django.contrib.auth.models import User
 from api.models import UserProfile
+
 
 class EventViewsTestCase(TestCase):
 	def setUp(self):
@@ -28,7 +29,6 @@ class EventViewsTestCase(TestCase):
 			tags=["tag1", "tag2"])
 
 		client = Client()
-
 
 	def test_index_view_without_approved_events(self):
 		response = self.client.get(reverse('web.index'), {}, REMOTE_ADDR='93.103.53.11')
