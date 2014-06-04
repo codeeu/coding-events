@@ -10,6 +10,7 @@ from geoposition import Geoposition
 from api.processors import get_event_by_id
 from web.processors.event import create_or_update_event
 from api.processors import get_approved_events
+from api.processors import get_next_or_previous
 
 class EventTestCase(TestCase):
 	def create_event(self, title="Event title", start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
@@ -172,3 +173,30 @@ class EventTestCase(TestCase):
 		self.assertEqual(2, len(events))
 		self.assertEqual("Testing event3", events[0].title)
 		self.assertEqual("Testing event4", events[1].title)
+
+	def test_get_next_or_previous_pending_event(self):
+		statuses = ["PENDING", "APPROVED", "PENDING"]
+
+		for status in statuses:
+			event = self.create_event(status=status)
+			
+		test_event = Event.objects.get(pk=2)
+		next_event = get_next_or_previous(test_event)
+
+		self.assertEqual(4, next_event.pk)
+
+		test_event_2 = Event.objects.get(pk=4)
+		next_event_2 = get_next_or_previous(test_event_2)
+
+		self.assertEqual(None, next_event_2)
+
+		test_event_3 = Event.objects.get(pk=4)
+		previous_event = get_next_or_previous(test_event_3, direction=False)
+
+		self.assertEqual(2, previous_event.pk)
+
+		test_event_4 = Event.objects.get(pk=1)
+		previous_event_2 = get_next_or_previous(test_event_4, direction=False)
+
+		self.assertEqual(None, previous_event_2)
+
