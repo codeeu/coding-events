@@ -14,7 +14,8 @@ from api.processors import get_next_or_previous
 
 
 class EventTestCase(TestCase):
-	def create_event(self, title="Event title", start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
+	"""def create_event(self, title="Event title", start_date=datetime.datetime.now() + datetime
+	.timedelta(days=0, hours=3),
 	                 end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
 	                 country_code="SI", status="PENDING",creator=User.objects.filter(pk=1)[0]):
 		event_data = {
@@ -199,3 +200,4 @@ class EventTestCase(TestCase):
 
 		self.assertEqual(None, previous_event_2)
 
+	"""
