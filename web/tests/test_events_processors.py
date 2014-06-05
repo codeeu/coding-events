@@ -1,7 +1,7 @@
 import datetime
 from django.test import TestCase
 from django.db import IntegrityError
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 from geoposition import Geoposition
 
@@ -35,7 +35,7 @@ class EventTestCase(TestCase):
 		    "status": status,
 		}
 		return create_or_update_event(**event_data)
-	"""
+
 	def setUp(self):
 		self.u1 = User.objects.create(username='user1')
 		self.up1 = UserProfile.objects.create(user=self.u1)
@@ -201,4 +201,4 @@ class EventTestCase(TestCase):
 		previous_event_2 = get_next_or_previous(test_event_4, direction=False)
 
 		self.assertEqual(None, previous_event_2)
-	"""
+
