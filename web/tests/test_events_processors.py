@@ -1,7 +1,7 @@
 import datetime
 from django.test import TestCase
 from django.db import IntegrityError
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 
 from geoposition import Geoposition
 
@@ -18,14 +18,13 @@ class EventTestCase(TestCase):
 	                 start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
 	                 end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
 	                 country_code="SI",
-	                 status="PENDING",
-	                 creator=User.objects.filter(pk=1)[0]):
+	                 status="PENDING"):
 
 		event_data = {
 			"end_date": start_date,
 			"start_date": end_date,
 			"organizer": "Test organizer",
-			"creator": User.objects.filter(pk=1)[0],
+			#"creator": User.objects.filter(pk=1)[0],
 			"title": title,
 			"pub_date": datetime.datetime.now(),
 			"country": country_code,
