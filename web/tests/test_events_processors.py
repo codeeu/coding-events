@@ -14,6 +14,9 @@ from api.processors import get_next_or_previous
 
 
 class EventTestCase(TestCase):
+	def get_user(self):
+		return User.objects.get(pk=1)
+
 	def create_event(self, title="Event title",
 	                 start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
 	                 end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
@@ -24,7 +27,7 @@ class EventTestCase(TestCase):
 			"end_date": start_date,
 			"start_date": end_date,
 			"organizer": "Test organizer",
-			#"creator": User.objects.filter(pk=1)[0],
+			"creator": self.get_user(),
 			"title": title,
 			"pub_date": datetime.datetime.now(),
 			"country": country_code,
