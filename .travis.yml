@@ -22,12 +22,8 @@ before_install:
 install:
   - pip install -r ./requirements.txt
 
-before_script:
-  - "export DJANGO_SETTINGS_MODULE=codeweekeu.settings_travis python -m unittest discover"
-
 # command to run tests, e.g. python setup.py test
-script:  python ./manage.py test
- --settings=codeweekeu.settings_travis
+script:  python ./manage.py test --settings=codeweekeu.settings_travis
 
 notifications:
   email:
