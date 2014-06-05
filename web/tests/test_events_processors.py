@@ -14,10 +14,13 @@ from api.processors import get_next_or_previous
 
 
 class EventTestCase(TestCase):
-	"""def create_event(self, title="Event title", start_date=datetime.datetime.now() + datetime
-	.timedelta(days=0, hours=3),
+	def create_event(self, title="Event title",
+	                 start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
 	                 end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-	                 country_code="SI", status="PENDING",creator=User.objects.filter(pk=1)[0]):
+	                 country_code="SI",
+	                 status="PENDING",
+	                 creator=User.objects.filter(pk=1)[0]):
+
 		event_data = {
 			"end_date": start_date,
 			"start_date": end_date,
@@ -26,14 +29,14 @@ class EventTestCase(TestCase):
 			"title": title,
 			"pub_date": datetime.datetime.now(),
 			"country": country_code,
-			"geoposition": "46.05528,14.51444",#Geoposition(46.05528, 14.51444),
+			"geoposition": "46.05528,14.51444",
 			"location": "Ljubljana",
 			"audience": [1],
 			"theme": [1],
 		    "status": status,
 		}
 		return create_or_update_event(**event_data)
-
+	"""
 	def setUp(self):
 		self.u1 = User.objects.create(username='user1')
 		self.up1 = UserProfile.objects.create(user=self.u1)
@@ -199,5 +202,4 @@ class EventTestCase(TestCase):
 		previous_event_2 = get_next_or_previous(test_event_4, direction=False)
 
 		self.assertEqual(None, previous_event_2)
-
 	"""
