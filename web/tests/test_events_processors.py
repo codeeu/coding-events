@@ -1,30 +1,37 @@
 import datetime
 from django.test import TestCase
 from django.db import IntegrityError
-
-from models.events import Event
 from django.contrib.auth.models import User
-from api.models import UserProfile
 
 from geoposition import Geoposition
+
+from api.models.events import Event
+from api.models import UserProfile
 from api.processors import get_event_by_id
 from web.processors.event import create_or_update_event
 from api.processors import get_approved_events
 from api.processors import get_next_or_previous
 
+
 class EventTestCase(TestCase):
-	def create_event(self, title="Event title", start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
+	def get_user(self):
+		return User.objects.get(pk=1)
+
+	def create_event(self, title="Event title",
+	                 start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
 	                 end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-	                 country_code="SI", status="PENDING",creator=User.objects.filter(pk=1)[0]):
+	                 country_code="SI",
+	                 status="PENDING"):
+
 		event_data = {
 			"end_date": start_date,
 			"start_date": end_date,
 			"organizer": "Test organizer",
-			"creator": User.objects.filter(pk=1)[0],
+			"creator": self.get_user(),
 			"title": title,
 			"pub_date": datetime.datetime.now(),
 			"country": country_code,
-			"geoposition": Geoposition(46.05528, 14.51444),
+			"geoposition": "46.05528,14.51444",
 			"location": "Ljubljana",
 			"audience": [1],
 			"theme": [1],
@@ -50,8 +57,6 @@ class EventTestCase(TestCase):
 		                     theme=[1],		                     
 		                     pub_date=datetime.datetime.now(),
 		                     tags=["tag1", "tag2"])
-
-
 
 	def test_get_event(self):
 		test_event = Event.objects.get(title="asdasd")
