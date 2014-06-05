@@ -23,7 +23,7 @@ install:
   - pip install -r ./requirements.txt
 
 # command to run tests, e.g. python setup.py test
-script:  python ./manage.py test --settings=codeweekeu.settings_travis
+script:  python ./manage.py test api web.tests --settings=codeweekeu.settings_travis
 
 notifications:
   email:
