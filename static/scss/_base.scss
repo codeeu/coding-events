@@ -153,10 +153,13 @@ INDEX PAGE STYLES
 	padding-left: 15px;
 	padding-right: 15px;
 	z-index: 0;
+	border-style: solid;
+	border-color: $primary-color;
+	border-width: 0px 0px 2px 2px;
 	background-color: $whitesmoke;
 	background: rgba($whitesmoke, 0.8);
-	font-size: 16px;
-	@include border-radius(10px);
+	font-size: 14px;
+	@include border-radius(15px);
 }
 
 .country-link {
