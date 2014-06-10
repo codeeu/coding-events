@@ -138,10 +138,27 @@ INDEX PAGE STYLES
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 }
+
 #showcountries{
 	background-color: $whitesmoke;
 	padding-bottom: 25px;
 }
+
+#past-events{
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+	z-index: 0;
+	background-color: $whitesmoke;
+	background: rgba($whitesmoke, 0.8);
+	font-size: 16px;
+	@include border-radius(10px);
+}
+
 .country-link {
 	margin: 1em 0;
 	height: 80px;

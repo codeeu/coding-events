@@ -42,9 +42,13 @@ then call your newly created function in view!!! .-Erika
 """
 
 
-def index(request, country_code=None):
+def index(request, country_code=None, past='no'):
 	template = 'pages/index.html'
-	events = get_approved_events()
+	if request.GET.get('past', '') == 'yes':
+		past = 'yes'
+		events = get_approved_events(past=True)
+	else:
+		events = get_approved_events()
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug', 'description', 'picture'))
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
@@ -63,6 +67,7 @@ def index(request, country_code=None):
 			'lan_lon': lan_lon,
 			'country': country,
 			'all_countries': all_countries,
+			'past': past
 		},
 		context_instance=RequestContext(request))
 

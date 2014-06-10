@@ -29,6 +29,14 @@
 		</div>
 
 		<div class="container index-content">
+			<div id="past-events">
+				{% if past == 'yes' %}
+				<a href="{% url 'web.index' %}"><i class="fa fa-check-square-o"></i> 
+				{% else %}
+				<a href="{% url 'web.index' %}?past=yes"><i class="fa fa-square-o"></i>
+				{% endif %}
+				Show past events</a>
+			</div>
 			<div class="clearfix">
 				<div id="search-events-link">
 					<a class="btn btn-primary btn-lg"
