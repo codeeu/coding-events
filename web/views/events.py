@@ -56,7 +56,6 @@ def index(request):
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 
-	country_code = None
 	country = get_country_from_user_ip(user_ip)
 
 	try:
