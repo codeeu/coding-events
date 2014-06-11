@@ -250,8 +250,7 @@ var Codeweek = window.Codeweek || {};
 				document.location.hash = "!" + country_code;
 			});
 
-			$("#past-link").click(function (event) {
-		
+			$("#past-link").click(function (event) {	
 				var newUrl = $(this).attr('href') + document.location.hash;
 				$(this).attr('href', newUrl);
 			});

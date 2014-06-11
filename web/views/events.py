@@ -27,6 +27,7 @@ from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import list_countries
 from web.processors.event import get_country
+from web.processors.event import get_country_from_user_ip
 from web.processors.media import process_image
 from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
@@ -42,7 +43,7 @@ then call your newly created function in view!!! .-Erika
 """
 
 
-def index(request, country_code=None):
+def index(request):
 	template = 'pages/index.html'
 
 	past = request.GET.get('past', 'no')
@@ -54,8 +55,7 @@ def index(request, country_code=None):
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug', 'description', 'picture'))
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
-
-	country = get_country(country_code, user_ip)
+	country = get_country_from_user_ip(user_ip)
 
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
