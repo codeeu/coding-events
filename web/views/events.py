@@ -55,7 +55,6 @@ def index(request):
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug', 'description', 'picture'))
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
-
 	country = get_country_from_user_ip(user_ip)
 
 	try:
