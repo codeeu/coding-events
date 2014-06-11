@@ -13,7 +13,6 @@ var Codeweek = window.Codeweek || {};
 		placeinfowindow = null,
 		overlapSpiderifier = null;
 
-
 	function createMap(events, lat, lng, zoomVal) {
 		var markerData = JSON.parse(events),
 			markerData_len = markerData.length,
@@ -212,6 +211,7 @@ var Codeweek = window.Codeweek || {};
 			$('#country').html(country_name);
 	}
 
+
 	function initialize(events, lon, lan) {
 		map = createMap(events, lon, lan, 3);
 		//setAutocomplete();
@@ -248,6 +248,12 @@ var Codeweek = window.Codeweek || {};
 				zoomCountry(country_name);
 				setSearchParams(country_code, country_name);
 				document.location.hash = "!" + country_code;
+			});
+
+			$("#past-link").click(function (event) {
+		
+				var newUrl = $(this).attr('href') + document.location.hash;
+				$(this).attr('href', newUrl);
 			});
 
 			$("#zoomEU").click(function (event) {
