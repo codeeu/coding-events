@@ -45,8 +45,8 @@ then call your newly created function in view!!! .-Erika
 def index(request, country_code=None):
 	template = 'pages/index.html'
 
-	past = request.GET.get('past', False)
-	if past:
+	past = request.GET.get('past', 'no')
+	if past == 'yes':
 		events = get_approved_events(past=True)
 	else:
 		events = get_approved_events()
