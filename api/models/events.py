@@ -38,6 +38,12 @@ class Event(models.Model):
 		('PENDING', 'Pending'),
 	    ('REJECTED', 'Rejected'),
 	)
+
+	CUSTOM_COUNTRY_ENTRIES = (
+		('00',' All countries'),
+		('01','---------------'),
+	)
+
 	status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='PENDING')
 	title = models.CharField(max_length=255, default=None)
 	slug = models.SlugField(max_length=255, null=True, blank=True)
