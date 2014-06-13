@@ -89,7 +89,7 @@ def get_filtered_events(search_filter=None, country_filter=None, theme_filter=No
 		filter_args = (Q(title__icontains=search_filter) | Q(description__icontains=search_filter) | Q(tags__name__icontains=search_filter) 
 			| Q(organizer__icontains=search_filter) | Q(location__icontains=search_filter),)
 
-	if country_filter:
+	if country_filter not in [ custom_country[0] for custom_country in Event.CUSTOM_COUNTRY_ENTRIES ]:
 		filter_kwargs['country'] = country_filter
 
 	if theme_filter:
