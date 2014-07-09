@@ -159,6 +159,12 @@ class SearchEventForm(forms.Form):
 		required=False,
 		widget=forms.TextInput(attrs={'placeholder': 'Search some serious events', 'class': 'form-control'})
 	)
+	all_events = forms.ChoiceField(
+		label='Include past events',
+		required=False,
+		widget=forms.CheckboxInput(attrs={'class': 'form-control search-form-element'}),
+		#choices=countries
+	)
 	country = forms.ChoiceField(
 		label='Select country',
 		required=False,
