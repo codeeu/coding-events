@@ -50,6 +50,30 @@ def get_pending_events(limit=None, order=None, country_code=None, past=False):
 		events = events[:limit]
 	return events
 
+def get_next_or_previous (event, country_code=None, past=False, direction=True):
+
+	"""
+	Get next or previous pending event
+	"""
+
+	next_event = None
+	events = Event.objects.filter(status='PENDING')
+	
+	if direction:
+		events = events.filter(pk__gt=event.pk).order_by("pk")
+	else:
+		events = events.filter(pk__lt=event.pk).order_by("-pk")
+
+	if not past:
+		events = events.filter(end_date__gte=datetime.datetime.now())
+	if country_code:
+		events = events.filter(country=country_code)
+
+	if events:
+		next_event = events[0]
+
+	return next_event
+
 
 def get_filtered_events(search_filter=None, country_filter=None, theme_filter=None, audience_filter=None):
 
@@ -65,7 +89,7 @@ def get_filtered_events(search_filter=None, country_filter=None, theme_filter=No
 		filter_args = (Q(title__icontains=search_filter) | Q(description__icontains=search_filter) | Q(tags__name__icontains=search_filter) 
 			| Q(organizer__icontains=search_filter) | Q(location__icontains=search_filter),)
 
-	if country_filter:
+	if country_filter and country_filter not in [ custom_country[0] for custom_country in Event.CUSTOM_COUNTRY_ENTRIES ]:
 		filter_kwargs['country'] = country_filter
 
 	if theme_filter:

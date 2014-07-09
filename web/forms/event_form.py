@@ -155,9 +155,12 @@ class AddEventForm(forms.ModelForm):
 
 class SearchEventForm(forms.Form):
 
+	countries._countries.append(Event.CUSTOM_COUNTRY_ENTRIES[0])
+	countries._countries.append(Event.CUSTOM_COUNTRY_ENTRIES[1])
+
 	search = forms.CharField(
 		required=False,
-		widget=forms.TextInput(attrs={'placeholder': 'Search some serious events', 'class': 'form-control'})
+		widget=forms.TextInput(attrs={'placeholder': 'Search for event name or tag', 'class': 'form-control'})
 	)
 	all_events = forms.ChoiceField(
 		label='Include past events',

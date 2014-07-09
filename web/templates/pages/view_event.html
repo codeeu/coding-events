@@ -40,8 +40,25 @@
 							This event is stil <strong>Pending</strong>.
 							If it looks good then
 							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
-								approve
-							</a> it{% if event.creator.email %} or contact the event creator <a href="mailto:{{event.creator.email}}?subject=Your Code Week event">by email</a>{% endif %}.
+								approve 
+							</a> 
+							it
+							{% if event.creator.email %} or contact the event creator 
+							<a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
+								by email
+							</a>{% endif %}.
+
+							Otherwise 
+							<a class="btn btn-sm" href="{% url 'web.reject_status' event.pk %}">
+								reject
+							</a> it.
+
+							{% if next_event%}
+							<div class="pull-right">
+								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
+							</div>
+							{% endif %}
+
 						</div>
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
@@ -52,8 +69,29 @@
 							<a href="{% url 'web.pending_events' user.profile.country %}">
 								<strong>pending events</strong>
 							</a>.
+							{% if next_event%}
+							<div class="pull-right">
+								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
+							</div>
+							{% endif %}
+
+					{% elif event.status == 'REJECTED' %}
+						<div class="alert alert-info">
+							This event is rejected. You can revert it to
+							<a href="{% url 'web.change_status' event.pk %}">
+								<strong>pending</strong> 
+							</a> or check other
+							<a href="{% url 'web.pending_events' user.profile.country %}">
+								<strong>pending events</strong>
+							</a>.
+							{% if next_event%}
+							<div class="pull-right">
+								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
+							</div>
+							{% endif %}
 						</div>
 					{% endif %}
+					</div>
 				</div>
 			</div>
 		{% endif %}

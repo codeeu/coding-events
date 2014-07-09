@@ -29,6 +29,14 @@
 		</div>
 
 		<div class="container index-content">
+			<div id="past-events">
+				{% if past == 'yes' %}
+				<a id="past-link" href="{% url 'web.index' %}"><i class="fa fa-check-square-o"></i> 
+				{% else %}
+				<a id="past-link" href="{% url 'web.index' %}?past=yes"><i class="fa fa-square-o"></i>
+				{% endif %}
+				Show past events</a>
+			</div>
 			<div class="clearfix">
 				<div id="search-events-link">
 					<a class="btn btn-primary btn-lg"
@@ -73,6 +81,7 @@
 	{% compress js %}
 		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
 		<script type="text/javascript" src="{% static "js/markerclusterer.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/oms.min.js" %}"></script>
 		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 		<script type="text/javascript">
 			Codeweek.Index.init(JSON.stringify({{ map_events|safe }}), {{ lan_lon.0 }}, {{ lan_lon.1 }});

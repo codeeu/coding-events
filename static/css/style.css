@@ -5796,6 +5796,7 @@ a {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg); }
 
+
 .btn-directional {
   padding: 15px 120px 15px 30px;
   overflow: hidden; }
@@ -5803,7 +5804,7 @@ a {
     left: auto;
     right: 10px;
     z-index: 2;
-    line-height: 2.4; }
+    line-height: 4; }
   .btn-directional:after {
     width: 30%;
     height: 200%;
@@ -5812,6 +5813,7 @@ a {
     right: 0;
     top: 0;
     margin: -5px 0 0 -5px;
+    pointer-events: none;
     -webkit-transform-origin: 0 0;
     -moz-transform-origin: 0 0;
     -ms-transform-origin: 0 0;
