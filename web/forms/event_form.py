@@ -162,7 +162,7 @@ class SearchEventForm(forms.Form):
 		required=False,
 		widget=forms.TextInput(attrs={'placeholder': 'Search for event name or tag', 'class': 'form-control'})
 	)
-	past = forms.BooleanField(
+	past_events = forms.BooleanField(
 		label='Include past events',
 		required=False,
 		widget=forms.CheckboxInput(attrs={'class': 'search-form-element'}),
