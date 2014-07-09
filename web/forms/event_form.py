@@ -162,10 +162,10 @@ class SearchEventForm(forms.Form):
 		required=False,
 		widget=forms.TextInput(attrs={'placeholder': 'Search for event name or tag', 'class': 'form-control'})
 	)
-	all_events = forms.ChoiceField(
+	past = forms.BooleanField(
 		label='Include past events',
 		required=False,
-		widget=forms.CheckboxInput(attrs={'class': 'form-control search-form-element'}),
+		widget=forms.CheckboxInput(attrs={'class': 'search-form-element'}),
 		#choices=countries
 	)
 	country = forms.ChoiceField(

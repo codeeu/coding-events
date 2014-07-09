@@ -19,14 +19,14 @@
 					</div>
 					<div class="row">
 						<div class="col-md-4">
-						<label for="id_include_past">{{ form.all_events.label }}</label> 
-						{{ form.all_events }}
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
 							<label for="id_country">{{ form.fields.country.label }}</label>
 							{{ form.country }}
+
+							<div class="search-checkbox">
+								<hr>
+								{{ form.past }}
+								<label for="id_include_past">{{ form.past.label }}</label> 
+							</div>
 
 							<div class="search-checkbox">
 								<hr>

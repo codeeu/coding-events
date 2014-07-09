@@ -75,7 +75,7 @@ def get_next_or_previous (event, country_code=None, past=False, direction=True):
 	return next_event
 
 
-def get_filtered_events(search_filter=None, country_filter=None, theme_filter=None, audience_filter=None):
+def get_filtered_events(search_filter=None, country_filter=None, theme_filter=None, audience_filter=None, past_events=None):
 
 	"""
 	Filter events by given filter
@@ -83,7 +83,10 @@ def get_filtered_events(search_filter=None, country_filter=None, theme_filter=No
 	filter_args = ()
 
 	# default
-	filter_kwargs = {'status': 'APPROVED', 'end_date__gte': datetime.datetime.now()}
+	filter_kwargs = {'status': 'APPROVED'}
+
+	if not past_events:
+		filter_kwargs['end_date__gte']= datetime.datetime.now()
 
 	if search_filter:
 		filter_args = (Q(title__icontains=search_filter) | Q(description__icontains=search_filter) | Q(tags__name__icontains=search_filter) 

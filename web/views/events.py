@@ -269,8 +269,9 @@ def search_events(request):
 				country_filter = form.cleaned_data.get('country', None)
 				theme_filter = form.cleaned_data.get('theme', None)
 				audience_filter = form.cleaned_data.get('audience', None)
+				include_past_events = form.cleaned_data.get('past',None)
 
-				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter)
+				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter,include_past_events)
 				country = {'country_code': country_filter}
 		else:
 			form = SearchEventForm(country_code=country['country_code'])
