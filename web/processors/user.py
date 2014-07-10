@@ -19,7 +19,8 @@ def get_ambassadors():
 def get_ambassadors_for_countries():
 	ambassadors = get_ambassadors()
 	countries_ambassadors = []
-	for code, name in list(countries):
+	# list countries minus two CUSTOM_COUNTRY_ENTRIES
+	for code, name in list(countries)[2:]:
 		readable_name = unicode(name)
 		found_ambassadors = []
 		for ambassador in ambassadors:
