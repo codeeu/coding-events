@@ -68,7 +68,8 @@ def index(request):
 			'map_events': map_events,
 			'lan_lon': lan_lon,
 			'country': country,
-			'all_countries': all_countries,
+			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
+			'all_countries': all_countries[2:],
 			'past': past
 		},
 		context_instance=RequestContext(request))
