@@ -74,7 +74,7 @@
 								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
 							</div>
 							{% endif %}
-
+						</div>
 					{% elif event.status == 'REJECTED' %}
 						<div class="alert alert-info">
 							This event is rejected. You can revert it to
@@ -91,21 +91,18 @@
 							{% endif %}
 						</div>
 					{% endif %}
-					</div>
-				</div>
-			</div>
-		{% endif %}
-		{% endif %}
-		{% if event.creator.id == request.user.id %}
-		<div class="edit-toolbar">
-			<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
-					<i class="fa fa-pencil-square-o"></i>Edit event</a>
-			{% if event.status == 'PENDING' %}
-						<div class="alert alert-warning">
-							<strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
-						</div>
 			{% endif %}
-		</div>	
+			{% endif %}
+			{% if event.creator.id == request.user.id %}
+				<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
+						<i class="fa fa-pencil-square-o"></i>Edit event</a>
+				{% if event.status == 'PENDING' %}
+							<div class="alert alert-warning">
+								<strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
+							</div>
+				{% endif %}
+				</div>
+			</div>	
 		{% endif %}
 
 
