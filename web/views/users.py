@@ -53,7 +53,6 @@ def ambassadors(request):
 		user_country = get_country_from_user_ip(user_ip)
 	except:
 		user_country = None
-	print user_ip, user_country
 	countries_ambassadors = get_ambassadors_for_countries()
 
 	return render_to_response(
