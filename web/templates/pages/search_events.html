@@ -51,7 +51,24 @@
 										{% include 'layout/event_tile_long.html' %}
 									{% endfor %}
 
-									{% show_pages %}
+									{% get_pages %}
+									{% if pages.paginated %}
+										<ul class="pagination">
+										<li>{{ pages.previous }}</li>
+										{% for page in pages %}
+											{% if page.is_current %}
+											<li class="active endless_page_current">
+											<a href="#">
+											{% else %}
+											<li>
+											<a href="{% url 'web.search_events' %}?past={% if past %}yes{% else %}no{% endif %}{% if page.url %}&amp;page={{ page.number }}{% endif %}" rel="page" class="endless_page_link">
+											{% endif %}
+											{{ page.number }}</a>
+											</li>
+										{% endfor %}
+										<li>{{ pages.next }}</li>
+										</ul>
+									{% endif %}
 
 								{% else %}
 									<h3>
