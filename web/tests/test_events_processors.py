@@ -223,3 +223,4 @@ class EventTestCase(TestCase):
 		nearby = get_nearby_events(target_event)
 
 		self.assertEqual(1, len(nearby))
+		
