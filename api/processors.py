@@ -126,6 +126,22 @@ def get_created_events(creator, limit=None, order=None, country_code=None, past=
 		events = events = events[:limit]
 	return events
 
+def get_nearby_events(event, limit=None, country_code=None, past=False):
+
+	"""
+	Select ten events which are near by the current event 
+	"""
+
+	events = Event.objects.filter(status='APPROVED')
+	if not past:
+		events = events.filter(end_date__gte=datetime.datetime.now())
+	if country_code:
+		events = events.filter(country=country_code)
+		events = events.exclude(pk=event.pk)
+	if limit:
+		events = events[:limit]
+	return events
+
 def list_themes():
 	themes = EventTheme.objects.all()
 

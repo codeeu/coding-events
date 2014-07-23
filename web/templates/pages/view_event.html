@@ -188,11 +188,20 @@
 			<div class="col-md-12 first">
 				<hr>
 			</div>
-			<div id="view-event-map-wrapper" class=" col-md-12 first">
+			<div id="view-event-map-wrapper" class="col-md-12 first">
 				<div id="view-event-map"></div>
 			</div>
+			</div>
+			<div class="col-md-12 first">
+				<hr>
+			</div>
+			<div class="col-md-12 first">
+				<h3>Near by events:</h3>
+				{% for event in near_by %}
+					{% include 'layout/near_event_tile.html' %}
+				{% endfor %}
+			</div>
 		</div>
-	</div>
 {% endblock content %}
 
 {% block custom_js %}
