@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load compress %}
+{% load avatar_tags %}
 {% block title %}- Map of Events{% endblock title %}
 
 {% block social %}
@@ -62,11 +63,22 @@
 			</div>
 
 			<hr />
-
 			<div class="how-to">
-				<a href="{% url 'web.guide' %}" target="_blank" class="btn btn-sm">
-					How to organize your own event?
+				<p><strong>Get involved:</strong>
+				<a href="{% url 'web.guide' %}" class="btn btn-primary btn-sm">
+					Organize or support events in your city
+				</a></p>
+				<p>or 
+				<a href="{% url 'web.ambassadors' %}{% if country %}#{{ country.country_name }}{% endif %}">
+					contact your <strong>EU Code Week Ambassador{% if ambassadors|length > 1 %}s{% endif %}</strong>
+					{% if country %} 
+						{% for ambassador in ambassadors %}
+							{% avatar ambassador.user.username 45 %} 
+						{% endfor %} 
+					{% endif %} 
 				</a>
+				</p>
+
 			</div>
 		</div>
 	</div>

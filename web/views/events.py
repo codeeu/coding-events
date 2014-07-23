@@ -23,6 +23,7 @@ from web.processors.event import change_event_status
 from web.processors.event import reject_event_status
 from web.processors.event import create_or_update_event
 from web.processors.user import update_user_email
+from web.processors.user import get_ambassadors
 from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import list_countries
@@ -61,8 +62,10 @@ def index(request):
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
 	except GeoIPException:
 		lan_lon = (58.08695, 5.58121)
-
+	
+	ambassadors = get_ambassadors(country['country_code'])
 	all_countries = list_countries()
+	
 	return render_to_response(
 		template, {
 			'map_events': map_events,
@@ -70,7 +73,8 @@ def index(request):
 			'country': country,
 			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
 			'all_countries': all_countries[2:],
-			'past': past
+			'past': past,
+			'ambassadors': ambassadors,
 		},
 		context_instance=RequestContext(request))
 

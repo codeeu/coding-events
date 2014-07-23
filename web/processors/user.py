@@ -9,11 +9,15 @@ def get_user_profile(user_id):
     user = User.objects.get(id=user_id)
     return user.profile
 
-def get_ambassadors():
+def get_ambassadors(country_code=None):
 	ambassadors = []
-	aambassadors = User.objects.filter(groups__name='ambassadors').order_by('date_joined')
-	for ambassador in aambassadors:
-		ambassadors.append(ambassador.profile)
+	all_ambassadors = User.objects.filter(groups__name='ambassadors').order_by('date_joined')
+	for ambassador in all_ambassadors:
+		if country_code:
+			if ambassador.profile.country == country_code:
+				ambassadors.append(ambassador.profile)
+		else:
+			ambassadors.append(ambassador.profile)
 	return ambassadors
 
 def get_ambassadors_for_countries():
