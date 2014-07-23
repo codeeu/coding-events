@@ -16,6 +16,7 @@ from api.processors import get_approved_events
 from api.processors import get_pending_events
 from api.processors import get_created_events
 from api.processors import get_next_or_previous
+from api.processors import get_nearby_events
 from web.forms.event_form import AddEventForm
 from web.forms.event_form import SearchEventForm
 from web.processors.event import get_initial_data
@@ -191,11 +192,13 @@ def view_event_by_country(request, country_code):
 def view_event(request, event_id, slug):
 	event = get_event_by_id(event_id)
 	next_event = get_next_or_previous(event, country_code=event.country)
+	nearby = get_nearby_events(event, limit=10)
 
 	return render_to_response(
 		'pages/view_event.html', {
 			'event': event,
 			'next_event': next_event,
+			'nearby': nearby
 		}, context_instance=RequestContext(request))
 
 

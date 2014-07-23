@@ -11,6 +11,7 @@ from api.processors import get_event_by_id
 from web.processors.event import create_or_update_event
 from api.processors import get_approved_events
 from api.processors import get_next_or_previous
+from api.processors import get_nearby_events
 
 
 class EventTestCase(TestCase):
@@ -204,4 +205,22 @@ class EventTestCase(TestCase):
 		previous_event_2 = get_next_or_previous(test_event_4, direction=False)
 
 		self.assertEqual(None, previous_event_2)
+
+	def test_get_nearby_events(self):
+		target_event = self.create_event(status="APPROVED")
+		nearby_event = self.create_event(status="APPROVED")
+		nearby = get_nearby_events(target_event)
+
+		self.assertEqual(1, len(nearby))
+		self.assertEqual(nearby_event.pk, nearby[0].pk)
+
+		self.create_event(status="APPROVED", country_code="HR")
+		nearby = get_nearby_events(target_event)
+		
+		self.assertEqual(1, len(nearby))
+
+		self.create_event(status="PENDING")
+		nearby = get_nearby_events(target_event)
+
+		self.assertEqual(1, len(nearby))
 
