@@ -195,12 +195,14 @@
 			<div class="col-md-12 first">
 				<hr>
 			</div>
+			{% if nearby %}
 			<div class="col-md-12 first">
 				<h3>Nearby events:</h3>
 				{% for event in nearby %}
 					{% include 'layout/near_event_tile.html' %}
 				{% endfor %}
 			</div>
+			{% endif %}
 		</div>
 {% endblock content %}
 
