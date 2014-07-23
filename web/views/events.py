@@ -264,6 +264,12 @@ def search_events(request):
 		country_code = request.GET.get('country_code', None)
 		country = get_country(country_code, user_ip)
 		events = get_approved_events(country_code=country)
+		
+		is_it_past = request.GET.get('past', 'no')
+		if is_it_past == 'yes':
+			past = True
+		else:
+			past = False
 
 		if request.method == 'POST':
 			form = SearchEventForm(request.POST)
@@ -277,15 +283,20 @@ def search_events(request):
 
 				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
 				country = {'country_code': country_filter}
+
+				if past_events:
+					past = True
+				
 		else:
-			form = SearchEventForm(country_code=country['country_code'])
-			events = get_approved_events(country_code=country['country_code'])
+			form = SearchEventForm(country_code=country['country_code'],initial={'past_events': past})
+			events = get_approved_events(country_code=country['country_code'],past=past)
 
 		return render_to_response(
 			'pages/search_events.html', {
 				'events': events,
 				'form': form,
 			    'country': country['country_code'],
+			    'past': past,
 			}, context_instance=RequestContext(request))
 
 

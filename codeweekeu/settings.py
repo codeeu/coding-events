@@ -459,7 +459,6 @@ COUNTRIES_OVERRIDE = {
 	u'TM': None,
 	u'TN': None,
 	u'TO': None,
-	u'TR': None,
 	u'TT': None,
 	u'TV': None,
 	u'TW': None,
