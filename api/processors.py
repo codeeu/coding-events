@@ -132,9 +132,7 @@ def get_nearby_events(event, limit=None, past=False):
 	Select ten events which are near by the current event 
 	"""
 
-	events = Event.objects.filter(status='APPROVED')
-	events = events.filter(country=event.country)
-	events = events.exclude(pk=event.pk)
+	events = Event.objects.filter(status='APPROVED').filter(country=event.country).exclude(pk=event.pk)
 
 	if not past:
 		events = events.filter(end_date__gte=datetime.datetime.now())
