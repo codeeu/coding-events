@@ -188,13 +188,13 @@ def view_event_by_country(request, country_code):
 def view_event(request, event_id, slug):
 	event = get_event_by_id(event_id)
 	next_event = get_next_or_previous(event, country_code=event.country)
-	near_by = get_nearby_events(event, limit=10)
+	nearby = get_nearby_events(event, limit=10)
 
 	return render_to_response(
 		'pages/view_event.html', {
 			'event': event,
 			'next_event': next_event,
-			'near_by': near_by,
+			'nearby': nearby
 		}, context_instance=RequestContext(request))
 
 
