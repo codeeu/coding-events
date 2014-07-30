@@ -8,7 +8,6 @@ from api.models import UserProfile
 
 from django.core import mail
 
-# Create your tests here.
 
 class EmailTestCase(TestCase):
 	def setUp(self):
@@ -34,7 +33,7 @@ class EmailTestCase(TestCase):
 		send_event_report_email(self.u1, self.event)
 		email = mail.outbox[0]
 
-		self.assertEquals('New event needs your attention', email.subject)
+		self.assertEquals('A new event on codeweek.eu needs your attention', email.subject)
 		self.assertEquals('info@codeweek.eu', email.from_email)
 		self.assertEquals([self.u1.email], email.to)
 		self.assertIn(self.u1.first_name, email.body)

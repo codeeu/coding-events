@@ -14,11 +14,9 @@ def send_event_report_email (user, event):
 
 	txt_content = template.render(context)
 
-	send_mail('New event needs your attention', txt_content, "info@codeweek.eu", [user.email])
+	send_mail('A new event on codeweek.eu needs your attention', txt_content, "info@codeweek.eu", [user.email])
 
 def send_email_to_country_ambassadors(event):
 	ambassadors = get_ambassadors_for_country(event.country)
 	for user in ambassadors:
 		send_event_report_email(user, event)
-
-	

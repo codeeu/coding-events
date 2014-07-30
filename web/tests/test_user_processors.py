@@ -39,4 +39,3 @@ class EventTestCase(TestCase):
 
 		self.assertItemsEqual ([self.u1], get_ambassadors_for_country("SI"))
 		self.assertItemsEqual ([], get_ambassadors_for_country("FR"))
-	

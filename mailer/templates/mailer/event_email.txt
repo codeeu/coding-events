@@ -1,7 +1,6 @@
 Hello, {{user.first_name}}!
 
-New event {{ event.title }} has been added to the codeweek.eu site and it needs your revision. Could you be kind enough to check if everything is ok and approve it, otherwise request an update.
-
+A new event {{ event.title }} has been added to the codeweek.eu site and it needs your revision. Would you be kind enough to check if everything is ok and approve it, or otherwise request an update: http://events.codeweek.eu{% url 'web.view_event' event.id event.slug %}
 
 Thank you for your help!
 
