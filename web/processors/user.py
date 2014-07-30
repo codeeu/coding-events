@@ -29,6 +29,11 @@ def get_ambassadors_for_countries():
 	countries_ambassadors.sort()
 	return countries_ambassadors
 
+def get_ambassadors_for_country(country):
+	ambassadors = User.objects.filter(groups__name='ambassadors', userprofile__country=country)
+	return ambassadors
+
+
 def update_user_email(user_id, new_email):
 	user = User.objects.get(id=user_id)
 	user.email = new_email

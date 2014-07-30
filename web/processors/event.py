@@ -7,6 +7,7 @@ from api.models import Event
 from django_countries import countries
 
 from web.processors import media
+from mailer.event_report_mailer import send_email_to_country_ambassadors
 
 
 def get_client_ip(forwarded=None, remote=None):
@@ -100,6 +101,7 @@ def create_or_update_event(event_id=None, **event_data):
 
 	else:
 		event = Event.objects.create(**event_data)
+		send_email_to_country_ambassadors(event)
 
 	return event
 
