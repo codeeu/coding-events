@@ -231,20 +231,26 @@ class EventTestCase(TestCase):
 
 		self.assertEqual(approved.status, "APPROVED")
 
+		test_event = Event.objects.get(pk=pending_event.id)
+		self.assertEqual(test_event.status, "APPROVED")
+
 		approved_event = self.create_event(status="APPROVED")
 		pending = change_event_status(approved_event.id)
 
-		self.assertEqual(pending.status, "PENDING")
+		test_event1 = Event.objects.get(pk=approved_event.id)
+		self.assertEqual(test_event1.status, "PENDING")
 
 
 	def test_reject_event_status(self):
 		pending_event = self.create_event(status="PENDING")
 		reject = reject_event_status(pending_event.id)
 
-		self.assertEqual(reject.status, "REJECTED")
+		test_event = Event.objects.get(pk=pending_event.id)
+		self.assertEqual(test_event.status, "REJECTED")
 
 		rejected_event = self.create_event(status="REJECTED")
 		pending = reject_event_status(rejected_event.id)
 
-		self.assertEqual(pending.status, "PENDING")
+		test_event1 = Event.objects.get(pk=rejected_event.id)
+		self.assertEqual(test_event1.status, "PENDING")
 
