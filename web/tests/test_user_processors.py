@@ -30,12 +30,13 @@ class EventTestCase(TestCase):
 			pub_date=datetime.datetime.now(),
 			tags=["tag1", "tag2"])
 
-	@pytest.mark.xfail
 	def test_get_ambassadors_for_country(self):
 		self.up1.country = "SI"
 		self.up1.save()
 
-		group = Group.objects.get(name="ambassadors")
+		group, created = Group.objects.get_or_create(name="ambassadors")
+		if created:
+			group.save()
 
 		group.user_set.add(self.u1)
 
