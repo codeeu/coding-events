@@ -220,6 +220,7 @@ INSTALLED_APPS = (
     # defined apps
     'web',
 	'api',
+	'mailer'
 )
 ########## END APP CONFIGURATION
 
