@@ -531,6 +531,11 @@ COMPRESS_PRECOMPILERS = (
 ########## END DJANGO COMRESSOR SETTINGS
 
 
+########## TESTING
+TEST_RUNNER = 'django_pytest.test_runner.TestRunner'
+SOUTH_TESTS_MIGRATE = True
+########## END TESTING
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 try:

@@ -23,7 +23,10 @@ install:
   - pip install -r ./requirements.txt
 
 # command to run tests, e.g. python setup.py test
-script:  python ./manage.py test api web.tests --settings=codeweekeu.settings_travis
+script:
+  - DJANGO_SETTINGS_MODULE=codeweekeu.settings_travis python ./manage.py test --cov web --cov api --cov-report term-missing -v
+after_success:
+  - coveralls
 
 notifications:
   email:
