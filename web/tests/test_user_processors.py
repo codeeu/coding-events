@@ -15,19 +15,19 @@ class EventTestCase(TestCase):
 		self.up1 = UserProfile.objects.create(user=self.u1)
 
 		Event.objects.create(organizer="asdasd",
-							 creator=User.objects.filter(pk=1)[0],
-							 title="asdasd",
-							 description="asdsad",
-							 location="asdsad",
-							 start_date=datetime.datetime.now(),
-							 end_date=datetime.datetime.now(),
-							 event_url="http://eee.com",
-							 contact_person="ss@ss.com",
-							 country="SI",
-							 audience=[1],
-							 theme=[1],		                     
-							 pub_date=datetime.datetime.now(),
-							 tags=["tag1", "tag2"])
+			creator=User.objects.filter(pk=1)[0],
+			title="asdasd",
+			description="asdsad",
+			location="asdsad",
+			start_date=datetime.datetime.now(),
+			end_date=datetime.datetime.now(),
+			event_url="http://eee.com",
+			contact_person="ss@ss.com",
+			country="SI",
+			audience=[1],
+			theme=[1],
+			pub_date=datetime.datetime.now(),
+			tags=["tag1", "tag2"])
 
 	def test_get_ambassadors_for_country(self):
 		self.up1.country = "SI"
