@@ -77,7 +77,7 @@
 					{% elif event.status == 'REJECTED' %}
 						<div class="alert alert-info">
 							This event is rejected. You can revert it to
-							<a href="{% url 'web.change_status' event.pk %}">
+							<a href="{% url 'web.reject_status' event.pk %}">
 								<strong>pending</strong> 
 							</a> or check other
 							<a href="{% url 'web.pending_events' user.profile.country %}">
