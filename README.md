@@ -30,7 +30,6 @@ You'll also need `saas`, which is a ruby package that you need to have installed
 Create new user and environment:
 
 	./manage.py setupdb
-	./manate.py migrate
 
 
 Make your changes, push to your fork and create a new Pull Request.
