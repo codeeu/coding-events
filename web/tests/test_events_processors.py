@@ -19,10 +19,9 @@ class EventTestCase(TestCase):
 		return User.objects.get(pk=1)
 
 	def create_event(self, title="Event title",
-	                 start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
-	                 end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-	                 country_code="SI",
-	                 status="PENDING"):
+		start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3), 
+		end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+		country_code="SI", status="PENDING"):
 
 		event_data = {
 			"end_date": start_date,
@@ -36,7 +35,7 @@ class EventTestCase(TestCase):
 			"location": "Ljubljana",
 			"audience": [1],
 			"theme": [1],
-		    "status": status,
+			"status": status,
 		}
 		return create_or_update_event(**event_data)
 
@@ -45,19 +44,19 @@ class EventTestCase(TestCase):
 		self.up1 = UserProfile.objects.create(user=self.u1)
 
 		Event.objects.create(organizer="asdasd",
-							 creator=User.objects.filter(pk=1)[0],
-		                     title="asdasd",
-		                     description="asdsad",
-		                     location="asdsad",
-		                     start_date=datetime.datetime.now(),
-		                     end_date=datetime.datetime.now(),
-		                     event_url="http://eee.com",
-		                     contact_person="ss@ss.com",
-		                     country="SI",
-		                     audience=[1],
-		                     theme=[1],		                     
-		                     pub_date=datetime.datetime.now(),
-		                     tags=["tag1", "tag2"])
+			creator=User.objects.filter(pk=1)[0],
+			title="asdasd",
+			description="asdsad",
+			location="asdsad",
+			start_date=datetime.datetime.now(),
+			end_date=datetime.datetime.now(),
+			event_url="http://eee.com",
+			contact_person="ss@ss.com",
+			country="SI",
+			audience=[1],
+			theme=[1],
+			pub_date=datetime.datetime.now(),
+			tags=["tag1", "tag2"])
 
 	def test_get_event(self):
 		test_event = Event.objects.get(title="asdasd")
@@ -135,15 +134,15 @@ class EventTestCase(TestCase):
 
 	def test_get_approved_event_without_filter_with_pending_event(self):
 		self.create_event(start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
-		                  end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-		                  status="APPROVED",)
+			end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+			status="APPROVED",)
 		events = get_approved_events()
 		self.assertEqual(1, len(events))
 
 	def test_get_approved_event_without_filter_with_approved_event_but_passed_date(self):
 		self.create_event(start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
-		                  end_date=datetime.datetime.now() - datetime.timedelta(days=2, hours=3),
-		                  status="APPROVED")
+			end_date=datetime.datetime.now() - datetime.timedelta(days=2, hours=3),
+			status="APPROVED")
 		events = get_approved_events()
 		self.assertEqual(0, len(events))
 
@@ -157,8 +156,8 @@ class EventTestCase(TestCase):
 		countries = ["IS", "DK", "FI", "FI", "LI"]
 		for index, country in enumerate(countries):
 			self.create_event(title="Testing event" + str(index + 1), country_code=country, status="APPROVED",
-			                  start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=index + 1),
-			                  end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=index + 1))
+				start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=index + 1),
+				end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=index + 1))
 
 		events = get_approved_events(order="start_date")
 		self.assertEqual(5, len(events))
@@ -172,8 +171,8 @@ class EventTestCase(TestCase):
 		countries = ["IS", "DK", "FI", "FI", "FI"]
 		for index, country in enumerate(countries):
 			self.create_event(title="Testing event" + str(index + 1), country_code=country, status="APPROVED",
-			                  start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=index + 1),
-			                  end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=index + 1))
+				start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=index + 1),
+				end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=index + 1))
 
 		events = get_approved_events(order="start_date", limit=2, country_code="FI")
 		self.assertEqual(2, len(events))
