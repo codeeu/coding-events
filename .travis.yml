@@ -24,7 +24,7 @@ install:
 
 # command to run tests, e.g. python setup.py test
 script:
-  - python ./manage.py test --settings=codeweekeu.settings_travis --cov web --cov api --cov-report term-missing -v
+  - DJANGO_SETTINGS_MODULE=codeweekeu.settings_travis python ./manage.py test --cov web --cov api --cov-report term-missing -v
 after_success:
   - coveralls
 
