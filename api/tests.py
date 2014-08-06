@@ -1,11 +1,12 @@
 import datetime
+import pytest
 from django.test import TestCase
 from django.db import IntegrityError
+from django.contrib.auth.models import User
 
 from api.models import Event
 from api.models import EventTheme
 from api.models import EventAudience
-from django.contrib.auth.models import User
 from api.models import UserProfile
 
 from api.processors import get_all_events
