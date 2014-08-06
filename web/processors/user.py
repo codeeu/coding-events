@@ -9,17 +9,22 @@ def get_user_profile(user_id):
     user = User.objects.get(id=user_id)
     return user.profile
 
-def get_ambassadors():
+def get_ambassadors(country_code=None):
 	ambassadors = []
-	aambassadors = User.objects.filter(groups__name='ambassadors').order_by('date_joined')
-	for ambassador in aambassadors:
-		ambassadors.append(ambassador.profile)
+	all_ambassadors = User.objects.filter(groups__name='ambassadors').order_by('date_joined')
+	for ambassador in all_ambassadors:
+		if country_code:
+			if ambassador.profile.country == country_code:
+				ambassadors.append(ambassador.profile)
+		else:
+			ambassadors.append(ambassador.profile)
 	return ambassadors
 
 def get_ambassadors_for_countries():
 	ambassadors = get_ambassadors()
 	countries_ambassadors = []
-	for code, name in list(countries):
+	# list countries minus two CUSTOM_COUNTRY_ENTRIES
+	for code, name in list(countries)[2:]:
 		readable_name = unicode(name)
 		found_ambassadors = []
 		for ambassador in ambassadors:
@@ -28,6 +33,11 @@ def get_ambassadors_for_countries():
 		countries_ambassadors.append((readable_name,found_ambassadors))
 	countries_ambassadors.sort()
 	return countries_ambassadors
+
+def get_ambassadors_for_country(country):
+	ambassadors = User.objects.filter(groups__name='ambassadors', userprofile__country=country)
+	return ambassadors
+
 
 def update_user_email(user_id, new_email):
 	user = User.objects.get(id=user_id)

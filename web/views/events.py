@@ -15,6 +15,8 @@ from api.processors import get_filtered_events
 from api.processors import get_approved_events
 from api.processors import get_pending_events
 from api.processors import get_created_events
+from api.processors import get_next_or_previous
+from api.processors import get_nearby_events
 from web.forms.event_form import AddEventForm
 from web.forms.event_form import SearchEventForm
 from web.processors.event import get_initial_data
@@ -22,10 +24,12 @@ from web.processors.event import change_event_status
 from web.processors.event import reject_event_status
 from web.processors.event import create_or_update_event
 from web.processors.user import update_user_email
+from web.processors.user import get_ambassadors
 from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import list_countries
 from web.processors.event import get_country
+from web.processors.event import get_country_from_user_ip
 from web.processors.media import process_image
 from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
@@ -41,30 +45,37 @@ then call your newly created function in view!!! .-Erika
 """
 
 
-def index(request, country_code=None):
+def index(request):
 	template = 'pages/index.html'
-	events = get_approved_events()
+
+	past = request.GET.get('past', 'no')
+	if past == 'yes':
+		events = get_approved_events(past=True)
+	else:
+		events = get_approved_events()
+
 	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug', 'description', 'picture'))
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
-
-	country = get_country(country_code, user_ip)
+	country = get_country_from_user_ip(user_ip)
 
 	try:
 		lan_lon = get_lat_lon_from_user_ip(user_ip)
 	except GeoIPException:
 		lan_lon = (58.08695, 5.58121)
-
-	events = get_approved_events(order='pub_date', country_code=country.get('country_code', None))
-
+	
+	ambassadors = get_ambassadors(country['country_code'])
 	all_countries = list_countries()
+	
 	return render_to_response(
 		template, {
-			'latest_events': events,
 			'map_events': map_events,
 			'lan_lon': lan_lon,
 			'country': country,
-			'all_countries': all_countries,
+			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
+			'all_countries': all_countries[2:],
+			'past': past,
+			'ambassadors': ambassadors,
 		},
 		context_instance=RequestContext(request))
 
@@ -180,10 +191,14 @@ def view_event_by_country(request, country_code):
 
 def view_event(request, event_id, slug):
 	event = get_event_by_id(event_id)
+	next_event = get_next_or_previous(event, country_code=event.country)
+	nearby = get_nearby_events(event, limit=10)
 
 	return render_to_response(
 		'pages/view_event.html', {
 			'event': event,
+			'next_event': next_event,
+			'nearby': nearby
 		}, context_instance=RequestContext(request))
 
 
@@ -253,6 +268,12 @@ def search_events(request):
 		country_code = request.GET.get('country_code', None)
 		country = get_country(country_code, user_ip)
 		events = get_approved_events(country_code=country)
+		
+		is_it_past = request.GET.get('past', 'no')
+		if is_it_past == 'yes':
+			past = True
+		else:
+			past = False
 
 		if request.method == 'POST':
 			form = SearchEventForm(request.POST)
@@ -262,18 +283,24 @@ def search_events(request):
 				country_filter = form.cleaned_data.get('country', None)
 				theme_filter = form.cleaned_data.get('theme', None)
 				audience_filter = form.cleaned_data.get('audience', None)
+				past_events = form.cleaned_data.get('past_events',None)
 
-				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter)
+				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
 				country = {'country_code': country_filter}
+
+				if past_events:
+					past = True
+				
 		else:
-			form = SearchEventForm(country_code=country['country_code'])
-			events = get_approved_events(country_code=country['country_code'])
+			form = SearchEventForm(country_code=country['country_code'],initial={'past_events': past})
+			events = get_approved_events(country_code=country['country_code'],past=past)
 
 		return render_to_response(
 			'pages/search_events.html', {
 				'events': events,
 				'form': form,
 			    'country': country['country_code'],
+			    'past': past,
 			}, context_instance=RequestContext(request))
 
 
@@ -290,5 +317,3 @@ def reject_status(request, event_id):
 	event = reject_event_status(event_id)
 
 	return HttpResponseRedirect(reverse('web.view_event', args=[event_id, event.slug]))
-
-

@@ -31,9 +31,9 @@
 
 	<div class="container">
 		<div id="fb-root"></div>
-		{% if user.profile.is_ambassador %}
-		{% if user.profile.country == event.country or user.is_staff %}
 			<div class="edit-toolbar">
+			{% if user.profile.is_ambassador %}
+			{% if user.profile.country == event.country or user.is_staff %}
 				<div id="change_status">
 					{% if event.status == 'PENDING' %}
 						<div class="alert alert-warning">
@@ -53,6 +53,11 @@
 								reject
 							</a> it.
 
+							{% if next_event%}
+							<div class="pull-right">
+								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
+							</div>
+							{% endif %}
 						</div>
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
@@ -63,6 +68,12 @@
 							<a href="{% url 'web.pending_events' user.profile.country %}">
 								<strong>pending events</strong>
 							</a>.
+							{% if next_event%}
+							<div class="pull-right">
+								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
+							</div>
+							{% endif %}
+						</div>
 					{% elif event.status == 'REJECTED' %}
 						<div class="alert alert-info">
 							This event is rejected. You can revert it to
@@ -72,25 +83,26 @@
 							<a href="{% url 'web.pending_events' user.profile.country %}">
 								<strong>pending events</strong>
 							</a>.
+							{% if next_event%}
+							<div class="pull-right">
+								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
+							</div>
+							{% endif %}
 						</div>
 					{% endif %}
 				</div>
-			</div>
-		{% endif %}
-		{% endif %}
-		{% if event.creator.id == request.user.id %}
-		<div class="edit-toolbar">
-			<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
-					<i class="fa fa-pencil-square-o"></i>Edit event</a>
-			{% if event.status == 'PENDING' %}
-						<div class="alert alert-warning">
-							<strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
-						</div>
 			{% endif %}
-		</div>	
-		{% endif %}
-
-
+			{% endif %}
+			{% if event.creator.id == request.user.id %}
+				<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
+				<i class="fa fa-pencil-square-o"></i>Edit event</a>
+				{% if event.status == 'PENDING' %}
+							<div class="alert alert-warning">
+								<strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
+							</div>
+				{% endif %}
+			</div>	
+			{% endif %}
 
 		<div class="about-event clearfix">
 			<div class="col-md-8 event-description first">
@@ -176,11 +188,22 @@
 			<div class="col-md-12 first">
 				<hr>
 			</div>
-			<div id="view-event-map-wrapper" class=" col-md-12 first">
+			<div id="view-event-map-wrapper" class="col-md-12 first">
 				<div id="view-event-map"></div>
 			</div>
+			</div>
+			<div class="col-md-12 first">
+				<hr>
+			</div>
+			{% if nearby %}
+			<div class="col-md-12 first">
+				<h3>Nearby events:</h3>
+				{% for event in nearby %}
+					{% include 'layout/near_event_tile.html' %}
+				{% endfor %}
+			</div>
+			{% endif %}
 		</div>
-	</div>
 {% endblock content %}
 
 {% block custom_js %}

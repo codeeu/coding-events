@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load endless %}
 {% load static %}
 
 {% block title %}- Search Events{% endblock title %}
@@ -23,6 +24,12 @@
 
 							<div class="search-checkbox">
 								<hr>
+								{{ form.past_events }}
+								<label for="id_include_past">{{ form.past_events.label }}</label> 
+							</div>
+
+							<div class="search-checkbox">
+								<hr>
 								<label>{{ form.fields.theme.label }}</label>
 								{{ form.theme }}
 							</div>
@@ -38,9 +45,31 @@
 						<div class="col-md-8">
 							<div id="events-container">
 								{% if events %}
-									{% for event in events %}
+									{% paginate 6 events as pag_events %}
+
+									{% for event in pag_events %}
 										{% include 'layout/event_tile_long.html' %}
 									{% endfor %}
+
+									{% get_pages %}
+									{% if pages.paginated %}
+										<ul class="pagination">
+										<li>{{ pages.previous }}</li>
+										{% for page in pages %}
+											{% if page.is_current %}
+											<li class="active endless_page_current">
+											<a href="#">
+											{% else %}
+											<li>
+											<a href="{% url 'web.search_events' %}?past={% if past %}yes{% else %}no{% endif %}{% if page.url %}&amp;page={{ page.number }}{% endif %}" rel="page" class="endless_page_link">
+											{% endif %}
+											{{ page.number }}</a>
+											</li>
+										{% endfor %}
+										<li>{{ pages.next }}</li>
+										</ul>
+									{% endif %}
+
 								{% else %}
 									<h3>
 										Sorry, no events matching your search criteria. Try expanding your search. 
