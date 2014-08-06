@@ -13,13 +13,7 @@ Fork this repository, and clone it to your local machine (of course, use your ow
 	git clone https://github.com/{username}/coding-events.git
 	cd coding-events
 
-Create new virtual environment:
-
-	virtualenv .
-
-activate it (dot is important):
-
-	. bin/activate
+Install things in virtualenv.
 
 Install requirements (first time):
 
@@ -35,7 +29,7 @@ You'll also need `saas`, which is a ruby package that you need to have installed
 		
 Create new user and environment:
 
-	./manage.py syncdb
+	./manage.py setupdb
 	./manate.py migrate
 
 
