@@ -66,11 +66,19 @@ var Codeweek = window.Codeweek || {};
 		map = new google.maps.Map(document.getElementById('view-event-map'), mapOptions);
 	}
 
-	function updateAddress(new_position) {
+	function updateCountrySelection(country) {
+		var choice = document.getElementById('id_country');
+		selectItemByValue(choice, country);		
+	}
+
+	function updateAddress(new_latLng) {
 		geocoder = new google.maps.Geocoder();
-		geocoder.geocode({'latLng': new_position}, function (results, status) {
+		geocoder.geocode({'latLng': new_latLng}, function (results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
 				document.getElementById("autocomplete").value = results[0].formatted_address;
+				// the last item in the geocoder for latLng results array is the country
+				var country = results[results.length - 1].address_components[0].short_name
+				updateCountrySelection(country);
 			}
 		});
 	}
@@ -107,30 +115,22 @@ var Codeweek = window.Codeweek || {};
 		}
 	}
 
-	function fillInAddress() {
-		var i,
-			component,
-			choice,
-			place = autocomplete.getPlace(),
-			components = place.address_components,
-			country = null,
-			output = autocomplete.getPlace().geometry.location,
-			outputLat = output.lat(),
-			outputLng = output.lng(),
-			locLatlng = new google.maps.LatLng(outputLat, outputLng);
-
-		document.getElementById("id_geoposition_0").value = outputLat;
-		document.getElementById("id_geoposition_1").value = outputLng;
-
-		createMarker(locLatlng);
-		for (i = 0; component = components[i]; i = i + 1) {
-			if (component.types[0] === 'country') {
-				country = component.short_name;
-				choice = document.getElementById('id_country');
-				selectItemByValue(choice, country);
+	function listenForPastedAddress() {
+		var address_field = document.getElementById('autocomplete');
+		address_field.addEventListener('focusout',function () {
+			var address_value = address_field.value;
+			if (address_value) {
+				getAddress(address_value);
 			}
-		}
+		}, true);
+	}
 
+	function fillInAddress() {
+		// geoLatLng contains the Google Maps geocoded latitude, longitude
+		var geoLatLng = autocomplete.getPlace().geometry.location;
+	
+		createMarker(geoLatLng);
+		updateAddress(geoLatLng);
 	}
 
 	function auto_complete() {
@@ -155,6 +155,7 @@ var Codeweek = window.Codeweek || {};
 				var updated_location = results[0].geometry.location;
 				createMarker(updated_location);
 				updateLatLng(updated_location.lat(), updated_location.lng());
+				updateAddress(updated_location);
 			}
 		});
 	}
@@ -165,7 +166,7 @@ var Codeweek = window.Codeweek || {};
 		createMap(initialCenter, 4);
 		auto_complete();
 		getAddress(address);
-
+		listenForPastedAddress();
 	}
 
 	var add = function (address) {
