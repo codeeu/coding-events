@@ -71,10 +71,9 @@ var Codeweek = window.Codeweek || {};
 		selectItemByValue(choice, country);		
 	}
 
-
-	function updateAddress(new_position) {
+	function updateAddress(new_latLng) {
 		geocoder = new google.maps.Geocoder();
-		geocoder.geocode({'latLng': new_position}, function (results, status) {
+		geocoder.geocode({'latLng': new_latLng}, function (results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
 				document.getElementById("autocomplete").value = results[0].formatted_address;
 				// the last item in the geocoder for latLng results array is the country
@@ -127,19 +126,11 @@ var Codeweek = window.Codeweek || {};
 	}
 
 	function fillInAddress() {
-		var place = autocomplete.getPlace(),
-			components = place.address_components,
-			output = autocomplete.getPlace().geometry.location,
-			outputLat = output.lat(),
-			outputLng = output.lng(),
-			locLatlng = new google.maps.LatLng(outputLat, outputLng);
-
-		document.getElementById("id_geoposition_0").value = outputLat;
-		document.getElementById("id_geoposition_1").value = outputLng;
-
-		createMarker(locLatlng);
-		updateCountrySelection(output);
-
+		// geoLatLng contains the Google Maps geocoded latitude, longitude
+		var geoLatLng = autocomplete.getPlace().geometry.location;
+	
+		createMarker(geoLatLng);
+		updateAddress(geoLatLng);
 	}
 
 	function auto_complete() {
