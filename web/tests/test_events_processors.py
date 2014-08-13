@@ -140,7 +140,7 @@ class EventTestCase(TestCase):
 		self.assertIn("tag1", test_event.tags.names())
 		self.assertIn("tag2", test_event.tags.names())
 
-		assert 'event_picture/alja' in test_event.picture
+		assert 'event_picture/alja' in test_event.picture.path
 
 	def test_get_approved_event_without_filter_returns_zero(self):
 
@@ -267,3 +267,56 @@ class EventTestCase(TestCase):
 		test_event1 = Event.objects.get(pk=rejected_event.id)
 		self.assertEqual(test_event1.status, "PENDING")
 
+	def test_edit_event_with_all_fields(self):
+		# First create a new event
+		with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
+			io = StringIO.StringIO()
+			io.write(fp.read())
+			uploaded_picture = InMemoryUploadedFile(io, None, "alja.jpg", "jpeg", io.len, None)
+			uploaded_picture.seek(0)
+
+		event_data = {
+			"end_date": datetime.datetime.now(),
+			"start_date": datetime.datetime.now(),
+			"organizer": "some organizer",
+			"creator": User.objects.filter(pk=1)[0],
+			"title": "event title",
+			"pub_date": datetime.datetime.now(),
+			"country": "SI",
+			"geoposition": Geoposition(46.05528,14.51444),
+			"location": "Ljubljana",
+			"audience": [1],
+			"theme": [1],
+			"tags": ["tag1", "tag2"],
+			"picture": uploaded_picture
+		}
+
+		test_event = create_or_update_event(**event_data)
+
+		# Then edit it
+		with open(local(__file__).dirname + '/../../static/img/team/ercchy.jpg') as fp:
+			io = StringIO.StringIO()
+			io.write(fp.read())
+			uploaded_picture = InMemoryUploadedFile(io, None, "ercchy.jpg", "jpeg", io.len, None)
+			uploaded_picture.seek(0)
+
+		event_data = {
+			"end_date": datetime.datetime.now(),
+			"start_date": datetime.datetime.now(),
+			"organizer": "another organiser",
+			"creator": User.objects.filter(pk=1)[0],
+			"title": "event title - edited",
+			"pub_date": datetime.datetime.now(),
+			"country": "SI",
+			# "geoposition": Geoposition(46.05528,14.51444),
+			"location": "Ljubljana",
+			"audience": [1],
+			"theme": [1],
+			"tags": ["tag3", "tag4"],
+			"picture": uploaded_picture
+		}
+		test_event = create_or_update_event(event_id=test_event.id, **event_data)
+		assert "tag1" not in test_event.tags.names()
+
+		assert 'event_picture/alja' not in test_event.picture
+		assert 'event_picture/ercchy' in test_event.picture.path
