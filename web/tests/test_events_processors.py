@@ -1,7 +1,10 @@
 import datetime
+import StringIO
 from django.test import TestCase
 from django.db import IntegrityError
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.models import User
+from py.path import local
 
 from geoposition import Geoposition
 
@@ -108,6 +111,12 @@ class EventTestCase(TestCase):
 		self.assertEqual("event title", test_event.title)
 
 	def test_create_event_from_dict_with_all_fields(self):
+		with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
+			io = StringIO.StringIO()
+			io.write(fp.read())
+			uploaded_picture = InMemoryUploadedFile(io, None, "alja.jpg", "jpeg", io.len, None)
+			uploaded_picture.seek(0)
+
 		event_data = {
 			"end_date": datetime.datetime.now(),
 			"start_date": datetime.datetime.now(),
@@ -120,14 +129,18 @@ class EventTestCase(TestCase):
 			"location": "Ljubljana",
 			"audience": [1],
 			"theme": [1],
-			"tags": ["tag1", "tag2"]
+			"tags": ["tag1", "tag2"],
+			"picture": uploaded_picture
 		}
+
 		test_event = create_or_update_event(**event_data)
 		self.assertEqual(2, test_event.pk)
 		self.assertEqual("Ljubljana", test_event.location)
 		self.assertEqual("46.05528", str(test_event.geoposition.latitude))
 		self.assertIn("tag1", test_event.tags.names())
 		self.assertIn("tag2", test_event.tags.names())
+
+		assert 'event_picture/alja' in test_event.picture
 
 	def test_get_approved_event_without_filter_returns_zero(self):
 

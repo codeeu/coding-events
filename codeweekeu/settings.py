@@ -533,7 +533,7 @@ COMPRESS_PRECOMPILERS = (
 
 ########## TESTING
 TEST_RUNNER = 'django_pytest.test_runner.TestRunner'
-SOUTH_TESTS_MIGRATE = True
+SOUTH_TESTS_MIGRATE = False
 ########## END TESTING
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
