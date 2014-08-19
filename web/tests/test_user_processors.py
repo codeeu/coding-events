@@ -34,11 +34,7 @@ class EventTestCase(TestCase):
 		self.up1.country = "SI"
 		self.up1.save()
 
-		# temporary workaround because South migrations don't work yet
-		# fix me in the future
-		group, created = Group.objects.get_or_create(name="ambassadors")
-		if created:
-			group.save()
+		group = Group.objects.get(name="ambassadors")
 
 		group.user_set.add(self.u1)
 
