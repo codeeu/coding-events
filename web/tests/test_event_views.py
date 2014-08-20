@@ -1,8 +1,13 @@
 import datetime
 import json
+import pytest
+import StringIO
+
+from py.path import local
 from django.test import TestCase
 from django.test import Client
 from django.core.urlresolvers import reverse
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from api.models.events import Event
 from django.contrib.auth.models import User
@@ -98,3 +103,123 @@ class EventViewsTestCase(TestCase):
 		#assert
 		self.assertEquals(200, response.status_code)
 
+@pytest.mark.django_db
+def test_create_event_with_image(admin_user, admin_client, db):
+	with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
+		io = StringIO.StringIO()
+		io.write(fp.read())
+		uploaded_picture = InMemoryUploadedFile(io, None, "alja.jpg", "jpeg", io.len, None)
+		uploaded_picture.seek(0)
+
+	event_data = {
+		'audience': [4, 5],
+		'theme': [1,2],
+		'contact_person': u'test@example.com',
+		'country': u'SI',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'event_url': u'',
+		'location': u'Ljubljana, Slovenia',
+		'organizer': u'Mozilla Slovenija',
+		'picture': uploaded_picture,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'tags': [u'css', u'html', u'web'],
+		'title': u'Webmaker Ljubljana',
+		'user_email': u'test@example.com'
+	}
+
+	response = admin_client.post(reverse('web.add_event'), event_data)
+
+	assert response.status_code == 302
+
+	response = admin_client.get(response.url)
+	assert 'event_picture/alja' in response.content
+
+@pytest.mark.django_db
+def test_edit_event_with_image(admin_user, admin_client, db):
+	# First create event
+	with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
+		io = StringIO.StringIO()
+		io.write(fp.read())
+		uploaded_picture = InMemoryUploadedFile(io, None, "alja.jpg", "jpeg", io.len, None)
+		uploaded_picture.seek(0)
+
+	event_data = {
+		'audience': [4, 5],
+		'theme': [1,2],
+		'contact_person': u'test@example.com',
+		'country': u'SI',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'event_url': u'',
+		'location': u'Ljubljana, Slovenia',
+		'organizer': u'Mozilla Slovenija',
+		'picture': uploaded_picture,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'tags': [u'css', u'html', u'web'],
+		'title': u'Webmaker Ljubljana',
+		'user_email': u'test@example.com'
+	}
+
+	response = admin_client.post(reverse('web.add_event'), event_data)
+
+	assert response.status_code == 302
+
+	response = admin_client.get(response.url)
+	assert 'event_picture/alja' in response.content
+
+	event = Event.objects.latest('id')
+
+	# Then edit it
+	with open(local(__file__).dirname + '/../../static/img/team/ercchy.jpg') as fp:
+		io = StringIO.StringIO()
+		io.write(fp.read())
+		uploaded_picture = InMemoryUploadedFile(io, None, "ercchy.jpg", "jpeg", io.len, None)
+		uploaded_picture.seek(0)
+
+	event_data = {
+		'audience': [6, 7],
+		'theme': [3,4],
+		'contact_person': u'another_person@example.com',
+		'country': u'SI',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'event_url': u'',
+		'location': u'Ljubljana, Slovenia',
+		'organizer': u'Mozilla Slovenija',
+		'picture': uploaded_picture,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'tags': [u'css', u'html', u'web'],
+		'title': u'Webmaker Ljubljana',
+		'user_email': u'another_person@example.com'
+	}
+
+	response_edited = admin_client.post(reverse('web.edit_event', args=[event.id]), event_data)
+	assert response_edited.status_code == 302
+
+	response = admin_client.get(event.get_absolute_url())
+	assert 'event_picture/alja' not in response.content
+	assert 'event_picture/ercchy' in response.content
+
+	event_data = {
+		'audience': [6, 7],
+		'theme': [3,4],
+		'contact_person': u'another_person@example.com',
+		'country': u'SI',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'event_url': u'',
+		'location': u'Ljubljana, Slovenia',
+		'organizer': u'Mozilla Slovenija',
+		'picture': '',
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'tags': [u'css', u'html', u'web'],
+		'title': u'Webmaker Ljubljana',
+		'user_email': u'another_person@example.com'
+	}
+
+	response_edited = admin_client.post(reverse('web.edit_event', args=[event.id]), event_data)
+	assert response_edited.status_code == 302
+
+	response = admin_client.get(event.get_absolute_url())
+	assert 'event_picture/ercchy' not in response.content

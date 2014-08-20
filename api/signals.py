@@ -5,9 +5,7 @@ from api.processors import get_pending_events
 
 
 def check_pending_events(sender, user, request, **kwargs):
-
-
-	if request.user.profile.is_ambassador():
+	if user.profile.is_ambassador():
 
 		if not user.profile.country:
 			t = loader.get_template('alerts/set_country_request.html')

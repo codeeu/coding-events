@@ -10,6 +10,7 @@ from geoposition.fields import GeopositionField
 from django_countries.fields import CountryField
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 class EventAudience(models.Model):
 	name = models.CharField(max_length=255) 
@@ -128,5 +129,5 @@ class Event(models.Model):
 	def has_ended(self):
 		return timezone.now() > self.end_date
 
-
-
+	def get_absolute_url(self):
+		return reverse('web.view_event', args=[self.pk, self.slug])
