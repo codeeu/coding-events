@@ -383,7 +383,6 @@ COUNTRIES_OVERRIDE = {
 	u'LY': None,
 	u'MA': None,
 	u'MC': None,
-	u'MD': None,
 	u'ME': None,
 	u'MF': None,
 	u'MG': None,
