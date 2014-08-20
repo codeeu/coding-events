@@ -1,5 +1,6 @@
 import datetime
 import StringIO
+import pytest
 from django.test import TestCase
 from django.db import IntegrityError
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -320,3 +321,27 @@ class EventTestCase(TestCase):
 
 		assert 'event_picture/alja' not in test_event.picture
 		assert 'event_picture/ercchy' in test_event.picture.path
+
+@pytest.mark.django_db
+def test_create_event_in_moldova(admin_user, db):
+
+	event_data = {
+		'audience': [3],
+		'theme': [1,2],
+		'contact_person': u'test@example.com',
+		'country': u'MD',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'event_url': u'',
+		'location': u'Tiraspol, Moldova',
+		'organizer': u'RailsGirls Moldova',
+		"creator": admin_user,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'tags': [u'css', u'html', u'web'],
+		'title': u'Rails Moldova',
+	}
+
+	test_event = create_or_update_event(event_id=None, **event_data)
+
+	assert "MD" == test_event.country.code
+
