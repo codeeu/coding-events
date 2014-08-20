@@ -137,3 +137,4 @@ def reject_event_status(event_id):
 
 	event.save()
 	return event
+
