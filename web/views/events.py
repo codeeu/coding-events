@@ -87,6 +87,7 @@ def add_event(request):
 
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
+
 	if event_form.is_valid():
 		picture = request.FILES.get('picture', None)
 		event_data = {}

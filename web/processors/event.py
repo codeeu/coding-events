@@ -92,6 +92,10 @@ def create_or_update_event(event_id=None, **event_data):
 				event.__dict__.update(event_data)
 				event.save()
 
+			if 'picture' not in event_data:
+				event.picture = ''
+				event.save()
+
 			#delete old categories and tags and store new ones
 			event.audience.clear()
 			event.audience.add(*new_audiences)
