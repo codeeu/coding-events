@@ -93,16 +93,17 @@
 				</div>
 			{% endif %}
 			{% endif %}
+
 			{% if event.creator.id == request.user.id %}
 				<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
 				<i class="fa fa-pencil-square-o"></i>Edit event</a>
 				{% if event.status == 'PENDING' %}
-							<div class="alert alert-warning">
-								<strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
-							</div>
+					<div class="alert alert-warning">
+						<strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
+					</div>
 				{% endif %}
-			</div>	
 			{% endif %}
+			</div>
 
 		<div class="about-event clearfix">
 			<div class="col-md-8 event-description first">
