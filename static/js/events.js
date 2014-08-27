@@ -47,7 +47,7 @@ var Codeweek = window.Codeweek || {};
                     minDate: get_date_range(start_date),
                     value: start_date.val()
                 });
-            },
+            }
         });
     },
 
