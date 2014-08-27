@@ -528,6 +528,9 @@ COMPRESS_PRECOMPILERS = (
 )
 ########## END DJANGO COMRESSOR SETTINGS
 
+########## PYTHON SOCIAL AUTH
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['first_name', 'last_name']
+
 
 ########## TESTING
 TEST_RUNNER = 'django_pytest.test_runner.TestRunner'
