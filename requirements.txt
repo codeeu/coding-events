@@ -29,3 +29,4 @@ requests-oauthlib==0.4.0
 six==1.5.2
 sqlparse==0.1.11
 wsgiref==0.1.2
+dj-static==0.0.5
