@@ -265,19 +265,13 @@ def created_events(request):
 def search_events(
 	request,
 	template='pages/search_events.html',
-	page_template='pages/pjax_faceted_search_events.html'):
+	page_template='pages/ajax_faceted_search_events.html'):
 
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
 		country_code = request.GET.get('country_code', None)
 		country = get_country(country_code, user_ip)
 		events = get_approved_events(country_code=country)
-		
-		is_it_past = request.GET.get('past', 'no')
-		if is_it_past == 'yes':
-			past = True
-		else:
-			past = False
 
 		if request.method == 'POST':
 			form = SearchEventForm(request.POST)
@@ -292,19 +286,15 @@ def search_events(
 				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
 				country = {'country_code': country_filter}
 
-				if past_events:
-					past = True
-				
 		else:
-			form = SearchEventForm(country_code=country['country_code'],initial={'past_events': past})
-			events = get_approved_events(country_code=country['country_code'],past=past)
+			form = SearchEventForm(country_code=country['country_code'])
+			events = get_approved_events(country_code=country['country_code'])
 
 		context = {
 			'page_template': page_template,
 			'events': events,
 			'form': form,
 			'country': country['country_code'],
-			'past': past,
 		}
 
 		if request.is_ajax():

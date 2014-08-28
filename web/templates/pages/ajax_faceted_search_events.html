@@ -1,0 +1,17 @@
+{% load endless %}
+
+{% if events %}
+	{% lazy_paginate 6 events as pag_events %}
+	{% for event in pag_events %}
+		{% include 'layout/event_tile_long.html' %}
+	{% endfor %}
+
+	{% show_more %}
+
+{% else %}
+	<h3>
+		Sorry, no events matching your search criteria. Try expanding your search. 
+	</h3>
+{% endif %}
+
+
