@@ -44,7 +44,8 @@ var Codeweek = window.Codeweek || {};
             dayOfWeekStart:1,
             onShow: function () {
                 this.setOptions({
-                    minDate: get_date_range(start_date)
+                    minDate: get_date_range(start_date),
+                    value: start_date.val()
                 });
             }
         });
