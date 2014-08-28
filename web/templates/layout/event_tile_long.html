@@ -6,7 +6,7 @@
 		<img src="{% static 'img/event_default_picture.png' %}" alt="{{ event.title }} Image" class="col-md-2 first">
 	{% endif %}
 	<h4>{{ event.title }}</h4>
-
+	<h5>{{ event.country }}</h5>
 	<div class="caption">
 		<p>{{ event.description|truncatewords:20 }}</p>
 

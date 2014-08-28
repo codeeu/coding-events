@@ -262,7 +262,11 @@ def created_events(request):
 		}, context_instance=RequestContext(request))
 
 
-def search_events(request):
+def search_events(
+	request,
+	template='pages/search_events.html',
+	page_template='pages/pjax_faceted_search_events.html'):
+
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
 		country_code = request.GET.get('country_code', None)
@@ -295,13 +299,21 @@ def search_events(request):
 			form = SearchEventForm(country_code=country['country_code'],initial={'past_events': past})
 			events = get_approved_events(country_code=country['country_code'],past=past)
 
+		context = {
+			'page_template': page_template,
+			'events': events,
+			'form': form,
+			'country': country['country_code'],
+			'past': past,
+		}
+
+		if request.is_ajax():
+			template = page_template
+
 		return render_to_response(
-			'pages/search_events.html', {
-				'events': events,
-				'form': form,
-			    'country': country['country_code'],
-			    'past': past,
-			}, context_instance=RequestContext(request))
+			template,
+			context,
+			context_instance=RequestContext(request))
 
 
 @login_required
