@@ -100,8 +100,9 @@ class Event(models.Model):
 		super(Event, self).__init__(*args, **kwargs)
 
 	def save(self, *args, **kwargs):		
-		if not self.id:
-			self.slug = slugify(self.title)
+		if not self.slug:
+			self.slug = slugify(self.title) or 'event'
+
 		super(Event, self).save(*args, **kwargs)
 
 		try:
