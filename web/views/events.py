@@ -140,11 +140,13 @@ def edit_event(request, event_id):
 	else:
 		event_form = AddEventForm(initial=initial)
 
-
+	existing_picture = event.picture
+	
 	if event_form.is_valid():
+		# picture_check works with jasny bootstrap magix
+		picture_check = request.POST.get('picture')
 		picture = request.FILES.get('picture', None)
 		event_data = event_form.cleaned_data
-
 		event_data['creator'] = request.user
 
 		# checking if user entered a different email than in her profile
@@ -156,8 +158,9 @@ def edit_event(request, event_id):
 			if picture:
 				if picture.size > (256 * 1024):
 					raise ImageSizeTooLargeException('Image size too large.')
-
 				event_data['picture'] = process_image(picture)
+			elif picture_check == "nochange":
+				event_data['picture'] = existing_picture
 			else:
 				del event_data['picture']
 
