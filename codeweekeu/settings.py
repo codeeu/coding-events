@@ -199,6 +199,7 @@ INSTALLED_APPS = (
     # South migration tool.
     'south',
 
+    'rest_framework',
     # Celery task queue.
     #'djcelery',
 
