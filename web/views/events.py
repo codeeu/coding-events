@@ -262,10 +262,7 @@ def created_events(request):
 		}, context_instance=RequestContext(request))
 
 
-def search_events(
-	request,
-	template='pages/search_events.html',
-	page_template='pages/ajax_faceted_search_events.html'):
+def search_events(request):
 
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
@@ -273,6 +270,8 @@ def search_events(
 		country = get_country(country_code, user_ip)
 		events = get_approved_events(country_code=country)
 
+		template = 'pages/search_events.html'
+		page_template = 'pages/ajax_faceted_search_events.html'
 		if request.method == 'POST':
 			form = SearchEventForm(request.POST)
 
@@ -290,19 +289,21 @@ def search_events(
 			form = SearchEventForm(country_code=country['country_code'])
 			events = get_approved_events(country_code=country['country_code'])
 
-		context = {
-			'page_template': page_template,
-			'events': events,
-			'form': form,
-			'country': country['country_code'],
-		}
 
 		if request.is_ajax():
-			template = page_template
+			return render_to_response(
+				page_template, 
+				{'events':events},
+				context_instance=RequestContext(request))
 
 		return render_to_response(
 			template,
-			context,
+			{
+				'page_template': page_template,
+				'events': events,
+				'form': form,
+				'country': country['country_code'],
+			},
 			context_instance=RequestContext(request))
 
 

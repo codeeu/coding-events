@@ -10,8 +10,7 @@ var Codeweek = window.Codeweek || {};
 		$(function () {
 			
 			$.endlessPaginate({
-				paginateOnScroll: true,
-				paginateOnScrollMargin: 20
+				paginateOnScroll: false,
 			});
 
 			$('.search-form-element').on('change', function (e) {
