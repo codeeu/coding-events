@@ -171,7 +171,7 @@ class SearchEventForm(forms.Form):
 	country = forms.ChoiceField(
 		label='Select country',
 		required=False,
-		widget=forms.Select(attrs={'class': 'form-control search-form-element'}),
+		widget=forms.Select(attrs={'class': 'search-form-element'}),
 		choices=countries
 	)
 	theme = forms.ModelMultipleChoiceField(
