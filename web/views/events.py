@@ -271,8 +271,10 @@ def search_events(request):
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
 		country_code = request.GET.get('country_code', None)
+		past = request.GET.get('past', None)
+		past_events = True if past and past=='yes' else False
 		country = get_country(country_code, user_ip)
-		events = get_approved_events(country_code=country)
+		events = get_approved_events(country_code=country, past=past_events)
 
 		template = 'pages/search_events.html'
 		page_template = 'pages/ajax_faceted_search_events.html'
@@ -290,8 +292,8 @@ def search_events(request):
 				country = {'country_code': country_filter}
 
 		else:
-			form = SearchEventForm(country_code=country['country_code'])
-			events = get_approved_events(country_code=country['country_code'])
+			form = SearchEventForm(country_code=country['country_code'], past_events=past_events)
+			events = get_approved_events(country_code=country['country_code'], past=past_events)
 
 
 		if request.is_ajax():

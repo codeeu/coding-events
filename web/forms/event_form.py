@@ -190,9 +190,11 @@ class SearchEventForm(forms.Form):
 
 	def __init__(self, *args, **kwargs):
 		country_code = kwargs.pop('country_code', None)
+		past_events = kwargs.pop('past_events', False)
 		super(SearchEventForm, self).__init__(*args, **kwargs)
 		if country_code:
 			self.fields['country'].initial = country_code
+		self.fields['past_events'].initial = past_events
 
 
 
