@@ -205,7 +205,7 @@ var Codeweek = window.Codeweek || {};
 	function setSearchParams(country_code, country_name) {
 		var search_button = $('#search-events-link').find('a'),
 			search_button_location = search_button.attr('href'),
-			new_location = search_button_location.replace(/=[A-Z]{0,2}$/, "=" + country_code);
+			new_location = search_button_location.replace(/=[A-Z]{0,2}/, "=" + country_code);
 
 			search_button.attr('href', new_location);
 			$('#country').html(country_name);
