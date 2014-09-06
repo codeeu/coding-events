@@ -98,6 +98,14 @@ LANDING PAGE MAP STYLES
 	z-index: 0;
 }
 
+img#loading-gif {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -16px;
+	margin-top: -16px;
+}
+
 #search-events-link {
 	text-align: center;
 	margin-top: 20px;

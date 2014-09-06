@@ -14,9 +14,7 @@ var Codeweek = window.Codeweek || {};
 		overlapSpiderifier = null;
 
 	function createMap(events, lat, lng, zoomVal) {
-		var markerData = JSON.parse(events),
-			markerData_len = markerData.length,
-			markerClusterOptions = {gridSize: 30, maxZoom: 10},
+		var markerClusterOptions = {gridSize: 30, maxZoom: 10},
 			map = new google.maps.Map(document.getElementById('events-map'), {
 				scrollwheel: false,
 				zoom: zoomVal,
@@ -40,19 +38,18 @@ var Codeweek = window.Codeweek || {};
 			content: "loading..."
 		});
 
-		for (i = 0; i <= markerData_len; i = i + 1) {
-			var markdata = markerData[i];
-			if (markdata && typeof markdata === 'object') {
+		for (i = 0; i <= events.length; i = i + 1) {
+			if (events[i] && typeof events[i] === 'object') {
 
-				var markTitle = markerData[i].fields.title,
-					map_position = markerData[i].fields.geoposition.split(","),
+				var markTitle = events[i].title,
+					map_position = events[i].geoposition.split(","),
 					markLat = map_position[0],
 					markLng = map_position[1],
-					map_event_id = markerData[i].pk,
-					map_event_slug = markerData[i].fields.slug,
+					map_event_id = events[i].id,
+					map_event_slug = events[i].slug,
 					markUrl = "/view/" + map_event_id + "/" + map_event_slug,
-					markDesc = markerData[i].fields.description,
-					markImg = markerData[i].fields.picture;
+					markDesc = events[i].description,
+					markImg = events[i].picture;
 
 				markers[map_event_id] = createMarker(markTitle, markLat, markLng, markUrl, markDesc, markImg);
 			}
@@ -145,7 +142,7 @@ var Codeweek = window.Codeweek || {};
 			options = {
 				types: ['(regions)'],
 				bounds: new google.maps.Circle({
-					center: new google.maps.LatLng(54.977614, 15.292969),
+					center: new google.maps.LatLng(54.977614, 13.292969),
 					radius: 2700
 				}).getBounds()
 			},
@@ -231,12 +228,28 @@ var Codeweek = window.Codeweek || {};
 	}
 
 
-	var init = function (events, lon, lan) {
+	var init = function (past, lon, lan) {
 
 		$(function () {
 			// Initialize map on front page
 			google.maps.event.addDomListener(window, 'load', function () {
-				initialize(events, lon, lan);
+				var ajaxURL = "/api/event/list/?format=json";
+				if (past == "yes")
+					ajaxURL = ajaxURL + "&past=yes"
+
+				$.ajax({
+					type: "GET",
+					url: ajaxURL,
+					error: function(jqXHR, textStatus, errorThrown) {
+						// TODO: Add some error handling for real
+						var error = "Error occurred while AJAXing - " + textStatus + "(" + errorThrown + ")";
+						alert(error);
+						console.log(error);
+					},
+					success: function(data, textStatus, jqXHR) {
+						initialize(data, lon, lan);
+					}
+				});
 			});
 
 			$(".country-link").click(function (event) {

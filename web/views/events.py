@@ -49,12 +49,7 @@ def index(request):
 	template = 'pages/index.html'
 
 	past = request.GET.get('past', 'no')
-	if past == 'yes':
-		events = get_approved_events(past=True)
-	else:
-		events = get_approved_events()
 
-	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug', 'description', 'picture'))
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 	country = get_country_from_user_ip(user_ip)
@@ -69,7 +64,6 @@ def index(request):
 	
 	return render_to_response(
 		template, {
-			'map_events': map_events,
 			'lan_lon': lan_lon,
 			'country': country,
 			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
