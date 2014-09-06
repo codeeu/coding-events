@@ -10,11 +10,11 @@ from api.models import EventAudience
 from api.models import UserProfile
 
 from api.processors import get_all_events
-from api.processors import get_approved_events
 from api.processors import get_pending_events
 from api.processors import get_event_by_id
 from api.processors import get_filtered_events
 
+from web.tests import EventFactory
 
 class EventTestCase(TestCase):
 	def setUp(self):
@@ -471,18 +471,7 @@ class EventTestCase(TestCase):
 			event.audience.add(*audience)
 
 	def test_event_with_empty_slug(self):
-		event = Event.objects.create(
-			organizer='CodeCatz',
-			creator=User.objects.filter(pk=1)[0],
-			title='#^^#',
-			description='Cat emojis explained',
-			location='Ljubljana',
-			start_date=datetime.datetime.now() - datetime.timedelta(days=2, hours=3),
-			end_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=1),
-			event_url='http://example.com',
-			contact_person='admin@example.com',
-			country='SI',
-			pub_date=datetime.datetime.now() - datetime.timedelta(days=2, hours=1))
+		event = EventFactory.create(title='#^^#')
 
 		assert event.title == '#^^#'
 		assert event.slug != ''
