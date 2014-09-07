@@ -134,11 +134,13 @@ def edit_event(request, event_id):
 	else:
 		event_form = AddEventForm(initial=initial)
 
-
+	existing_picture = event.picture
+	
 	if event_form.is_valid():
+		# picture_check works with jasny bootstrap magix
+		picture_check = request.POST.get('picture')
 		picture = request.FILES.get('picture', None)
 		event_data = event_form.cleaned_data
-
 		event_data['creator'] = request.user
 
 		# checking if user entered a different email than in her profile
@@ -150,8 +152,9 @@ def edit_event(request, event_id):
 			if picture:
 				if picture.size > (256 * 1024):
 					raise ImageSizeTooLargeException('Image size too large.')
-
 				event_data['picture'] = process_image(picture)
+			elif picture_check == "nochange":
+				event_data['picture'] = existing_picture
 			else:
 				del event_data['picture']
 
@@ -258,18 +261,15 @@ def created_events(request):
 
 
 def search_events(request):
+
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
 		country_code = request.GET.get('country_code', None)
 		country = get_country(country_code, user_ip)
 		events = get_approved_events(country_code=country)
-		
-		is_it_past = request.GET.get('past', 'no')
-		if is_it_past == 'yes':
-			past = True
-		else:
-			past = False
 
+		template = 'pages/search_events.html'
+		page_template = 'pages/ajax_faceted_search_events.html'
 		if request.method == 'POST':
 			form = SearchEventForm(request.POST)
 
@@ -283,20 +283,26 @@ def search_events(request):
 				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
 				country = {'country_code': country_filter}
 
-				if past_events:
-					past = True
-				
 		else:
-			form = SearchEventForm(country_code=country['country_code'],initial={'past_events': past})
-			events = get_approved_events(country_code=country['country_code'],past=past)
+			form = SearchEventForm(country_code=country['country_code'])
+			events = get_approved_events(country_code=country['country_code'])
+
+
+		if request.is_ajax():
+			return render_to_response(
+				page_template, 
+				{'events':events},
+				context_instance=RequestContext(request))
 
 		return render_to_response(
-			'pages/search_events.html', {
+			template,
+			{
+				'page_template': page_template,
 				'events': events,
 				'form': form,
-			    'country': country['country_code'],
-			    'past': past,
-			}, context_instance=RequestContext(request))
+				'country': country['country_code'],
+			},
+			context_instance=RequestContext(request))
 
 
 @login_required

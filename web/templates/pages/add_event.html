@@ -204,8 +204,9 @@
 							{{ form.picture.label }}
 						</label>
 
-						<div class="col-sm-9 first last fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %} "
-						     data-provides="fileinput">
+						<div class="col-sm-9 first last fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %}"
+						     data-provides="fileinput" data-name="{{ form.picture.name }}">
+						     <input type="hidden" name="{{ form.picture.name }}" value="nochange" />
 							<div class="fileinput-new">
 								<img src="{% static 'img/image_placeholder.png' %}" alt="Image Placeholder"
 								     style="max-height: 204px; max-width: 100%">
@@ -221,7 +222,7 @@
 							<span class="btn btn-sm btn-file">
 								<span class="fileinput-new">Select image</span>
 								<span class="fileinput-exists">Change</span>
-								<input type="file" name="{{ form.picture.name }}"/></span>
+								<input type="file"/></span>
 								<a href="#" class="btn btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
 							</div>		
 						</div>
