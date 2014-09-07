@@ -452,8 +452,6 @@ class EventTestCase(TestCase):
 		events = get_filtered_events(search_filter=search_filter, past_events=True)
 		self.assertEquals(2, events.count())
 
-
-
 	def test_event_without_creator_returns_exception(self):
 		with self.assertRaises(IntegrityError):
 			event = Event.objects.create(
@@ -472,4 +470,20 @@ class EventTestCase(TestCase):
 			event.theme.add(*theme)
 			event.audience.add(*audience)
 
+	def test_event_with_empty_slug(self):
+		event = Event.objects.create(
+			organizer='CodeCatz',
+			creator=User.objects.filter(pk=1)[0],
+			title='#^^#',
+			description='Cat emojis explained',
+			location='Ljubljana',
+			start_date=datetime.datetime.now() - datetime.timedelta(days=2, hours=3),
+			end_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=1),
+			event_url='http://example.com',
+			contact_person='admin@example.com',
+			country='SI',
+			pub_date=datetime.datetime.now() - datetime.timedelta(days=2, hours=1))
 
+		assert event.title == '#^^#'
+		assert event.slug != ''
+		assert event.slug == 'event'

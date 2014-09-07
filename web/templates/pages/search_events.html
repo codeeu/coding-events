@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load endless %}
 {% load static %}
+{% load compress %}
+
 
 {% block title %}- Search Events{% endblock title %}
 
@@ -9,7 +11,7 @@
 	<div class="container">
 		<div class="search-page">
 			<div class="search-options">
-				<form method="post" action="{% url 'web.search_events' %}" enctype="multipart/form-data">{% csrf_token %}
+				<form id="faceted-search-events" method="post" action="{% url 'web.search_events' %}" enctype="multipart/form-data">{% csrf_token %}
 					{{ form.non_field_errors }}
 					<div class="row">
 						<div class="form-group col-md-8">
@@ -44,37 +46,7 @@
 						</div>
 						<div class="col-md-8">
 							<div id="events-container">
-								{% if events %}
-									{% paginate 6 events as pag_events %}
-
-									{% for event in pag_events %}
-										{% include 'layout/event_tile_long.html' %}
-									{% endfor %}
-
-									{% get_pages %}
-									{% if pages.paginated %}
-										<ul class="pagination">
-										<li>{{ pages.previous }}</li>
-										{% for page in pages %}
-											{% if page.is_current %}
-											<li class="active endless_page_current">
-											<a href="#">
-											{% else %}
-											<li>
-											<a href="{% url 'web.search_events' %}?past={% if past %}yes{% else %}no{% endif %}{% if page.url %}&amp;page={{ page.number }}{% endif %}" rel="page" class="endless_page_link">
-											{% endif %}
-											{{ page.number }}</a>
-											</li>
-										{% endfor %}
-										<li>{{ pages.next }}</li>
-										</ul>
-									{% endif %}
-
-								{% else %}
-									<h3>
-										Sorry, no events matching your search criteria. Try expanding your search. 
-									</h3>
-								{% endif %}
+								{% include page_template %}
 							</div>
 						</div>
 					</div>
@@ -83,3 +55,13 @@
 		</div>
 	</div>
 {% endblock content %}
+
+{% block custom_js %}
+{{ block.super }}
+<script type="text/javascript" src="{% static "js/endless_pagination/custom-endless-pagination.js" %}" ></script>
+<script type="text/javascript" src="{% static "js/faceted-search-events.js" %}" ></script>
+<script type="text/javascript">
+	Codeweek.FacetedSearch.init();
+</script>
+
+{% endblock %}
