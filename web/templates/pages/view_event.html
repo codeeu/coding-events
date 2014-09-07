@@ -64,7 +64,14 @@
 							This event is nice and approved. You can revert it to
 							<a href="{% url 'web.change_status' event.pk %}">
 								<strong>pending</strong> 
-							</a> or check other
+							</a>
+
+							{% if event.creator.email %}, contact the event creator 
+							<a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
+								by email
+							</a>{% endif %}
+
+							 or check other
 							<a href="{% url 'web.pending_events' user.profile.country %}">
 								<strong>pending events</strong>
 							</a>.
@@ -75,7 +82,7 @@
 							{% endif %}
 						</div>
 					{% elif event.status == 'REJECTED' %}
-						<div class="alert alert-info">
+						<div class="alert alert-danger">
 							This event is rejected. You can revert it to
 							<a href="{% url 'web.reject_status' event.pk %}">
 								<strong>pending</strong> 
