@@ -2,6 +2,7 @@ import datetime
 import json
 import pytest
 import StringIO
+import os
 
 from py.path import local
 from django.test import TestCase
@@ -239,7 +240,7 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 	with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
 		io = StringIO.StringIO()
 		io.write(fp.read())
-		uploaded_picture = InMemoryUploadedFile(io, None, "alja.jpg", "jpeg", io.len, None)
+		uploaded_picture = InMemoryUploadedFile(io, None, "alja17.jpg", "jpeg", io.len, None)
 		uploaded_picture.seek(0)
 
 	event_data = {
@@ -296,8 +297,13 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 	assert response_edited.status_code == 302
 
 	response = admin_client.get(event.get_absolute_url())
-	assert 'event_picture/alja' not in response.content
+	assert 'event_picture/alja17' not in response.content
 	assert 'event_picture/ercchy' in response.content
+
+	#Check if the old event picture has been deleted
+	old_picture = os.path.isfile(local(__file__).dirname+'/../../media/event_picture/alja17.jpg')
+
+	assert not old_picture
 
 	event_data = {
 		'audience': [6, 7],
@@ -321,3 +327,10 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 
 	response = admin_client.get(event.get_absolute_url())
 	assert 'event_picture/ercchy' not in response.content
+
+
+
+
+
+
+
