@@ -25,7 +25,9 @@
 	<div class="landing-outter">
 		<div class="landing-wrapper">
 			<div class="events-map-wrapper">
-				<div id="events-map"></div>
+				<div id="events-map">
+					<img id="loading-gif" src="/static/img/loading.gif">
+				</div>
 			</div>
 		</div>
 
@@ -101,6 +103,6 @@
 	{% endcompress %}
 
 	<script type="text/javascript">
-		Codeweek.Index.init(JSON.stringify({{ map_events|safe }}), {{ lan_lon.0 }}, {{ lan_lon.1 }});
+		Codeweek.Index.init("{{ past }}", {{ lan_lon.0 }}, {{ lan_lon.1 }});
 	</script>
 {% endblock %}
