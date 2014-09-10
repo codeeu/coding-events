@@ -221,7 +221,10 @@ INSTALLED_APPS = (
     # defined apps
     'web',
 	'api',
-	'mailer'
+	'mailer',
+
+	#delete old Files and Images
+	'django_cleanup'
 )
 ########## END APP CONFIGURATION
 
