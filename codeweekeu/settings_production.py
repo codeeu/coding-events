@@ -2,6 +2,8 @@ from .settings import *
 import dj_database_url
 import os
 
+print "in production mode"
+
 DEBUG = False
 
 dbconfig = dj_database_url.config()

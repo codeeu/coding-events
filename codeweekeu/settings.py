@@ -550,5 +550,6 @@ except ImportError, e:
 	pass
 
 # if we're running on the server, use server specific settings
-if os.environ['ENVIRONMENT'] == 'production':
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
+if ENVIRONMENT == 'production':
 	from settings_production import *
