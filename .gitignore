@@ -11,3 +11,4 @@ codeweekeu/static/css/scss/.sass-cache/
 *.sass-cache/
 staticfiles/
 .DS_Store
+Gemfile*
