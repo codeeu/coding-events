@@ -298,9 +298,3 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 	response = admin_client.get(event.get_absolute_url())
 	assert 'event_picture/ercchy' not in response.content
 
-
-
-
-
-
-
