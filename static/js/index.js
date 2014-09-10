@@ -233,7 +233,7 @@ var Codeweek = window.Codeweek || {};
 		$(function () {
 			// Initialize map on front page
 			google.maps.event.addDomListener(window, 'load', function () {
-				var ajaxURL = "/api/evednt/list/?format=json";
+				var ajaxURL = "/api/event/list/?format=json";
 				if (past == "yes")
 					ajaxURL = ajaxURL + "&past=yes"
 
