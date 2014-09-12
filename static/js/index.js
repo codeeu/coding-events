@@ -38,6 +38,33 @@ var Codeweek = window.Codeweek || {};
 			content: "loading..."
 		});
 
+		overlapSpiderifier.addListener('click', function(marker) {
+			placeinfowindow.close();
+
+			var infoWindowContent = '',
+				buble_content = '',
+				image = '',
+				description = '';
+
+			if (marker.image !== "") {
+				image += '<img src="' + Codeweek.Index.media_url + marker.image + '" class="img-polaroid marker-buble-img">';
+			}
+
+			if (marker.description.length > 150) {
+				description = marker.description.substring(0, 150) + '... ';
+			} else {
+				description = marker.description;
+			}
+
+			buble_content = '<div><h4><a href="' + marker.url + '" class="map-marker">' + marker.title + '</a></h4><div>' +
+							  image +
+							  '<p style="overflow:hidden;">' + description +
+							  '&nbsp;<a href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
+
+			placeinfowindow.setContent(buble_content);
+			placeinfowindow.open(map, marker);
+		});
+
 		for (i = 0; i <= events.length; i = i + 1) {
 			if (events[i] && typeof events[i] === 'object') {
 
@@ -100,35 +127,6 @@ var Codeweek = window.Codeweek || {};
 				image: markImg,
 				url: markUrl
 			});
-
-		overlapSpiderifier.addListener('click', function(marker) {
-			placeinfowindow.close();
-
-			var infoWindowContent = '',
-				buble_content = '',
-				image = '',
-				description = '';
-
-			if (marker.image !== "") {
-				image += '<img src="' + Codeweek.Index.media_url + marker.image + '" class="img-polaroid marker-buble-img">';
-			}
-
-			if (marker.description.length > 150) {
-				description = marker.description.substring(0, 150) + '... ';
-			} else {
-				description = marker.description;
-			}
-
-			buble_content = '<div><h4><a href="' + marker.url + '" class="map-marker">' + marker.title + '</a></h4><div>' +
-							  image +
-							  '<p style="overflow:hidden;">' + description +
-							  '&nbsp;<a href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
-
-
-			placeinfowindow.setContent(buble_content);
-			placeinfowindow.open(marker.map, marker);
-		});
-
 		overlapSpiderifier.addMarker(marker);
 
 		return marker;
