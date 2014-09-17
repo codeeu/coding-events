@@ -26,3 +26,7 @@ class EventFactory(factory.DjangoModelFactory):
 
 class ApprovedEventFactory(EventFactory):
 	status = "APPROVED"
+
+class PastEventFactory(EventFactory):
+	start_date = factory.LazyAttribute(lambda n: datetime.datetime.now() - datetime.timedelta(days=3, hours=3))
+	end_date = factory.LazyAttribute(lambda n: datetime.datetime.now() - datetime.timedelta(days=1, hours=3) )

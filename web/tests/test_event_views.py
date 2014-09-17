@@ -1,5 +1,4 @@
 import datetime
-import json
 import pytest
 import StringIO
 import os
@@ -14,7 +13,7 @@ from django.contrib.auth.models import User
 from api.models.events import Event
 from api.models import UserProfile
 
-from web.tests import EventFactory
+from web.tests import EventFactory, ApprovedEventFactory
 
 class EventViewsTestCase(TestCase):
 	def setUp(self):
@@ -55,25 +54,9 @@ class EventViewsTestCase(TestCase):
 		self.assertEquals((46.0, 15.0), response.context['lan_lon'])
 
 	def test_search_events_with_search_query(self):
-		#setup
-		approved = Event.objects.create(
-			status="APPROVED",
-			organizer="Organizer 1",
-			creator=User.objects.filter(pk=1)[0],
-			title="Event Arglebargle - Approved",
-			description="Some description - Approved",
-			location="Near here",
-			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-			event_url="http://eee.com",
-			contact_person="ss@ss.com",
-			country="SI",
-			pub_date=datetime.datetime.now(),
-			tags=["tag1", "tag2"])
-
+		ApprovedEventFactory.create(title='Event Arglebargle - Approved')
 		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle'}, REMOTE_ADDR='93.103.53.11')
 
-		#assert
 		self.assertEquals(1,response.context['events'].count())
 		self.assertEquals('SI', response.context['country'])
 
