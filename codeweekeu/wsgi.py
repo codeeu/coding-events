@@ -7,11 +7,10 @@ For more information on this file, see
 https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
 """
 
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codeweekeu.settings")
+import os, sys
 
-import sys
-sys.path.append('/home/codeeu/coding-events')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codeweekeu.settings")
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from django.core.wsgi import get_wsgi_application
 from dj_static import Cling

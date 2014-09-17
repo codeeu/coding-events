@@ -5,6 +5,7 @@ Django settings for codeweekeu project.
 import sys
 import os
 from os.path import abspath, basename, dirname, join, normpath
+
 ########## PATH CONFIGURATION
 # Absolute filesystem path to this Django project directory.
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
@@ -550,4 +551,7 @@ except ImportError, e:
 # if we're running on the server, use server specific settings
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 if ENVIRONMENT == 'production':
-	from settings_production import *
+	try:
+		from settings_production import *
+	except ImportError, e:
+		pass
