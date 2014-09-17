@@ -61,41 +61,16 @@ class EventViewsTestCase(TestCase):
 		self.assertEquals('SI', response.context['country'])
 
 	def test_search_events_with_search_query_multiple_events(self):
-		#setup
-		approved1 = Event.objects.create(
-			status="APPROVED",
-			organizer="Organizer 1",
-			creator=User.objects.filter(pk=1)[0],
-			title="Event Arglebargle - Approved",
-			description="Some description - Approved",
-			location="Near here",
-			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-			event_url="http://eee.com",
-			contact_person="ss@ss.com",
-			country="SI",
-			pub_date=datetime.datetime.now(),
-			tags=["tag1", "tag2"])
-		approved2 = Event.objects.create(
-			status="APPROVED",
-			organizer="Organizer 2",
-			creator=User.objects.filter(pk=1)[0],
-			title="Event Arglebargle - Approved",
-			description="Some description - Approved",
-			location="Near here",
-			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-			event_url="http://eee.com",
-			contact_person="ss@ss.com",
-			country="AT",
-			pub_date=datetime.datetime.now(),
-			tags=["tag1", "tag2"])
+		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
+		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
 
 		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle'}, REMOTE_ADDR='93.103.53.11')
 
-		#assert
 		self.assertEquals(1,response.context['events'].count())
 		self.assertEquals('SI', response.context['country'])
+
+		approved1.delete()
+		approved2.delete()
 
 	def test_view_event_without_picture(self):
 		test_event = EventFactory.create()
@@ -104,41 +79,18 @@ class EventViewsTestCase(TestCase):
 		assert response.status_code == 200
 		assert test_event.title in response.content
 
+		test_event.delete()
+
 	def test_search_events_with_search_query_all_countries_multiple_results(self):
-		#setup
-		approved1 = Event.objects.create(
-			status="APPROVED",
-			organizer="Organizer 1",
-			creator=User.objects.filter(pk=1)[0],
-			title="Event Arglebargle - Approved",
-			description="Some description - Approved",
-			location="Near here",
-			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-			event_url="http://eee.com",
-			contact_person="ss@ss.com",
-			country="SI",
-			pub_date=datetime.datetime.now(),
-			tags=["tag1", "tag2"])
-		approved2 = Event.objects.create(
-			status="APPROVED",
-			organizer="Organizer 2",
-			creator=User.objects.filter(pk=1)[0],
-			title="Event Arglebargle - Approved",
-			description="Some description - Approved",
-			location="Near here",
-			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-			event_url="http://eee.com",
-			contact_person="ss@ss.com",
-			country="AT",
-			pub_date=datetime.datetime.now(),
-			tags=["tag1", "tag2"])
+		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
+		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
 
 		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle', 'country_code':'00'}, REMOTE_ADDR='93.103.53.11')
 
-		#assert
 		self.assertEquals(2,response.context['events'].count())
+
+		approved1.delete()
+		approved2.delete()
 
 @pytest.mark.django_db
 def test_create_event_with_image(admin_user, admin_client, db):
