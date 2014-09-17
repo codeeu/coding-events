@@ -3,6 +3,7 @@ Django settings for codeweekeu project.
 """
 
 import sys
+import os
 from os.path import abspath, basename, dirname, join, normpath
 ########## PATH CONFIGURATION
 # Absolute filesystem path to this Django project directory.
@@ -199,6 +200,7 @@ INSTALLED_APPS = (
     # South migration tool.
     'south',
 
+    'rest_framework',
     # Celery task queue.
     #'djcelery',
 
@@ -220,7 +222,10 @@ INSTALLED_APPS = (
     # defined apps
     'web',
 	'api',
-	'mailer'
+	'mailer',
+
+	#delete old Files and Images
+	'django_cleanup'
 )
 ########## END APP CONFIGURATION
 
@@ -299,7 +304,6 @@ COUNTRIES_OVERRIDE = {
 	u'BT': None,
 	u'BV': None,
 	u'BW': None,
-	u'BY': None,
 	u'BZ': None,
 	u'CA': None,
 	u'CC': None,
@@ -462,7 +466,6 @@ COUNTRIES_OVERRIDE = {
 	u'TV': None,
 	u'TW': None,
 	u'TZ': None,
-	u'UA': None,
 	u'UG': None,
 	u'UM': None,
 	u'US': None,
@@ -543,3 +546,8 @@ try:
 	from settings_local import *
 except ImportError, e:
 	pass
+
+# if we're running on the server, use server specific settings
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
+if ENVIRONMENT == 'production':
+	from settings_production import *

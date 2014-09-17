@@ -2,6 +2,7 @@ import datetime
 import json
 import pytest
 import StringIO
+import os
 
 from py.path import local
 from django.test import TestCase
@@ -40,8 +41,8 @@ class EventViewsTestCase(TestCase):
 		response = self.client.get(reverse('web.index'), {}, REMOTE_ADDR='93.103.53.11')
 
 		self.assertEquals(200, response.status_code)
-		self.assertJSONEqual('[]', json.loads(response.context['map_events']))
 		self.assertEquals((46.0, 15.0), response.context['lan_lon'])
+		self.assertEquals('SI', response.context['country']['country_code'])
 		self.assertTemplateUsed(response, 'pages/index.html')
 
 	def test_index_view_changing_remote_in_request(self):
@@ -53,13 +54,13 @@ class EventViewsTestCase(TestCase):
 		self.assertEquals(200, response.status_code)
 		self.assertEquals((46.0, 15.0), response.context['lan_lon'])
 
-	def test_index_with_approved_events(self):
+	def test_search_events_with_search_query(self):
 		#setup
-		aproved = Event.objects.create(
+		approved = Event.objects.create(
 			status="APPROVED",
 			organizer="Organizer 1",
 			creator=User.objects.filter(pk=1)[0],
-			title="Event 1 - Approved",
+			title="Event Arglebargle - Approved",
 			description="Some description - Approved",
 			location="Near here",
 			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
@@ -70,18 +71,48 @@ class EventViewsTestCase(TestCase):
 			pub_date=datetime.datetime.now(),
 			tags=["tag1", "tag2"])
 
-		response = self.client.get(reverse('web.index'), {}, REMOTE_ADDR='93.103.53.11')
-
-		expected_map_events_result = json.dumps([
-			{'pk': 2, 'model': 'api.event', 'fields': 
-			{'picture': '', 'slug': 'event-1-approved', 'title': 'Event 1 - Approved', 
-			'description': 'Some description - Approved', 'geoposition': '0,0', },	 
-			 }
-		])
+		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle'}, REMOTE_ADDR='93.103.53.11')
 
 		#assert
-		self.assertJSONEqual(expected_map_events_result, json.loads(response.context['map_events']))
-		self.assertEquals('SI', response.context['country']['country_code'])
+		self.assertEquals(1,response.context['events'].count())
+		self.assertEquals('SI', response.context['country'])
+
+	def test_search_events_with_search_query_multiple_events(self):
+		#setup
+		approved1 = Event.objects.create(
+			status="APPROVED",
+			organizer="Organizer 1",
+			creator=User.objects.filter(pk=1)[0],
+			title="Event Arglebargle - Approved",
+			description="Some description - Approved",
+			location="Near here",
+			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			event_url="http://eee.com",
+			contact_person="ss@ss.com",
+			country="SI",
+			pub_date=datetime.datetime.now(),
+			tags=["tag1", "tag2"])
+		approved2 = Event.objects.create(
+			status="APPROVED",
+			organizer="Organizer 2",
+			creator=User.objects.filter(pk=1)[0],
+			title="Event Arglebargle - Approved",
+			description="Some description - Approved",
+			location="Near here",
+			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			event_url="http://eee.com",
+			contact_person="ss@ss.com",
+			country="AT",
+			pub_date=datetime.datetime.now(),
+			tags=["tag1", "tag2"])
+
+		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle'}, REMOTE_ADDR='93.103.53.11')
+
+		#assert
+		self.assertEquals(1,response.context['events'].count())
+		self.assertEquals('SI', response.context['country'])
 
 	def test_view_event_without_picture(self):
 		test_event = EventFactory.create()
@@ -89,6 +120,42 @@ class EventViewsTestCase(TestCase):
 
 		assert response.status_code == 200
 		assert test_event.title in response.content
+
+	def test_search_events_with_search_query_all_countries_multiple_results(self):
+		#setup
+		approved1 = Event.objects.create(
+			status="APPROVED",
+			organizer="Organizer 1",
+			creator=User.objects.filter(pk=1)[0],
+			title="Event Arglebargle - Approved",
+			description="Some description - Approved",
+			location="Near here",
+			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			event_url="http://eee.com",
+			contact_person="ss@ss.com",
+			country="SI",
+			pub_date=datetime.datetime.now(),
+			tags=["tag1", "tag2"])
+		approved2 = Event.objects.create(
+			status="APPROVED",
+			organizer="Organizer 2",
+			creator=User.objects.filter(pk=1)[0],
+			title="Event Arglebargle - Approved",
+			description="Some description - Approved",
+			location="Near here",
+			start_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
+			end_date=datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			event_url="http://eee.com",
+			contact_person="ss@ss.com",
+			country="AT",
+			pub_date=datetime.datetime.now(),
+			tags=["tag1", "tag2"])
+
+		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle', 'country_code':'00'}, REMOTE_ADDR='93.103.53.11')
+
+		#assert
+		self.assertEquals(2,response.context['events'].count())
 
 @pytest.mark.django_db
 def test_create_event_with_image(admin_user, admin_client, db):
@@ -128,7 +195,7 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 	with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
 		io = StringIO.StringIO()
 		io.write(fp.read())
-		uploaded_picture = InMemoryUploadedFile(io, None, "alja.jpg", "jpeg", io.len, None)
+		uploaded_picture = InMemoryUploadedFile(io, None, "alja17.jpg", "jpeg", io.len, None)
 		uploaded_picture.seek(0)
 
 	event_data = {
@@ -185,8 +252,13 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 	assert response_edited.status_code == 302
 
 	response = admin_client.get(event.get_absolute_url())
-	assert 'event_picture/alja' not in response.content
+	assert 'event_picture/alja17' not in response.content
 	assert 'event_picture/ercchy' in response.content
+
+	#Check if the old event picture has been deleted
+	old_picture = os.path.isfile(local(__file__).dirname+'/../../media/event_picture/alja17.jpg')
+
+	assert not old_picture
 
 	event_data = {
 		'audience': [6, 7],
@@ -210,3 +282,4 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 
 	response = admin_client.get(event.get_absolute_url())
 	assert 'event_picture/ercchy' not in response.content
+

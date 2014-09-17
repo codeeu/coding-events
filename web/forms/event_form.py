@@ -6,6 +6,7 @@ from api.models.events import EventTheme, EventAudience
 
 
 class AddEventForm(forms.ModelForm):
+
 	email_errors = {
 		'required': u'Please enter a valid email, so we can contact you in case of questions.',
 		'invalid': u'Can you please check if this is a valid email address?',
@@ -158,6 +159,11 @@ class SearchEventForm(forms.Form):
 	countries._countries.append(Event.CUSTOM_COUNTRY_ENTRIES[0])
 	countries._countries.append(Event.CUSTOM_COUNTRY_ENTRIES[1])
 
+	# XK is temp code for Kosovo; remove from COUNTRIES_OVERRIDE when 
+	# Kosovo gets its own ISO code and is added to django-countries
+	#if not 'Kosovo' in list(dict(countries._countries).values()):
+	#	countries._countries.append((u'XK', u'Kosovo'))
+
 	search = forms.CharField(
 		required=False,
 		widget=forms.TextInput(attrs={'placeholder': 'Search for event name or tag', 'class': 'form-control'})
@@ -190,9 +196,14 @@ class SearchEventForm(forms.Form):
 
 	def __init__(self, *args, **kwargs):
 		country_code = kwargs.pop('country_code', None)
+		past_events = kwargs.pop('past_events', False)
+		search_query = kwargs.pop('search', None)
 		super(SearchEventForm, self).__init__(*args, **kwargs)
 		if country_code:
 			self.fields['country'].initial = country_code
+		self.fields['past_events'].initial = past_events
+		if search_query:
+			self.fields['search'].initial = search_query
 
 
 

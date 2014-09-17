@@ -30,6 +30,10 @@ six==1.5.2
 sqlparse==0.1.11
 wsgiref==0.1.2
 dj-static==0.0.5
+djangorestframework==2.4.2
+Markdown==2.4.1
+django-cleanup==0.1.10
+factory-boy==2.4.1
 
 
 dj-database-url==0.2.2
@@ -39,3 +43,4 @@ pystache==0.5.3
 static==1.0.2
 boto==2.27.0
 django-storages==1.1.8
+

@@ -14,9 +14,7 @@ var Codeweek = window.Codeweek || {};
 		overlapSpiderifier = null;
 
 	function createMap(events, lat, lng, zoomVal) {
-		var markerData = JSON.parse(events),
-			markerData_len = markerData.length,
-			markerClusterOptions = {gridSize: 30, maxZoom: 10},
+		var markerClusterOptions = {gridSize: 30, maxZoom: 10},
 			map = new google.maps.Map(document.getElementById('events-map'), {
 				scrollwheel: false,
 				zoom: zoomVal,
@@ -40,19 +38,45 @@ var Codeweek = window.Codeweek || {};
 			content: "loading..."
 		});
 
-		for (i = 0; i <= markerData_len; i = i + 1) {
-			var markdata = markerData[i];
-			if (markdata && typeof markdata === 'object') {
+		overlapSpiderifier.addListener('click', function(marker) {
+			placeinfowindow.close();
 
-				var markTitle = markerData[i].fields.title,
-					map_position = markerData[i].fields.geoposition.split(","),
+			var infoWindowContent = '',
+				buble_content = '',
+				image = '',
+				description = '';
+
+			if (marker.image !== "") {
+				image += '<img src="' + Codeweek.Index.media_url + marker.image + '" class="img-polaroid marker-buble-img">';
+			}
+
+			if (marker.description.length > 150) {
+				description = marker.description.substring(0, 150) + '... ';
+			} else {
+				description = marker.description;
+			}
+
+			buble_content = '<div><h4><a href="' + marker.url + '" class="map-marker">' + marker.title + '</a></h4><div>' +
+							  image +
+							  '<p style="overflow:hidden;">' + description +
+							  '&nbsp;<a href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
+
+			placeinfowindow.setContent(buble_content);
+			placeinfowindow.open(map, marker);
+		});
+
+		for (i = 0; i <= events.length; i = i + 1) {
+			if (events[i] && typeof events[i] === 'object') {
+
+				var markTitle = events[i].title,
+					map_position = events[i].geoposition.split(","),
 					markLat = map_position[0],
 					markLng = map_position[1],
-					map_event_id = markerData[i].pk,
-					map_event_slug = markerData[i].fields.slug,
+					map_event_id = events[i].id,
+					map_event_slug = events[i].slug,
 					markUrl = "/view/" + map_event_id + "/" + map_event_slug,
-					markDesc = markerData[i].fields.description,
-					markImg = markerData[i].fields.picture;
+					markDesc = events[i].description,
+					markImg = events[i].picture;
 
 				markers[map_event_id] = createMarker(markTitle, markLat, markLng, markUrl, markDesc, markImg);
 			}
@@ -103,35 +127,6 @@ var Codeweek = window.Codeweek || {};
 				image: markImg,
 				url: markUrl
 			});
-
-		overlapSpiderifier.addListener('click', function(marker) {
-			placeinfowindow.close();
-
-			var infoWindowContent = '',
-				buble_content = '',
-				image = '',
-				description = '';
-
-			if (marker.image !== "") {
-				image += '<img src="' + Codeweek.Index.media_url + marker.image + '" class="img-polaroid marker-buble-img">';
-			}
-
-			if (marker.description.length > 150) {
-				description = marker.description.substring(0, 150) + '... ';
-			} else {
-				description = marker.description;
-			}
-
-			buble_content = '<div><h4><a href="' + marker.url + '" class="map-marker">' + marker.title + '</a></h4><div>' +
-							  image +
-							  '<p style="overflow:hidden;">' + description +
-							  '&nbsp;<a href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
-
-
-			placeinfowindow.setContent(buble_content);
-			placeinfowindow.open(marker.map, marker);
-		});
-
 		overlapSpiderifier.addMarker(marker);
 
 		return marker;
@@ -145,7 +140,7 @@ var Codeweek = window.Codeweek || {};
 			options = {
 				types: ['(regions)'],
 				bounds: new google.maps.Circle({
-					center: new google.maps.LatLng(54.977614, 15.292969),
+					center: new google.maps.LatLng(54.977614, 13.292969),
 					radius: 2700
 				}).getBounds()
 			},
@@ -205,7 +200,7 @@ var Codeweek = window.Codeweek || {};
 	function setSearchParams(country_code, country_name) {
 		var search_button = $('#search-events-link').find('a'),
 			search_button_location = search_button.attr('href'),
-			new_location = search_button_location.replace(/=[A-Z]{0,2}$/, "=" + country_code);
+			new_location = search_button_location.replace(/=[A-Z]{0,2}/, "=" + country_code);
 
 			search_button.attr('href', new_location);
 			$('#country').html(country_name);
@@ -231,12 +226,26 @@ var Codeweek = window.Codeweek || {};
 	}
 
 
-	var init = function (events, lon, lan) {
+	var init = function (past, lon, lan) {
 
 		$(function () {
 			// Initialize map on front page
 			google.maps.event.addDomListener(window, 'load', function () {
-				initialize(events, lon, lan);
+				var ajaxURL = "/api/event/list/?format=json";
+				if (past == "yes")
+					ajaxURL = ajaxURL + "&past=yes"
+
+				$.ajax({
+					type: "GET",
+					url: ajaxURL,
+					error: function(jqXHR, textStatus, errorThrown) {
+						// TODO: Add some error handling for real
+						$('#events-map').html('<div id="api-error"><img src="/static/img/blame-the-dog.jpg"><p><strong>A dog broke our API. Catz will fix it soon. Always blame the dog!</strong></p></div>');
+					},
+					success: function(data, textStatus, jqXHR) {
+						initialize(data, lon, lan);
+					}
+				});
 			});
 
 			$(".country-link").click(function (event) {

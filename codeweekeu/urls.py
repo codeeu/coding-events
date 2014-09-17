@@ -11,6 +11,7 @@ urlpatterns = patterns(
 	'',
 	url('', include('social.apps.django_app.urls', namespace='social')),
 	url(r'^avatar/', include('avatar.urls')),
+	url(r'^api/', include('api.urls', namespace='api')),
 	url(r'^admin/', include(admin.site.urls)),
 	#Note: keep this urls last
 	url(r'', include('web.urls')),

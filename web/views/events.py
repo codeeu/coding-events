@@ -49,12 +49,7 @@ def index(request):
 	template = 'pages/index.html'
 
 	past = request.GET.get('past', 'no')
-	if past == 'yes':
-		events = get_approved_events(past=True)
-	else:
-		events = get_approved_events()
 
-	map_events = serializers.serialize('json', events, fields=('geoposition', 'title', 'pk', 'slug', 'description', 'picture'))
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 	country = get_country_from_user_ip(user_ip)
@@ -69,7 +64,6 @@ def index(request):
 	
 	return render_to_response(
 		template, {
-			'map_events': map_events,
 			'lan_lon': lan_lon,
 			'country': country,
 			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
@@ -268,14 +262,21 @@ def created_events(request):
 
 def search_events(request):
 
-		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+		country_filter = request.GET.get('country_code', None)
+		if not country_filter:
+			user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
-		country_code = request.GET.get('country_code', None)
-		country = get_country(country_code, user_ip)
-		events = get_approved_events(country_code=country)
+			country = get_country(country_filter, user_ip)
+			country_filter = country['country_code']
+
+		past = request.GET.get('past', None)
+		past_events = True if past and past=='yes' else False
+
+		search_query = request.GET.get('q', '')
 
 		template = 'pages/search_events.html'
 		page_template = 'pages/ajax_faceted_search_events.html'
+
 		if request.method == 'POST':
 			form = SearchEventForm(request.POST)
 
@@ -287,11 +288,9 @@ def search_events(request):
 				past_events = form.cleaned_data.get('past_events',None)
 
 				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
-				country = {'country_code': country_filter}
-
 		else:
-			form = SearchEventForm(country_code=country['country_code'])
-			events = get_approved_events(country_code=country['country_code'])
+			form = SearchEventForm(country_code=country_filter, past_events=past_events, search=search_query)
+			events = get_filtered_events(search_filter=search_query, country_filter=country_filter, past_events=past_events)
 
 
 		if request.is_ajax():
@@ -306,7 +305,7 @@ def search_events(request):
 				'page_template': page_template,
 				'events': events,
 				'form': form,
-				'country': country['country_code'],
+				'country': country_filter,
 			},
 			context_instance=RequestContext(request))
 
