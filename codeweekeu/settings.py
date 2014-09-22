@@ -228,7 +228,10 @@ INSTALLED_APPS = (
 	'mailer',
 
 	#delete old Files and Images
-	'django_cleanup'
+	'django_cleanup',
+
+    # Sentry
+    'raven.contrib.django.raven_compat',
 )
 ########## END APP CONFIGURATION
 
@@ -544,6 +547,8 @@ SOUTH_TESTS_MIGRATE = True
 ########## END TESTING
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+RAVEN_CONFIG = {}
 
 try:
 	from settings_local import *
