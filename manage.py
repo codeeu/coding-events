@@ -5,7 +5,7 @@ import sys
 if __name__ == "__main__":
 	os.environ.setdefault("DJANGO_SETTINGS_MODULE", "codeweekeu.settings")
 
-	if sys.argv.index('test') == 1:
+	if 'test' in sys.argv and sys.argv.index('test') == 1:
 		import pytest
 		sys.argv.pop(1)
 		sys.exit(pytest.main())
