@@ -313,10 +313,6 @@ def search_events(request):
 def scoreboard(request):
 	template = 'pages/scoreboard.html'
 
-	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
-	                        remote=request.META.get('REMOTE_ADDR'))
-	country = get_country_from_user_ip(user_ip)
-	
 	counts = count_approved_events_for_country()
 	
 	return render_to_response(

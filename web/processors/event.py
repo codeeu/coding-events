@@ -10,6 +10,7 @@ from countries_plus.models import Country
 from web.processors import media
 from mailer.event_report_mailer import send_email_to_country_ambassadors
 
+
 def get_client_ip(forwarded=None, remote=None):
 
 	if settings.DEBUG:
@@ -119,6 +120,7 @@ def get_country(country_code, user_ip):
 		country = get_country_from_user_ip(user_ip)
 	return country
 
+
 def count_approved_events_for_country(past=True):
 	"""
 	Count the number of approved events and score for each country
@@ -126,7 +128,7 @@ def count_approved_events_for_country(past=True):
 
 	all_events = Event.objects.filter(status='APPROVED')
 	
-	country_counts = []
+	country_count = []
 	
 	# not including the first two fake countries in the list
 	for country in list(countries)[2:]:
@@ -141,10 +143,10 @@ def count_approved_events_for_country(past=True):
 						'country_name': country_name, 
 						'events': number_of_events,
 						'score': country_score}
-		country_counts.append(country_entry)
+		country_count.append(country_entry)
 
-	sorted_counts = sorted(country_counts, key=lambda k: k['score'], reverse=True)
-	return sorted_counts
+	sorted_count = sorted(country_count, key=lambda k: k['score'], reverse=True)
+	return sorted_count
 
 
 def change_event_status(event_id):

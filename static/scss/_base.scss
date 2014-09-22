@@ -563,7 +563,7 @@ SCOREBOARD STYLES
 	}
 	@for $i from 1 through 10 {
     	li:nth-child(#{$i}) {
-        background-color: #F0F8FF;
+        	background-color: #F0F8FF;
 		}
 	}
 
