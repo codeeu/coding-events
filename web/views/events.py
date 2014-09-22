@@ -30,6 +30,7 @@ from web.processors.event import get_lat_lon_from_user_ip
 from web.processors.event import list_countries
 from web.processors.event import get_country
 from web.processors.event import get_country_from_user_ip
+from web.processors.event import count_approved_events_for_country
 from web.processors.media import process_image
 from web.processors.media import ImageSizeTooLargeException
 from web.processors.media import UploadImageError
@@ -308,6 +309,26 @@ def search_events(request):
 				'country': country_filter,
 			},
 			context_instance=RequestContext(request))
+
+def scoreboard(request):
+	template = 'pages/scoreboard.html'
+
+	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+	                        remote=request.META.get('REMOTE_ADDR'))
+	country = get_country_from_user_ip(user_ip)
+	
+	all_countries = list_countries()
+
+	counts = count_approved_events_for_country()
+	
+	return render_to_response(
+		template, {
+			'country': country,
+			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
+			'all_countries': all_countries[2:],
+			'counts': counts,
+		},
+		context_instance=RequestContext(request))
 
 
 @login_required

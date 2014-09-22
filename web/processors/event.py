@@ -119,6 +119,25 @@ def get_country(country_code, user_ip):
 		country = get_country_from_user_ip(user_ip)
 	return country
 
+def count_approved_events_for_country(past=True):
+	"""
+	Country the number of approved events for each country
+	"""
+
+	all_events = Event.objects.filter(status='APPROVED')
+	
+	country_counts = []
+	
+	for country in list(countries)[2:]:
+		country_code = country[0]
+		country_name = country[1]
+		number_of_events = all_events.filter(country=country_code).count()
+		country_entry = {'country_code': country_code, 'country_name': country_name, 'events': number_of_events}
+		country_counts.append(country_entry)
+
+	sorted_counts = sorted(country_counts, key=lambda k: k['events'], reverse=True)
+	return sorted_counts
+
 
 def change_event_status(event_id):
 	event = Event.objects.get(pk=event_id)
