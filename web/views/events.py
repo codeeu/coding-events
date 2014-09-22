@@ -317,15 +317,11 @@ def scoreboard(request):
 	                        remote=request.META.get('REMOTE_ADDR'))
 	country = get_country_from_user_ip(user_ip)
 	
-	all_countries = list_countries()
-
 	counts = count_approved_events_for_country()
 	
 	return render_to_response(
 		template, {
 			'country': country,
-			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
-			'all_countries': all_countries[2:],
 			'counts': counts,
 		},
 		context_instance=RequestContext(request))

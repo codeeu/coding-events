@@ -209,6 +209,8 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     # django-countries country listing
 	'django_countries',
+	# additional info about countries
+	'countries_plus',
     # avatar handling
     'avatar',
     # support for tags

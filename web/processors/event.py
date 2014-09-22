@@ -5,10 +5,10 @@ from django.conf import settings
 from django.contrib.gis.geoip import GeoIP
 from api.models import Event
 from django_countries import countries
+from countries_plus.models import Country
 
 from web.processors import media
 from mailer.event_report_mailer import send_email_to_country_ambassadors
-
 
 def get_client_ip(forwarded=None, remote=None):
 
@@ -131,11 +131,20 @@ def count_approved_events_for_country(past=True):
 	for country in list(countries)[2:]:
 		country_code = country[0]
 		country_name = country[1]
+		population = Country.objects.get(iso=country_code).population
 		number_of_events = all_events.filter(country=country_code).count()
-		country_entry = {'country_code': country_code, 'country_name': country_name, 'events': number_of_events}
+		country_score = 0
+		if number_of_events > 0:
+			country_score = 1. * number_of_events / population
+			print population, number_of_events
+		country_entry = {'country_code': country_code, 
+						'country_name': country_name, 
+						'events': number_of_events,
+						'score': country_score}
 		country_counts.append(country_entry)
+		print country_entry
 
-	sorted_counts = sorted(country_counts, key=lambda k: k['events'], reverse=True)
+	sorted_counts = sorted(country_counts, key=lambda k: k['score'], reverse=True)
 	return sorted_counts
 
 
