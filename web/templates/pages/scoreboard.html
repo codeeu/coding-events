@@ -5,12 +5,14 @@
 {% block content %}
 	<div class="container">
 		<h1>#codeEU Events Scoreboard</h1>
-		<ul>
+		<p>Which countries in Europe are buzzing with coding activity? The scoreboard is sorted by the number of listed coding events per population, so don't be surprised to see some of the smaller countries higher up on the list!</p>
+		<ul class="country-ranking">
 		{% for country in counts %}
 			<li> 
 				<img src="/static/flags/{{ country.country_code|lower }}.png" alt="{{ country.country_name }}" />
 				<span class="icon-flag">
-					<strong>{{ country.country_name }}</strong> has <a href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past=yes">{{ country.events }} approved event{% if country.events != 1 %}s{% endif %}</a>
+					<span class="country-name">{{ country.country_name }}</span> is participating with 
+					 <span class="event-number"><a href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past=yes">{{ country.events }}</span> event{% if country.events != 1 %}s{% endif %}</a>
 				</span>
 			</li>
 		{% endfor %}
