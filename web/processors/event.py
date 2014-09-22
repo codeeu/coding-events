@@ -121,28 +121,27 @@ def get_country(country_code, user_ip):
 
 def count_approved_events_for_country(past=True):
 	"""
-	Country the number of approved events for each country
+	Count the number of approved events and score for each country
 	"""
 
 	all_events = Event.objects.filter(status='APPROVED')
 	
 	country_counts = []
 	
+	# not including the first two fake countries in the list
 	for country in list(countries)[2:]:
 		country_code = country[0]
 		country_name = country[1]
-		population = Country.objects.get(iso=country_code).population
 		number_of_events = all_events.filter(country=country_code).count()
+		population = Country.objects.get(iso=country_code).population
 		country_score = 0
 		if number_of_events > 0:
 			country_score = 1. * number_of_events / population
-			print population, number_of_events
 		country_entry = {'country_code': country_code, 
 						'country_name': country_name, 
 						'events': number_of_events,
 						'score': country_score}
 		country_counts.append(country_entry)
-		print country_entry
 
 	sorted_counts = sorted(country_counts, key=lambda k: k['score'], reverse=True)
 	return sorted_counts

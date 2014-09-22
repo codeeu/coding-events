@@ -321,7 +321,6 @@ def scoreboard(request):
 	
 	return render_to_response(
 		template, {
-			'country': country,
 			'counts': counts,
 		},
 		context_instance=RequestContext(request))
