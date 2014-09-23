@@ -137,7 +137,7 @@ def count_approved_events_for_country(past=True):
 		number_of_events = all_events.filter(country=country_code).count()
 		population = Country.objects.get(iso=country_code).population
 		country_score = 0
-		if number_of_events > 0:
+		if number_of_events > 0 and population > 0 and population != "":
 			country_score = 1. * number_of_events / population
 		country_entry = {'country_code': country_code, 
 						'country_name': country_name, 
