@@ -221,12 +221,17 @@ ADD/EDIT EVENT PAGE STYLES
 VIEW EVENT PAGE STYLES
 *********************/
 
+.fb_iframe_widget span {
+    vertical-align: baseline !important;
+}
+
 .share-event-wrapper {
 	margin: 15px 0;
 	.fb-share-button {
 		margin-right: 15px;
 	}
 	#twitter-widget-0 {
+		margin-left: 15px;
 		width: 90px !important;
 	}
 }
@@ -532,5 +537,27 @@ LIST EVENTS STYLES
     .countdown {
     	font-family: inherit; 
     }
+}
+
+/*********************
+SCOREBOARD STYLES
+*********************/
+
+.country {
+	border-bottom:1px solid #ccc;
+	border:1px solid #ccc;
+	.country-name {
+		font-weight: 800;
+		font-size: 1.2em;		
+	}
+	.event-number {
+		font-weight: 800;
+		font-size: 1.5em;
+	}
+	background-color: #F5F5F5;
+}
+
+.highlighted {
+	background-color: #F0F8FF;
 }
 
