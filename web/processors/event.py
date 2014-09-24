@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.gis.geoip import GeoIP
 from api.models import Event
 from django_countries import countries
+from countries_plus.models import Country
 
 from web.processors import media
 from mailer.event_report_mailer import send_email_to_country_ambassadors
@@ -118,6 +119,34 @@ def get_country(country_code, user_ip):
 	else:
 		country = get_country_from_user_ip(user_ip)
 	return country
+
+
+def count_approved_events_for_country(past=True):
+	"""
+	Count the number of approved events and score for each country
+	"""
+
+	all_events = Event.objects.filter(status='APPROVED')
+	
+	country_count = []
+	
+	# not including the first two fake countries in the list
+	for country in list(countries)[2:]:
+		country_code = country[0]
+		country_name = country[1]
+		number_of_events = all_events.filter(country=country_code).count()
+		population = Country.objects.get(iso=country_code).population
+		country_score = 0
+		if number_of_events > 0 and population > 0 and population != "":
+			country_score = 1. * number_of_events / population
+		country_entry = {'country_code': country_code, 
+						'country_name': country_name, 
+						'events': number_of_events,
+						'score': country_score}
+		country_count.append(country_entry)
+
+	sorted_count = sorted(country_count, key=lambda k: k['score'], reverse=True)
+	return sorted_count
 
 
 def change_event_status(event_id):
