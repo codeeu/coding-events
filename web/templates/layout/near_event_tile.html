@@ -1,16 +1,16 @@
 {% load static %}
-<div class="col-sm-3 col-xs-6">
-	<a href="{% url 'web.view_event' event.id event.slug %}" class="thumbnail clearfix">
-		<h4>{{ event.title }}</h4>
-		<div class="caption">
-			<span class="countdown pull-left caption">
-				{{ event.start_date|date:"F j, Y" }}
-			</span>
-		</div>
+<div class="col-md-3 col-sm-6 grid">
+	<a href="{% url 'web.view_event' event.id event.slug %}">
+		<figure>
 		{% if event.picture %}
 			<img src="{{ event.picture.url }}" alt="{{ event.title }} Image">
-		{% else %}
+			{% else %}
 			<img src="{% static 'img/event_default_picture.png' %}" alt="{{ event.title }} Image">
-		{% endif %}
+			{% endif %}
+			
+			<div class="caption-description">
+				<h4>{{ event.title }}</h4>
+				<span>{{ event.start_date|date:"F j, Y" }}</span><p>{{ event.description|truncatewords:12 }}</p></div>
+		</figure>
 	</a>
 </div>
