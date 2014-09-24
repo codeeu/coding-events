@@ -18,7 +18,7 @@ from web.processors.event import reject_event_status
 from api.processors import get_approved_events
 from api.processors import get_next_or_previous
 from api.processors import get_nearby_events
-
+from web.processors.event import count_approved_events_for_country
 
 class EventTestCase(TestCase):
 	def get_user(self):
@@ -346,6 +346,7 @@ def test_create_event_in_moldova(admin_user, db):
 	assert "MD" == test_event.country.code
 
 @pytest.mark.django_db
+<<<<<<< HEAD
 def test_create_event_in_kosovo(admin_user, db):
 	event_data = {
 		'audience': [3],
@@ -367,3 +368,63 @@ def test_create_event_in_kosovo(admin_user, db):
 
 	assert "XK" == test_event.country.code
 
+def test_scoreboard_counter(admin_user, db):
+
+	initial_counter = count_approved_events_for_country()
+
+	counted_events_before = 0
+
+	for country in initial_counter:
+		if country['country_code'] == 'SI':
+			counted_events_before = country['events']
+
+	# Adding one approved and one pending event in same country
+	# the count for events for the country should increase by 1
+	event_data = {
+		'audience': [3],
+		'theme': [1,2],
+		'country': u'SI',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'location': u'Ljubljana, Slovenia',
+		'organizer': u'testko',
+		"creator": admin_user,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'title': u'Test Approved Event',
+		'status':"APPROVED",
+	}
+
+	test_approved_event = create_or_update_event(event_id=None, **event_data)
+
+	event_data = {
+		'audience': [3],
+		'theme': [1,2],
+		'country': u'SI',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'location': u'Ljubljana, Slovenia',
+		'organizer': u'testko',
+		"creator": admin_user,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'title': u'Test Pending Event',
+		'status':"PENDING",
+	}
+
+	test_pending_event = create_or_update_event(event_id=None, **event_data)
+
+	new_counter = count_approved_events_for_country()
+
+	counted_events_after = 0
+
+	for country in new_counter:
+			if country['country_code'] == 'SI':
+				counted_events_after = country['events']
+
+	# An extra check with a direct DB query
+	counted_events_query = Event.objects.filter(status='APPROVED').filter(country='SI').count()
+	
+	assert counted_events_after == counted_events_before + 1
+	assert counted_events_after == counted_events_query
+
+	test_approved_event.delete()
+	test_pending_event.delete()

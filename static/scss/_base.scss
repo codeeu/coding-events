@@ -534,3 +534,25 @@ LIST EVENTS STYLES
     }
 }
 
+/*********************
+SCOREBOARD STYLES
+*********************/
+
+.country {
+	border-bottom:1px solid #ccc;
+	border:1px solid #ccc;
+	.country-name {
+		font-weight: 800;
+		font-size: 1.2em;		
+	}
+	.event-number {
+		font-weight: 800;
+		font-size: 1.5em;
+	}
+	background-color: #F5F5F5;
+}
+
+.highlighted {
+	background-color: #F0F8FF;
+}
+
