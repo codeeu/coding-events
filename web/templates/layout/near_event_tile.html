@@ -1,5 +1,5 @@
 {% load static %}
-<div class="col-md-3 col-sm-6 col-xs-12 grid">
+<div class="col-md-3 col-sm-6 grid">
 	<a href="{% url 'web.view_event' event.id event.slug %}">
 		<figure>
 		{% if event.picture %}
@@ -7,12 +7,10 @@
 			{% else %}
 			<img src="{% static 'img/event_default_picture.png' %}" alt="{{ event.title }} Image">
 			{% endif %}
-			<div class="caption-description"><p>{{ event.description|truncatewords:15 }}</p></div>
-			<div class="caption-hider"></div>
-			<figcaption>
+			
+			<div class="caption-description">
 				<h4>{{ event.title }}</h4>
-				<span>{{ event.start_date|date:"F j, Y" }}</span>
-			</figcaption>
+				<span>{{ event.start_date|date:"F j, Y" }}</span><p>{{ event.description|truncatewords:12 }}</p></div>
 		</figure>
 	</a>
 </div>
