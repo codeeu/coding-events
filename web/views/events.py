@@ -77,43 +77,42 @@ def index(request):
 
 @login_required
 def add_event(request):
-	event_form = AddEventForm(initial={'user_email': request.user.email})
-	user = request.user
-
 	if request.method == 'POST':
 		event_form = AddEventForm(data=request.POST, files=request.FILES)
 
-	if event_form.is_valid():
-		picture = request.FILES.get('picture', None)
-		event_data = {}
-		try:
-			if picture:
-				if picture.size > (256 * 1024):
-					raise ImageSizeTooLargeException('Image size too large.')
+		if event_form.is_valid():
+			picture = request.FILES.get('picture', None)
+			event_data = {}
+			try:
+				if picture:
+					if picture.size > (256 * 1024):
+						raise ImageSizeTooLargeException('Image size too large.')
 
-				event_data['picture'] = process_image(picture)
+					event_data['picture'] = process_image(picture)
 
-			event_data.update(event_form.cleaned_data)
-			event_data['creator'] = user
+				event_data.update(event_form.cleaned_data)
+				event_data['creator'] = request.user
 
-			# checking if user entered a different email than in her profile
-			if user.email != event_data['user_email']:
-				update_user_email(user.id, event_data['user_email'])
-			event_data.pop('user_email')
+				# checking if user entered a different email than in her profile
+				if request.user.email != event_data['user_email']:
+					update_user_email(request.user.id, event_data['user_email'])
+				event_data.pop('user_email')
 
-			event = create_or_update_event(**event_data)
+				event = create_or_update_event(**event_data)
 
-			t = loader.get_template('alerts/thank_you.html')
-			c = Context({'event': event, })
-			messages.info(request, t.render(c))
+				t = loader.get_template('alerts/thank_you.html')
+				c = Context({'event': event, })
+				messages.info(request, t.render(c))
 
-			return HttpResponseRedirect(reverse('web.view_event', args=[event.pk, event.slug]))
+				return HttpResponseRedirect(reverse('web.view_event', args=[event.pk, event.slug]))
 
-		except ImageSizeTooLargeException:
-			messages.error(request, 'The image is just a bit too big for us. '
-			                        'Please reduce your image size and try agin.')
-		except UploadImageError as e:
-			messages.error(request, e.message)
+			except ImageSizeTooLargeException:
+				messages.error(request, 'The image is just a bit too big for us. '
+				                        'Please reduce your image size and try agin.')
+			except UploadImageError as e:
+				messages.error(request, e.message)
+	else:
+		event_form = AddEventForm(initial={'user_email': request.user.email})
 
 	return render_to_response("pages/add_event.html", {
 		'form': event_form,

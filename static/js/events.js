@@ -75,10 +75,12 @@ var Codeweek = window.Codeweek || {};
 	function updateAddress(new_latLng) {
 		geocoder = new google.maps.Geocoder();
 		geocoder.geocode({'latLng': new_latLng}, function (results, status) {
-			if (status === google.maps.GeocoderStatus.OK) {
+			if ( status === google.maps.GeocoderStatus.OK ||
+				 ( status === google.maps.GeocoderStatus.ZERO_RESULTS && results.length > 0 ) ) {
 				document.getElementById("autocomplete").value = results[0].formatted_address;
 				// the last item in the geocoder for latLng results array is the country
-				var country = results[results.length - 1].address_components[0].short_name
+				var country = results.slice(-1)[0].address_components.slice(-1)[0].short_name;
+
 				updateCountrySelection(country);
 			}
 		});

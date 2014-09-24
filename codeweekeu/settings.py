@@ -491,6 +491,7 @@ COUNTRIES_OVERRIDE = {
 	u'ZA': None,
 	u'ZM': None,
 	u'ZW': None,
+	u'XK': 'Kosovo',
 }
 ########## END ATHENTICATION CONFIGURATION
 

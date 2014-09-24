@@ -161,8 +161,8 @@ class SearchEventForm(forms.Form):
 
 	# XK is temp code for Kosovo; remove from COUNTRIES_OVERRIDE when 
 	# Kosovo gets its own ISO code and is added to django-countries
-	#if not 'Kosovo' in list(dict(countries._countries).values()):
-	#	countries._countries.append((u'XK', u'Kosovo'))
+	if not 'Kosovo' in list(dict(countries._countries).values()):
+		countries._countries.append((u'XK', u'Kosovo'))
 
 	search = forms.CharField(
 		required=False,

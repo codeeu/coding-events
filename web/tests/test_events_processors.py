@@ -346,6 +346,28 @@ def test_create_event_in_moldova(admin_user, db):
 	assert "MD" == test_event.country.code
 
 @pytest.mark.django_db
+def test_create_event_in_kosovo(admin_user, db):
+	event_data = {
+		'audience': [3],
+		'theme': [1,2],
+		'contact_person': u'test@example.com',
+		'country': u'XK',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'event_url': u'',
+		'location': u'Shaban Polluzha, Prishtina, Kosova (Kosovo)',
+		'organizer': u'RailsGirls Kosovo',
+		"creator": admin_user,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'tags': [u'css', u'html', u'web'],
+		'title': u'RailsGirls Kosovo',
+	}
+
+	test_event = create_or_update_event(event_id=None, **event_data)
+
+	assert "XK" == test_event.country.code
+
+@pytest.mark.django_db
 def test_scoreboard_counter(admin_user, db):
 
 	initial_counter = count_approved_events_for_country()
@@ -406,5 +428,3 @@ def test_scoreboard_counter(admin_user, db):
 
 	test_approved_event.delete()
 	test_pending_event.delete()
-
-
