@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import datetime
 import pytest
 import StringIO
@@ -59,6 +61,15 @@ class EventViewsTestCase(TestCase):
 
 		self.assertEquals(1,response.context['events'].count())
 		self.assertEquals('SI', response.context['country'])
+
+	def test_search_events_with_unicode_tag_in_search_query(self):
+		ApprovedEventFactory.create(tags=["jabolčna čežana","José", "Django"])
+		response = self.client.get(reverse('web.search_events'), {'q':'čežana'}, REMOTE_ADDR='93.103.53.11')
+
+		self.assertEquals(1,response.context['events'].count())
+		self.assertEquals('SI', response.context['country'])
+
+
 
 	def test_search_events_with_search_query_multiple_events(self):
 		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
