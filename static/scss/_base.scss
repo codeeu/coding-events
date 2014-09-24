@@ -538,33 +538,21 @@ LIST EVENTS STYLES
 SCOREBOARD STYLES
 *********************/
 
-.country-ranking {
-	padding-left: 0;
-	margin-top: 1.5em;
-	overflow:hidden;
+.country {
+	border-bottom:1px solid #ccc;
 	border:1px solid #ccc;
-	li {
- 		border-bottom:1px solid #ccc;
-		float:left;
-		padding-left: 1em;
-		padding-top: 0.5em;
-		padding-bottom: 0.5em;
-		display:inline;
-		width:100%;
-		background-color: #F5F5F5;
-		.country-name {
-			font-weight: 800;
-			font-size: 1.2em;		
-		}
-		.event-number {
-			font-weight: 800;
-			font-size: 1.5em;
-		}
+	.country-name {
+		font-weight: 800;
+		font-size: 1.2em;		
 	}
-	@for $i from 1 through 10 {
-    	li:nth-child(#{$i}) {
-        	background-color: #F0F8FF;
-		}
+	.event-number {
+		font-weight: 800;
+		font-size: 1.5em;
 	}
-
+	background-color: #F5F5F5;
 }
+
+.highlighted {
+	background-color: #F0F8FF;
+}
+
