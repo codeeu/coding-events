@@ -131,6 +131,7 @@ var Codeweek = window.Codeweek || {};
 		var geoLatLng = autocomplete.getPlace().geometry.location;
 	
 		createMarker(geoLatLng);
+		updateLatLng(geoLatLng.lat(), geoLatLng.lng());
 		updateAddress(geoLatLng);
 	}
 
