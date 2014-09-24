@@ -404,4 +404,7 @@ def test_scoreboard_counter(admin_user, db):
 	assert counted_events_after == counted_events_before + 1
 	assert counted_events_after == counted_events_query
 
+	test_approved_event.delete()
+	test_pending_event.delete()
+
 
