@@ -221,12 +221,17 @@ ADD/EDIT EVENT PAGE STYLES
 VIEW EVENT PAGE STYLES
 *********************/
 
+.fb_iframe_widget span {
+    vertical-align: baseline !important;
+}
+
 .share-event-wrapper {
 	margin: 15px 0;
 	.fb-share-button {
 		margin-right: 15px;
 	}
 	#twitter-widget-0 {
+		margin-left: 15px;
 		width: 90px !important;
 	}
 }
