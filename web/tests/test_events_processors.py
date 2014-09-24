@@ -346,7 +346,6 @@ def test_create_event_in_moldova(admin_user, db):
 	assert "MD" == test_event.country.code
 
 @pytest.mark.django_db
-<<<<<<< HEAD
 def test_create_event_in_kosovo(admin_user, db):
 	event_data = {
 		'audience': [3],
@@ -368,6 +367,7 @@ def test_create_event_in_kosovo(admin_user, db):
 
 	assert "XK" == test_event.country.code
 
+@pytest.mark.django_db
 def test_scoreboard_counter(admin_user, db):
 
 	initial_counter = count_approved_events_for_country()
