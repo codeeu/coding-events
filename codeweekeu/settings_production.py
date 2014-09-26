@@ -3,6 +3,14 @@ import os, dj_database_url
 
 DEBUG = False
 
+ADMINS = (
+	('Errors', 'errors@codeweek.eu'),
+	('Goran','goranche@me.com'),
+	('Erika', 'erika@serox.si'),
+	('Codeweek','europecodes@gmail.com'),
+	('Mateja', 'mateja.verlic+codeweek@gmail.com')
+)
+
 dbconfig = dj_database_url.config()
 if dbconfig:
 	DATABASES['default'] =  dbconfig
