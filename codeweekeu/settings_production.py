@@ -4,10 +4,9 @@ import os, dj_database_url
 DEBUG = False
 
 ADMINS = (
-	('Errors', 'errors@codeweek.eu'),
+	('Codeweek','europecodes@gmail.com'),
 	('Goran','goranche@me.com'),
 	('Erika', 'erika@serox.si'),
-	('Codeweek','europecodes@gmail.com'),
 	('Mateja', 'mateja.verlic+codeweek@gmail.com')
 )
 
