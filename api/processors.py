@@ -99,7 +99,6 @@ def get_filtered_events(search_filter=None, country_filter=None, theme_filter=No
 		filter_kwargs['theme__in'] = theme_filter
 
 	if audience_filter:
-		audience = EventAudience.objects.filter()
 		filter_kwargs['audience__in'] = audience_filter
 
 	if len(filter_args) > 0:

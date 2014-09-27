@@ -22,12 +22,12 @@
 					</div>
 					<div class="row">
 						<div class="col-md-4">
-							<label for="id_country">{{ form.fields.country.label }}</label>
+							<label for="{{ form.country.id_for_label }}">{{ form.fields.country.label }}</label>
 							{{ form.country }}
 							<div class="search-checkbox">
 								<hr>
 								{{ form.past_events }}
-								<label for="id_include_past">{{ form.past_events.label }}</label> 
+								<label for="{{ form.past_events.id_for_label }}">{{ form.past_events.label }}</label>
 							</div>
 							<div class="search-checkbox">
 								<hr>

@@ -260,8 +260,11 @@ def search_events(request):
 			country = get_country(country_filter, user_ip)
 			country_filter = country['country_code']
 
-		past = request.GET.get('past', None)
-		past_events = True if past and past=='yes' else False
+		past = request.GET.get('past_events', 'off')
+		if past == 'on':
+			past_events = True
+		else:
+			past_events = False
 
 		search_query = request.GET.get('q', '')
 

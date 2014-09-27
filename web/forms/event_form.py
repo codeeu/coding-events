@@ -200,7 +200,9 @@ class SearchEventForm(forms.Form):
 		search_query = kwargs.pop('q', None)
 		theme = kwargs.pop('theme', None)
 		audience = kwargs.pop('audience', None)
+
 		super(SearchEventForm, self).__init__(*args, **kwargs)
+
 		if country_code:
 			self.fields['country'].initial = country_code
 		self.fields['past_events'].initial = past_events
@@ -210,7 +212,3 @@ class SearchEventForm(forms.Form):
 			self.fields['theme'].initial = theme
 		if audience:
 			self.fields['audience'].initial = audience
-
-
-
-
