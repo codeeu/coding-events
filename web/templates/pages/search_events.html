@@ -11,11 +11,11 @@
 	<div class="container">
 		<div class="search-page">
 			<div class="search-options">
-				<form id="faceted-search-events" method="post" action="{% url 'web.search_events' %}" enctype="multipart/form-data">{% csrf_token %}
+				<form id="faceted-search-events" method="get" action="{% url 'web.search_events' %}" enctype="multipart/form-data">
 					{{ form.non_field_errors }}
 					<div class="row">
 						<div class="form-group col-md-9">
-							{{ form.search }}
+							{{ form.q }}
 						</div>
 						<div class="col-md-3"><input type="submit" class="btn btn-primary btn-lg" value="Search" /></div>
 						<div class="col-md-12"><hr></div>

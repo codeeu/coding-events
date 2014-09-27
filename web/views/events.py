@@ -272,7 +272,7 @@ def search_events(request):
 			form = SearchEventForm(request.POST)
 
 			if form.is_valid():
-				search_filter = form.cleaned_data.get('search', None)
+				search_filter = form.cleaned_data.get('q', None)
 				country_filter = form.cleaned_data.get('country', None)
 				theme_filter = form.cleaned_data.get('theme', None)
 				audience_filter = form.cleaned_data.get('audience', None)
@@ -280,9 +280,11 @@ def search_events(request):
 
 				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
 		else:
-			form = SearchEventForm(country_code=country_filter, past_events=past_events, search=search_query)
-			events = get_filtered_events(search_filter=search_query, country_filter=country_filter, past_events=past_events)
+			theme_filter = request.GET.getlist('theme', None)
+			audience_filter =request.GET.getlist('audience', None)
 
+			form = SearchEventForm(q=search_query, country_code=country_filter, past_events=past_events, audience=audience_filter, theme=theme_filter)
+			events = get_filtered_events(search_query, country_filter, theme_filter, audience_filter, past_events)
 
 		if request.is_ajax():
 			return render_to_response(

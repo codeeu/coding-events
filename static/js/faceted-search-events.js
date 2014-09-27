@@ -18,7 +18,8 @@ var Codeweek = window.Codeweek || {};
 				var data = $('#faceted-search-events').serialize();
 				var url = $('#faceted-search-events').attr('action');
 
-				$.post(url, data, function(fragment) {
+				$.get(url, data, function(fragment) {
+					window.history.replaceState({}, document.title, url+data)
 					container.empty();
 					container.html(fragment);
 				});
