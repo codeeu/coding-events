@@ -15,13 +15,15 @@ var Codeweek = window.Codeweek || {};
 
 			$('.search-form-element').on('change', function (e) {
 				var container = $('#events-container');
+				var all_results = $('#all-search-results');
 				var data = $('#faceted-search-events').serialize();
 				var url = $('#faceted-search-events').attr('action');
 
 				$.get(url, data, function(fragment) {
-					window.history.replaceState({}, document.title, url+'?'+data)
+					History.replaceState({}, document.title, url+'?'+data);
 					container.empty();
 					container.html(fragment);
+					all_results.text($('body').data('all_results'));
 				});
 			});
 		});

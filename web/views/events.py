@@ -292,7 +292,10 @@ def search_events(request):
 		if request.is_ajax():
 			return render_to_response(
 				page_template, 
-				{'events':events},
+				{
+					'events':events,
+					'all_results': events.count(),
+				},
 				context_instance=RequestContext(request))
 
 		return render_to_response(
@@ -302,6 +305,7 @@ def search_events(request):
 				'events': events,
 				'form': form,
 				'country': country_filter,
+				'all_results': events.count(),
 			},
 			context_instance=RequestContext(request))
 

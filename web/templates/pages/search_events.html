@@ -42,6 +42,9 @@
 							<hr>
 						</div>
 						<div class="col-md-8">
+							{% if events %}
+							<div class="search-counter">Events matching your search criteria: <span id="all-search-results">{{ all_results }}</span></div>
+							{% endif %}
 							<div id="events-container">
 								{% include page_template %}
 							</div>
@@ -55,7 +58,8 @@
 
 {% block custom_js %}
 {{ block.super }}
-<script type="text/javascript" src="{% static "js/endless_pagination/custom-endless-pagination.js" %}" ></script>
+<script type="text/javascript" src="{% static "js/history.js/scripts/bundled/html4+html5/jquery.history.js" %}" ></script>
+<script type="text/javascript" src="{% static "js/endless_pagination/endless-pagination.js" %}" ></script>
 <script type="text/javascript" src="{% static "js/faceted-search-events.js" %}" ></script>
 <script type="text/javascript">
 	Codeweek.FacetedSearch.init();
