@@ -19,7 +19,7 @@ var Codeweek = window.Codeweek || {};
 				var url = $('#faceted-search-events').attr('action');
 
 				$.get(url, data, function(fragment) {
-					window.history.replaceState({}, document.title, url+data)
+					window.history.replaceState({}, document.title, url+'?'+data)
 					container.empty();
 					container.html(fragment);
 				});
