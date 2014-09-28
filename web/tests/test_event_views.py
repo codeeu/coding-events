@@ -71,7 +71,7 @@ class EventViewsTestCase(TestCase):
 
 
 
-	def test_search_events_with_search_query_multiple_events(self):
+	def test_search_events_with_search_query_multiple_events_current_country_only(self):
 		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
 		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
 
@@ -82,6 +82,62 @@ class EventViewsTestCase(TestCase):
 
 		approved1.delete()
 		approved2.delete()
+
+	def test_search_with_audience(self):
+		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
+		response = self.client.get(reverse('web.search_events'), {'audience':1}, REMOTE_ADDR='93.103.53.11')
+
+		self.assertEquals(1,response.context['events'].count())
+		self.assertEquals('SI', response.context['country'])
+
+		approved1.delete()
+
+
+	def test_search_with_audience_multiple_events(self):
+		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
+		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI", audience=[1,2])
+		approved3 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT", audience=[1,2])
+		approved4 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI", audience=[3])
+		response = self.client.get(reverse('web.search_events'), {'audience':1}, REMOTE_ADDR='93.103.53.11')
+
+		self.assertEquals(2,response.context['events'].count())
+
+		approved1.delete()
+		approved2.delete()
+		approved3.delete()
+		approved4.delete()
+
+	def test_search_with_theme(self):
+		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
+		response = self.client.get(reverse('web.search_events'), {'theme':1}, REMOTE_ADDR='93.103.53.11')
+
+		self.assertEquals(1,response.context['events'].count())
+		self.assertEquals('SI', response.context['country'])
+
+		approved1.delete()
+
+
+	def test_search_with_theme_multiple_events(self):
+		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
+		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI", theme=[2])
+		response = self.client.get(reverse('web.search_events'), {'theme':1}, REMOTE_ADDR='93.103.53.11')
+
+		self.assertEquals(1,response.context['events'].count())
+		self.assertEquals('SI', response.context['country'])
+
+		approved1.delete()
+		approved2.delete()
+
+	def test_search_with_theme_multiple_events_all_countries(self):
+		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
+		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
+		response = self.client.get(reverse('web.search_events'), {'country_code':'00', 'theme':1}, REMOTE_ADDR='93.103.53.11')
+
+		self.assertEquals(2,response.context['events'].count())
+
+		approved1.delete()
+		approved2.delete()
+
 
 	def test_view_event_without_picture(self):
 		test_event = EventFactory.create()
