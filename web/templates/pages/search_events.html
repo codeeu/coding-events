@@ -43,7 +43,7 @@
 						</div>
 						<div class="col-md-8">
 							{% if events %}
-							<div class="search-counter">Events matching your search criteria: <span id="all-search-results">{{ all_results }}</span></div>
+							<div id="search-counter-container" class="search-counter">{{ all_results }} {% if all_results > 1 %}events match{% else %}event matches{% endif %} your search criteria:</span></div>
 							{% endif %}
 							<div id="events-container">
 								{% include page_template %}
