@@ -1,7 +1,4 @@
 {% load endless %}
-<script type="text/javascript">
-$('body').data('all_results', {{all_results}});
-</script>
 
 {% if events %}
 	{% lazy_paginate 6 events as pag_events %}

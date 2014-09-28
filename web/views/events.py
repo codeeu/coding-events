@@ -273,7 +273,6 @@ def search_events(request):
 		search_query = request.GET.get('q', '')
 
 		template = 'pages/search_events.html'
-		page_template = 'pages/ajax_faceted_search_events.html'
 
 		if request.method == 'POST':
 			form = SearchEventForm(request.POST)
@@ -295,7 +294,7 @@ def search_events(request):
 
 		if request.is_ajax():
 			return render_to_response(
-				page_template, 
+				'pages/ajax_faceted_search_events.html',
 				{
 					'events':events,
 					'all_results': events.count(),
@@ -305,7 +304,7 @@ def search_events(request):
 		return render_to_response(
 			template,
 			{
-				'page_template': page_template,
+				'page_template': 'pages/faceted_search_results.html',
 				'events': events,
 				'form': form,
 				'country': country_filter,

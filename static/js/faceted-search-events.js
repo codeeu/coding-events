@@ -23,7 +23,15 @@ var Codeweek = window.Codeweek || {};
 					History.replaceState({}, document.title, url+'?'+data);
 					container.empty();
 					container.html(fragment);
-					all_results.text($('body').data('all_results'));
+					var no_results = $('body').data('all_results');
+					
+					if (no_results > 0 ) {
+						all_results.text(no_results);
+						$('#all-search-results').show();
+					} else {
+						$('#all-search-results').hide();
+					}
+
 				});
 			});
 		});
