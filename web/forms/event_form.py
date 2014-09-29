@@ -168,7 +168,7 @@ class SearchEventForm(forms.Form):
 		required=False,
 		widget=forms.TextInput(attrs={'placeholder': 'Search for event name or tag', 'class': 'form-control'})
 	)
-	past_events = forms.BooleanField(
+	past = forms.BooleanField(
 		label='Include past events',
 		required=False,
 		widget=forms.CheckboxInput(attrs={'class': 'search-form-element'}),
@@ -205,7 +205,7 @@ class SearchEventForm(forms.Form):
 
 		if country_code:
 			self.fields['country'].initial = country_code
-		self.fields['past_events'].initial = past_events
+		self.fields['past'].initial = past_events
 		if search_query:
 			self.fields['q'].initial = search_query
 		if theme:
