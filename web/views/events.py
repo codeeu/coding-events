@@ -49,7 +49,7 @@ then call your newly created function in view!!! .-Erika
 def index(request):
 	template = 'pages/index.html'
 
-	past = request.GET.get('past', 'no')
+	past = request.GET.get('past', 'off')
 
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
@@ -264,7 +264,7 @@ def search_events(request):
 			country = get_country(country_filter, user_ip)
 			country_filter = country['country_code']
 
-		past = request.GET.get('past_events', 'off')
+		past = request.GET.get('past', False)
 		if past == 'on':
 			past_events = True
 		else:
@@ -282,7 +282,7 @@ def search_events(request):
 				country_filter = form.cleaned_data.get('country', None)
 				theme_filter = form.cleaned_data.get('theme', None)
 				audience_filter = form.cleaned_data.get('audience', None)
-				past_events = form.cleaned_data.get('past_events',None)
+				past_events = form.cleaned_data.get('past',None)
 
 				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
 		else:
