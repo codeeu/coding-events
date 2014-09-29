@@ -131,7 +131,7 @@ class EventViewsTestCase(TestCase):
 	def test_search_with_theme_multiple_events_all_countries(self):
 		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
 		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
-		response = self.client.get(reverse('web.search_events'), {'country_code':'00', 'theme':1}, REMOTE_ADDR='93.103.53.11')
+		response = self.client.get(reverse('web.search_events'), {'country':'00', 'theme':1}, REMOTE_ADDR='93.103.53.11')
 
 		self.assertEquals(2,response.context['events'].count())
 
@@ -152,7 +152,7 @@ class EventViewsTestCase(TestCase):
 		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
 		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
 
-		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle', 'country_code':'00'}, REMOTE_ADDR='93.103.53.11')
+		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle', 'country':'00'}, REMOTE_ADDR='93.103.53.11')
 
 		self.assertEquals(2,response.context['events'].count())
 

@@ -253,10 +253,7 @@ def created_events(request):
 
 def search_events(request):
 
-		country_filter = request.GET.get('country_code', None)
-
-		if not country_filter:
-			country_filter = request.GET.get('country', None)
+		country_filter = request.GET.get('country', None)
 
 		if not country_filter :
 			user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
@@ -274,18 +271,7 @@ def search_events(request):
 
 		template = 'pages/search_events.html'
 
-		if request.method == 'POST':
-			form = SearchEventForm(request.POST)
-
-			if form.is_valid():
-				search_filter = form.cleaned_data.get('q', None)
-				country_filter = form.cleaned_data.get('country', None)
-				theme_filter = form.cleaned_data.get('theme', None)
-				audience_filter = form.cleaned_data.get('audience', None)
-				past_events = form.cleaned_data.get('past',None)
-
-				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
-		else:
+		if request.method == 'GET':
 			theme_filter = request.GET.getlist('theme', None)
 			audience_filter =request.GET.getlist('audience', None)
 
