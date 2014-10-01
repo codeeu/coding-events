@@ -1,8 +1,11 @@
 {% load endless %}
 
 {% if events %}
+	{% if not page %}
 	<div class="search-counter">{{ events|length }} {% if events|length > 1 %}events match{% else %}event matches{% endif %} your search criteria:</div>
-	{% lazy_paginate 6 events as pag_events %}
+	{% endif %}
+	
+	{% lazy_paginate 10 events as pag_events %}
 	{% for event in pag_events %}
 		{% include 'layout/event_tile_long.html' %}
 	{% endfor %}
