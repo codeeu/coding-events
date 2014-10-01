@@ -278,15 +278,6 @@ def search_events(request):
 			form = SearchEventForm(q=search_query, country_code=country_filter, past_events=past_events, audience=audience_filter, theme=theme_filter)
 			events = get_filtered_events(search_query, country_filter, theme_filter, audience_filter, past_events)
 
-		if request.is_ajax():
-			return render_to_response(
-				'pages/ajax_faceted_search_events.html',
-				{
-					'events':events,
-					'all_results': events.count(),
-				},
-				context_instance=RequestContext(request))
-
 		return render_to_response(
 			template,
 			{
