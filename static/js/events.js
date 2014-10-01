@@ -80,7 +80,10 @@ var Codeweek = window.Codeweek || {};
 				document.getElementById("autocomplete").value = results[0].formatted_address;
 				// the last item in the geocoder for latLng results array is the country
 				var country = results.slice(-1)[0].address_components.slice(-1)[0].short_name;
-
+				var frenchColonies = ['MQ', 'GF', 'GP'] // Martinique, French Guiana, Guadeloupe
+				if (frenchColonies.indexOf(country) >= 0) {
+					country = 'FR';
+				}
 				updateCountrySelection(country);
 			}
 		});
