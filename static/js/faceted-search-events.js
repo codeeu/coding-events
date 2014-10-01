@@ -15,16 +15,13 @@ var Codeweek = window.Codeweek || {};
 
 			$('.search-form-element').on('change', function (e) {
 				var container = $('#events-container');
-				var search_counter_container = $('#search-counter-container');
 				var data = $('#faceted-search-events').serialize();
 				var url = $('#faceted-search-events').attr('action');
 
-				if (!Modernizr.history) {
-					document.getElementById('faceted-search-events').submit();
-				} else {
-					$("#events-container").html("<img id='loading-gif' src='/static/img/loading.gif'/>");
-					$('#events-container').load(url + " #events-container", data);
-				}
+				$.post(url, data, function(fragment) {
+					container.empty();
+					container.html(fragment);
+				});
 			});
 		});
 	};

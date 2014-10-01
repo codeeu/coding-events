@@ -11,7 +11,7 @@
 				<img src="/static/flags/{{ country.country_code|lower }}.png" alt="{{ country.country_name }}" />
 				<span class="icon-flag">
 					<span class="country-name">{{ country.country_name }}</span> is participating with 
-					 <span class="event-number"><a href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past=on">{{ country.events }}</span> event{% if country.events != 1 %}s{% endif %}</a>
+					 <span class="event-number"><a href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past=yes">{{ country.events }}</span> event{% if country.events != 1 %}s{% endif %}</a>
 				</span>
 			</div>
 		{% endfor %}
