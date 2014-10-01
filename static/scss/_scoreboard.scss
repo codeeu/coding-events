@@ -1,0 +1,83 @@
+/*********************
+SCOREBOARD STYLES
+*********************/
+
+.sb-wrapper {
+	display: block;
+	position: relative;
+	z-index: 999;
+	padding-left: 0;
+	overflow: visible;
+
+	.one-row{
+		display: table-row;
+    	counter-reset:li; 
+    	margin-left:0; 
+    	padding-left:0;
+
+		.sb-box{
+			display: table-cell;
+			border: solid white 4px;
+			background: $silver;
+			position: relative;	
+    		list-style:none; 
+    		height: 160px;
+
+    		&:before {
+   				content:counter(li);
+    			counter-increment:li; 
+    			position:absolute;
+    			top:0;
+    			left:0;
+    			-moz-box-sizing:border-box;
+    			-webkit-box-sizing:border-box;
+    			box-sizing:border-box;
+    			width:40px;
+    			padding:10px;
+    			border-top: 2px solid $slate;
+    			color:$white;
+    			font-weight: bold;
+    			background:$slate;
+    			text-align: center;
+			}
+
+			&:nth-child(-n +10)::before {
+				border-top: 2px solid $secondary-color;
+				background:$secondary-color;
+			}
+			
+			img {
+				position: absolute;
+				right: -2px;
+				top: -12px;
+				width: 65px;
+			}
+
+			.box-inner{
+				top: 25%;
+				padding: 0 15px;
+				position: relative;	
+			}
+
+			.country-name {
+				display: block;
+				position: relative;
+				font-size: 20px;
+				padding-top: 10px;
+			}
+
+			a {
+				display: inline-block;
+
+				.event-number {
+					position: relative;
+					font-size: 18px;
+					left: 0;
+					display: block;
+					text-decoration: none;
+					padding-bottom: 10px;
+				}	
+			}
+		}
+	}
+}	
