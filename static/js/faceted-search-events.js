@@ -19,7 +19,9 @@ var Codeweek = window.Codeweek || {};
 				var data = $('#faceted-search-events').serialize();
 				var url = $('#faceted-search-events').attr('action');
 
-				if (is_modern_browser()) {
+				if (!Modernizr.history) {
+					document.getElementById('faceted-search-events').submit();
+				} else {
 					$.get(url, data, function(fragment) {
 						history.replaceState({}, document.title, '?' + data);
 						container.empty();
@@ -34,12 +36,9 @@ var Codeweek = window.Codeweek || {};
 						} else {
 							search_counter_container.hide();
 						}
-
 					});
-				} else {
-					document.getElementById('faceted-search-events').submit();
-				}
 
+				}
 			});
 		});
 	};
