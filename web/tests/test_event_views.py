@@ -55,88 +55,6 @@ class EventViewsTestCase(TestCase):
 		self.assertEquals(200, response.status_code)
 		self.assertEquals((46.0, 15.0), response.context['lan_lon'])
 
-	def test_search_events_with_search_query(self):
-		ApprovedEventFactory.create(title='Event Arglebargle - Approved')
-		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle'}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(1,response.context['events'].count())
-		self.assertEquals('SI', response.context['country'])
-
-	def test_search_events_with_unicode_tag_in_search_query(self):
-		ApprovedEventFactory.create(tags=["jabolčna čežana","José", "Django"])
-		response = self.client.get(reverse('web.search_events'), {'q':'čežana'}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(1,response.context['events'].count())
-		self.assertEquals('SI', response.context['country'])
-
-
-
-	def test_search_events_with_search_query_multiple_events_current_country_only(self):
-		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
-		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
-
-		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle'}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(1,response.context['events'].count())
-		self.assertEquals('SI', response.context['country'])
-
-		approved1.delete()
-		approved2.delete()
-
-	def test_search_with_audience(self):
-		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
-		response = self.client.get(reverse('web.search_events'), {'audience':1}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(1,response.context['events'].count())
-		self.assertEquals('SI', response.context['country'])
-
-		approved1.delete()
-
-
-	def test_search_with_audience_multiple_events(self):
-		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
-		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI", audience=[1,2])
-		approved3 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT", audience=[1,2])
-		approved4 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI", audience=[3])
-		response = self.client.get(reverse('web.search_events'), {'audience':1}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(2,response.context['events'].count())
-
-		approved1.delete()
-		approved2.delete()
-		approved3.delete()
-		approved4.delete()
-
-	def test_search_with_theme(self):
-		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
-		response = self.client.get(reverse('web.search_events'), {'theme':1}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(1,response.context['events'].count())
-		self.assertEquals('SI', response.context['country'])
-
-		approved1.delete()
-
-
-	def test_search_with_theme_multiple_events(self):
-		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
-		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI", theme=[2])
-		response = self.client.get(reverse('web.search_events'), {'theme':1}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(1,response.context['events'].count())
-		self.assertEquals('SI', response.context['country'])
-
-		approved1.delete()
-		approved2.delete()
-
-	def test_search_with_theme_multiple_events_all_countries(self):
-		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
-		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
-		response = self.client.get(reverse('web.search_events'), {'country':'00', 'theme':1}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(2,response.context['events'].count())
-
-		approved1.delete()
-		approved2.delete()
 
 
 	def test_view_event_without_picture(self):
@@ -148,16 +66,6 @@ class EventViewsTestCase(TestCase):
 
 		test_event.delete()
 
-	def test_search_events_with_search_query_all_countries_multiple_results(self):
-		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
-		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
-
-		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle', 'country':'00'}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(2,response.context['events'].count())
-
-		approved1.delete()
-		approved2.delete()
 
 @pytest.mark.django_db
 def test_create_event_with_image(admin_user, admin_client, db):
