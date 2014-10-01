@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from py.path import local
 
 from geoposition import Geoposition
+from web.processors.event import list_countries
 
 from api.models.events import Event
 from api.models import UserProfile
@@ -389,10 +390,90 @@ def test_create_event_in_serbia(admin_user, db):
 
 	assert "RS" == test_event.country.code
 
+
+@pytest.mark.django_db
+def test_create_event_in_martinique_for_france(admin_user, db):
+	event_data = {
+		'audience': [3],
+		'theme': [1,2],
+		'contact_person': u'test@example.com',
+		'country': u'FR',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'event_url': u'',
+		'location': u'1011 Chemin rural No 8 Bis de Clemencin, Le Lamentin, Martinique',
+		'organizer': u'RailsGirls Martinique',
+		"creator": admin_user,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'tags': [u'css', u'html', u'web'],
+		'title': u'RailsGirls Martinique',
+	}
+
+	test_event = create_or_update_event(event_id=None, **event_data)
+
+	assert "FR" == test_event.country.code
+
+
+@pytest.mark.django_db
+def test_create_event_in_each_listed_country(admin_user, db):
+	all_countries = list_countries()
+
+	for country in all_countries[2:]:
+		country_code = country[1]
+		country_name = country[0]
+
+		event_data = {
+			'audience': [3],
+			'theme': [1,2],
+			'contact_person': u'test@example.com',
+			'country': country_code,
+			'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+			'event_url': u'',
+			'location': country_name,
+			'organizer': u'RailsGirls ' + country_name,
+			"creator": admin_user,
+			'start_date': datetime.datetime.now(),
+			'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+			'tags': [u'css', u'html', u'web'],
+			'title': u'RailsGirls ' + country_name,
+		}
+
+		test_event = create_or_update_event(event_id=None, **event_data)
+
+		assert country_code == test_event.country.code
+
+		test_event.delete()
+
+
+def test_list_countries():
+	# a function we use a lot to get all countries, so let's check it's returning expected results
+	all_countries = list_countries()
+
+	# Austria should be the first country after two custom entries (All countries)
+	assert "Austria" == all_countries[2][0]
+
+	# checking two random countries - our own and Kosovo, which is a special case
+	assert ('Slovenia', 'SI') in all_countries
+	assert ('Kosovo', 'XK') in all_countries
+
+	# United Kingdom should be last
+	assert "United Kingdom" == all_countries[-1][0]
+
+	# if listing works, results are tuples ('country_name', 'country_code')
+	# country_code should be a string with 2 characters
+	for country in all_countries[2:]:
+		assert len(country[1]) == 2
+
+
 @pytest.mark.django_db
 def test_scoreboard_counter(admin_user, db):
 
 	initial_counter = count_approved_events_for_country()
+
+	# extra check to make sure the number of results matches 
+	# the number of listed countries minus two custom entries
+	all_countries = list_countries()
+	assert len(initial_counter) == len(all_countries[2:])
 
 	counted_events_before = 0
 
@@ -437,10 +518,12 @@ def test_scoreboard_counter(admin_user, db):
 	new_counter = count_approved_events_for_country()
 
 	counted_events_after = 0
+	country_score_after = 0
 
 	for country in new_counter:
 			if country['country_code'] == 'SI':
 				counted_events_after = country['events']
+				country_score_after = country['score']
 
 	# An extra check with a direct DB query
 	counted_events_query = Event.objects.filter(status='APPROVED').filter(country='SI').count()
@@ -448,5 +531,7 @@ def test_scoreboard_counter(admin_user, db):
 	assert counted_events_after == counted_events_before + 1
 	assert counted_events_after == counted_events_query
 
+	assert country_score_after > 0 
+	
 	test_approved_event.delete()
 	test_pending_event.delete()
