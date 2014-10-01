@@ -33,17 +33,17 @@
 
 		<div class="container index-content">
 			<div id="past-events">
-				{% if past == 'yes' %}
+				{% if past == 'on' %}
 				<a id="past-link" href="{% url 'web.index' %}"><i class="fa fa-check-square-o"></i> 
 				{% else %}
-				<a id="past-link" href="{% url 'web.index' %}?past=yes"><i class="fa fa-square-o"></i>
+				<a id="past-link" href="{% url 'web.index' %}?past=on"><i class="fa fa-square-o"></i>
 				{% endif %}
 				Show past events</a>
 			</div>
 			<div class="clearfix">
 				<div id="search-events-link">
 					<a class="btn btn-primary btn-lg"
-					   href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past={{ past }}">
+					   href="{% url 'web.search_events' %}?country={{ country.country_code }}&amp;past={{ past }}">
 						<i class="fa fa-list"></i> List all events {% if country %}in
 						<span id="country"> {{ country.country_name }}</span>{% endif %}
 					</a>

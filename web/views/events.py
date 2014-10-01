@@ -51,7 +51,7 @@ then call your newly created function in view!!! .-Erika
 def index(request):
 	template = 'pages/index.html'
 
-	past = request.GET.get('past', 'no')
+	past = request.GET.get('past', 'off')
 
 	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
@@ -180,15 +180,6 @@ def edit_event(request, event_id):
 		}, context_instance=RequestContext(request))
 
 
-def view_event_by_country(request, country_code):
-	event_list = get_approved_events(country_code=country_code)
-
-	return render_to_response(
-		'pages/list_events.html', {
-			'event_list': event_list,
-		}, context_instance=RequestContext(request))
-
-
 def view_event(request, event_id, slug):
 	try:
 		event = get_event_by_id(event_id)
@@ -268,50 +259,39 @@ def created_events(request):
 
 def search_events(request):
 
-		country_filter = request.GET.get('country_code', None)
-		if not country_filter:
+		country_filter = request.GET.get('country', None)
+
+		if not country_filter :
 			user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
 			country = get_country(country_filter, user_ip)
 			country_filter = country['country_code']
 
-		past = request.GET.get('past', None)
-		past_events = True if past and past=='yes' else False
+		past = request.GET.get('past', False)
+		if past == 'on':
+			past_events = True
+		else:
+			past_events = False
 
 		search_query = request.GET.get('q', '')
 
 		template = 'pages/search_events.html'
-		page_template = 'pages/ajax_faceted_search_events.html'
 
-		if request.method == 'POST':
-			form = SearchEventForm(request.POST)
+		if request.method == 'GET':
+			theme_filter = request.GET.getlist('theme', None)
+			audience_filter =request.GET.getlist('audience', None)
 
-			if form.is_valid():
-				search_filter = form.cleaned_data.get('search', None)
-				country_filter = form.cleaned_data.get('country', None)
-				theme_filter = form.cleaned_data.get('theme', None)
-				audience_filter = form.cleaned_data.get('audience', None)
-				past_events = form.cleaned_data.get('past_events',None)
-
-				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
-		else:
-			form = SearchEventForm(country_code=country_filter, past_events=past_events, search=search_query)
-			events = get_filtered_events(search_filter=search_query, country_filter=country_filter, past_events=past_events)
-
-
-		if request.is_ajax():
-			return render_to_response(
-				page_template, 
-				{'events':events},
-				context_instance=RequestContext(request))
+			form = SearchEventForm(q=search_query, country_code=country_filter, past_events=past_events, audience=audience_filter, theme=theme_filter)
+			events = get_filtered_events(search_query, country_filter, theme_filter, audience_filter, past_events)
 
 		return render_to_response(
 			template,
 			{
-				'page_template': page_template,
+				'page_template': 'pages/faceted_search_results.html',
 				'events': events,
 				'form': form,
 				'country': country_filter,
+				'all_results': events.count(),
 			},
 			context_instance=RequestContext(request))
 

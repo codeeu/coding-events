@@ -232,8 +232,8 @@ var Codeweek = window.Codeweek || {};
 			// Initialize map on front page
 			google.maps.event.addDomListener(window, 'load', function () {
 				var ajaxURL = "/api/event/list/?format=json";
-				if (past == "yes")
-					ajaxURL = ajaxURL + "&past=yes"
+				if (past == "on")
+					ajaxURL = ajaxURL + "&past=on"
 
 				$.ajax({
 					type: "GET",
