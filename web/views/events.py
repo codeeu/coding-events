@@ -279,6 +279,7 @@ def search_events(request):
 		past_events = True if past and past=='yes' else False
 
 		search_query = request.GET.get('q', '')
+		page = request.GET.get('page', None)
 
 		template = 'pages/search_events.html'
 		page_template = 'pages/ajax_faceted_search_events.html'
@@ -302,7 +303,10 @@ def search_events(request):
 		if request.is_ajax():
 			return render_to_response(
 				page_template, 
-				{'events':events},
+				{
+				'events':events,
+				'page': page
+				},
 				context_instance=RequestContext(request))
 
 		return render_to_response(
