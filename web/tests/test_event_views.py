@@ -229,3 +229,8 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 	response = admin_client.get(event.get_absolute_url())
 	assert 'event_picture/ercchy' not in response.content
 
+@pytest.mark.django_db
+def test_nonexistent_event(db, client):
+	response = client.get(reverse('web.view_event', args=[1234, 'shouldnt-exist']))
+
+	assert response.status_code == 404
