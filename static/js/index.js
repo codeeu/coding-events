@@ -90,30 +90,6 @@ var Codeweek = window.Codeweek || {};
 			}
 		});
 
-		// Bounds for Europe
-		var allowedBounds = new google.maps.LatLngBounds(
-			new google.maps.LatLng(34.54, -24.58),
-			new google.maps.LatLng(71.32, 34.68));
-
-		google.maps.event.addListener(map, 'dragend', function() {
-			if (allowedBounds.contains(map.getCenter())) return;
-
-			var c = map.getCenter(),
-				x = c.lng(),
-				y = c.lat(),
-				maxX = allowedBounds.getNorthEast().lng(),
-				maxY = allowedBounds.getNorthEast().lat(),
-				minX = allowedBounds.getSouthWest().lng(),
-				minY = allowedBounds.getSouthWest().lat();
-
-			if (x < minX) x = minX;
-			if (x > maxX) x = maxX;
-			if (y < minY) y = minY;
-			if (y > maxY) y = maxY;
-
-			map.setCenter(new google.maps.LatLng(y, x));
-		});
-
 		return new MarkerClusterer(map, markers, markerClusterOptions);
 	}
 
