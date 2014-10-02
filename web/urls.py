@@ -24,5 +24,5 @@ urlpatterns = patterns(
 	url(r'^scoreboard/$', 'events.scoreboard', name='web.scoreboard'),
 	url(r'^change_status/(?P<event_id>\d+)/$', 'events.change_status', name='web.change_status'),
 	url(r'^reject_status/(?P<event_id>\d+)/$', 'events.reject_status', name='web.reject_status'),
-	url(r'^(?P<country_code>[A-Z][A-Z])$', RedirectView.as_view(url = '/#%(country_code)s')),
+	url(r'^(?P<country_code>[A-Z][A-Z])/?$', RedirectView.as_view(url = '/#%(country_code)s')),
 )
