@@ -13,10 +13,10 @@ def test_country_redirect(db, client):
 	response = client.get('/AB')
 
 	assert response.status_code == 301
-	assert response['Location'][-4:] == '/#!AB'
+	assert response['Location'][-5:] == '/#!AB'
 
 	# and with one
 	response = client.get('/AB/')
 
 	assert response.status_code == 301
-	assert response['Location'][-4:] == '/#!AB'
+	assert response['Location'][-5:] == '/#!AB'
