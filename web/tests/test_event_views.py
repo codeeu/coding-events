@@ -247,3 +247,9 @@ def test_geoip_invalid_ip(db, client):
 
 	assert 'List all events' in response.content
 	assert 'List all events <span' not in response.content
+
+@pytest.mark.django_db
+def test_list_events_for_country_code(db, client):
+	response = client.get(reverse('web.view_event_by_country', args=['SI']))
+
+	assert response.status_code == 200

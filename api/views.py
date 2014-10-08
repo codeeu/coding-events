@@ -5,7 +5,7 @@ from api.serializers import EventListSerializers
 from api.processors import get_approved_events
 
 class EventListApi(generics.ListAPIView):
-	""" Lists epproved Events, takes the following optional GET parameters:
+	""" Lists approved Events, takes the following optional GET parameters:
 
 * limit
 * order
