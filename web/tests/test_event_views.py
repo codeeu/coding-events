@@ -234,3 +234,16 @@ def test_nonexistent_event(db, client):
 	response = client.get(reverse('web.view_event', args=[1234, 'shouldnt-exist']))
 
 	assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_geoip_slovenian_ip(db, client):
+	response = client.get('/', REMOTE_ADDR='93.103.53.1')
+
+	assert 'List all events in <span id="country"> Slovenia' in response.content
+
+@pytest.mark.django_db
+def test_geoip_invalid_ip(db, client):
+	response = client.get('/', REMOTE_ADDR='127.0.0.1')
+
+	assert 'List all events' in response.content
+	assert 'List all events <span' not in response.content
