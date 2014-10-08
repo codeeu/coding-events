@@ -58,7 +58,7 @@ def index(request):
 	country = get_country_from_user_ip(user_ip)
 
 	try:
-		lan_lon = get_lat_lon_from_user_ip(user_ip)
+		lan_lon = get_lat_lon_from_user_ip(user_ip) or (58.08695, 5.58121)
 	except GeoIPException:
 		lan_lon = (58.08695, 5.58121)
 	
