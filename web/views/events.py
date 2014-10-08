@@ -65,6 +65,8 @@ def index(request):
 	ambassadors = get_ambassadors(country['country_code'])
 	all_countries = list_countries()
 	
+	print country
+
 	return render_to_response(
 		template, {
 			'lan_lon': lan_lon,
@@ -183,6 +185,8 @@ def edit_event(request, event_id):
 def view_event_by_country(request, country_code):
 	event_list = get_approved_events(country_code=country_code)
 
+	print country_code
+
 	return render_to_response(
 		'pages/list_events.html', {
 			'event_list': event_list,
@@ -269,14 +273,17 @@ def created_events(request):
 
 def search_events(request):
 
-		country_filter = request.GET.get('country_code', None)
-		country_filter_get = request.GET.get('country', None)
+		country_code = request.GET.get('country_code', None)
 
-		if not country_filter:
+		if not country_code:
+			country_code = request.GET.get('country', None)
+
+		if not country_code:
 			user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
 			country = get_country(country_filter, user_ip)
-			country_filter = country['country_code']
+			country_code = country['country_code']
+
 
 		past = request.GET.get('past', 'no')
 		past_events = False
@@ -293,8 +300,8 @@ def search_events(request):
 		template = 'pages/search_events.html'
 		page_template = 'pages/ajax_faceted_search_events.html'
 
-		form = SearchEventForm(country_code=country_filter, past_events=past, search=search_query)
-		events = get_filtered_events(search_query, country_filter, theme_filter,audience_filter, past_events)
+		form = SearchEventForm(country_code=country_code, past_events=past, search=search_query)
+		events = get_filtered_events(search_query, country_code, theme_filter,audience_filter, past_events)
 
 		if request.is_ajax():
 			return render_to_response(
@@ -311,7 +318,7 @@ def search_events(request):
 				'page_template': page_template,
 				'events': events,
 				'form': form,
-				'country': country_filter,
+				'country': country_code,
 			},
 			context_instance=RequestContext(request))
 
