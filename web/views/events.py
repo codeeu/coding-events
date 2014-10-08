@@ -65,8 +65,6 @@ def index(request):
 	ambassadors = get_ambassadors(country['country_code'])
 	all_countries = list_countries()
 	
-	print country
-
 	return render_to_response(
 		template, {
 			'lan_lon': lan_lon,
@@ -184,8 +182,6 @@ def edit_event(request, event_id):
 
 def view_event_by_country(request, country_code):
 	event_list = get_approved_events(country_code=country_code)
-
-	print country_code
 
 	return render_to_response(
 		'pages/list_events.html', {
