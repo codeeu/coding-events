@@ -7,18 +7,18 @@
 		<h1>#codeEU Events Scoreboard</h1>
 		<p>Which countries in Europe are buzzing with coding activity? The scoreboard is sorted by the number of listed coding events per population, so don't be surprised to see some of the smaller countries higher up on the list!</p>
 	<div class="sb-wrapper">
-			<ol class="one-row">
+		<ol class="one-row">
 			{% for country in counts %}
 				<li class="col-md-3 col-sm-4 col-xs-10 col-xs-offset-1 col-sm-offset-0 col-md-offset-0 sb-box"> 
 					<img src="/static/flags/{{ country.country_code|lower }}.png" alt="{{ country.country_name }}" />
 					<div class="box-inner">
-							<span class="country-name">{{ country.country_name }}</span><p> is participating with </p>
-							<a href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past=yes">
-						 	<span class="event-number">{{ country.events }} event{% if country.events != 1 %}s{% endif %}</span></a>
+						<span class="country-name">{{ country.country_name }}</span><p> is participating with </p>
+						<a href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past=yes">
+						<span class="event-number">{{ country.events }} event{% if country.events != 1 %}s{% endif %}</span></a>
 					</div>
 				</li>
 			{% endfor %}
-			</ol>
+		</ol>
 	</div>
 </div>
 {% endblock content %}
