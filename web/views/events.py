@@ -186,6 +186,7 @@ def view_event_by_country(request, country_code):
 	return render_to_response(
 		'pages/list_events.html', {
 			'event_list': event_list,
+			'country_code': country_code,
 		}, context_instance=RequestContext(request))
 
 
