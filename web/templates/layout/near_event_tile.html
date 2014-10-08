@@ -1,16 +1,19 @@
 {% load static %}
-<div class="col-md-3 col-sm-6 grid">
+
+<div class="col-md-3 col-sm-6 col-xs-12 ne-box"> 
 	<a href="{% url 'web.view_event' event.id event.slug %}">
-		<figure>
-		{% if event.picture %}
+		<div class="box-inner">
+			{% if event.picture %}
 			<img src="{{ event.picture.url }}" alt="{{ event.title }} Image">
 			{% else %}
 			<img src="{% static 'img/event_default_picture.png' %}" alt="{{ event.title }} Image">
 			{% endif %}
-			
-			<div class="caption-description">
-				<h4>{{ event.title }}</h4>
-				<span>{{ event.start_date|date:"F j, Y" }}</span><p>{{ event.description|truncatewords:12 }}</p></div>
-		</figure>
+		</div>
+		<div class="ne-description">
+			<h4>{{ event.title }}</h4>
+			<span>{{ event.start_date|date:"F j, Y" }}</span>
+			<p>{{ event.description|truncatewords:10 }}</p>
+		</div>
 	</a>
 </div>
+
