@@ -234,3 +234,9 @@ def test_nonexistent_event(db, client):
 	response = client.get(reverse('web.view_event', args=[1234, 'shouldnt-exist']))
 
 	assert response.status_code == 404
+
+@pytest.mark.django_db
+def test_list_events_for_country_code(db, client):
+	response = client.get(reverse('web.view_event_by_country', args=['SI']))
+
+	assert response.status_code == 200
