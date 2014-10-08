@@ -43,23 +43,16 @@ var Codeweek = window.Codeweek || {};
 
 			var infoWindowContent = '',
 				buble_content = '',
-				image = '',
-				description = '';
+				image = '';
 
 			if (marker.image !== "") {
 				image += '<img src="' + Codeweek.Index.media_url + marker.image + '" class="img-polaroid marker-buble-img">';
 			}
 
-			if (marker.description.length > 150) {
-				description = marker.description.substring(0, 150) + '... ';
-			} else {
-				description = marker.description;
-			}
-
 			buble_content = '<div><h4><a href="' + marker.url + '" class="map-marker">' + marker.title + '</a></h4><div>' +
 							  image +
-							  '<p style="overflow:hidden;">' + description +
-							  '&nbsp;<a href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
+							  '<p style="overflow:hidden;">' + marker.description +
+							  '&nbsp;<a class="btn btn-sm" href="' + marker.url + '" class="map-marker"><span>More...</span></a></p>';
 
 			placeinfowindow.setContent(buble_content);
 			placeinfowindow.open(map, marker);
@@ -75,7 +68,7 @@ var Codeweek = window.Codeweek || {};
 					map_event_id = events[i].id,
 					map_event_slug = events[i].slug,
 					markUrl = "/view/" + map_event_id + "/" + map_event_slug,
-					markDesc = events[i].description,
+					markDesc = events[i].description_short,
 					markImg = events[i].picture;
 
 				markers[map_event_id] = createMarker(markTitle, markLat, markLng, markUrl, markDesc, markImg);
