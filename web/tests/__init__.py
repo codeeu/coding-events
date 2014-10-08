@@ -10,7 +10,7 @@ class EventFactory(factory.DjangoModelFactory):
 		model = Event
 
 	organizer="Event Organizer"
-	creator=factory.LazyAttribute(lambda n: User.objects.get(pk=1))
+	creator=factory.LazyAttribute(lambda n: User.objects.get_or_create(username='test_user')[0])
 	title="My Coding Event"
 	description="Some description"
 	location="Nonexisting location"
