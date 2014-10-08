@@ -42,11 +42,16 @@
 			</div>
 			<div class="clearfix">
 				<div id="search-events-link">
-					<a class="btn btn-primary btn-lg"
-					   href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past={{ past }}">
-						<i class="fa fa-list"></i> List all events {% if country %}in
-						<span id="country"> {{ country.country_name }}</span>{% endif %}
-					</a>
+					{% if country.country_code %}
+						<a class="btn btn-primary btn-lg"
+							href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past={{ past }}">
+						   <i class="fa fa-list"></i> List all events <span id="country"> {{ country.country_name }}</span>
+						</a>
+					{% else %}
+						<a class="btn btn-primary btn-lg" href="{% url 'web.search_events' %}">
+							<i class="fa fa-list"></i> List all events
+						</a>
+					{% endif %}
 				</div>
 			</div>
 
