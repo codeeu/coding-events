@@ -32,7 +32,7 @@ def test_search_show_past_events(db, client):
 	future_event = ApprovedEventFactory.create()
 	past_event = PastEventFactory.create(status='APPROVED')
 
-	response = client.get('/search/?past=on')
+	response = client.get('/search/?past=yes')
 
 	assert future_event.get_absolute_url() in response.content
 	assert past_event.get_absolute_url() in response.content
