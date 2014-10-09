@@ -12,6 +12,8 @@ from mailer.event_report_mailer import send_email_to_country_ambassadors
 
 
 def get_client_ip(forwarded=None, remote=None):
+	if settings.DEBUG and remote == '127.0.0.1':
+		return '93.103.53.11'
 	if forwarded:
 		return forwarded.split(',')[0]
 	return remote
