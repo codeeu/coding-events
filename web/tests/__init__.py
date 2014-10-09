@@ -20,6 +20,9 @@ class EventFactory(factory.DjangoModelFactory):
 	country="SI"
 	tags=["tag1", "tag2"]
 
+	audience =[1]
+	theme=[1]
+
 	start_date=factory.LazyAttribute(lambda n: datetime.datetime.now() + datetime.timedelta(days=1, hours=3) )
 	end_date=factory.LazyAttribute(lambda n: datetime.datetime.now() + datetime.timedelta(days=3, hours=3) )
 
