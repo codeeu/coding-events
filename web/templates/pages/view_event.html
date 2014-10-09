@@ -201,16 +201,18 @@
 				<div id="view-event-map"></div>
 			</div>
 			</div>
-			<div class="col-md-12 first">
+			<div class="col-md-12">
 				<hr>
 			</div>
 			{% if nearby %}
-			<div class="col-md-12 first">
-				<h3>Nearby events:</h3>
-				{% for event in nearby %}
-					{% include 'layout/near_event_tile.html' %}
-				{% endfor %}
-			</div>
+				<div class="col-md-12">
+					<h3>Nearby events:</h3>
+					<div class="container-fluid ne-wrapper">
+						{% for event in nearby %}
+							{% include 'layout/near_event_tile.html' %}
+						{% endfor %}
+					</div>
+				</div>
 			{% endif %}
 		</div>
 {% endblock content %}

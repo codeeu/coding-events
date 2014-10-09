@@ -6,7 +6,7 @@ SCOREBOARD STYLES
 	display: block;
 	position: relative;
 	z-index: 999;
-	padding-left: 0;
+	padding: 0 25px;
 	overflow: visible;
 
 	.one-row{
@@ -17,8 +17,8 @@ SCOREBOARD STYLES
 
 		.sb-box{
 			display: table-cell;
-			border: solid white 4px;
-			background: $silver;
+			border: solid white 5px;
+			background: $light-gray;
 			position: relative;	
     		list-style:none; 
     		height: 160px;
@@ -55,15 +55,20 @@ SCOREBOARD STYLES
 
 			.box-inner{
 				top: 25%;
-				padding: 0 25px;
+				padding: 0 15px 0 25px;
 				position: relative;	
 			}
 
 			.country-name {
 				display: block;
 				position: relative;
-				font-size: 20px;
+				font-size: 16px;
 				padding-top: 10px;
+			}
+
+			p {
+				font-size: 12px;
+				margin: 0 0 5px;
 			}
 
 			a {
@@ -71,7 +76,7 @@ SCOREBOARD STYLES
 
 				.event-number {
 					position: relative;
-					font-size: 18px;
+					font-size: 16px;
 					left: 0;
 					display: block;
 					text-decoration: none;
