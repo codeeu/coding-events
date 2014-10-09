@@ -214,14 +214,6 @@ def view_event_by_id(request, event_id):
 		raise Http404
 
 	return redirect(view_event, event_id, event.slug)
-	# next_event = get_next_or_previous(event, country_code=event.country)
-	# nearby = get_nearby_events(event, limit=4)
-	# return render_to_response(
-	# 	'pages/view_event.html', {
-	# 		'event': event,
-	# 		'next_event': next_event,
-	# 		'nearby': nearby
-	# 	}, context_instance=RequestContext(request))
 
 @login_required
 @is_ambassador

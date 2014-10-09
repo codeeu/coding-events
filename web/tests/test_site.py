@@ -33,13 +33,13 @@ def test_view_just_id(admin_user, db, client):
 		'country': u'SI',
 		'description': u'Lorem ipsum dolor sit amet',
 		'event_url': u'',
-		'location': u'Tiraspol, Moldova',
-		'organizer': u'RailsGirls Moldova',
+		'location': u'Ljubljana, Slovenia',
+		'organizer': u'CodeCatz test',
 		"creator": admin_user,
 		'start_date': datetime.datetime.now(),
 		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
 		'tags': [u'css', u'html', u'web'],
-		'title': u'Rails Moldova',
+		'title': u'Redirect Test',
 	}
 
 	test_event = create_or_update_event(event_id=None, **event_data)
