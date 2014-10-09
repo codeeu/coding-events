@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load event_tags %}
 
-{% block title %}- Event Details{% endblock title %}
+{% block title %}- {{ event.title }} ({{ event.country.name }}){% endblock title %}
 
 {% block social %}
 	<meta name="description" content="{{ event.description }}" />
