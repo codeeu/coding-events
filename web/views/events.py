@@ -39,6 +39,7 @@ from web.decorators.events import can_moderate_event
 from web.decorators.events import is_ambassador
 
 from django.http import Http404
+from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 """
@@ -206,6 +207,13 @@ def view_event(request, event_id, slug):
 			'nearby': nearby
 		}, context_instance=RequestContext(request))
 
+def view_event_by_id(request, event_id):
+	try:
+		event = get_event_by_id(event_id)
+	except ObjectDoesNotExist as e:
+		raise Http404
+
+	return redirect(view_event, event_id, event.slug)
 
 @login_required
 @is_ambassador
