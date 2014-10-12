@@ -164,15 +164,16 @@ class SearchEventForm(forms.Form):
 	if not 'Kosovo' in list(dict(countries._countries).values()):
 		countries._countries.append((u'XK', u'Kosovo'))
 
-	search = forms.CharField(
+
+	q = forms.CharField(
 		required=False,
 		widget=forms.TextInput(attrs={'placeholder': 'Search for event name or tag', 'class': 'form-control'})
 	)
-	past_events = forms.BooleanField(
+	past = forms.ChoiceField(
 		label='Include past events',
 		required=False,
-		widget=forms.CheckboxInput(attrs={'class': 'search-form-element'}),
-		#choices=countries
+		choices=(('yes', 'yes'),('no', 'no')),
+		widget=forms.RadioSelect(attrs={'class': 'search-form-element'}),
 	)
 	country = forms.ChoiceField(
 		label='Select country',
@@ -196,14 +197,20 @@ class SearchEventForm(forms.Form):
 
 	def __init__(self, *args, **kwargs):
 		country_code = kwargs.pop('country_code', None)
-		past_events = kwargs.pop('past_events', False)
+		past_events = kwargs.pop('past_events')
 		search_query = kwargs.pop('search', None)
+		theme = kwargs.pop('theme', None)
+		audience = kwargs.pop('audience', None)
 		super(SearchEventForm, self).__init__(*args, **kwargs)
 		if country_code:
 			self.fields['country'].initial = country_code
-		self.fields['past_events'].initial = past_events
+		self.fields['past'].initial = past_events
 		if search_query:
-			self.fields['search'].initial = search_query
+			self.fields['q'].initial = search_query
+		if theme:
+			self.fields['theme'].initial = theme
+		if audience:
+			self.fields['audience'].initial = audience
 
 
 

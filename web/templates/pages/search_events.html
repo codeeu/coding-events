@@ -11,24 +11,24 @@
 	<div class="container">
 		<div class="search-page">
 			<div class="search-options">
-				<form id="faceted-search-events" method="post" action="{% url 'web.search_events' %}" enctype="multipart/form-data">{% csrf_token %}
+				<form id="faceted-search-events" method="get" action="{% url 'web.search_events' %}" enctype="multipart/form-data">
 					{{ form.non_field_errors }}
 					<div class="row">
 						<div class="form-group col-md-9">
-							{{ form.search }}
+							{{ form.q }}
 						</div>
 						<div class="col-md-3"><input type="submit" class="btn btn-primary btn-lg" value="Search" /></div>
 						<div class="col-md-12"><hr></div>
 					</div>
 					<div class="row">
 						<div class="col-md-4">
-							<label for="id_country">{{ form.fields.country.label }}</label>
+							<label for="{{ form.country.id_for_label }}">{{ form.fields.country.label }}</label>
 							{{ form.country }}
 
 							<div class="search-checkbox">
 								<hr>
-								{{ form.past_events }}
-								<label for="id_include_past">{{ form.past_events.label }}</label> 
+								<label for="{{ form.past.id_for_label }}">{{ form.past.label }}</label> 
+								{{ form.past}}
 							</div>
 
 							<div class="search-checkbox">
@@ -57,7 +57,7 @@
 
 {% block custom_js %}
 {{ block.super }}
-<script type="text/javascript" src="{% static "js/endless_pagination/custom-endless-pagination.js" %}" ></script>
+<script type="text/javascript" src="{% static "js/endless_pagination/endless-pagination.js" %}" ></script>
 <script type="text/javascript" src="{% static "js/faceted-search-events.js" %}" ></script>
 <script type="text/javascript">
 	Codeweek.FacetedSearch.init();

@@ -277,37 +277,35 @@ def created_events(request):
 
 def search_events(request):
 
-		country_filter = request.GET.get('country_code', None)
-		if not country_filter:
+		country_code = request.GET.get('country_code', None)
+
+		if not country_code:
+			country_code = request.GET.get('country', None)
+
+		if not country_code:
 			user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 		                        remote=request.META.get('REMOTE_ADDR'))
-			country = get_country(country_filter, user_ip)
-			country_filter = country['country_code']
+			country = get_country(country_code, user_ip)
+			country_code = country['country_code']
 
-		past = request.GET.get('past', None)
-		past_events = True if past and past=='yes' else False
+
+		past = request.GET.get('past', 'no')
+		past_events = False
+		if past == 'yes':
+			past_events = True
+
 
 		search_query = request.GET.get('q', '')
 		page = request.GET.get('page', None)
 
+		theme_filter = request.GET.get('theme', None)
+		audience_filter = request.GET.get('audience', None)
+
 		template = 'pages/search_events.html'
 		page_template = 'pages/ajax_faceted_search_events.html'
 
-		if request.method == 'POST':
-			form = SearchEventForm(request.POST)
-
-			if form.is_valid():
-				search_filter = form.cleaned_data.get('search', None)
-				country_filter = form.cleaned_data.get('country', None)
-				theme_filter = form.cleaned_data.get('theme', None)
-				audience_filter = form.cleaned_data.get('audience', None)
-				past_events = form.cleaned_data.get('past_events',None)
-
-				events = get_filtered_events(search_filter, country_filter, theme_filter, audience_filter, past_events)
-		else:
-			form = SearchEventForm(country_code=country_filter, past_events=past_events, search=search_query)
-			events = get_filtered_events(search_filter=search_query, country_filter=country_filter, past_events=past_events)
-
+		form = SearchEventForm(country_code=country_code, past_events=past, search=search_query)
+		events = get_filtered_events(search_query, country_code, theme_filter,audience_filter, past_events)
 
 		if request.is_ajax():
 			return render_to_response(
@@ -324,9 +322,10 @@ def search_events(request):
 				'page_template': page_template,
 				'events': events,
 				'form': form,
-				'country': country_filter,
+				'country': country_code,
 			},
 			context_instance=RequestContext(request))
+
 
 def scoreboard(request):
 	template = 'pages/scoreboard.html'
