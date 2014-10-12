@@ -10,10 +10,13 @@ from django.test import TestCase
 from django.test import Client
 from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from api.models.events import Event
 from api.models import UserProfile
+
+from avatar.models import Avatar
+from avatar.util import get_primary_avatar
 
 from web.processors.event import create_or_update_event
 from web.processors.event import count_approved_events_for_country
@@ -52,7 +55,7 @@ class EventViewsTestCase(TestCase):
 	def test_index_view_changing_remote_in_request(self):
 		#setup
 		response = self.client.get(reverse('web.index'), {},
-		                           HTTP_X_FORWARDED_FOR='93.103.53.11, 93.103.53.11')
+								   HTTP_X_FORWARDED_FOR='93.103.53.11, 93.103.53.11')
 
 		#assert
 		self.assertEquals(200, response.status_code)
@@ -283,6 +286,60 @@ def test_scoreboard_links_and_results(admin_user, db, client):
 	assert expected_search_result in search_response.content
 
 	test_approved_event.delete()
+
+
+@pytest.mark.django_db
+def test_ambassadors_list(db, client):
+	test_country_name = "Austria"
+	test_country_code = "AT"
+
+	test_username = 'test-amb'
+	test_email = 'test@example.com'
+	test_first_name = 'Testko'
+	test_last_name = 'Test'
+	test_full_name = test_first_name + " " + test_last_name
+	
+	test_ambassador = User.objects.create(username=test_username, 
+											email=test_email,
+											first_name=test_first_name,
+											last_name=test_last_name)
+	test_ambassador_profile = UserProfile.objects.create(user=test_ambassador,
+													country=test_country_code)
+
+	group = Group.objects.get(name="ambassadors")
+	group.user_set.add(test_ambassador)
+
+	with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
+		io = StringIO.StringIO()
+		io.write(fp.read())
+		uploaded_picture = InMemoryUploadedFile(io, None, "alja17.jpg", "jpeg", io.len, None)
+		uploaded_picture.seek(0)
+
+	avatar = Avatar(user=test_ambassador, primary=True)
+	avatar.avatar.save(uploaded_picture.name, uploaded_picture)
+	avatar.save()
+
+	new_avatar = get_primary_avatar(test_ambassador, size=80)
+	test_amb_avatar = new_avatar.avatar_url(80)
+
+	response = client.get(reverse('web.ambassadors'))
+
+	# We're expecting to the Ambassador under the right country,
+	# with the right avatar and the right email contact
+	expected_result = '''
+	<h2 class="clearfix" id="%s">%s</h2>	
+	<div class="ambassador clearfix">
+	<img src="%s" alt="%s" width="80" height="80" class="img-circle" /> 
+	<h4>%s&nbsp;<span>&nbsp;<a href="mailto:%s" alt="Send me an email"><i class="fa fa-envelope"></i></a>
+	''' % (test_country_name, test_country_name, test_amb_avatar, test_username, test_full_name, test_email)
+
+	expected_result = expected_result.replace('\t', '').replace('\n', '')
+	ambassadors_content = response.content.replace('\t', '').replace('\n', '')
+
+	assert expected_result in ambassadors_content
+
+	test_ambassador.delete()
+	avatar.delete()
 
 
 @pytest.mark.django_db
