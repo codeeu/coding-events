@@ -61,6 +61,7 @@ class EventViewsTestCase(TestCase):
 		self.assertEquals(200, response.status_code)
 		self.assertEquals((46.0, 15.0), response.context['lan_lon'])
 
+
 	def test_search_events_with_search_query(self):
 		ApprovedEventFactory.create(title='Event Arglebargle - Approved')
 		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle'}, REMOTE_ADDR='93.103.53.11')
@@ -87,6 +88,7 @@ class EventViewsTestCase(TestCase):
 		approved1.delete()
 		approved2.delete()
 
+
 	def test_view_event_without_picture(self):
 		test_event = EventFactory.create()
 		response = self.client.get(reverse('web.view_event', args=[test_event.pk, test_event.slug]))
@@ -96,16 +98,6 @@ class EventViewsTestCase(TestCase):
 
 		test_event.delete()
 
-	def test_search_events_with_search_query_all_countries_multiple_results(self):
-		approved1 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="SI")
-		approved2 = ApprovedEventFactory.create(title="Event Arglebargle - Approved", country="AT")
-
-		response = self.client.get(reverse('web.search_events'), {'q':'arglebargle', 'country_code':'00'}, REMOTE_ADDR='93.103.53.11')
-
-		self.assertEquals(2,response.context['events'].count())
-
-		approved1.delete()
-		approved2.delete()
 
 
 @pytest.mark.django_db

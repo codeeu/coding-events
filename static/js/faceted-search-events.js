@@ -18,10 +18,16 @@ var Codeweek = window.Codeweek || {};
 				var data = $('#faceted-search-events').serialize();
 				var url = $('#faceted-search-events').attr('action');
 
-				$.post(url, data, function(fragment) {
+
+				if (!Modernizr.history) {
+					document.getElementById('faceted-search-events').submit();
+				} else {
+					$.get(url, data, function(fragment) {
+					history.replaceState({}, document.title, '?' + data);
 					container.empty();
 					container.html(fragment);
-				});
+					});
+				}
 			});
 		});
 	};
