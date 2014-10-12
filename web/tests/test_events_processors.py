@@ -526,7 +526,7 @@ def test_scoreboard_counter(admin_user, db):
 		"creator": admin_user,
 		'start_date': datetime.datetime.now(),
 		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-		'title': u'Test Approved Event',
+		'title': u'Test Approved Event in other country',
 		'status':"APPROVED",
 	}
 
