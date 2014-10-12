@@ -552,3 +552,4 @@ def test_scoreboard_counter(admin_user, db):
 	
 	test_approved_event.delete()
 	test_pending_event.delete()
+	test_other_country_event.delete()
