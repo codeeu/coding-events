@@ -515,6 +515,23 @@ def test_scoreboard_counter(admin_user, db):
 
 	test_pending_event = create_or_update_event(event_id=None, **event_data)
 
+	# and one event from another country, which shouldn't increase the counter
+	event_data = {
+		'audience': [3],
+		'theme': [1,2],
+		'country': u'IT',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'location': u'Rome, Italy',
+		'organizer': u'testko',
+		"creator": admin_user,
+		'start_date': datetime.datetime.now(),
+		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+		'title': u'Test Approved Event in other country',
+		'status':"APPROVED",
+	}
+
+	test_other_country_event = create_or_update_event(event_id=None, **event_data)
+
 	new_counter = count_approved_events_for_country()
 
 	counted_events_after = 0
@@ -535,3 +552,4 @@ def test_scoreboard_counter(admin_user, db):
 	
 	test_approved_event.delete()
 	test_pending_event.delete()
+	test_other_country_event.delete()
