@@ -18,7 +18,7 @@
 			{% for ambassador in ambassadors %}
 			<div class="ambassador clearfix">
 				{% avatar ambassador.user.username %} 
-				<h4>{{ambassador.user.first_name}} {{ambassador.user.last_name}}&nbsp;<span>{% if ambassador.user.email %}&nbsp;<a href="mailto:{{ambassador.user.email}}" alt="Send me an emails"><i class="fa fa-envelope"></i></a>{% endif %} {% if ambassador.website %}&nbsp;<a href="{{ambassador.website}}" target="_blank"><i class="fa fa-link"></i></a>{% endif %} {% if ambassador.twitter %}&nbsp;<a href="http://twitter.com/{{ambassador.twitter}}" target="_blank"><i class="fa fa-twitter"></i></a>{% endif %}</span></h4>
+				<h4>{{ambassador.user.first_name}} {{ambassador.user.last_name}}&nbsp;<span>{% if ambassador.user.email %}&nbsp;<a href="mailto:{{ambassador.user.email}}" alt="Send me an email"><i class="fa fa-envelope"></i></a>{% endif %} {% if ambassador.website %}&nbsp;<a href="{{ambassador.website}}" target="_blank"><i class="fa fa-link"></i></a>{% endif %} {% if ambassador.twitter %}&nbsp;<a href="http://twitter.com/{{ambassador.twitter}}" target="_blank"><i class="fa fa-twitter"></i></a>{% endif %}</span></h4>
 				<p>{{ambassador.bio}}</p>
 			</div>
 			{% endfor %}
