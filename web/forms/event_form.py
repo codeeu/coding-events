@@ -144,7 +144,7 @@ class AddEventForm(forms.ModelForm):
 		start_date = cleaned_data.get('start_date')
 		end_date = cleaned_data.get('end_date')
 
-		if end_date < start_date:
+		if start_date and end_date and end_date < start_date:
 			msg = u'End date should be greater than start date.'
 			self._errors['end_date'] = self.error_class([msg])
 
@@ -152,7 +152,6 @@ class AddEventForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		super(AddEventForm, self).__init__(*args, **kwargs)
-
 
 class SearchEventForm(forms.Form):
 

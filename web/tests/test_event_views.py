@@ -229,6 +229,34 @@ def test_edit_event_with_image(admin_user, admin_client, db):
 
 
 @pytest.mark.django_db
+def test_edit_event_without_end_date(db, admin_user, admin_client):
+	event = EventFactory.create(creator=admin_user)
+
+	event_data = {
+		'audience': [6, 7],
+		'theme': [3,4],
+		'contact_person': u'another_person@example.com',
+		'country': u'SI',
+		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		'event_url': u'',
+		'location': u'Ljubljana, Slovenia',
+		'organizer': u'Mozilla Slovenija',
+		'picture': '',
+		'start_date': datetime.datetime.now(),
+		'end_date': '',
+		'tags': [u'css', u'html', u'web'],
+		'title': u'Webmaker Ljubljana',
+		'user_email': u'another_person@example.com'
+	}
+
+	response_edited = admin_client.post(reverse('web.edit_event', args=[event.id]), event_data)
+
+	assert response_edited.status_code == 200
+	assert 'end_date' in response_edited.context['form'].errors
+
+	event.delete()
+
+@pytest.mark.django_db
 def test_scoreboard_links_and_results(admin_user, db, client):
 
 	test_country_name = "Slovenia"
