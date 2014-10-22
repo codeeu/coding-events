@@ -60,6 +60,28 @@ def test_search_events_with_search_query(db, client):
 
 	approved1.delete()
 
+def test_search_events_search_in_location(db, client):
+	approved1 = ApprovedEventFactory.create(title='Event Arglebargle - Approved')
+	response = client.get(reverse('web.search_events'), {'q':'kersnikova'}, REMOTE_ADDR='93.103.53.11')
+
+	assert approved1.get_absolute_url() in response.content
+	approved1.delete()
+
+
+def test_search_events_search_in_wrong_location(db, client):
+	approved1 = ApprovedEventFactory.create(title='Event Arglebargle - Approved')
+	response = client.get(reverse('web.search_events'), {'q':'celovška'}, REMOTE_ADDR='93.103.53.11')
+
+	assert approved1.get_absolute_url() not in response.content
+	approved1.delete()
+
+
+def test_search_events_search_in_wrong_location_again(db, client):
+	approved1 = ApprovedEventFactory.create(title='Event Arglebargle - Approved')
+	response = client.get(reverse('web.search_events'), {'q':'Celovška 1'}, REMOTE_ADDR='93.103.53.11')
+
+	assert approved1.get_absolute_url() not in response.content
+	approved1.delete()
 
 
 def test_search_events_with_unicode_tag_in_search_query(db, client):
