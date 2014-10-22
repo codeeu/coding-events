@@ -13,7 +13,7 @@ class EventFactory(factory.DjangoModelFactory):
 	creator=factory.LazyAttribute(lambda n: User.objects.get_or_create(username='test_user')[0])
 	title="My Coding Event"
 	description="Some description"
-	location="Nonexisting location"
+	location="Kersnikova ulica 4, 1000 Ljubljana, Slovenia"
 
 	event_url="http://example.com"
 	contact_person="contact@example.com"
