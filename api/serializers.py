@@ -12,3 +12,10 @@ class EventListSerializers(serializers.ModelSerializer):
 
 	def transform_description_short(self, obj, value):
 		return Truncator(value).chars(160)
+
+
+class ScoreboardSerializer(serializers.Serializer):
+	country_name = serializers.CharField()
+	score = serializers.FloatField()
+	events = serializers.IntegerField()
+	country_code = serializers.CharField(max_length=2)
