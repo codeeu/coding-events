@@ -10,7 +10,7 @@ distribute==0.6.34
 django-appconf==0.6
 django-avatar==2.0
 django-compressor==1.4
-django-countries==2.0c1
+django-countries==2.1.2
 django-countries-plus==0.3
 django-debug-toolbar==1.0.1
 django-endless-pagination==2.0
