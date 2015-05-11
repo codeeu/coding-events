@@ -33,18 +33,15 @@
 		position: relative;
 
 		li {
-			border-left: 5px solid $primary-color;
-
-			&:first-child {
-				border: none;
-			}
+			margin-left: 5px;
 			a {
 				@include transition(all 0.3s linear);
+				background-color: transparent !important;
+				color: $white !important;
+				text-decoration: underline;
+				padding: 0 6px 6px;
 
-				&:hover, &:focus, &.active {
-					background-color: transparent !important;
-					color: $white !important;
-					text-decoration: underline;
+				&.active {
 					font-weight: bold;;
 				}
 			}
