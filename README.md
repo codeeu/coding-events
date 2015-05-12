@@ -39,7 +39,7 @@ Make your changes, push to your fork and create a new Pull Request.
 
 ## Production Install
 
-See [docker/_install.sh].
+See [docker/_install.sh](docker/_install.sh).
 
 ## Bugs
 
