@@ -2,7 +2,7 @@
 
 apt-get -y update
 apt-get -u upgrade
-apt-get install -y python-dev python-setuptools supervisor ruby-sass python-geoip libmysqlclient-dev git
+apt-get install -y libjpeg-dev python-dev python-setuptools supervisor ruby-sass python-geoip libmysqlclient-dev git
 
 easy_install pip
 pip install uwsgi
