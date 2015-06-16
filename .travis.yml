@@ -17,6 +17,8 @@ before_install:
   - sudo make install
   - sudo ldconfig
   - cd ..
+  - pip install --upgrade pip
+  - pip install --upgrade setuptools
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
