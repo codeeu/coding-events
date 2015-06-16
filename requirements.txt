@@ -6,7 +6,7 @@ argparse==1.2.1
 cov-core==1.13.0
 coverage==3.7.1
 coveralls==0.4.2
-distribute==0.6.49
+distribute==0.7.3
 django-appconf==0.6
 django-avatar==2.0
 django-compressor==1.4
@@ -18,15 +18,15 @@ django-geoposition==0.1.5
 django-taggit==0.11.2
 docopt==0.6.2
 ipython==1.2.0
-oauthlib==0.6.1
+oauthlib==0.6.3
 py==1.4.23
 pytest==2.6.0
 pytest-cov==1.7.0
 -e git+https://github.com/pelme/pytest_django.git@f10e48d4fb7bca3fa2640f6f1c74c4c10655c76d#egg=pytest_django
 python-openid==2.2.5
-python-social-auth==0.1.21
+python-social-auth==0.1.26
 requests==2.2.1
-requests-oauthlib==0.4.0
+requests-oauthlib==0.4.2
 six==1.5.2
 sqlparse==0.1.11
 wsgiref==0.1.2

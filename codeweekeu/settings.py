@@ -33,7 +33,7 @@ sys.path.append(normpath(join(DJANGO_ROOT, 'web')))
 
 ########## DEBUG CONFIGURATION
 # Disable debugging by default.
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ########## END DEBUG CONFIGURATION
@@ -250,7 +250,7 @@ AUTHENTICATION_BACKENDS = (
 	'social.backends.twitter.TwitterOAuth',
 	'social.backends.facebook.FacebookOAuth2',
 	'social.backends.facebook.FacebookAppOAuth2',
-	'social.backends.google.GoogleOAuth2Backend',
+	'social.backends.google.GoogleOAuth2',
 	'django.contrib.auth.backends.ModelBackend',
 )
 

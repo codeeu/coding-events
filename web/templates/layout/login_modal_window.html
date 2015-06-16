@@ -15,7 +15,7 @@
 				<a href="{% url 'social:begin' 'facebook' %}?next={% firstof request.path '/' %}" class="btn btn-block btn-social btn-lg btn-facebook">
 					<i class="fa fa-facebook-square"></i> Sign in with Facebook
 				</a>
-				<a href="{% url 'social:begin' 'google' %}?next={% firstof request.path '/' %}" class="btn btn-block btn-social btn-lg btn-google-plus">
+				<a href="{% url 'social:begin' 'google-oauth2' %}?next={% firstof request.path '/' %}" class="btn btn-block btn-social btn-lg btn-google-plus">
 					<i class="fa fa-google-plus-square"></i> Sign in with Google
 				</a>
 			</div>
