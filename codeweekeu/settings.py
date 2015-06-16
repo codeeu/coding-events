@@ -250,7 +250,7 @@ AUTHENTICATION_BACKENDS = (
 	'social.backends.twitter.TwitterOAuth',
 	'social.backends.facebook.FacebookOAuth2',
 	'social.backends.facebook.FacebookAppOAuth2',
-	'social.backends.google.GoogleOpenId',
+	'social.backends.google.GoogleOAuth2Backend',
 	'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -266,8 +266,8 @@ SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 
 SOCIAL_AUTH_GITHUB_KEY = ''
 SOCIAL_AUTH_GITHUB_SECRET = ''
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '...'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '...'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '763797557023-pl50m4i69kqe5jqrnhtfiv0uoeo2453m.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'MltFxxBzFlzW2U7xOOCogThy'
 SOCIAL_AUTH_FACEBOOK_KEY = ''
 SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_TWITTER_KEY = ''
