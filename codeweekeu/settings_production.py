@@ -48,5 +48,3 @@ SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('FACEBOOK_KEY', '')
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('FACEBOOK_SECRET', '')
 SOCIAL_AUTH_TWITTER_KEY = os.environ.get('TWITTER_KEY', '')
 SOCIAL_AUTH_TWITTER_SECRET = os.environ.get('TWITTER_SECRET', '')
-
-RAVEN_CONFIG = { 'dsn': os.environ.get('SENTRY_KEY') }
