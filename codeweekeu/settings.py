@@ -229,6 +229,9 @@ INSTALLED_APPS = (
 
 	#delete old Files and Images
 	'django_cleanup',
+
+	# patches
+	'patches',
 )
 ########## END APP CONFIGURATION
 
