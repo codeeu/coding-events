@@ -148,6 +148,9 @@ class AddEventForm(forms.ModelForm):
 			msg = u'End date should be greater than start date.'
 			self._errors['end_date'] = self.error_class([msg])
 
+		# Set contact_person e-mail in Event model ('user_email' is used to update the User model)
+		cleaned_data['contact_person'] = cleaned_data.get('user_email', '')
+
 		return cleaned_data
 
 	def __init__(self, *args, **kwargs):
