@@ -2,52 +2,47 @@
 {% load event_tags %}
 {% load avatar_tags %}
 
-<nav class="navbar cweu-navbar" role="navigation">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-			        data-target="#cweu-navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<i class="fa fa-bars"></i>
-			</button>
-			<a class="navbar-brand" href="http://codeweek.eu">
-				<img src="{% static 'img/new_logo_white_tilted.png' %}" alt="Codeweek EU Logo" width="250"
-				     height="50" />
-			</a>
-		</div>
-		<div class="collapse navbar-collapse" id="cweu-navbar-collapse">
-			<ul class="nav navbar-nav navbar-right cweu-navbar-list">
-				<li class="nav-item-intro">10th &mdash; 18th October <strong>&middot;</strong>
-					<a href="https://twitter.com/search?q=%23codeEU&src=hash" target="_blank">#codeEU</a></li>
-				<li class="dropdown open">
-					<a href="{% url 'web.index' %}" class="active">Events</a>
-					<ul class="nav dropdown-menu visible-xs" role="menu">
-						<li>
-							<a href="{% url 'web.index' %}" class="{% current 'web.index' %}">
-								Map
-							</a>
-						</li>
-						<li>
-							<a href="{% url 'web.add_event' %}" class="{% current 'web.add_event' %}">
-								Add Event
-							</a>
-						</li>
-						<li>
-							<a href="{% if search_button %}#{% else %}{% url 'web.search_events' %}{% endif %}"
-							   class="search-btn {% if search_active %}active{% endif %}">
-								Search
-							</a>
-						</li>
-					</ul>
-				</li>
-				<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/resources">Resources</a></li>
-				<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/code">Why coding?</a></li>
-				<li class="toggle-topbar menu-icon"><a href="http://codeweek.eu/about/">About</a></li>
-				<li class="toggle-topbar menu-icon"><a href="http://blog.codeweek.eu/">News</a></li>
-			</ul>
+<!-- Header -->
+<header id="header" class="page-section full-header">
+	<div id="header-wrap">
+		<div class="container clearfix">
+			<div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+
+			<!-- Logo -->
+			<div id="logo">
+				<a href="http://127.0.0.1:4000/" class="standard-logo" data-dark-logo="/img/codeweekeu.png"><img src="http://127.0.0.1:4000/img/codeweekeu.png" alt="CodeWeekES"></a>
+				<a href="http://127.0.0.1:4000/" class="retina-logo" data-dark-logo="/img/codeweekeu.png"><img src="http://127.0.0.1:4000/img/codeweekeu.png" alt="CodeWeekES"></a>
+			</div>
+
+			<nav id="primary-menu">
+
+				<!-- Primary Navigation -->
+				<!-- ============================================= -->
+				<ul>
+					<li><a href="http://127.0.0.1:4000/">Home</a></li>
+					<li><a href="http://events.codeweek.eu/">Events</a></li>
+					<li ><a href="http://events.codeweek.eu/ambassadors">Ambassadors</a></li>
+					<li ><a href="/resources/">Resources</a></li>
+					<li ><a href="http://127.0.0.1:4000/about/">About</a></li>
+					<li><a href="http://blog.codeweek.eu/">News</a></li>
+				</ul>
+
+				<!-- Top Search -->
+				<!-- ============================================= -->
+				<div id="top-search">
+					<a href="#" id="top-search-trigger"><i class="icon-search3"></i><i class="icon-line-cross"></i></a>
+					<form action="/search.html" method="get">
+						<input type="text" name="q" class="form-control" value="" placeholder="Type & hit Enter...">
+					</form>
+				</div><!-- #top-search end -->
+
+			</nav>
+			<!-- #primary-menu end -->
 		</div>
 	</div>
-</nav>
+</header>
+
+<!-- Events site (sub)navigation -->
 <nav class="navbar cweu-submenu visible-sm visible-md visible-lg">
 	<div class="container">
 
