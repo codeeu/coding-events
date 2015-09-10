@@ -25,6 +25,7 @@ class Migration(DataMigration):
             "Internet of things and wearable computing",
             "3D printing",
             "Augmented reality",
+            "Artificial intelligence",
             "Motivation and awareness raising",
             "Promoting diversity",
         ]
@@ -45,9 +46,10 @@ class Migration(DataMigration):
             ("Internet of things and wearable computing", 12),
             ("3D printing", 13),
             ("Augmented reality", 14),
-            ("Motivation and awareness raising", 15),
-            ("Promoting diversity", 16),
-            ("Other", 17),
+            ("Artificial intelligence", 15),
+            ("Motivation and awareness raising", 16),
+            ("Promoting diversity", 17),
+            ("Other", 18),
         ]
 
         for theme in update_theme_title_list:
