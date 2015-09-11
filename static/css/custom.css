@@ -24,3 +24,15 @@ body .cweu-submenu {
 .country-name {
     font-size: 11px;
 }
+
+footer i:not(.fa-inverse) {
+    color: #555;
+}
+
+footer a {
+    color: #08a0c4;
+}
+
+footer {
+    padding-top: 0px;
+}

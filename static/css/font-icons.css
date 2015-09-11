@@ -1,21 +1,21 @@
 @font-face {
 	font-family: 'font-icons';
-	src:url('../fonts/font-icons.eot');
-	src:url('../fonts/font-icons.eot') format('embedded-opentype'),
+	src:url('fonts/font-icons.eot');
+	src:url('fonts/font-icons.eot') format('embedded-opentype'),
 		url('fonts/font-icons.woff') format('woff'),
-		url('../fonts/font-icons.ttf') format('truetype'),
-		url('../fonts/font-icons.svg') format('svg');
+		url('fonts/font-icons.ttf') format('truetype'),
+		url('fonts/font-icons.svg') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'lined-icons';
-	src:url('../../fonts/lined-icons.eot');
-	src:url('../../fonts/lined-icons.eot') format('embedded-opentype'),
-		url('../../fonts/lined-icons.woff') format('woff'),
-		url('../../fonts/lined-icons.ttf') format('truetype'),
-		url('../../fonts/lined-icons.svg') format('svg');
+	src:url('fonts/lined-icons.eot');
+	src:url('fonts/lined-icons.eot') format('embedded-opentype'),
+		url('fonts/lined-icons.woff') format('woff'),
+		url('fonts/lined-icons.ttf') format('truetype'),
+		url('fonts/lined-icons.svg') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
