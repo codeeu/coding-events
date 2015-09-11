@@ -8,70 +8,72 @@
 {% endblock %}
 {% block content %}
 
-	<div class="container">
-		{% if not user.is_authenticated %}
-			<div class="text-center">
-				<h1>Login with one of your existing accounts</h1>
-
-				<p>To prevent spam, we require a login before adding an event.</p>
-			</div>
-
-			<div class="modal" id="login-modal-open" role="dialog" aria-labelledby="opened-login-window"
+    <div class="content-wrap nopadding">
+        <div class="section notopborder nomargin">
+            <div class="container clearfix center">
+             		{% if not user.is_authenticated %}    
+                        <div class="heading-block">
+                            <h1>Login with one of your existing accounts</h1>
+                            <span>To prevent spam, we require a login before adding an event.</span>
+                        </div>
+                        <div class="modal" id="login-modal-open" role="dialog" aria-labelledby="opened-login-window"
 			     aria-hidden="false" style="display: block !important; position: relative; overflow: hidden;">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<p>&nbsp;</p>
-						</div>
-						<div class="modal-body">
-							<a href="{% url 'social:begin' 'github' %}{% if next %}?next={{ next }}{% endif %}"
-							   class="btn btn-block btn-social btn-lg btn-github">
-								<i class="fa fa-github-square"></i> Sign in with Github
-							</a>
-							<a href="{% url 'social:begin' 'twitter' %}{% if next %}?next={{ next }}{% endif %}"
-							   class="btn btn-block btn-social btn-lg btn-twitter">
-								<i class="fa fa-twitter-square"></i> Sign in with Twitter
-							</a>
-							<a href="{% url 'social:begin' 'facebook' %}{% if next %}?next={{ next }}{% endif %}"
-							   class="btn btn-block btn-social btn-lg btn-facebook">
-								<i class="fa fa-facebook-square"></i> Sign in with Facebook
-							</a>
-							<a href="{% url 'social:begin' 'google-oauth2' %}{% if next %}?next={{ next }}{% endif %}"
-							   class="btn btn-block btn-social btn-lg btn-google-plus">
-								<i class="fa fa-google-plus-square"></i> Sign in with Google
-							</a>
-						</div>
-						<div class="modal-footer">&nbsp;</div>
-					</div>
-				</div>
-			</div>
-		{% else %}
-			<div class="logged-in">
-				<div class="alert alert-info"><p>Looks like you're already logged in!</p></div>
-				{% avatar user 100 %}
-				<h1 class="username">
-					<a href="{% url 'profile' %}">
-						{% if user.first_name or user.last_name %}
-							{{ user.first_name }} {{ user.last_name }}
-						{% else %}
-							{{ user.username }}
-						{% endif %}
-					</a>
-				</h1>
-			</div>
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        
+                                    </div>
+                                    <div class="modal-body">
+                                        <a href="{% url 'social:begin' 'github' %}{% if next %}?next={{ next }}{% endif %}"
+                                           class="btn-block btn-social btn-lg btn-github">
+                                            <i class="fa fa-github-square"></i> Sign in with Github
+                                        </a>
+                                        <a href="{% url 'social:begin' 'twitter' %}{% if next %}?next={{ next }}{% endif %}"
+                                           class="btn-block btn-social btn-lg btn-twitter">
+                                            <i class="fa fa-twitter-square"></i> Sign in with Twitter
+                                        </a>
+                                        <a href="{% url 'social:begin' 'facebook' %}{% if next %}?next={{ next }}{% endif %}"
+                                           class="btn-block btn-social btn-lg btn-facebook">
+                                            <i class="fa fa-facebook-square"></i> Sign in with Facebook
+                                        </a>
+                                        <a href="{% url 'social:begin' 'google-oauth2' %}{% if next %}?next={{ next }}{% endif %}"
+                                           class="btn-block btn-social btn-lg btn-google-plus">
+                                            <i class="fa fa-google-plus-square"></i> Sign in with Google
+                                        </a>
+                                    </div>
+                                    <div class="modal-footer"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="logged-in">
+                            <div class="alert alert-info"><p>Looks like you're already logged in!</p></div>
+                            {% avatar user 100 %}
+                            <h1 class="username">
+                                <a href="{% url 'profile' %}">
+                                    {% if user.first_name or user.last_name %}
+                                        {{ user.first_name }} {{ user.last_name }}
+                                    {% else %}
+                                        {{ user.username }}
+                                    {% endif %}
+                                </a>
+                            </h1>
+                        </div>
 
 
-			<p>Take me out of here</p>
-			<a href="{% url 'logout' %}" class="btn btn-primary btn-directional fa-sign-out btn-sm">Logout</a></p>
-		{% endif %}
+                        <p>Take me out of here</p>
+                        <a href="{% url 'logout' %}" class="btn btn-primary btn-directional fa-sign-out btn-sm">Logout</a></p>
+                    {% endif %}
 
-		<hr />
+                        <div class="divider divider-short divider-center"><i class="icon-circle"></i></div>
+                        <a class="button button-3d button-large" href="{% url 'web.guide' %}">How do I organize my own event?</a>
+            
+            
 
-		<h1>
-			<a href="{% url 'web.guide' %}">How do I organize my own event?</a>
-		</h1>
+            </div>
+        </div>
+    </div>
 
-	</div>
 
 
 {% endblock content %}
