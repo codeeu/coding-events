@@ -29,15 +29,15 @@
 	{% endcompress %}
 
 	<!-- Theme stylesheets -->
-	<link rel="stylesheet" href="http://127.0.0.1:4000/stylesheets/style.css" type="text/css" />
-	<link rel="stylesheet" href="http://127.0.0.1:4000/stylesheets/dark.css" type="text/css" />
-	<link rel="stylesheet" href="http://127.0.0.1:4000/stylesheets/font-icons.css" type="text/css" />
-	<link rel="stylesheet" href="http://127.0.0.1:4000/stylesheets/responsive.css" type="text/css" />
-	<link rel="stylesheet" href="http://127.0.0.1:4000/stylesheets/customizations.css" type="text/css" />
+	<link rel="stylesheet" href="{{ settings.THEME_ASSETS_BASE_URL }}stylesheets/style.css" type="text/css" />
+	<link rel="stylesheet" href="{{ settings.THEME_ASSETS_BASE_URL }}stylesheets/dark.css" type="text/css" />
+	<link rel="stylesheet" href="{{ settings.THEME_ASSETS_BASE_URL }}stylesheets/font-icons.css" type="text/css" />
+	<link rel="stylesheet" href="{{ settings.THEME_ASSETS_BASE_URL }}stylesheets/responsive.css" type="text/css" />
+	<link rel="stylesheet" href="{{ settings.THEME_ASSETS_BASE_URL }}stylesheets/customizations.css" type="text/css" />
 	<!--[if lt IE 9]>
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 	<![endif]-->
-	<link rel="stylesheet" href="http://127.0.0.1:4000/stylesheets/colors.css" type="text/css" />
+	<link rel="stylesheet" href="{{ settings.THEME_ASSETS_BASE_URL }}stylesheets/colors.css" type="text/css" />
 
 	<!-- TODO: remove font-awesome? -->
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
@@ -73,8 +73,8 @@
 	{% include 'layout/footer.html' %}
 
 	<!-- Scripts -->
-	<script type="text/javascript" src="http://127.0.0.1:4000/js/jquery.js"></script>
-	<script type="text/javascript" src="http://127.0.0.1:4000/js/plugins.js"></script>
+	<script type="text/javascript" src="{{ settings.THEME_ASSETS_BASE_URL }}js/jquery.js"></script>
+	<script type="text/javascript" src="{{ settings.THEME_ASSETS_BASE_URL }}js/plugins.js"></script>
 	{% compress js %}
 		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/dropdown.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/collapse.js' %}"></script>

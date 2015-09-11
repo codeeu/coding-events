@@ -125,6 +125,11 @@ STATIC_ROOT = normpath(join(DJANGO_ROOT, 'staticfiles'))
 # URL prefix for static files.
 STATIC_URL = '/static/'
 
+# The base URL where to fetch the CSS, JS and image files for the header and
+# footer design. It should point to the URL of the static codeweek.eu website.
+# Make sure this URL ends with a slash: /
+THEME_ASSETS_BASE_URL = 'http://codeweek.eu/'
+
 # URL prefix for admin static files -- CSS, JavaScript and images.
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
@@ -162,7 +167,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.core.context_processors.request',
 	'django.core.context_processors.static',
 	'social.apps.django_app.context_processors.backends',
-	'social.apps.django_app.context_processors.login_redirect'
+	'social.apps.django_app.context_processors.login_redirect',
+	'django_settings_export.settings_export',
 )
 ########## END TEMPLATE CONFIGURATION
 
@@ -547,6 +553,10 @@ SOUTH_TESTS_MIGRATE = True
 ########## END TESTING
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+SETTINGS_EXPORT = [
+    'THEME_ASSETS_BASE_URL',
+]
 
 try:
 	from settings_local import *
