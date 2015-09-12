@@ -11,6 +11,8 @@ from web.processors.user import get_ambassadors_for_countries
 from web.processors.event import get_country_from_user_ip
 from web.decorators.events import login_required
 
+from web.processors.event import list_countries
+from web.processors.event import get_country_pos
 
 def login(request):
 
@@ -51,14 +53,25 @@ def ambassadors(request):
 		user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
 	                        remote=request.META.get('REMOTE_ADDR'))
 		user_country = get_country_from_user_ip(user_ip)
+        
 	except:
 		user_country = None
-	countries_ambassadors = get_ambassadors_for_countries()
 
+	countries_ambassadors = get_ambassadors_for_countries()
+        all_countries = list_countries()
+        
+        if not user_country:
+            position = 2
+        else:
+            position = get_country_pos(unicode(user_country['country_name']))
+    
 	return render_to_response(
 		'pages/ambassadors.html', {
 		'user_country': user_country,
 		'countries': countries_ambassadors,
+        # all_countries minus two CUSTOM_COUNTRY_ENTRIES
+        'all_countries': all_countries[2:],
+        'country_pos': position,
 		},
 		context_instance=RequestContext(request))
 

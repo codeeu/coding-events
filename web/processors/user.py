@@ -30,7 +30,7 @@ def get_ambassadors_for_countries():
 		for ambassador in ambassadors:
 			if ambassador.country == code:
 				found_ambassadors.append(ambassador)
-		countries_ambassadors.append((readable_name,found_ambassadors))
+		countries_ambassadors.append((code, readable_name,found_ambassadors))
 	countries_ambassadors.sort()
 	return countries_ambassadors
 

@@ -169,3 +169,18 @@ def reject_event_status(event_id):
 	event.save()
 	return event
 
+def get_country_pos(item):
+	"""
+	Return country position
+	"""
+        pos = 1 
+        # not including the first two fake countries in the list
+        for country in list(countries)[2:]:
+            country_name = country[1]
+            if item == country_name:
+                break
+            else:
+                pos = pos + 1
+        
+        return pos
+    

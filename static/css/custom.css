@@ -37,3 +37,6 @@ footer {
     padding-top: 0px;
 }
 
+.list-style-none {
+    list-style: none;
+}
