@@ -347,7 +347,7 @@ def test_ambassadors_list(db, client):
 	# We're expecting to the Ambassador under the right country,
 	# with the right avatar and the right email contact
 	expected_result = '''
-	<h2 class="clearfix" id="%s">%s</h2>	
+	<h2 class="clearfix center">%s</h2>	
 	<div class="ambassador clearfix">
 	<img src="%s" alt="%s" width="80" height="80" class="img-circle" /> 
 	<h4>%s&nbsp;<span>&nbsp;<a href="mailto:%s" alt="Send me an email"><i class="fa fa-envelope"></i></a>
