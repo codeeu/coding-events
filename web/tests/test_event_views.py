@@ -351,7 +351,7 @@ def test_ambassadors_list(db, client):
 	<div class="ambassador clearfix">
 	<img src="%s" alt="%s" width="80" height="80" class="img-circle" /> 
 	<h4>%s&nbsp;<span>&nbsp;<a href="mailto:%s" alt="Send me an email"><i class="fa fa-envelope"></i></a>
-	''' % (test_country_name, test_country_name, test_amb_avatar, test_username, test_full_name, test_email)
+	''' % (test_country_name, test_amb_avatar, test_username, test_full_name, test_email)
 
 	expected_result = expected_result.replace('\t', '').replace('\n', '')
 	ambassadors_content = response.content.replace('\t', '').replace('\n', '')
