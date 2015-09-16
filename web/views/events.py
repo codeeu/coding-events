@@ -77,6 +77,33 @@ def index(request):
 		},
 		context_instance=RequestContext(request))
 
+def map(request):
+	template = 'pages/map.html'
+
+	past = request.GET.get('past', 'no')
+
+	user_ip = get_client_ip(forwarded=request.META.get('HTTP_X_FORWARDED_FOR'),
+	                        remote=request.META.get('REMOTE_ADDR'))
+	country = get_country_from_user_ip(user_ip)
+
+	try:
+		lan_lon = get_lat_lon_from_user_ip(user_ip) or (58.08695, 5.58121)
+	except GeoIPException:
+		lan_lon = (58.08695, 5.58121)
+	
+	ambassadors = get_ambassadors(country['country_code'])
+	all_countries = list_countries()
+	
+	return render_to_response(
+		template, {
+			'lan_lon': lan_lon,
+			'country': country,
+			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
+			'all_countries': all_countries[2:],
+			'past': past,
+			'ambassadors': ambassadors,
+		},
+		context_instance=RequestContext(request))
 
 @login_required
 def add_event(request):

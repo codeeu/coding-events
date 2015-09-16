@@ -23,7 +23,6 @@
 		<link href="{% static 'lib/bootstrap-sass/stylesheets/bootstrap.scss' %}" media="screen" rel="stylesheet" type="text/x-scss" />
 		<link href="{% static 'scss/bootstrap-social.scss' %}" media="screen" rel="stylesheet" type="text/x-scss" />
 		<link href="{% static 'scss/style.scss' %}" media="screen" rel="stylesheet" type="text/x-scss" />
-		<link href="{% static 'css/custom.css' %}" media="screen" rel="stylesheet" />
 		<link href="{% static 'css/cookiecuttr.css' %}" media="screen" rel="stylesheet" />
 		{% block custom_css %}{% endblock %}
 	{% endcompress %}
@@ -41,6 +40,8 @@
 
 	<!-- TODO: remove font-awesome? -->
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="{% static 'css/custom.css' %}" media="screen" rel="stylesheet" />
 
 	<!-- Early scripts; the rest are included at the end -->
 	<script type="text/javascript" src="{% static 'js/modernizr.271.min.js' %}"></script>
@@ -77,8 +78,10 @@
 	<script type="text/javascript" src="{{ settings.THEME_ASSETS_BASE_URL }}js/plugins.js"></script>
     <script type="text/javascript" src="{{ settings.THEME_ASSETS_BASE_URL }}js/functions.js"></script>
 	{% compress js %}
+    <!-- joseihf: Dropdown doesn´t works
 		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/dropdown.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/collapse.js' %}"></script>
+    -->
 		<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
 		<script type="text/javascript" src="{% static 'js/jquery.cookiecuttr.js' %}"></script>
 		<script type="text/javascript" src="{% static 'js/base.js' %}"></script>

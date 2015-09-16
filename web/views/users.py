@@ -58,12 +58,12 @@ def ambassadors(request):
 		user_country = None
 
 	countries_ambassadors = get_ambassadors_for_countries()
-        all_countries = list_countries()
-        
-        if not user_country:
-            position = 2
-        else:
-            position = get_country_pos(unicode(user_country['country_name']))
+	all_countries = list_countries()
+
+	if not user_country:
+		position = 2
+	else:
+		position = get_country_pos(unicode(user_country['country_name']))
     
 	return render_to_response(
 		'pages/ambassadors.html', {

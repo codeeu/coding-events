@@ -40,3 +40,63 @@ footer {
 .list-style-none {
     list-style: none;
 }
+
+#page-menu, #page-menu-wrap {
+
+    height: auto;
+}
+ul.nav.navbar-nav li a{
+    color: #ffffff;
+    font-size: 1em;
+}
+
+
+
+.eventsm li a:hover .fa-circle, .eventsm li a:focus .fa-circle, .eventsm li a.active .fa-circle {
+    color: #ff854e;
+}
+
+.eventsm .fa-stack .fa-circle {
+    color: #478ac8;
+    transition: all 0.3s linear 0s;
+}
+.eventsm li a.active .fa-circle {
+    color: #ffbb34;
+}
+.eventsm li a:hover, .eventsm li a:focus, .eventsm li a.active {
+    background-color: transparent;
+    color: white;
+}
+.eventsm .dropdown-menu {
+    background-color: #08a0c4;
+    border: medium none;
+    margin-top: 3px !important;
+}
+.eventsm li.open a, .eventsm li.open a:focus{
+   background-color: #08a0c4;
+
+}
+
+.eventsm li.open a:hover {
+    background-color: #478ac8;
+}
+
+.eventsm .avatar {
+    padding: 15px 9px 9px;   
+}
+.eventsm .dropdown-menu li a {
+    padding: 15px;
+}
+
+.usersm li.open a:hover {
+    background-color: #478ac8;
+}
+
+#primary-menu ul li.active a {
+    color: #08a0c4;
+}
+
+.fancy-title h3 {
+    background-color: #f9f9f9;
+
+}
