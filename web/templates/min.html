@@ -1,0 +1,77 @@
+{% load static %}
+{% load compress %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en" class="no-js" >
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+	<link rel="icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+
+	<!-- Stylesheets -->
+	{% compress css %}		
+		<link href="{% static 'scss/style.scss' %}" media="screen" rel="stylesheet" type="text/x-scss" />
+		{% block custom_css %}{% endblock %}
+	{% endcompress %}
+<link rel="stylesheet" href="{% static 'css/font-icons.css' %}" type="text/css" />
+
+	<!--[if lt IE 9]>
+		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+	<![endif]-->
+
+    
+    <link href="{% static 'css/custom.css' %}" media="screen" rel="stylesheet" />
+
+
+
+	<!-- Title, keywords, description -->
+	<meta name="description" content="October 10 - 18, 2015: a week to celebrate coding in Europe, encouraging citizens to learn more about technology, and connecting communities and organizations who can help you learn coding." />
+	<meta property="og:image" content="/img/codeweekEU-logo-600.png" />
+	{% block social %}{% endblock %}
+	<title>Europe Code Week {% block title %}{% endblock title %}</title>
+</head>
+
+
+<body class="stretched no-transition">
+
+	<!-- Document Wrapper -->
+	<div id="wrapper" class="clearfix">
+
+
+
+		{% block content %} {% endblock content %}
+
+	</div>
+
+
+	<!-- Scripts -->
+	<script type="text/javascript" src="{{ settings.THEME_ASSETS_BASE_URL }}js/jquery.js"></script>
+	{% compress js %}
+
+
+	{% endcompress %}
+
+	{% block custom_js %}{% endblock custom_js %}
+
+	<script type="text/javascript">
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+					m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+		ga('create', 'UA-49168926-1', 'codeweek.eu');
+		ga('require', 'displayfeatures');
+		ga('send', 'pageview');
+	</script>
+	<!-- End Scripts -->
+</body>
+</html>
