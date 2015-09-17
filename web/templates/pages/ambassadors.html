@@ -16,12 +16,7 @@
             </div>
             
             <div class="container clearfix ">
-                <div class="col_two_third">
-                    {% if user_country %}Your current country: <a href="http://events.codeweek.eu/ambassadors">{{ user_country.country_name }}</a>{% endif %}
-                </div>
-                <div class="col_one_third col_last">
-                    <a class="button button-3d button-large right" href="http://codeweek.eu/beambassador/">How to become an ambassador?</a>
-                </div>
+                {% if user_country %}Your current country: <a href="http://events.codeweek.eu/ambassadors">{{ user_country.country_name }}</a>{% endif %}
             </div>
     <div class="tabs clearfix" id="tab-1" data-active="{{ country_pos }}">
         <div id="showcountries">
@@ -137,7 +132,7 @@
                     
                     {% endfor %}
                     {% else %}
-                    <p>No ambassador yet. Why don't you <a href="http://codeweek.eu/beambassador/">volunteer</a>?</p>
+                    <p>No ambassador yet. Why don't you <a href="mailto:europecodes@gmail.com">volunteer</a>?</p>
                     {% endif %}
                 </div>
 
