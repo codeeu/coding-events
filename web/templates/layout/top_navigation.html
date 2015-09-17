@@ -47,8 +47,10 @@
 	<div id="page-menu-wrap">
 
 		<div class="container clearfix">
-
-		<ul class="nav navbar-nav eventsm" role="menu">
+            <div class="menu-title">CodeWeek <span>EU</span></div>
+            
+            <nav class="one-page-menu eventsm">
+		<ul class="nav navbar navbar-left" role="menu">
 			<li>
 				<a href="{% url 'web.index' %}" class="{% current 'web.index' %} first" id="zoomEU">
 					<span class="fa-stack fa-lg">
@@ -77,7 +79,7 @@
 				</a>
 			</li>
         </ul>
-        <ul class="nav navbar-nav navbar-right eventsm nobottommargin">
+        <ul class="nav navbar navbar-right nobottommargin">
 			<li class="dropdown pull-right">
 				{% if user.is_authenticated %}
 					<a href="{% url 'profile' %}" class="dropdown-toggle avatar" data-toggle="dropdown">
@@ -117,6 +119,7 @@
 				{% endif %}
 			</li>
 		</ul>
+            </nav>
 
 			<div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
 

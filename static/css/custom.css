@@ -50,7 +50,9 @@ ul.nav.navbar-nav li a{
     font-size: 1em;
 }
 
-
+#page-menu nav li a {
+    font-size: 16px;
+}
 
 .eventsm li a:hover .fa-circle, .eventsm li a:focus .fa-circle, .eventsm li a.active .fa-circle {
     color: #ff854e;
