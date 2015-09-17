@@ -100,3 +100,8 @@ ul.nav.navbar-nav li a{
     background-color: #f9f9f9;
 
 }
+
+.team-image img {
+    width: auto;
+    margin: 0 auto;
+}
