@@ -20,17 +20,38 @@ def get_ambassadors(country_code=None):
 			ambassadors.append(ambassador.profile)
 	return ambassadors
 
+def get_main_ambassadors(country_code=None):
+	ambassadors = []
+	all_ambassadors = User.objects.filter(groups__name='main').order_by('date_joined')
+	for ambassador in all_ambassadors:
+		if country_code:
+			if ambassador.profile.country == country_code:
+				ambassadors.append(ambassador.profile)
+		else:
+			ambassadors.append(ambassador.profile)
+	return ambassadors
+
+def get_not_main_ambassadors(country_code=None):
+	ambassadors = []
+	all_ambassadors = User.objects.filter(groups__name='ambassadors').exclude(groups__name='main').order_by('date_joined')
+	for ambassador in all_ambassadors:
+		if country_code:
+			if ambassador.profile.country == country_code:
+				ambassadors.append(ambassador.profile)
+		else:
+			ambassadors.append(ambassador.profile)
+	return ambassadors
+
 def get_ambassadors_for_countries():
 	ambassadors = get_ambassadors()
 	countries_ambassadors = []
 	# list countries minus two CUSTOM_COUNTRY_ENTRIES
 	for code, name in list(countries)[2:]:
 		readable_name = unicode(name)
-		found_ambassadors = []
-		for ambassador in ambassadors:
-			if ambassador.country == code:
-				found_ambassadors.append(ambassador)
-		countries_ambassadors.append((readable_name,found_ambassadors))
+		main_ambassadors = get_main_ambassadors(code)
+		found_ambassadors = get_not_main_ambassadors(code)
+		countries_ambassadors.append((code, readable_name,found_ambassadors, main_ambassadors))
+
 	countries_ambassadors.sort()
 	return countries_ambassadors
 

@@ -2,87 +2,112 @@
 {% load avatar_tags %}
 {% load compress %}
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
-
+<html dir="ltr" lang="en" class="no-js" >
 <head>
-	<meta charset="utf-8">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	{% block social %}{% endblock %}
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Europe Code Week {% block title %}{% endblock title %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700&subset=greek-ext,cyrillic,latin' rel='stylesheet' type='text/css'>
-	{% comment %}
-	<link href='http://fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>
-	{% endcomment %}
-	{% compress css %}
-		<link href="{% static 'lib/bootstrap-sass/stylesheets/bootstrap.scss' %}"
-		      media="screen" rel="stylesheet" type="text/x-scss" />
-		<link href="{% static 'scss/bootstrap-social.scss' %}"
-		      media="screen" rel="stylesheet" type="text/x-scss" />
-		<link href="{% static 'scss/style.scss' %}"
-		      media="screen" rel="stylesheet" type="text/x-scss" />
-		<link href="{% static 'css/custom.css' %}"
-		      media="screen" rel="stylesheet" />
-		<link href="{% static 'css/cookiecuttr.css' %}"
-		      media="screen" rel="stylesheet" />
-		{% block custom_css %}{% endblock %}
-	{% endcompress %}
+	<!-- Favicon -->
 	<link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
 	<link rel="icon" href="{% static "img/favicon.ico" %}" type="image/x-icon">
+
+	<!-- TODO: check this -->
 	<link rel="stylesheet" type="text/css" href="http://assets.cookieconsent.silktide.com/current/style.min.css" />
+
+	<!-- Custom font -->
+	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
+
+	<!-- Stylesheets -->
+	{% compress css %}
+		<link href="{% static 'lib/bootstrap-sass/stylesheets/bootstrap.scss' %}" media="screen" rel="stylesheet" type="text/x-scss" />
+		<link href="{% static 'scss/bootstrap-social.scss' %}" media="screen" rel="stylesheet" type="text/x-scss" />
+		<link href="{% static 'scss/style.scss' %}" media="screen" rel="stylesheet" type="text/x-scss" />
+		<link href="{% static 'css/cookiecuttr.css' %}" media="screen" rel="stylesheet" />
+		{% block custom_css %}{% endblock %}
+	{% endcompress %}
+
+	<!-- Theme stylesheets -->
+	<link rel="stylesheet" href="http://codeweekeu.s3.amazonaws.com/assets/stylesheets/style.css" type="text/css" />
+	<link rel="stylesheet" href="http://codeweekeu.s3.amazonaws.com/assets/stylesheets/dark.css" type="text/css" />
+	<link rel="stylesheet" href="{% static 'css/font-icons.css' %}" type="text/css" />
+	<link rel="stylesheet" href="http://codeweekeu.s3.amazonaws.com/assets/stylesheets/responsive.css" type="text/css" />
+	<link rel="stylesheet" href="{{ settings.THEME_ASSETS_BASE_URL }}stylesheets/customizations.css" type="text/css" />
+	<!--[if lt IE 9]>
+		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" href="http://codeweekeu.s3.amazonaws.com/assets/stylesheets/colors.css" type="text/css" />
+
+	<!-- TODO: remove font-awesome? -->
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="{% static 'css/custom.css' %}" media="screen" rel="stylesheet" />
+
+	<!-- Early scripts; the rest are included at the end -->
 	<script type="text/javascript" src="{% static 'js/modernizr.271.min.js' %}"></script>
+
+	<!-- Title, keywords, description -->
+	<meta name="description" content="October 10 - 18, 2015: a week to celebrate coding in Europe, encouraging citizens to learn more about technology, and connecting communities and organizations who can help you learn coding." />
+	<meta property="og:image" content="/img/codeweekEU-logo-600.png" />
+	{% block social %}{% endblock %}
+	<title>Europe Code Week {% block title %}{% endblock title %}</title>
 </head>
-<body>
-{% block main_navigation %}
-	{% include 'layout/top_navigation.html' %}
-{% endblock %}
 
-{% block messages %}
-	{% include 'layout/messages.html' %}
-{% endblock messages %}
 
-{% block content %} {% endblock content %}
+<body class="stretched no-transition">
 
-{% include 'layout/footer.html' %}
+	<!-- Document Wrapper -->
+	<div id="wrapper" class="clearfix">
 
-<!--Scripts------------------------------------------------------------------------------------------->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="{% static "lib/jquery/jquery.js" %}"><\/script>')</script>
-{% compress js %}
-	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/dropdown.js' %}"></script>
-	<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/collapse.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/jquery.cookiecuttr.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+		{% block main_navigation %}
+			{% include 'layout/top_navigation.html' %}
+		{% endblock %}
+
+		{% block messages %}
+			{% include 'layout/messages.html' %}
+		{% endblock messages %}
+
+		{% block content %} {% endblock content %}
+
+	</div>
+
+	{% include 'layout/footer.html' %}
+
+	<!-- Scripts -->
+	<script type="text/javascript" src="{{ settings.THEME_ASSETS_BASE_URL }}js/jquery.js"></script>
+	<script type="text/javascript" src="http://codeweekeu.s3.amazonaws.com/assets/js/plugins.js"></script>
+    <script type="text/javascript" src="http://codeweekeu.s3.amazonaws.com/assets/js/functions.js"></script>
+	{% compress js %}
+    <!-- joseihf: Dropdown doesn´t works
+		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/dropdown.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/collapse.js' %}"></script>
+    -->
+		<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/jquery.cookiecuttr.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+		<script type="text/javascript">
+			Codeweek.Base.init();
+		</script>
+	{% endcompress %}
+
+	{% block custom_js %}{% endblock custom_js %}
+
 	<script type="text/javascript">
-		Codeweek.Base.init();
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+					m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+		ga('create', 'UA-49168926-1', 'codeweek.eu');
+		ga('require', 'displayfeatures');
+		ga('send', 'pageview');
 	</script>
-{% endcompress %}
-
-{% block custom_js %}{% endblock custom_js %}
-
-<script type="text/javascript">
-	(function (i, s, o, g, r, a, m) {
-		i['GoogleAnalyticsObject'] = r;
-		i[r] = i[r] || function () {
-			(i[r].q = i[r].q || []).push(arguments)
-		}, i[r].l = 1 * new Date();
-		a = s.createElement(o),
-				m = s.getElementsByTagName(o)[0];
-		a.async = 1;
-		a.src = g;
-		m.parentNode.insertBefore(a, m)
-	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-	ga('create', 'UA-49168926-1', 'codeweek.eu');
-	ga('require', 'displayfeatures');
-	ga('send', 'pageview');
-</script>
-
-<!--End Scripts------------------------------------------------------------------------------------------->
+	<!-- End Scripts -->
 </body>
 </html>

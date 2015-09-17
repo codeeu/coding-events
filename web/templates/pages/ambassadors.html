@@ -4,27 +4,150 @@
 {% block title %}- Ambassadors{% endblock title %}
 
 {% block content %}
-	<div class="container">
-		<h1>EU Code Week Ambassadors</h1>
-		<div class="how-to">
-			<a href="http://codeweek.eu/beambassador/" class="btn btn-sm pull-right">
-				How to become an ambassador?
-			</a>
-		</div>
-		<div class="aluminum">{% if user_country %}Your current country: <a href="#{{ user_country.country_name }}">{{ user_country.country_name }}</a>{% endif %}</div>
-		{% for country,ambassadors in countries %}
-			<h2 class="clearfix" id="{{country}}">{{country}}</h2>		
-			{% if ambassadors|length != 0 %}
-			{% for ambassador in ambassadors %}
-			<div class="ambassador clearfix">
-				{% avatar ambassador.user.username %} 
-				<h4>{{ambassador.user.first_name}} {{ambassador.user.last_name}}&nbsp;<span>{% if ambassador.user.email %}&nbsp;<a href="mailto:{{ambassador.user.email}}" alt="Send me an email"><i class="fa fa-envelope"></i></a>{% endif %} {% if ambassador.website %}&nbsp;<a href="{{ambassador.website}}" target="_blank"><i class="fa fa-link"></i></a>{% endif %} {% if ambassador.twitter %}&nbsp;<a href="http://twitter.com/{{ambassador.twitter}}" target="_blank"><i class="fa fa-twitter"></i></a>{% endif %}</span></h4>
-				<p>{{ambassador.bio}}</p>
-			</div>
-			{% endfor %}
-			{% else %}
-			<p>No ambassador yet. Why don't you <a href="http://codeweek.eu/beambassador/">volunteer</a>?</p>
-			{% endif %}
-		{% endfor %}
+
+<div class="content-wrap nopadding">
+    <div class="section notopborder nomargin">
+        <div class="container clearfix ">
+        
+        
+            <div class="heading-block center">
+                            <h1>EU Code Week Ambassadors</h1>
+                            <span></span>
+            </div>
+            
+            <div class="container clearfix ">
+                <div class="col_two_third">
+                    {% if user_country %}Your current country: <a href="http://events.codeweek.eu/ambassadors">{{ user_country.country_name }}</a>{% endif %}
+                </div>
+                <div class="col_one_third col_last">
+                    <a class="button button-3d button-large right" href="http://codeweek.eu/beambassador/">How to become an ambassador?</a>
+                </div>
+            </div>
+    <div class="tabs clearfix" id="tab-1" data-active="{{ country_pos }}">
+        <div id="showcountries">
+            <ul class="clearfix list-style-none">
+				{% for each_country in all_countries %}
+                    <li><a href="#tabs-{{ each_country.1 }}">
+						<div class="country-link" data-name="{{ each_country.0 }}">
+                            
+							<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
+
+							<div class="country-name">
+								{{ each_country.0 }}
+							</div>
+                        </div>
+                    </a></li>
+					{% endfor %}
+
+            </ul>
+            </div>
+            <div class="tab-container">
+		      {% for code,country,ambassadors, mains in countries %}
+                <div class="tab-content clearfix" id="tabs-{{ code }}">
+           
+                    <h2 class="clearfix center">{{country}}</h2>		
+                    {% if ambassadors|length != 0 %}
+                    <div class="fancy-title title-border">
+                        <h3>Main Contact</h3>
+                    </div>
+                    <div class="container">
+                    {% for main in mains %}
+                    
+                        <div class="col-md-6 bottommargin">
+
+                            <div class="team team-list clearfix">
+                                <div class="team-image">
+                                    {% avatar main.user.username %}
+                                    
+                                </div>
+                                <div class="team-desc">
+                                    <div class="team-title"><h4>{{main.user.first_name}} {{main.user.last_name}}</h4><span>Main Contact</span>      
+                                    </div>
+                                    <div class="team-content">
+                                        <p>{{main.bio}}</p>
+                                    </div>
+                                    {% if main.user.email %}
+                                    <a href="mailto:{{ambassador.user.email}}" class="social-icon inline-block si-small si-light si-rounded si-mail">
+                                        <i class="icon-line-mail"></i>
+                                        <i class="icon-line-mail"></i>
+                                    </a>
+                                    {% endif %} 
+                                    {% if main.twitter %}
+                                    <a href="http://twitter.com/{{ambassador.twitter}}" class="social-icon inline-block si-small si-light si-rounded si-twitter">
+                                        <i class="icon-twitter"></i>
+                                        <i class="icon-twitter"></i>
+                                    </a>
+                                    {% endif %} 
+                                    {% if main.website %}
+                                    <a href="{{ambassador.website}}" class="social-icon inline-block si-small si-light si-rounded si-gplus">
+                                        <i class="icon-world"></i>
+                                        <i class="icon-world"></i>
+                                    </a>
+                                    {% endif %} 
+                                </div>
+                            </div>
+
+                        </div>
+                    
+                    
+                    
+                    {% endfor %}
+                        </div>
+                    <div class="fancy-title title-border">
+                        <h3>Ambassadors</h3>
+                    </div>
+                    {% for ambassador in ambassadors %}
+                    
+                        <div class="col-md-3 col-sm-6 bottommargin">
+
+                            <div class="team">
+                                <div class="team-image">
+                                    {% avatar ambassador.user.username %}
+                                    
+                                </div>
+                                <div class="team-desc">
+                                    <div class="team-title"><h4>{{ambassador.user.first_name}} {{ambassador.user.last_name}}</h4><span>Role</span></div>
+                                    <div class="team-content">
+                                        <p>{{ambassador.bio}}</p>
+                                    </div>
+                                    {% if ambassador.user.email %}
+                                    <a href="mailto:{{ambassador.user.email}}" class="social-icon inline-block si-small si-light si-rounded si-mail">
+                                        <i class="icon-line-mail"></i>
+                                        <i class="icon-line-mail"></i>
+                                    </a>
+                                    {% endif %} 
+                                    {% if ambassador.twitter %}
+                                    <a href="http://twitter.com/{{ambassador.twitter}}" class="social-icon inline-block si-small si-light si-rounded si-twitter">
+                                        <i class="icon-twitter"></i>
+                                        <i class="icon-twitter"></i>
+                                    </a>
+                                    {% endif %} 
+                                    {% if ambassador.website %}
+                                    <a href="{{ambassador.website}}" class="social-icon inline-block si-small si-light si-rounded si-gplus">
+                                        <i class="icon-world"></i>
+                                        <i class="icon-world"></i>
+                                    </a>
+                                    {% endif %} 
+                                </div>
+                            </div>
+
+                        </div>
+                    
+                    
+                    
+                    {% endfor %}
+                    {% else %}
+                    <p>No ambassador yet. Why don't you <a href="http://codeweek.eu/beambassador/">volunteer</a>?</p>
+                    {% endif %}
+                </div>
+
+		      {% endfor %}
+            </div>
 	</div>
+
+        
+        </div>
+    </div>
+</div>
+			
 {% endblock content %}

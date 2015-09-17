@@ -1,0 +1,71 @@
+{% extends 'min.html' %}
+{% load static %}
+{% load compress %}
+{% block title %}- Map of Events{% endblock title %}
+
+
+
+{% block messages %}{% endblock %}
+{% block content %}
+	<div class="landing-outter">
+		<div class="landing-wrapper">
+			<div class="events-map-wrapper">
+				<div id="events-map">
+					<img id="loading-gif" src="/static/img/loading.gif">
+				</div>
+			</div>
+		</div>
+
+		<div class="container index-content">
+			<div class="clearfix">
+				<div id="search-events-link" style="display: none;">
+					{% if country.country_code %}
+						<a class="btn btn-primary btn-lg"
+							href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past={{ past }}">
+						   <i class="fa fa-list"></i> List all events in <span id="country"> {{ country.country_name }}</span>
+						</a>
+					{% else %}
+						<a class="btn btn-primary btn-lg" href="{% url 'web.search_events' %}">
+							<i class="fa fa-list"></i> List all events
+						</a>
+					{% endif %}
+				</div>
+			</div>
+            <div class="change-location-wrapper" style="display: none;">
+				<div id="showcountries" class="clearfix">
+					{% for each_country in all_countries %}
+						<div class="country-link" id="{{ each_country.1 }}" data-name="{{ each_country.0 }}">
+							<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
+
+							<div class="country-name">
+								{{ each_country.0 }}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+
+{% endblock content %}
+
+{% block custom_js %}
+	<script type="text/javascript"
+	        src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
+	</script>
+	{% compress js %}
+		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
+		<script type="text/javascript" src="{% static "js/markerclusterer.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/oms.min.js" %}"></script>
+		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+		<script type="text/javascript">
+			Codeweek.Index.media_url = '{{ MEDIA_URL|escapejs }}';
+		</script>
+	{% endcompress %}
+
+	<script type="text/javascript">
+		Codeweek.Index.init("{{ past }}", {{ lan_lon.0 }}, {{ lan_lon.1 }});
+	</script>
+{% endblock %}

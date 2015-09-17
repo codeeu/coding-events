@@ -12,3 +12,4 @@ codeweekeu/static/css/scss/.sass-cache/
 staticfiles/
 .DS_Store
 Gemfile*
+/tmp
