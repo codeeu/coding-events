@@ -19,11 +19,11 @@ class Migration(SchemaMigration):
         db.send_create_signal('api', ['UserProfile'])
 
         # Adding model 'SocialAccountList'
-        db.create_table(u'api_socialaccountlist', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('owner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-        ))
+        db.create_table(
+            u'api_socialaccountlist', ((u'id', self.gf('django.db.models.fields.AutoField')(
+                primary_key=True)), ('name', self.gf('django.db.models.fields.CharField')(
+                    max_length=255)), ('owner', self.gf('django.db.models.fields.related.ForeignKey')(
+                        to=orm['auth.User'])), ))
         db.send_create_signal('api', ['SocialAccountList'])
 
         # Adding model 'Event'
@@ -48,7 +48,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('api', ['Event'])
 
-
     def backwards(self, orm):
         # Deleting model 'UserProfile'
         db.delete_table(u'api_userprofile')
@@ -58,7 +57,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Event'
         db.delete_table(u'api_event')
-
 
     models = {
         'api.event': {

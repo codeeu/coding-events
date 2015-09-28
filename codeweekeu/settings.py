@@ -6,7 +6,7 @@ import sys
 import os
 from os.path import abspath, basename, dirname, join, normpath
 
-########## PATH CONFIGURATION
+# PATH CONFIGURATION
 # Absolute filesystem path to this Django project directory.
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
@@ -29,16 +29,16 @@ SECRET_FILE = normpath(join(SITE_ROOT, 'deploy', 'SECRET'))
 sys.path.append(SITE_ROOT)
 sys.path.append(normpath(join(DJANGO_ROOT, 'api')))
 sys.path.append(normpath(join(DJANGO_ROOT, 'web')))
-########## END PATH CONFIGURATION
+# END PATH CONFIGURATION
 
-########## DEBUG CONFIGURATION
+# DEBUG CONFIGURATION
 # Disable debugging by default.
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-########## END DEBUG CONFIGURATION
+# END DEBUG CONFIGURATION
 
-########## MANAGER CONFIGURATION
+# MANAGER CONFIGURATION
 # Admin and managers for this project. These people receive private site
 # alerts.
 ADMINS = (
@@ -46,23 +46,23 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-########## END MANAGER CONFIGURATION
+# END MANAGER CONFIGURATION
 
-########## DATABASE CONFIGURATION
+# DATABASE CONFIGURATION
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': normpath(join(DJANGO_ROOT, 'db', 'default.db')),
-		'USER': '',
-		'PASSWORD': '',
-		'HOST': '',
-		'PORT': '',
-	}
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': normpath(join(DJANGO_ROOT, 'db', 'default.db')),
+        'USER': '',
+                'PASSWORD': '',
+                'HOST': '',
+                'PORT': '',
+    }
 }
-########## END DATABASE CONFIGURATION
+# END DATABASE CONFIGURATION
 
 ALLOWED_HOSTS = ['localhost', 'codeweek.eu']
-########## GENERAL CONFIGURATION
+# GENERAL CONFIGURATION
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name although not all
 # choices may be available on all operating systems. On Unix systems, a value
@@ -78,11 +78,12 @@ LANGUAGE_CODE = 'sl'
 
 USE_TZ = False
 
-# Dummy function, so that "makemessages" can find strings which should be translated.
+# Dummy function, so that "makemessages" can find strings which should be
+# translated.
 _ = lambda s: s
 LANGUAGES = (
     ('sl', _('Slovenian')),
-	('en', _('English')),
+    ('en', _('English')),
 )
 
 
@@ -101,22 +102,22 @@ USE_L10N = True
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
 USE_L10N = True
-########## END GENERAL CONFIGURATION
+# END GENERAL CONFIGURATION
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'd7o9p97d9d6t&ycz^aennig5!65xv8g!ba!#cezu(*^&h0bv8!'
 
-########## MEDIA CONFIGURATION
+# MEDIA CONFIGURATION
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
 
 # URL that handles the media served from MEDIA_ROOT.
 MEDIA_URL = '/media/'
 MEDIA_UPLOAD_FOLDER = 'event_picture'
-########## END MEDIA CONFIGURATION
+# END MEDIA CONFIGURATION
 
 
-########## STATIC FILE CONFIGURATION
+# STATIC FILE CONFIGURATION
 # Absolute path to the directory static files should be collected to. Don't put
 # anything in this directory yourself; store your static files in apps' static/
 # subdirectories and in STATICFILES_DIRS.
@@ -145,9 +146,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
-########## END STATIC FILE CONFIGURATION
+# END STATIC FILE CONFIGURATION
 
-########## TEMPLATE CONFIGURATION
+# TEMPLATE CONFIGURATION
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -160,20 +161,20 @@ TEMPLATE_DIRS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-	'django.contrib.auth.context_processors.auth',
-	'django.contrib.messages.context_processors.messages',
-	'django.core.context_processors.request',
-	'django.core.context_processors.media',
-	'django.core.context_processors.request',
-	'django.core.context_processors.static',
-	'social.apps.django_app.context_processors.backends',
-	'social.apps.django_app.context_processors.login_redirect',
-	'django_settings_export.settings_export',
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
+    'django_settings_export.settings_export',
 )
-########## END TEMPLATE CONFIGURATION
+# END TEMPLATE CONFIGURATION
 
 
-########## MIDDLEWARE CONFIGURATION
+# MIDDLEWARE CONFIGURATION
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -181,13 +182,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-	'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 
 )
-########## END MIDDLEWARE CONFIGURATION
+# END MIDDLEWARE CONFIGURATION
 
 
-########## APP CONFIGURATION
+# APP CONFIGURATION
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -214,13 +215,13 @@ INSTALLED_APPS = (
     # django-social login
     'social.apps.django_app.default',
     # django-countries country listing
-	'django_countries',
-	# additional info about countries
-	'countries_plus',
+    'django_countries',
+    # additional info about countries
+    'countries_plus',
     # avatar handling
     'avatar',
     # support for tags
-	'taggit',
+    'taggit',
     # a model field that can hold geoposition
     'geoposition',
     # a compressor for static files
@@ -230,34 +231,34 @@ INSTALLED_APPS = (
 
     # defined apps
     'web',
-	'api',
-	'mailer',
+    'api',
+    'mailer',
 
-	#delete old Files and Images
-	'django_cleanup',
+    # delete old Files and Images
+    'django_cleanup',
 
-	# patches
-	'patches',
+    # patches
+    'patches',
 )
-########## END APP CONFIGURATION
+# END APP CONFIGURATION
 
 
-########## URL CONFIGURATION
+# URL CONFIGURATION
 ROOT_URLCONF = '%s.urls' % SITE_NAME
-########## END URL CONFIGURATION
+# END URL CONFIGURATION
 
-########## WSGI CONFIGURATION
+# WSGI CONFIGURATION
 WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
-########## END WSGI CONFIGURATION
+# END WSGI CONFIGURATION
 
-########## ATHENTICATION CONFIGURATION
+# ATHENTICATION CONFIGURATION
 AUTHENTICATION_BACKENDS = (
-	'social.backends.github.GithubOAuth2',
-	'social.backends.twitter.TwitterOAuth',
-	'social.backends.facebook.FacebookOAuth2',
-	'social.backends.facebook.FacebookAppOAuth2',
-	'social.backends.google.GoogleOAuth2',
-	'django.contrib.auth.backends.ModelBackend',
+    'social.backends.github.GithubOAuth2',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.facebook.FacebookAppOAuth2',
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 AUTH_PROFILE_MODULE = 'api.UserProfile'
@@ -278,46 +279,46 @@ SOCIAL_AUTH_FACEBOOK_KEY = ''
 SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_TWITTER_KEY = ''
 SOCIAL_AUTH_TWITTER_SECRET = ''
-########## END ATHENTICATION CONFIGURATION
+# END ATHENTICATION CONFIGURATION
 
-########## DJANGO-COUNTRIES CONFIGURATION
+# DJANGO-COUNTRIES CONFIGURATION
 # This was used in the past to exclude countries not in Europe
 
-########## END ATHENTICATION CONFIGURATION
+# END ATHENTICATION CONFIGURATION
 
-########## LOGGING CONFIGURATION
+# LOGGING CONFIGURATION
 LOGGING = {
-	'version': 1,
-	'disable_existing_loggers': False,
-	'filters': {
-		'require_debug_false': {
-			'()': 'django.utils.log.RequireDebugFalse'
-		}
-	},
-	'handlers': {
-		'mail_admins': {
-			'level': 'ERROR',
-			'filters': ['require_debug_false'],
-			'class': 'django.utils.log.AdminEmailHandler'
-		}
-	},
-	'loggers': {
-		'django.request': {
-			'handlers': ['mail_admins'],
-			'level': 'ERROR',
-			'propagate': True,
-		},
-	}
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
 }
 
-########## END LOGGING CONFIGURATION
+# END LOGGING CONFIGURATION
 
 
-########## GEOIP PATH
+# GEOIP PATH
 GEOIP_PATH = normpath(join(DJANGO_ROOT, 'geoip'))
-########## END GEOIP PATH
+# END GEOIP PATH
 
-########## DJANGO COMPRESSOR SETTINGS
+# DJANGO COMPRESSOR SETTINGS
 
 COMPRESS_CSS_FILTERS = ('compressor.filters.cssmin.CSSMinFilter',)
 COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
@@ -325,16 +326,16 @@ COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'sass --scss {infile} {outfile}'),
 )
-########## END DJANGO COMRESSOR SETTINGS
+# END DJANGO COMRESSOR SETTINGS
 
-########## PYTHON SOCIAL AUTH
+# PYTHON SOCIAL AUTH
 SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['first_name', 'last_name']
 
 
-########## TESTING
+# TESTING
 TEST_RUNNER = 'django_pytest.test_runner.TestRunner'
 SOUTH_TESTS_MIGRATE = True
-########## END TESTING
+# END TESTING
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -343,14 +344,14 @@ SETTINGS_EXPORT = [
 ]
 
 try:
-	from settings_local import *
-except ImportError, e:
-	pass
+    from settings_local import *
+except ImportError as e:
+    pass
 
 # if we're running on the server, use server specific settings
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 if ENVIRONMENT == 'production':
-	try:
-		from settings_production import *
-	except ImportError, e:
-		pass
+    try:
+        from settings_production import *
+    except ImportError as e:
+        pass

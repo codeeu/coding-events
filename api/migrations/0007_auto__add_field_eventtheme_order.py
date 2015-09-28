@@ -9,15 +9,16 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding field 'EventTheme.order'
-        db.add_column(u'api_eventtheme', 'order',
-                      self.gf('django.db.models.fields.IntegerField')(default=0),
-                      keep_default=False)
-
+        db.add_column(
+            u'api_eventtheme',
+            'order',
+            self.gf('django.db.models.fields.IntegerField')(
+                default=0),
+            keep_default=False)
 
     def backwards(self, orm):
         # Deleting field 'EventTheme.order'
         db.delete_column(u'api_eventtheme', 'order')
-
 
     models = {
         'api.event': {

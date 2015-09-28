@@ -1,24 +1,25 @@
 from .settings import *
-import os, dj_database_url
+import os
+import dj_database_url
 
 DEBUG = False
 
 ADMINS = (
-	('Codeweek','europecodes@gmail.com'),
+    ('Codeweek', 'europecodes@gmail.com'),
 )
 
 dbconfig = dj_database_url.config()
 if dbconfig:
-	DATABASES['default'] =  dbconfig
+    DATABASES['default'] = dbconfig
 else:
-	del DATABASES['default']
+    del DATABASES['default']
 
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 STATIC_URL = '/static/'
 STATIC_ROOT = join(DJANGO_ROOT, 'staticfiles')
 STATICFILES_DIRS = (
-	os.path.join(DJANGO_ROOT, 'static'),
+    os.path.join(DJANGO_ROOT, 'static'),
 )
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()

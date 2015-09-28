@@ -21,534 +21,607 @@ from api.processors import get_next_or_previous
 from api.processors import get_nearby_events
 from web.processors.event import count_approved_events_for_country
 
+
 class EventTestCase(TestCase):
-	def get_user(self):
-		return User.objects.get(pk=1)
 
-	def create_event(self, title="Event title",
-		start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3), 
-		end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-		country_code="SI", status="PENDING"):
+    def get_user(self):
+        return User.objects.get(pk=1)
 
-		event_data = {
-			"end_date": start_date,
-			"start_date": end_date,
-			"organizer": "Test organizer",
-			"creator": self.get_user(),
-			"title": title,
-			"pub_date": datetime.datetime.now(),
-			"country": country_code,
-			"geoposition": "46.05528,14.51444",
-			"location": "Ljubljana",
-			"audience": [1],
-			"theme": [1],
-			"status": status,
-		}
-		return create_or_update_event(**event_data)
+    def create_event(
+            self,
+            title="Event title",
+            start_date=datetime.datetime.now() +
+            datetime.timedelta(
+                days=0,
+                hours=3),
+            end_date=datetime.datetime.now() +
+            datetime.timedelta(
+                days=1,
+                hours=3),
+        country_code="SI",
+            status="PENDING"):
 
-	def setUp(self):
-		self.u1 = User.objects.create(username='user1')
-		self.up1 = UserProfile.objects.create(user=self.u1)
+        event_data = {
+            "end_date": start_date,
+            "start_date": end_date,
+            "organizer": "Test organizer",
+            "creator": self.get_user(),
+            "title": title,
+            "pub_date": datetime.datetime.now(),
+            "country": country_code,
+            "geoposition": "46.05528,14.51444",
+            "location": "Ljubljana",
+            "audience": [1],
+            "theme": [1],
+            "status": status,
+        }
+        return create_or_update_event(**event_data)
 
-		Event.objects.create(organizer="asdasd",
-			creator=User.objects.filter(pk=1)[0],
-			title="asdasd",
-			description="asdsad",
-			location="asdsad",
-			start_date=datetime.datetime.now(),
-			end_date=datetime.datetime.now(),
-			event_url="http://eee.com",
-			contact_person="ss@ss.com",
-			country="SI",
-			audience=[1],
-			theme=[1],
-			pub_date=datetime.datetime.now(),
-			tags=["tag1", "tag2"])
+    def setUp(self):
+        self.u1 = User.objects.create(username='user1')
+        self.up1 = UserProfile.objects.create(user=self.u1)
 
-	def test_get_event(self):
-		test_event = Event.objects.get(title="asdasd")
-		self.assertEqual(test_event, get_event_by_id(event_id=1))
+        Event.objects.create(organizer="asdasd",
+                             creator=User.objects.filter(pk=1)[0],
+                             title="asdasd",
+                             description="asdsad",
+                             location="asdsad",
+                             start_date=datetime.datetime.now(),
+                             end_date=datetime.datetime.now(),
+                             event_url="http://eee.com",
+                             contact_person="ss@ss.com",
+                             country="SI",
+                             audience=[1],
+                             theme=[1],
+                             pub_date=datetime.datetime.now(),
+                             tags=["tag1", "tag2"])
 
-	def test_create_or_update_event(self):
-		test_event = create_or_update_event(event_id=1)
-		self.assertEqual(1, test_event.id)
+    def test_get_event(self):
+        test_event = Event.objects.get(title="asdasd")
+        self.assertEqual(test_event, get_event_by_id(event_id=1))
 
-	def test_create_event_without_args(self):
-		with self.assertRaises(IntegrityError):
-			test_event = create_or_update_event()
+    def test_create_or_update_event(self):
+        test_event = create_or_update_event(event_id=1)
+        self.assertEqual(1, test_event.id)
 
-	def test_create_event_with_title_only(self):
-		with self.assertRaises(IntegrityError):
-			test_event = create_or_update_event(title="event title")
+    def test_create_event_without_args(self):
+        with self.assertRaises(IntegrityError):
+            test_event = create_or_update_event()
 
-	def test_create_event_with_organizer_only(self):
-		with self.assertRaises(IntegrityError):
-			event_data = {"organizer":"asdasd"}
-			test_event = create_or_update_event(**event_data)
+    def test_create_event_with_title_only(self):
+        with self.assertRaises(IntegrityError):
+            test_event = create_or_update_event(title="event title")
 
-	def test_create_event_with_start_end_dates_only(self):
-		with self.assertRaises(IntegrityError):
-			test_event = create_or_update_event(start_date=datetime.datetime.now(), end_date=datetime.datetime.now())
+    def test_create_event_with_organizer_only(self):
+        with self.assertRaises(IntegrityError):
+            event_data = {"organizer": "asdasd"}
+            test_event = create_or_update_event(**event_data)
 
-	def test_create_event_from_dictionary_with_missing_required_fields(self):
-		with self.assertRaises(IntegrityError):
-			event_data = {
-				"end_date": datetime.datetime.now(),
-				"start_date": datetime.datetime.now(),
-				"organizer": "some organizer"
-			}
-			test_event = create_or_update_event(**event_data)
+    def test_create_event_with_start_end_dates_only(self):
+        with self.assertRaises(IntegrityError):
+            test_event = create_or_update_event(
+                start_date=datetime.datetime.now(),
+                end_date=datetime.datetime.now())
 
-	def test_create_event_from_dictionary_with_all_required_fields(self):
-		event_data = {
-				"end_date": datetime.datetime.now(),
-				"start_date": datetime.datetime.now(),
-				"organizer": "some organizer",
-				"creator": User.objects.filter(pk=1)[0],
-				"title": "event title",
-				"pub_date": datetime.datetime.now(),
-		}
-		test_event = create_or_update_event(**event_data)
-		self.assertEqual(2, test_event.pk)
-		self.assertEqual("event title", test_event.title)
+    def test_create_event_from_dictionary_with_missing_required_fields(self):
+        with self.assertRaises(IntegrityError):
+            event_data = {
+                "end_date": datetime.datetime.now(),
+                "start_date": datetime.datetime.now(),
+                "organizer": "some organizer"
+            }
+            test_event = create_or_update_event(**event_data)
 
-	def test_create_event_from_dict_with_all_fields(self):
-		with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
-			io = StringIO.StringIO()
-			io.write(fp.read())
-			uploaded_picture = InMemoryUploadedFile(io, None, "alja.jpg", "jpeg", io.len, None)
-			uploaded_picture.seek(0)
+    def test_create_event_from_dictionary_with_all_required_fields(self):
+        event_data = {
+            "end_date": datetime.datetime.now(),
+            "start_date": datetime.datetime.now(),
+            "organizer": "some organizer",
+            "creator": User.objects.filter(pk=1)[0],
+            "title": "event title",
+            "pub_date": datetime.datetime.now(),
+        }
+        test_event = create_or_update_event(**event_data)
+        self.assertEqual(2, test_event.pk)
+        self.assertEqual("event title", test_event.title)
 
-		event_data = {
-			"end_date": datetime.datetime.now(),
-			"start_date": datetime.datetime.now(),
-			"organizer": "some organizer",
-			"creator": User.objects.filter(pk=1)[0],
-			"title": "event title",
-			"pub_date": datetime.datetime.now(),
-			"country": "SI",
-			"geoposition": Geoposition(46.05528,14.51444),
-			"location": "Ljubljana",
-			"audience": [1],
-			"theme": [1],
-			"tags": ["tag1", "tag2"],
-			"picture": uploaded_picture
-		}
+    def test_create_event_from_dict_with_all_fields(self):
+        with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
+            io = StringIO.StringIO()
+            io.write(fp.read())
+            uploaded_picture = InMemoryUploadedFile(
+                io, None, "alja.jpg", "jpeg", io.len, None)
+            uploaded_picture.seek(0)
 
-		test_event = create_or_update_event(**event_data)
-		self.assertEqual(2, test_event.pk)
-		self.assertEqual("Ljubljana", test_event.location)
-		self.assertEqual("46.05528", str(test_event.geoposition.latitude))
-		self.assertIn("tag1", test_event.tags.names())
-		self.assertIn("tag2", test_event.tags.names())
+        event_data = {
+            "end_date": datetime.datetime.now(),
+            "start_date": datetime.datetime.now(),
+            "organizer": "some organizer",
+            "creator": User.objects.filter(pk=1)[0],
+            "title": "event title",
+            "pub_date": datetime.datetime.now(),
+            "country": "SI",
+            "geoposition": Geoposition(46.05528, 14.51444),
+            "location": "Ljubljana",
+            "audience": [1],
+            "theme": [1],
+            "tags": ["tag1", "tag2"],
+            "picture": uploaded_picture
+        }
 
-		assert 'event_picture/alja' in test_event.picture.path
+        test_event = create_or_update_event(**event_data)
+        self.assertEqual(2, test_event.pk)
+        self.assertEqual("Ljubljana", test_event.location)
+        self.assertEqual("46.05528", str(test_event.geoposition.latitude))
+        self.assertIn("tag1", test_event.tags.names())
+        self.assertIn("tag2", test_event.tags.names())
 
-	def test_get_approved_event_without_filter_returns_zero(self):
+        assert 'event_picture/alja' in test_event.picture.path
 
-		events = get_approved_events()
-		self.assertQuerysetEqual([], events)
+    def test_get_approved_event_without_filter_returns_zero(self):
 
-	def test_get_approved_event_without_filter_with_pending_event(self):
-		self.create_event(start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=3),
-			end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=3),
-			status="APPROVED",)
-		events = get_approved_events()
-		self.assertEqual(1, len(events))
+        events = get_approved_events()
+        self.assertQuerysetEqual([], events)
 
-	def test_get_approved_event_without_filter_with_approved_event_but_passed_date(self):
-		self.create_event(start_date=datetime.datetime.now() - datetime.timedelta(days=1, hours=3),
-			end_date=datetime.datetime.now() - datetime.timedelta(days=2, hours=3),
-			status="APPROVED")
-		events = get_approved_events()
-		self.assertEqual(0, len(events))
+    def test_get_approved_event_without_filter_with_pending_event(self):
+        self.create_event(
+            start_date=datetime.datetime.now() +
+            datetime.timedelta(
+                days=0,
+                hours=3),
+            end_date=datetime.datetime.now() +
+            datetime.timedelta(
+                days=1,
+                hours=3),
+            status="APPROVED",
+        )
+        events = get_approved_events()
+        self.assertEqual(1, len(events))
 
-	def test_get_approved_event_with_filter_country_code_with_approved_event(self):
-		self.create_event(country_code="IS", status="APPROVED")
-		events = get_approved_events(country_code="IS")
-		self.assertEqual(1, len(events))
-		self.assertEqual("IS", events[0].country.code)
+    def test_get_approved_event_without_filter_with_approved_event_but_passed_date(
+            self):
+        self.create_event(
+            start_date=datetime.datetime.now() -
+            datetime.timedelta(
+                days=1,
+                hours=3),
+            end_date=datetime.datetime.now() -
+            datetime.timedelta(
+                days=2,
+                hours=3),
+            status="APPROVED")
+        events = get_approved_events()
+        self.assertEqual(0, len(events))
 
-	def test_get_approved_event_with_filter_country_code_and_order_with_approved_event(self):
-		countries = ["IS", "DK", "FI", "FI", "LI"]
-		for index, country in enumerate(countries):
-			self.create_event(title="Testing event" + str(index + 1), country_code=country, status="APPROVED",
-				start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=index + 1),
-				end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=index + 1))
+    def test_get_approved_event_with_filter_country_code_with_approved_event(
+            self):
+        self.create_event(country_code="IS", status="APPROVED")
+        events = get_approved_events(country_code="IS")
+        self.assertEqual(1, len(events))
+        self.assertEqual("IS", events[0].country.code)
 
-		events = get_approved_events(order="start_date")
-		self.assertEqual(5, len(events))
-		self.assertEqual("IS", events[0].country.code)
-		self.assertEqual("DK", events[1].country.code)
-		self.assertEqual("FI", events[2].country.code)
-		self.assertEqual("FI", events[3].country.code)
-		self.assertEqual("LI", events[4].country.code)
+    def test_get_approved_event_with_filter_country_code_and_order_with_approved_event(
+            self):
+        countries = ["IS", "DK", "FI", "FI", "LI"]
+        for index, country in enumerate(countries):
+            self.create_event(
+                title="Testing event" +
+                str(
+                    index +
+                    1),
+                country_code=country,
+                status="APPROVED",
+                start_date=datetime.datetime.now() +
+                datetime.timedelta(
+                    days=0,
+                    hours=index +
+                    1),
+                end_date=datetime.datetime.now() +
+                datetime.timedelta(
+                    days=1,
+                    hours=index +
+                    1))
 
-	def test_get_approved_event_with_filter_country_code_and_order_and_limit__with_approved_event(self):
-		countries = ["IS", "DK", "FI", "FI", "FI"]
-		for index, country in enumerate(countries):
-			self.create_event(title="Testing event" + str(index + 1), country_code=country, status="APPROVED",
-				start_date=datetime.datetime.now() + datetime.timedelta(days=0, hours=index + 1),
-				end_date=datetime.datetime.now() + datetime.timedelta(days=1, hours=index + 1))
+        events = get_approved_events(order="start_date")
+        self.assertEqual(5, len(events))
+        self.assertEqual("IS", events[0].country.code)
+        self.assertEqual("DK", events[1].country.code)
+        self.assertEqual("FI", events[2].country.code)
+        self.assertEqual("FI", events[3].country.code)
+        self.assertEqual("LI", events[4].country.code)
 
-		events = get_approved_events(order="start_date", limit=2, country_code="FI")
-		self.assertEqual(2, len(events))
-		self.assertEqual("Testing event3", events[0].title)
-		self.assertEqual("Testing event4", events[1].title)
+    def test_get_approved_event_with_filter_country_code_and_order_and_limit__with_approved_event(
+            self):
+        countries = ["IS", "DK", "FI", "FI", "FI"]
+        for index, country in enumerate(countries):
+            self.create_event(
+                title="Testing event" +
+                str(
+                    index +
+                    1),
+                country_code=country,
+                status="APPROVED",
+                start_date=datetime.datetime.now() +
+                datetime.timedelta(
+                    days=0,
+                    hours=index +
+                    1),
+                end_date=datetime.datetime.now() +
+                datetime.timedelta(
+                    days=1,
+                    hours=index +
+                    1))
 
-	def test_get_next_or_previous_pending_event(self):
-		statuses = ["PENDING", "APPROVED", "PENDING"]
+        events = get_approved_events(
+            order="start_date", limit=2, country_code="FI")
+        self.assertEqual(2, len(events))
+        self.assertEqual("Testing event3", events[0].title)
+        self.assertEqual("Testing event4", events[1].title)
 
-		for status in statuses:
-			event = self.create_event(status=status)
-			
-		test_event = Event.objects.get(pk=2)
-		next_event = get_next_or_previous(test_event)
+    def test_get_next_or_previous_pending_event(self):
+        statuses = ["PENDING", "APPROVED", "PENDING"]
 
-		self.assertEqual(4, next_event.pk)
+        for status in statuses:
+            event = self.create_event(status=status)
 
-		test_event_2 = Event.objects.get(pk=4)
-		next_event_2 = get_next_or_previous(test_event_2)
+        test_event = Event.objects.get(pk=2)
+        next_event = get_next_or_previous(test_event)
 
-		self.assertEqual(None, next_event_2)
+        self.assertEqual(4, next_event.pk)
 
-		test_event_3 = Event.objects.get(pk=4)
-		previous_event = get_next_or_previous(test_event_3, direction=False)
+        test_event_2 = Event.objects.get(pk=4)
+        next_event_2 = get_next_or_previous(test_event_2)
 
-		self.assertEqual(2, previous_event.pk)
+        self.assertEqual(None, next_event_2)
 
-		test_event_4 = Event.objects.get(pk=1)
-		previous_event_2 = get_next_or_previous(test_event_4, direction=False)
+        test_event_3 = Event.objects.get(pk=4)
+        previous_event = get_next_or_previous(test_event_3, direction=False)
 
-		self.assertEqual(None, previous_event_2)
+        self.assertEqual(2, previous_event.pk)
 
-	def test_get_nearby_events(self):
-		target_event = self.create_event(status="APPROVED")
-		nearby_event = self.create_event(status="APPROVED")
-		nearby = get_nearby_events(target_event)
+        test_event_4 = Event.objects.get(pk=1)
+        previous_event_2 = get_next_or_previous(test_event_4, direction=False)
 
-		self.assertEqual(1, len(nearby))
-		self.assertEqual(nearby_event.pk, nearby[0].pk)
+        self.assertEqual(None, previous_event_2)
 
-		self.create_event(status="APPROVED", country_code="HR")
-		nearby = get_nearby_events(target_event)
-		
-		self.assertEqual(1, len(nearby))
+    def test_get_nearby_events(self):
+        target_event = self.create_event(status="APPROVED")
+        nearby_event = self.create_event(status="APPROVED")
+        nearby = get_nearby_events(target_event)
 
-		self.create_event(status="PENDING")
-		nearby = get_nearby_events(target_event)
+        self.assertEqual(1, len(nearby))
+        self.assertEqual(nearby_event.pk, nearby[0].pk)
 
-		self.assertEqual(1, len(nearby))
+        self.create_event(status="APPROVED", country_code="HR")
+        nearby = get_nearby_events(target_event)
 
-	def test_change_event_status(self):
-		pending_event = self.create_event(status="PENDING")
-		approved = change_event_status(pending_event.id)
+        self.assertEqual(1, len(nearby))
 
-		self.assertEqual(approved.status, "APPROVED")
+        self.create_event(status="PENDING")
+        nearby = get_nearby_events(target_event)
 
-		test_event = Event.objects.get(pk=pending_event.id)
-		self.assertEqual(test_event.status, "APPROVED")
+        self.assertEqual(1, len(nearby))
 
-		approved_event = self.create_event(status="APPROVED")
-		pending = change_event_status(approved_event.id)
+    def test_change_event_status(self):
+        pending_event = self.create_event(status="PENDING")
+        approved = change_event_status(pending_event.id)
 
-		test_event1 = Event.objects.get(pk=approved_event.id)
-		self.assertEqual(test_event1.status, "PENDING")
+        self.assertEqual(approved.status, "APPROVED")
 
+        test_event = Event.objects.get(pk=pending_event.id)
+        self.assertEqual(test_event.status, "APPROVED")
 
-	def test_reject_event_status(self):
-		pending_event = self.create_event(status="PENDING")
-		reject = reject_event_status(pending_event.id)
+        approved_event = self.create_event(status="APPROVED")
+        pending = change_event_status(approved_event.id)
 
-		test_event = Event.objects.get(pk=pending_event.id)
-		self.assertEqual(test_event.status, "REJECTED")
+        test_event1 = Event.objects.get(pk=approved_event.id)
+        self.assertEqual(test_event1.status, "PENDING")
 
-		rejected_event = self.create_event(status="REJECTED")
-		pending = reject_event_status(rejected_event.id)
+    def test_reject_event_status(self):
+        pending_event = self.create_event(status="PENDING")
+        reject = reject_event_status(pending_event.id)
 
-		test_event1 = Event.objects.get(pk=rejected_event.id)
-		self.assertEqual(test_event1.status, "PENDING")
+        test_event = Event.objects.get(pk=pending_event.id)
+        self.assertEqual(test_event.status, "REJECTED")
 
-	def test_edit_event_with_all_fields(self):
-		# First create a new event
-		with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
-			io = StringIO.StringIO()
-			io.write(fp.read())
-			uploaded_picture = InMemoryUploadedFile(io, None, "alja.jpg", "jpeg", io.len, None)
-			uploaded_picture.seek(0)
+        rejected_event = self.create_event(status="REJECTED")
+        pending = reject_event_status(rejected_event.id)
 
-		event_data = {
-			"end_date": datetime.datetime.now(),
-			"start_date": datetime.datetime.now(),
-			"organizer": "some organizer",
-			"creator": User.objects.filter(pk=1)[0],
-			"title": "event title",
-			"pub_date": datetime.datetime.now(),
-			"country": "SI",
-			"geoposition": Geoposition(46.05528,14.51444),
-			"location": "Ljubljana",
-			"audience": [1],
-			"theme": [1],
-			"tags": ["tag1", "tag2"],
-			"picture": uploaded_picture
-		}
+        test_event1 = Event.objects.get(pk=rejected_event.id)
+        self.assertEqual(test_event1.status, "PENDING")
 
-		test_event = create_or_update_event(**event_data)
+    def test_edit_event_with_all_fields(self):
+        # First create a new event
+        with open(local(__file__).dirname + '/../../static/img/team/alja.jpg') as fp:
+            io = StringIO.StringIO()
+            io.write(fp.read())
+            uploaded_picture = InMemoryUploadedFile(
+                io, None, "alja.jpg", "jpeg", io.len, None)
+            uploaded_picture.seek(0)
 
-		# Then edit it
-		with open(local(__file__).dirname + '/../../static/img/team/ercchy.jpg') as fp:
-			io = StringIO.StringIO()
-			io.write(fp.read())
-			uploaded_picture = InMemoryUploadedFile(io, None, "ercchy.jpg", "jpeg", io.len, None)
-			uploaded_picture.seek(0)
+        event_data = {
+            "end_date": datetime.datetime.now(),
+            "start_date": datetime.datetime.now(),
+            "organizer": "some organizer",
+            "creator": User.objects.filter(pk=1)[0],
+            "title": "event title",
+            "pub_date": datetime.datetime.now(),
+            "country": "SI",
+            "geoposition": Geoposition(46.05528, 14.51444),
+            "location": "Ljubljana",
+            "audience": [1],
+            "theme": [1],
+            "tags": ["tag1", "tag2"],
+            "picture": uploaded_picture
+        }
 
-		event_data = {
-			"end_date": datetime.datetime.now(),
-			"start_date": datetime.datetime.now(),
-			"organizer": "another organiser",
-			"creator": User.objects.filter(pk=1)[0],
-			"title": "event title - edited",
-			"pub_date": datetime.datetime.now(),
-			"country": "SI",
-			# "geoposition": Geoposition(46.05528,14.51444),
-			"location": "Ljubljana",
-			"audience": [1],
-			"theme": [1],
-			"tags": ["tag3", "tag4"],
-			"picture": uploaded_picture
-		}
-		test_event = create_or_update_event(event_id=test_event.id, **event_data)
-		assert "tag1" not in test_event.tags.names()
+        test_event = create_or_update_event(**event_data)
 
-		assert 'event_picture/alja' not in test_event.picture
-		assert 'event_picture/ercchy' in test_event.picture.path
+        # Then edit it
+        with open(local(__file__).dirname + '/../../static/img/team/ercchy.jpg') as fp:
+            io = StringIO.StringIO()
+            io.write(fp.read())
+            uploaded_picture = InMemoryUploadedFile(
+                io, None, "ercchy.jpg", "jpeg", io.len, None)
+            uploaded_picture.seek(0)
+
+        event_data = {
+            "end_date": datetime.datetime.now(),
+            "start_date": datetime.datetime.now(),
+            "organizer": "another organiser",
+            "creator": User.objects.filter(pk=1)[0],
+            "title": "event title - edited",
+            "pub_date": datetime.datetime.now(),
+            "country": "SI",
+            # "geoposition": Geoposition(46.05528,14.51444),
+            "location": "Ljubljana",
+            "audience": [1],
+            "theme": [1],
+            "tags": ["tag3", "tag4"],
+            "picture": uploaded_picture
+        }
+        test_event = create_or_update_event(
+            event_id=test_event.id, **event_data)
+        assert "tag1" not in test_event.tags.names()
+
+        assert 'event_picture/alja' not in test_event.picture
+        assert 'event_picture/ercchy' in test_event.picture.path
+
 
 @pytest.mark.django_db
 def test_create_event_in_moldova(admin_user, db):
 
-	event_data = {
-		'audience': [3],
-		'theme': [1,2],
-		'contact_person': u'test@example.com',
-		'country': u'MD',
-		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-		'event_url': u'',
-		'location': u'Tiraspol, Moldova',
-		'organizer': u'RailsGirls Moldova',
-		"creator": admin_user,
-		'start_date': datetime.datetime.now(),
-		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-		'tags': [u'css', u'html', u'web'],
-		'title': u'Rails Moldova',
-	}
+    event_data = {
+        'audience': [3],
+        'theme': [1, 2],
+        'contact_person': u'test@example.com',
+        'country': u'MD',
+        'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'event_url': u'',
+        'location': u'Tiraspol, Moldova',
+        'organizer': u'RailsGirls Moldova',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'tags': [u'css', u'html', u'web'],
+        'title': u'Rails Moldova',
+    }
 
-	test_event = create_or_update_event(event_id=None, **event_data)
+    test_event = create_or_update_event(event_id=None, **event_data)
 
-	assert "MD" == test_event.country.code
+    assert "MD" == test_event.country.code
+
 
 @pytest.mark.django_db
 def test_create_event_in_kosovo(admin_user, db):
-	event_data = {
-		'audience': [3],
-		'theme': [1,2],
-		'contact_person': u'test@example.com',
-		'country': u'XK',
-		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-		'event_url': u'',
-		'location': u'Shaban Polluzha, Prishtina, Kosova (Kosovo)',
-		'organizer': u'RailsGirls Kosovo',
-		"creator": admin_user,
-		'start_date': datetime.datetime.now(),
-		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-		'tags': [u'css', u'html', u'web'],
-		'title': u'RailsGirls Kosovo',
-	}
+    event_data = {
+        'audience': [3],
+        'theme': [1, 2],
+        'contact_person': u'test@example.com',
+        'country': u'XK',
+        'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'event_url': u'',
+        'location': u'Shaban Polluzha, Prishtina, Kosova (Kosovo)',
+        'organizer': u'RailsGirls Kosovo',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'tags': [u'css', u'html', u'web'],
+        'title': u'RailsGirls Kosovo',
+    }
 
-	test_event = create_or_update_event(event_id=None, **event_data)
+    test_event = create_or_update_event(event_id=None, **event_data)
 
-	assert "XK" == test_event.country.code
+    assert "XK" == test_event.country.code
+
 
 @pytest.mark.django_db
 def test_create_event_in_serbia(admin_user, db):
-	event_data = {
-		'audience': [3],
-		'theme': [1,2],
-		'contact_person': u'test@example.com',
-		'country': u'RS',
-		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-		'event_url': u'',
-		'location': u'96 Bulevar despota Stefana, Belgrade, Serbia',
-		'organizer': u'RailsGirls Serbia',
-		"creator": admin_user,
-		'start_date': datetime.datetime.now(),
-		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-		'tags': [u'css', u'html', u'web'],
-		'title': u'RailsGirls Serbia',
-	}
+    event_data = {
+        'audience': [3],
+        'theme': [1, 2],
+        'contact_person': u'test@example.com',
+        'country': u'RS',
+        'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'event_url': u'',
+        'location': u'96 Bulevar despota Stefana, Belgrade, Serbia',
+        'organizer': u'RailsGirls Serbia',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'tags': [u'css', u'html', u'web'],
+        'title': u'RailsGirls Serbia',
+    }
 
-	test_event = create_or_update_event(event_id=None, **event_data)
+    test_event = create_or_update_event(event_id=None, **event_data)
 
-	assert "RS" == test_event.country.code
+    assert "RS" == test_event.country.code
 
 
 @pytest.mark.django_db
 def test_create_event_in_martinique_for_france(admin_user, db):
-	event_data = {
-		'audience': [3],
-		'theme': [1,2],
-		'contact_person': u'test@example.com',
-		'country': u'FR',
-		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-		'event_url': u'',
-		'location': u'1011 Chemin rural No 8 Bis de Clemencin, Le Lamentin, Martinique',
-		'organizer': u'RailsGirls Martinique',
-		"creator": admin_user,
-		'start_date': datetime.datetime.now(),
-		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-		'tags': [u'css', u'html', u'web'],
-		'title': u'RailsGirls Martinique',
-	}
+    event_data = {
+        'audience': [3],
+        'theme': [1, 2],
+        'contact_person': u'test@example.com',
+        'country': u'FR',
+        'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'event_url': u'',
+        'location': u'1011 Chemin rural No 8 Bis de Clemencin, Le Lamentin, Martinique',
+        'organizer': u'RailsGirls Martinique',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'tags': [u'css', u'html', u'web'],
+        'title': u'RailsGirls Martinique',
+    }
 
-	test_event = create_or_update_event(event_id=None, **event_data)
+    test_event = create_or_update_event(event_id=None, **event_data)
 
-	assert "FR" == test_event.country.code
+    assert "FR" == test_event.country.code
 
 
 @pytest.mark.django_db
 def test_create_event_in_each_listed_country(admin_user, db):
-	all_countries = list_countries()
+    all_countries = list_countries()
 
-	for country in all_countries[2:]:
-		country_code = country[1]
-		country_name = country[0]
+    for country in all_countries[2:]:
+        country_code = country[1]
+        country_name = country[0]
 
-		event_data = {
-			'audience': [3],
-			'theme': [1,2],
-			'contact_person': u'test@example.com',
-			'country': country_code,
-			'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-			'event_url': u'',
-			'location': country_name,
-			'organizer': u'RailsGirls ' + country_name,
-			"creator": admin_user,
-			'start_date': datetime.datetime.now(),
-			'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-			'tags': [u'css', u'html', u'web'],
-			'title': u'RailsGirls ' + country_name,
-		}
+        event_data = {
+            'audience': [3],
+            'theme': [1, 2],
+            'contact_person': u'test@example.com',
+            'country': country_code,
+            'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            'event_url': u'',
+            'location': country_name,
+            'organizer': u'RailsGirls ' + country_name,
+            "creator": admin_user,
+            'start_date': datetime.datetime.now(),
+            'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+            'tags': [u'css', u'html', u'web'],
+            'title': u'RailsGirls ' + country_name,
+        }
 
-		test_event = create_or_update_event(event_id=None, **event_data)
+        test_event = create_or_update_event(event_id=None, **event_data)
 
-		assert country_code == test_event.country.code
+        assert country_code == test_event.country.code
 
-		test_event.delete()
+        test_event.delete()
 
 
 def test_list_countries():
-	# a function we use a lot to get all countries, so let's check it's returning expected results
-	all_countries = list_countries()
+    # a function we use a lot to get all countries, so let's check it's
+    # returning expected results
+    all_countries = list_countries()
 
-	# Afghanistan should be the first country after two custom entries (All countries)
-	assert "Afghanistan" == all_countries[2][0]
+    # Afghanistan should be the first country after two custom entries (All
+    # countries)
+    assert "Afghanistan" == all_countries[2][0]
 
-	# checking two random countries - our own and Kosovo, which is a special case
-	assert ('Slovenia', 'SI') in all_countries
-	assert ('Kosovo', 'XK') in all_countries
+    # checking two random countries - our own and Kosovo, which is a special
+    # case
+    assert ('Slovenia', 'SI') in all_countries
+    assert ('Kosovo', 'XK') in all_countries
 
-	# Aland Islands should be last
-	assert "land Islands" in all_countries[-1][0]
+    # Aland Islands should be last
+    assert "land Islands" in all_countries[-1][0]
 
-	# if listing works, results are tuples ('country_name', 'country_code')
-	# country_code should be a string with 2 characters
-	for country in all_countries[2:]:
-		assert len(country[1]) == 2
+    # if listing works, results are tuples ('country_name', 'country_code')
+    # country_code should be a string with 2 characters
+    for country in all_countries[2:]:
+        assert len(country[1]) == 2
 
 
 @pytest.mark.django_db
 def test_scoreboard_counter(admin_user, db):
 
-	initial_counter = count_approved_events_for_country()
+    initial_counter = count_approved_events_for_country()
 
-	# extra check to make sure the number of results matches 
-	# the number of active countries
-	assert len(initial_counter) == 0
+    # extra check to make sure the number of results matches
+    # the number of active countries
+    assert len(initial_counter) == 0
 
-	counted_events_before = 0
+    counted_events_before = 0
 
-	for country in initial_counter:
-		if country['country_code'] == 'SI':
-			counted_events_before = country['events']
+    for country in initial_counter:
+        if country['country_code'] == 'SI':
+            counted_events_before = country['events']
 
-	# Adding one approved and one pending event in same country
-	# the count for events for the country should increase by 1
-	event_data = {
-		'audience': [3],
-		'theme': [1,2],
-		'country': u'SI',
-		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-		'location': u'Ljubljana, Slovenia',
-		'organizer': u'testko',
-		"creator": admin_user,
-		'start_date': datetime.datetime.now(),
-		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-		'title': u'Test Approved Event',
-		'status':"APPROVED",
-	}
+    # Adding one approved and one pending event in same country
+    # the count for events for the country should increase by 1
+    event_data = {
+        'audience': [3],
+        'theme': [1, 2],
+        'country': u'SI',
+        'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'location': u'Ljubljana, Slovenia',
+        'organizer': u'testko',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'title': u'Test Approved Event',
+        'status': "APPROVED",
+    }
 
-	test_approved_event = create_or_update_event(event_id=None, **event_data)
+    test_approved_event = create_or_update_event(event_id=None, **event_data)
 
-	event_data = {
-		'audience': [3],
-		'theme': [1,2],
-		'country': u'SI',
-		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-		'location': u'Ljubljana, Slovenia',
-		'organizer': u'testko',
-		"creator": admin_user,
-		'start_date': datetime.datetime.now(),
-		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-		'title': u'Test Pending Event',
-		'status':"PENDING",
-	}
+    event_data = {
+        'audience': [3],
+        'theme': [1, 2],
+        'country': u'SI',
+        'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'location': u'Ljubljana, Slovenia',
+        'organizer': u'testko',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'title': u'Test Pending Event',
+        'status': "PENDING",
+    }
 
-	test_pending_event = create_or_update_event(event_id=None, **event_data)
+    test_pending_event = create_or_update_event(event_id=None, **event_data)
 
-	# and one event from another country, which shouldn't increase the counter
-	event_data = {
-		'audience': [3],
-		'theme': [1,2],
-		'country': u'IT',
-		'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-		'location': u'Rome, Italy',
-		'organizer': u'testko',
-		"creator": admin_user,
-		'start_date': datetime.datetime.now(),
-		'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-		'title': u'Test Approved Event in other country',
-		'status':"APPROVED",
-	}
+    # and one event from another country, which shouldn't increase the counter
+    event_data = {
+        'audience': [3],
+        'theme': [1, 2],
+        'country': u'IT',
+        'description': u'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'location': u'Rome, Italy',
+        'organizer': u'testko',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'title': u'Test Approved Event in other country',
+        'status': "APPROVED",
+    }
 
-	test_other_country_event = create_or_update_event(event_id=None, **event_data)
+    test_other_country_event = create_or_update_event(
+        event_id=None, **event_data)
 
-	new_counter = count_approved_events_for_country()
+    new_counter = count_approved_events_for_country()
 
-	counted_events_after = 0
-	country_score_after = 0
+    counted_events_after = 0
+    country_score_after = 0
 
-	for country in new_counter:
-			if country['country_code'] == 'SI':
-				counted_events_after = country['events']
-				country_score_after = country['score']
+    for country in new_counter:
+        if country['country_code'] == 'SI':
+            counted_events_after = country['events']
+            country_score_after = country['score']
 
-	# An extra check with a direct DB query
-	counted_events_query = Event.objects.filter(status='APPROVED').filter(country='SI').count()
-	
-	assert counted_events_after == counted_events_before + 1
-	assert counted_events_after == counted_events_query
+    # An extra check with a direct DB query
+    counted_events_query = Event.objects.filter(
+        status='APPROVED').filter(
+        country='SI').count()
 
-	assert country_score_after > 0 
-	
-	test_approved_event.delete()
-	test_pending_event.delete()
-	test_other_country_event.delete()
+    assert counted_events_after == counted_events_before + 1
+    assert counted_events_after == counted_events_query
+
+    assert country_score_after > 0
+
+    test_approved_event.delete()
+    test_pending_event.delete()
+    test_other_country_event.delete()

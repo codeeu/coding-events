@@ -9,15 +9,17 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding field 'Event.creator'
-        db.add_column(u'api_event', 'creator',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['auth.User']),
-                      keep_default=False)
-
+        db.add_column(
+            u'api_event',
+            'creator',
+            self.gf('django.db.models.fields.related.ForeignKey')(
+                default=1,
+                to=orm['auth.User']),
+            keep_default=False)
 
     def backwards(self, orm):
         # Deleting field 'Event.creator'
         db.delete_column(u'api_event', 'creator_id')
-
 
     models = {
         'api.event': {

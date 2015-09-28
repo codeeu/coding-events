@@ -10,27 +10,43 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
 
         # Changing field 'Event.status'
-        db.alter_column(u'api_event', 'status', self.gf('django.db.models.fields.CharField')(max_length=50))
+        db.alter_column(u'api_event', 'status', self.gf(
+            'django.db.models.fields.CharField')(max_length=50))
         # Adding field 'UserProfile.bio'
-        db.add_column(u'api_userprofile', 'bio',
-                      self.gf('django.db.models.fields.TextField')(default='', max_length=1000, blank=True),
-                      keep_default=False)
+        db.add_column(
+            u'api_userprofile',
+            'bio',
+            self.gf('django.db.models.fields.TextField')(
+                default='',
+                max_length=1000,
+                blank=True),
+            keep_default=False)
 
         # Adding field 'UserProfile.website'
-        db.add_column(u'api_userprofile', 'website',
-                      self.gf('django.db.models.fields.URLField')(default='', max_length=200, blank=True),
-                      keep_default=False)
+        db.add_column(
+            u'api_userprofile',
+            'website',
+            self.gf('django.db.models.fields.URLField')(
+                default='',
+                max_length=200,
+                blank=True),
+            keep_default=False)
 
         # Adding field 'UserProfile.twitter'
-        db.add_column(u'api_userprofile', 'twitter',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=140, blank=True),
-                      keep_default=False)
-
+        db.add_column(
+            u'api_userprofile',
+            'twitter',
+            self.gf('django.db.models.fields.CharField')(
+                default='',
+                max_length=140,
+                blank=True),
+            keep_default=False)
 
     def backwards(self, orm):
 
         # Changing field 'Event.status'
-        db.alter_column(u'api_event', 'status', self.gf('django.db.models.fields.IntegerField')())
+        db.alter_column(u'api_event', 'status', self.gf(
+            'django.db.models.fields.IntegerField')())
         # Deleting field 'UserProfile.bio'
         db.delete_column(u'api_userprofile', 'bio')
 
@@ -39,7 +55,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'UserProfile.twitter'
         db.delete_column(u'api_userprofile', 'twitter')
-
 
     models = {
         'api.event': {
