@@ -107,3 +107,10 @@ ul.nav.navbar-nav li a{
     width: auto;
     margin: 0 auto;
 }
+
+.profile-menu li {
+    width: 100%;
+}
+.profile-menu {
+    height: auto !important;
+}
