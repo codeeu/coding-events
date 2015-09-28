@@ -1,6 +1,7 @@
 ################################################
 # Processors for events views
 ################################################
+import datetime
 from django.conf import settings
 from django.contrib.gis.geoip import GeoIP
 from api.models import Event
@@ -34,7 +35,6 @@ def get_country_from_user_ip(ip):
 	g = GeoIP()
 	return g.country(ip)
 
-
 def list_countries():
 	all_countries = []
 	for code, name in list(countries):
@@ -43,6 +43,16 @@ def list_countries():
 	all_countries.sort()
 	return all_countries
 
+def list_active_countries():
+    """ List countries with at least an Event associated """
+    active_countries = []
+    events = Event.objects.filter(start_date__gte=datetime.date(2014,1,1))
+
+    for event in events:
+        event_tuple = (event.country.name.decode(), event.country.code)
+        if not (event_tuple in active_countries):
+            active_countries.append(event_tuple)
+    return active_countries
 
 def get_initial_data(event):
 	"""
