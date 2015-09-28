@@ -50,14 +50,14 @@ MANAGERS = ADMINS
 
 ########## DATABASE CONFIGURATION
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': normpath(join(DJANGO_ROOT, 'db', 'default.db')),
-		'USER': '',
-		'PASSWORD': '',
-		'HOST': '',
-		'PORT': '',
-	}
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': normpath(join(DJANGO_ROOT, 'db', 'default.db')),
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
+    }
 }
 ########## END DATABASE CONFIGURATION
 
@@ -82,7 +82,7 @@ USE_TZ = False
 _ = lambda s: s
 LANGUAGES = (
     ('sl', _('Slovenian')),
-	('en', _('English')),
+    ('en', _('English')),
 )
 
 
@@ -160,15 +160,15 @@ TEMPLATE_DIRS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-	'django.contrib.auth.context_processors.auth',
-	'django.contrib.messages.context_processors.messages',
-	'django.core.context_processors.request',
-	'django.core.context_processors.media',
-	'django.core.context_processors.request',
-	'django.core.context_processors.static',
-	'social.apps.django_app.context_processors.backends',
-	'social.apps.django_app.context_processors.login_redirect',
-	'django_settings_export.settings_export',
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
+    'django_settings_export.settings_export',
 )
 ########## END TEMPLATE CONFIGURATION
 
@@ -181,7 +181,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-	'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 
 )
 ########## END MIDDLEWARE CONFIGURATION
@@ -214,13 +214,13 @@ INSTALLED_APPS = (
     # django-social login
     'social.apps.django_app.default',
     # django-countries country listing
-	'django_countries',
-	# additional info about countries
-	'countries_plus',
+    'django_countries',
+    # additional info about countries
+    'countries_plus',
     # avatar handling
     'avatar',
     # support for tags
-	'taggit',
+    'taggit',
     # a model field that can hold geoposition
     'geoposition',
     # a compressor for static files
@@ -230,14 +230,14 @@ INSTALLED_APPS = (
 
     # defined apps
     'web',
-	'api',
-	'mailer',
+    'api',
+    'mailer',
 
-	#delete old Files and Images
-	'django_cleanup',
+    #delete old Files and Images
+    'django_cleanup',
 
-	# patches
-	'patches',
+    # patches
+    'patches',
 )
 ########## END APP CONFIGURATION
 
@@ -252,12 +252,12 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 
 ########## ATHENTICATION CONFIGURATION
 AUTHENTICATION_BACKENDS = (
-	'social.backends.github.GithubOAuth2',
-	'social.backends.twitter.TwitterOAuth',
-	'social.backends.facebook.FacebookOAuth2',
-	'social.backends.facebook.FacebookAppOAuth2',
-	'social.backends.google.GoogleOAuth2',
-	'django.contrib.auth.backends.ModelBackend',
+    'social.backends.github.GithubOAuth2',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.facebook.FacebookAppOAuth2',
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 AUTH_PROFILE_MODULE = 'api.UserProfile'
@@ -287,27 +287,27 @@ SOCIAL_AUTH_TWITTER_SECRET = ''
 
 ########## LOGGING CONFIGURATION
 LOGGING = {
-	'version': 1,
-	'disable_existing_loggers': False,
-	'filters': {
-		'require_debug_false': {
-			'()': 'django.utils.log.RequireDebugFalse'
-		}
-	},
-	'handlers': {
-		'mail_admins': {
-			'level': 'ERROR',
-			'filters': ['require_debug_false'],
-			'class': 'django.utils.log.AdminEmailHandler'
-		}
-	},
-	'loggers': {
-		'django.request': {
-			'handlers': ['mail_admins'],
-			'level': 'ERROR',
-			'propagate': True,
-		},
-	}
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
 }
 
 ########## END LOGGING CONFIGURATION
@@ -343,14 +343,14 @@ SETTINGS_EXPORT = [
 ]
 
 try:
-	from settings_local import *
+    from settings_local import *
 except ImportError, e:
-	pass
+    pass
 
 # if we're running on the server, use server specific settings
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 if ENVIRONMENT == 'production':
-	try:
-		from settings_production import *
-	except ImportError, e:
-		pass
+    try:
+        from settings_production import *
+    except ImportError, e:
+        pass
