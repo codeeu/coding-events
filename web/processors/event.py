@@ -49,8 +49,9 @@ def list_active_countries():
     """ List countries with at least an Event associated """
     active_countries = []
     events = Event.objects.filter(start_date__gte=datetime.date(2014, 1, 1))
+    approved_events = events.filter(status='APPROVED')
 
-    for event in events:
+    for event in approved_events:
         event_tuple = (event.country.name.decode(), event.country.code)
         if not (event_tuple in active_countries):
             active_countries.append(event_tuple)
