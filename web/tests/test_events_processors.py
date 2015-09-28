@@ -449,15 +449,15 @@ def test_list_countries():
 	# a function we use a lot to get all countries, so let's check it's returning expected results
 	all_countries = list_countries()
 
-	# Austria should be the first country after two custom entries (All countries)
-	assert "Austria" == all_countries[2][0]
+	# Afghanistan should be the first country after two custom entries (All countries)
+	assert "Afghanistan" == all_countries[2][0]
 
 	# checking two random countries - our own and Kosovo, which is a special case
 	assert ('Slovenia', 'SI') in all_countries
 	assert ('Kosovo', 'XK') in all_countries
 
-	# United Kingdom should be last
-	assert "United Kingdom" == all_countries[-1][0]
+	# Aland Islands should be last
+	assert "land Islands" in all_countries[-1][0]
 
 	# if listing works, results are tuples ('country_name', 'country_code')
 	# country_code should be a string with 2 characters
