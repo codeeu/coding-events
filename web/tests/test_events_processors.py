@@ -471,9 +471,8 @@ def test_scoreboard_counter(admin_user, db):
 	initial_counter = count_approved_events_for_country()
 
 	# extra check to make sure the number of results matches 
-	# the number of listed countries minus two custom entries
-	all_countries = list_countries()
-	assert len(initial_counter) == len(all_countries[2:])
+	# the number of active countries
+	assert len(initial_counter) == 0
 
 	counted_events_before = 0
 
