@@ -1,4 +1,5 @@
-import sys, os
+import sys
+import os
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.management import call_command
@@ -35,6 +36,7 @@ class Command(NoArgsCommand):
         call_command('syncdb', interactive=False)
 
         # Create admin superuser
-        User.objects.create_superuser(ADMIN_USERNAME, 'admin@email.com', ADMIN_PASSWORD)
+        User.objects.create_superuser(
+            ADMIN_USERNAME, 'admin@email.com', ADMIN_PASSWORD)
 
         call_command('migrate')

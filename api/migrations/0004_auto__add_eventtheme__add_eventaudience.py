@@ -9,17 +9,17 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'EventTheme'
-        db.create_table(u'api_eventtheme', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-        ))
+        db.create_table(
+            u'api_eventtheme', ((u'id', self.gf('django.db.models.fields.AutoField')(
+                primary_key=True)), ('name', self.gf('django.db.models.fields.CharField')(
+                    max_length=255)), ))
         db.send_create_signal('api', ['EventTheme'])
 
         # Adding model 'EventAudience'
-        db.create_table(u'api_eventaudience', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-        ))
+        db.create_table(
+            u'api_eventaudience', ((u'id', self.gf('django.db.models.fields.AutoField')(
+                primary_key=True)), ('name', self.gf('django.db.models.fields.CharField')(
+                    max_length=255)), ))
         db.send_create_signal('api', ['EventAudience'])
 
         # Adding M2M table for field audience on 'Event'
@@ -40,7 +40,6 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['event_id', 'eventtheme_id'])
 
-
     def backwards(self, orm):
         # Deleting model 'EventTheme'
         db.delete_table(u'api_eventtheme')
@@ -53,7 +52,6 @@ class Migration(SchemaMigration):
 
         # Removing M2M table for field theme on 'Event'
         db.delete_table(db.shorten_name(u'api_event_theme'))
-
 
     models = {
         'api.event': {
