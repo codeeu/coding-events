@@ -114,3 +114,7 @@ ul.nav.navbar-nav li a{
 .profile-menu {
     height: auto !important;
 }
+
+#page-menu nav li, #page-menu nav li a{
+    height: 100%;
+}
