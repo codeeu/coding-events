@@ -107,3 +107,7 @@ ul.nav.navbar-nav li a{
     width: auto;
     margin: 0 auto;
 }
+
+#page-menu nav li, #page-menu nav li a{
+    height: 100%;
+}
