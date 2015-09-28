@@ -27,7 +27,7 @@ from web.processors.user import update_user_email
 from web.processors.user import get_ambassadors
 from web.processors.event import get_client_ip
 from web.processors.event import get_lat_lon_from_user_ip
-from web.processors.event import list_countries
+from web.processors.event import list_countries, list_active_countries
 from web.processors.event import get_country
 from web.processors.event import get_country_from_user_ip
 from web.processors.event import count_approved_events_for_country
@@ -64,14 +64,14 @@ def index(request):
 		lan_lon = (58.08695, 5.58121)
 	
 	ambassadors = get_ambassadors(country['country_code'])
-	all_countries = list_countries()
+	all_countries = list_active_countries()
 	
 	return render_to_response(
 		template, {
 			'lan_lon': lan_lon,
 			'country': country,
 			# all_countries minus two CUSTOM_COUNTRY_ENTRIES
-			'all_countries': all_countries[2:],
+			'all_countries': all_countries,
 			'past': past,
 			'ambassadors': ambassadors,
 		},
