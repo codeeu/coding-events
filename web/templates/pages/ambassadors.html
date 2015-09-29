@@ -19,23 +19,6 @@
                 {% if user_country %}Your current country: <a href="http://events.codeweek.eu/ambassadors">{{ user_country.country_name }}</a>{% endif %}
             </div>
     <div class="tabs clearfix" id="tab-1" data-active="{{ country_pos }}">
-        <div id="showcountries">
-            <ul class="clearfix list-style-none">
-				{% for each_country in all_countries %}
-                    <li><a href="#tabs-{{ each_country.1 }}">
-						<div class="country-link" data-name="{{ each_country.0 }}">
-                            
-							<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
-
-							<div class="country-name">
-								{{ each_country.0 }}
-							</div>
-                        </div>
-                    </a></li>
-					{% endfor %}
-
-            </ul>
-            </div>
             <div class="tab-container">
 		      {% for code,country,ambassadors, mains in countries %}
                 <div class="tab-content clearfix" id="tabs-{{ code }}">
@@ -132,11 +115,28 @@
                     
                     {% endfor %}
                     {% else %}
-                    <p>No ambassador yet. Why don't you <a href="mailto:europecodes@gmail.com">volunteer</a>?</p>
+                    <p style="text-align: center">No ambassador yet. Why don't you <a href="mailto:europecodes@gmail.com">volunteer</a>?</p>
                     {% endif %}
                 </div>
 
 		      {% endfor %}
+            </div>
+        <div id="showcountries">
+            <ul class="clearfix list-style-none">
+				{% for each_country in all_countries %}
+                    <li><a href="#tabs-{{ each_country.1 }}">
+						<div class="country-link" data-name="{{ each_country.0 }}">
+                            
+							<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
+
+							<div class="country-name">
+								{{ each_country.0 }}
+							</div>
+                        </div>
+                    </a></li>
+					{% endfor %}
+
+            </ul>
             </div>
 	</div>
 
