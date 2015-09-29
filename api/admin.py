@@ -5,7 +5,7 @@ from api import models
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'country', )
-
+    search_fields = ['user__email', 'user__username', 'user__first_name', 'user__last_name']
 
 class EventAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
