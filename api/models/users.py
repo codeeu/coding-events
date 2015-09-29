@@ -14,6 +14,8 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=1000, blank=True)
     website = models.URLField(blank=True)
     twitter = models.CharField(max_length=140, blank=True)
+    role = models.CharField(max_length=255, blank=True, default='')
+    is_main_contact = models.BooleanField(default=False)
 
     def __unicode__(self):
         return 'Username: %s, First Name:%s Last Name: %s, Country: %s, Bio: %s, Website: %s, Twitter: %s' % (
