@@ -25,37 +25,84 @@
 
 							<h2 class="clearfix center">{{country}}</h2>
 
-							{% if ambassadors|length != 0 %}
-								<div class="fancy-title title-border">
-									<h3>Main Contact</h3>
-								</div>
+							{% if ambassadors|length != 0 or mains|length != 0 %}
+								{% if mains|length != 0 %}
+									<div class="fancy-title title-border">
+										<h3>Main Contact</h3>
+									</div>
 
-								<div class="container">
-									{% for main in mains %}
-										<div class="col-md-6 bottommargin">
-											<div class="team team-list clearfix">
+									<div class="container">
+										{% for main in mains %}
+											<div class="col-md-6 bottommargin">
+												<div class="team team-list clearfix">
+													<div class="team-image">
+														{% avatar main.user.username %}
+													</div>
+													<div class="team-desc">
+														<div class="team-title">
+															<h4>{{main.user.first_name}} {{main.user.last_name}}</h4>
+															<span>Main Contact{% if main.role != '' %} ({{main.role}}){% endif %}</span>
+														</div>
+														<div class="team-content">
+															<p>{{main.bio}}</p>
+														</div>
+														{% if main.user.email %}
+															<a href="mailto:{{ambassador.user.email}}" class="social-icon inline-block si-small si-light si-rounded si-mail">
+																<i class="icon-line-mail"></i>
+																<i class="icon-line-mail"></i>
+															</a>
+														{% endif %}
+														{% if main.twitter %}
+															<a href="http://twitter.com/{{ambassador.twitter}}" class="social-icon inline-block si-small si-light si-rounded si-twitter">
+																<i class="icon-twitter"></i>
+																<i class="icon-twitter"></i>
+															</a>
+														{% endif %}
+														{% if main.website %}
+															<a href="{{ambassador.website}}" class="social-icon inline-block si-small si-light si-rounded si-gplus">
+																<i class="icon-world"></i>
+																<i class="icon-world"></i>
+															</a>
+														{% endif %}
+													</div>
+												</div>
+											</div>
+										{% endfor %}
+									</div>
+								{% endif %}
+
+								{% if mains|length != 0 %}
+									<div class="fancy-title title-border">
+										<h3>Ambassadors</h3>
+									</div>
+
+									{% for ambassador in ambassadors %}
+										<div class="col-md-3 col-sm-6 bottommargin">
+											<div class="team">
 												<div class="team-image">
-													{% avatar main.user.username %}
+													{% avatar ambassador.user.username %}
 												</div>
 												<div class="team-desc">
-													<div class="team-title"><h4>{{main.user.first_name}} {{main.user.last_name}}</h4><span>Main Contact</span>
+													<div class="team-title">
+														<h4>{{ambassador.user.first_name}} {{ambassador.user.last_name}}</h4>
+														<span>{{ambassador.role}}</span>
 													</div>
 													<div class="team-content">
-														<p>{{main.bio}}</p>
+														<p>{{ambassador.bio}}</p>
 													</div>
-													{% if main.user.email %}
+													{% if ambassador.user.email %}
 														<a href="mailto:{{ambassador.user.email}}" class="social-icon inline-block si-small si-light si-rounded si-mail">
 															<i class="icon-line-mail"></i>
 															<i class="icon-line-mail"></i>
 														</a>
 													{% endif %}
-													{% if main.twitter %}
+													{% if ambassador.twitter %}
 														<a href="http://twitter.com/{{ambassador.twitter}}" class="social-icon inline-block si-small si-light si-rounded si-twitter">
 															<i class="icon-twitter"></i>
 															<i class="icon-twitter"></i>
 														</a>
 													{% endif %}
-													{% if main.website %}
+													{% if ambassador.website %}
 														<a href="{{ambassador.website}}" class="social-icon inline-block si-small si-light si-rounded si-gplus">
 															<i class="icon-world"></i>
 															<i class="icon-world"></i>
@@ -65,45 +112,7 @@
 											</div>
 										</div>
 									{% endfor %}
-								</div>
-
-								<div class="fancy-title title-border">
-									<h3>Ambassadors</h3>
-								</div>
-
-								{% for ambassador in ambassadors %}
-									<div class="col-md-3 col-sm-6 bottommargin">
-										<div class="team">
-											<div class="team-image">
-												{% avatar ambassador.user.username %}
-											</div>
-											<div class="team-desc">
-												<div class="team-title"><h4>{{ambassador.user.first_name}} {{ambassador.user.last_name}}</h4><span>Role</span></div>
-												<div class="team-content">
-													<p>{{ambassador.bio}}</p>
-												</div>
-												{% if ambassador.user.email %}
-													<a href="mailto:{{ambassador.user.email}}" class="social-icon inline-block si-small si-light si-rounded si-mail">
-														<i class="icon-line-mail"></i>
-														<i class="icon-line-mail"></i>
-													</a>
-												{% endif %}
-												{% if ambassador.twitter %}
-													<a href="http://twitter.com/{{ambassador.twitter}}" class="social-icon inline-block si-small si-light si-rounded si-twitter">
-														<i class="icon-twitter"></i>
-														<i class="icon-twitter"></i>
-													</a>
-												{% endif %}
-												{% if ambassador.website %}
-													<a href="{{ambassador.website}}" class="social-icon inline-block si-small si-light si-rounded si-gplus">
-														<i class="icon-world"></i>
-														<i class="icon-world"></i>
-													</a>
-												{% endif %}
-											</div>
-										</div>
-									</div>
-								{% endfor %}
+								{% endif %}
 							{% else %}
 								<p style="text-align: center">No ambassador yet. Why don't you <a href="mailto:europecodes@gmail.com">volunteer</a>?</p>
 							{% endif %}

@@ -35,9 +35,9 @@ def get_ambassadors_for_countries():
         # load main ambassadors
         main_ambassadors =  [ambassador for ambassador in country_ambassadors if ambassador.is_main_contact]
         # exclude main ambassadors
-        found_ambassadors = [ambassador for ambassador in country_ambassadors if not ambassador.is_main_contact]
+        supporting_ambassadors = [ambassador for ambassador in country_ambassadors if not ambassador.is_main_contact]
         countries_ambassadors.append(
-            (code, readable_name, found_ambassadors, main_ambassadors))
+            (code, readable_name, supporting_ambassadors, main_ambassadors))
 
     countries_ambassadors.sort()
     return countries_ambassadors
