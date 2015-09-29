@@ -144,3 +144,15 @@
 </div>
 
 {% endblock content %}
+
+{% block custom_js %}
+<script type="text/javascript">
+	// FIXME: find a better way to scroll to the ambassadors when clicking on a flag
+	jQuery(function($) {
+		$('.tabs #showcountries li[role=tab] > a').click(function() {
+			var tabId = $(this).attr('href').substr(1);
+			location.href = '#' + tabId;
+		});
+	});
+</script>
+{% endblock %}
