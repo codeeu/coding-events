@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from py.path import local
 
 from geoposition import Geoposition
-from web.processors.event import list_countries
+from web.processors.event import list_countries, list_active_countries
 
 from api.models.events import Event
 from api.models import UserProfile
@@ -534,6 +534,68 @@ def test_list_countries():
     for country in all_countries[2:]:
         assert len(country[1]) == 2
 
+@pytest.mark.django_db
+def test_list_active_countries(admin_user, db):
+    """
+    Verifies that only the countries with event which date is gte
+    2014 are returned from the list_active_countries() function
+    """
+
+    # this should be returned because is APPROVED and after 2014
+    event_data = {
+        'location': u'Ljubljana, Slovenia',
+        'country': 'SI',
+        'organizer': u'testko',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'title': u'Test Approved Event',
+        'status': "APPROVED",
+    }
+
+    test_approved_event = create_or_update_event(event_id=None, **event_data)
+
+    # this shouldn't be returned because is PENDING
+    event_data = {
+        'location': u'Ljubljana, Slovenia',
+        'country': 'SI',
+        'organizer': u'testko',
+        "creator": admin_user,
+        'start_date': datetime.datetime.now(),
+        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+        'title': u'Test Pending Event',
+        'status': "PENDING",
+    }
+
+    test_pending_event = create_or_update_event(event_id=None, **event_data)
+
+    # this shouldn't be returned because is before 2014
+    event_data = {
+        'location': u'Rome, Italy',
+        'country': 'IT',
+        'organizer': u'testko',
+        "creator": admin_user,
+        'start_date': datetime.datetime(2013, 1, 1, 12, 00),
+        'end_date': datetime.datetime(2013, 1, 1, 12, 00) + datetime.timedelta(days=3, hours=3),
+        'title': u'Test Approved Event in other country',
+        'status': "APPROVED",
+    }
+
+    test_other_country_event = create_or_update_event(
+        event_id=None, **event_data)
+
+    active_countries = list_active_countries()
+
+    # there should be only a one active event
+    assert len(active_countries) == 1
+
+    # and should be this
+    assert ('Slovenia', 'SI') in active_countries
+
+    # if listing works, results are tuples ('country_name', 'country_code')
+    # country_code should be a string with 2 characters
+    for country in active_countries:
+        assert len(country[1]) == 2
 
 @pytest.mark.django_db
 def test_scoreboard_counter(admin_user, db):
