@@ -534,6 +534,7 @@ def test_list_countries():
     for country in all_countries[2:]:
         assert len(country[1]) == 2
 
+
 @pytest.mark.django_db
 def test_list_active_countries(admin_user, db):
     """
@@ -541,56 +542,69 @@ def test_list_active_countries(admin_user, db):
     2014 are returned from the list_active_countries() function
     """
 
-    # this should be returned because is APPROVED and after 2014
-    event_data = {
-        'location': u'Ljubljana, Slovenia',
-        'country': 'SI',
-        'organizer': u'testko',
-        "creator": admin_user,
-        'start_date': datetime.datetime.now(),
-        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-        'title': u'Test Approved Event',
-        'status': "APPROVED",
-    }
+    events = [
+        {
+            # this country should be returned
+            # because event is APPROVED and after 2014
+            'location': u'Ljubljana, Slovenia',
+            'country': 'SI',
+            'organizer': u'testko',
+            "creator": admin_user,
+            'start_date': datetime.datetime.now(),
+            'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+            'title': u'Test Approved Event',
+            'status': "APPROVED",
+        },
+        {
+            # this country should be returned
+            # for the same reasons
+            'location': u'Paris, France',
+            'country': 'FR',
+            'organizer': u'testko',
+            "creator": admin_user,
+            'start_date': datetime.datetime.now(),
+            'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+            'title': u'Test Pending Event',
+            'status': "APPROVED",
+        },
+        {
+            # the same country should be returned only once
+            'location': u'Ljubljana, Slovenia',
+            'country': 'SI',
+            'organizer': u'testko',
+            "creator": admin_user,
+            'start_date': datetime.datetime.now(),
+            'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
+            'title': u'Test Pending Event',
+            'status': "APPROVED",
+        },
+        {
+            # this country shouldn't be returned
+            # because event start_date is < 2014
+            'location': u'Rome, Italy',
+            'country': 'IT',
+            'organizer': u'testko',
+            "creator": admin_user,
+            'start_date': datetime.datetime(2013, 1, 1, 12, 00),
+            'end_date': datetime.datetime(2013, 1, 1, 12, 00) + datetime.timedelta(days=3, hours=3),
+            'title': u'Test Approved Event in other country',
+            'status': "APPROVED",
+        }
+    ]
 
-    test_approved_event = create_or_update_event(event_id=None, **event_data)
+    # insert the listed events
+    for event_data in events:
+        create_or_update_event(event_id=None, **event_data)
 
-    # this shouldn't be returned because is PENDING
-    event_data = {
-        'location': u'Ljubljana, Slovenia',
-        'country': 'SI',
-        'organizer': u'testko',
-        "creator": admin_user,
-        'start_date': datetime.datetime.now(),
-        'end_date': datetime.datetime.now() + datetime.timedelta(days=3, hours=3),
-        'title': u'Test Pending Event',
-        'status': "PENDING",
-    }
-
-    test_pending_event = create_or_update_event(event_id=None, **event_data)
-
-    # this shouldn't be returned because is before 2014
-    event_data = {
-        'location': u'Rome, Italy',
-        'country': 'IT',
-        'organizer': u'testko',
-        "creator": admin_user,
-        'start_date': datetime.datetime(2013, 1, 1, 12, 00),
-        'end_date': datetime.datetime(2013, 1, 1, 12, 00) + datetime.timedelta(days=3, hours=3),
-        'title': u'Test Approved Event in other country',
-        'status': "APPROVED",
-    }
-
-    test_other_country_event = create_or_update_event(
-        event_id=None, **event_data)
-
+    # retrieve the active countries from db
     active_countries = list_active_countries()
 
-    # there should be only a one active event
-    assert len(active_countries) == 1
+    # there should be only two active countries
+    assert len(active_countries) == 2
 
-    # and should be this
+    # and should be those two
     assert ('Slovenia', 'SI') in active_countries
+    assert ('France', 'FR') in active_countries
 
     # if listing works, results are tuples ('country_name', 'country_code')
     # country_code should be a string with 2 characters

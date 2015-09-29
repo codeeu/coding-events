@@ -31,16 +31,16 @@ def get_ambassadors_for_countries():
     # list countries minus two CUSTOM_COUNTRY_ENTRIES
     for code, name in list(countries)[2:]:
         readable_name = unicode(name)
-        # TODO: load main ambassadors
-        main_ambassadors =  []
-        # TODO: exclude main ambassadors
-        found_ambassadors = [ambassador for ambassador in ambassadors if ambassador.country == code]
+        country_ambassadors = [ambassador for ambassador in ambassadors if ambassador.country == code]
+        # load main ambassadors
+        main_ambassadors =  [ambassador for ambassador in country_ambassadors if ambassador.is_main_contact]
+        # exclude main ambassadors
+        found_ambassadors = [ambassador for ambassador in country_ambassadors if not ambassador.is_main_contact]
         countries_ambassadors.append(
             (code, readable_name, found_ambassadors, main_ambassadors))
 
     countries_ambassadors.sort()
     return countries_ambassadors
-
 
 def get_ambassadors_for_country(country):
     ambassadors = User.objects.filter(
