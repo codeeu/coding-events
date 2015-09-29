@@ -29,6 +29,15 @@ You'll also need `saas`, which is a ruby package that you need to have installed
 
 	gem install sass
 
+It may also be necessary to add the sass binary to your `PATH`:
+
+    export PATH=$PATH:$HOME/.gem/ruby/2.2.0/bin
+
+To collect the static files required for the rendering of the web pages:
+
+    ./manage.py collectstatic
+    ./manage.py compress --force
+
 Create new user and environment:
 
 	./manage.py setupdb
