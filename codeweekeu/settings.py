@@ -283,6 +283,11 @@ SOCIAL_AUTH_TWITTER_SECRET = ''
 
 # DJANGO-COUNTRIES CONFIGURATION
 # This was used in the past to exclude countries not in Europe
+COUNTRIES_OVERRIDE = {
+    # Don't include Antarctica
+    'AQ': None,
+    'TW': _('Taiwan'),
+}
 
 # END ATHENTICATION CONFIGURATION
 
