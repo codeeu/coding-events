@@ -153,7 +153,10 @@ def add_event(request):
             except UploadImageError as e:
                 messages.error(request, e.message)
     else:
-        event_form = AddEventForm(initial={'user_email': request.user.email})
+        event_form = AddEventForm(initial={
+            'user_email': request.user.email,
+            'contact_person': request.user.email,
+        })
 
     return render_to_response("pages/add_event.html", {
         'form': event_form,
