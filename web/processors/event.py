@@ -150,7 +150,7 @@ def count_approved_events_for_country(past=True):
         number_of_events = all_events.filter(
             country=country_code).filter(
             start_date__gte=datetime.date(
-                2014, 1, 1)).count()
+                datetime.datetime.now().year, 1, 1)).count()
         population = Country.objects.get(iso=country_code).population
         country_score = 0
         if number_of_events > 0 and population > 0 and population != "":
