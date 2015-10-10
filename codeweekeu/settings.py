@@ -215,6 +215,7 @@ INSTALLED_APPS = (
     'south',
 
     'rest_framework',
+    'rest_framework_extensions',
     # Celery task queue.
     #'djcelery',
 
