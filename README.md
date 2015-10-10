@@ -44,6 +44,19 @@ Create new user and environment:
 
 Make your changes, push to your fork and create a new Pull Request.
 
+## On caching in development
+
+You may need to turn off page caching in development by adding this in the
+`codeweekeu/settings_local.py` file:
+
+```python
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+```
+
 (Thanks!).
 
 ## Production Install
