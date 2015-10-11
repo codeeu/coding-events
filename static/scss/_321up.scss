@@ -23,15 +23,3 @@
 .btn-lg {
 	padding: 15px 30px;
 }
-
-#showcountries {
-	position: absolute;
-	width: 100px;
-	top: 0;
-	left: 0;
-	height: 450px;
-	overflow-y: scroll;
-	z-index: 0;
-	background-color: $secondary-color;
-	color: $white;
-}
