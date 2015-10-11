@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django_countries import countries
+from django.views.decorators.cache import never_cache
 
 from api.processors import get_event_by_id
 from api.processors import get_filtered_events
@@ -237,6 +238,10 @@ def view_event_by_country(request, country_code):
         }, context_instance=RequestContext(request))
 
 
+@never_cache
+def view_changed_event(request, event_id, slug):
+    return view_event(request, event_id, slug)
+
 def view_event(request, event_id, slug):
     try:
         event = get_event_by_id(event_id)
@@ -401,7 +406,7 @@ def change_status(request, event_id):
 
     return HttpResponseRedirect(
         reverse(
-            'web.view_event',
+            'web.view_changed_event',
             args=[
                 event_id,
                 event.slug]))
@@ -414,7 +419,7 @@ def reject_status(request, event_id):
 
     return HttpResponseRedirect(
         reverse(
-            'web.view_event',
+            'web.view_changed_event',
             args=[
                 event_id,
                 event.slug]))
