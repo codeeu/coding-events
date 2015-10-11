@@ -39,19 +39,23 @@
 						<div class="alert alert-warning">
 							This event is stil <strong>Pending</strong>.
 							If it looks good then
-							<a class="btn btn-sm btn-primary" href="{% url 'web.change_status' event.pk %}">
-								approve 
-							</a> 
+							<form method="post" role="form" class="inline" action="{% url 'web.change_status' event.pk %}">
+								{% csrf_token %}
+								<input type="submit" value="approve" class="btn btn-sm btn-primary" />
+							</form>
+
 							it
-							{% if event.creator.email %} or contact the event creator 
+							{% if event.creator.email %} or contact the event creator
 							<a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
 								by email
 							</a>{% endif %}.
 
-							Otherwise 
-							<a class="btn btn-sm" href="{% url 'web.reject_status' event.pk %}">
-								reject
-							</a> it.
+							Otherwise
+							<form method="post" role="form" class="inline" action="{% url 'web.reject_status' event.pk %}">
+								{% csrf_token %}
+								<input type="submit" value="reject" class="btn btn-sm" />
+							</form>
+							it.
 
 							{% if next_event%}
 							<div class="pull-right">
@@ -62,9 +66,10 @@
 					{% elif event.status == 'APPROVED' %}
 						<div class="alert alert-info">
 							This event is nice and approved. You can revert it to
-							<a href="{% url 'web.change_status' event.pk %}">
-								<strong>pending</strong> 
-							</a>
+							<form method="post" role="form" class="inline" action="{% url 'web.change_status' event.pk %}">
+								{% csrf_token %}
+								<input type="submit" value="pending" class="btn btn-sm" />
+							</form>
 
 							{% if event.creator.email %}, contact the event creator 
 							<a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
@@ -84,9 +89,12 @@
 					{% elif event.status == 'REJECTED' %}
 						<div class="alert alert-danger">
 							This event is rejected. You can revert it to
-							<a href="{% url 'web.reject_status' event.pk %}">
-								<strong>pending</strong> 
-							</a> or check other
+							<form method="post" role="form" class="inline" action="{% url 'web.reject_status' event.pk %}">
+								{% csrf_token %}
+								<input type="submit" value="pending" class="btn btn-sm" />
+							</form>
+
+							or check other
 							<a href="{% url 'web.pending_events' user.profile.country %}">
 								<strong>pending events</strong>
 							</a>.

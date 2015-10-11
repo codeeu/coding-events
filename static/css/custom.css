@@ -118,3 +118,10 @@ ul.nav.navbar-nav li a{
 #page-menu nav li, #page-menu nav li a{
     height: 100%;
 }
+
+form.inline {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: inline;
+}
