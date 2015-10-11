@@ -15,11 +15,14 @@
 	margin: 3px;
 }
 
-.landing-wrapper {
-	margin: 0 20px;
-	margin-left: 80px;
+.btn {
+	white-space: normal;
 }
 
-.btn-lg {
-	padding: 15px 30px;
+@media screen and (max-width: 550px) {
+	.btn-lg,
+	.btn-group-lg > .btn {
+		padding: 8px 15px;
+		font-size: 14px;
+	}
 }
