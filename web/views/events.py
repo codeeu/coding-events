@@ -109,6 +109,7 @@ def map(request):
 
 
 @login_required
+@never_cache
 def add_event(request):
     if request.method == 'POST':
         event_form = AddEventForm(data=request.POST, files=request.FILES)
@@ -166,6 +167,7 @@ def add_event(request):
 
 @login_required
 @can_edit_event
+@never_cache
 def edit_event(request, event_id):
     event = get_event_by_id(event_id)
     user = request.user
@@ -270,6 +272,7 @@ def view_event_by_id(request, event_id):
 
 @login_required
 @is_ambassador
+@never_cache
 def list_pending_events(request, country_code):
     """
     Display a list of pending events.
@@ -297,6 +300,7 @@ def list_pending_events(request, country_code):
 
 @login_required
 @is_ambassador
+@never_cache
 def list_approved_events(request, country_code):
     """
     Display a list of approved events.
@@ -315,6 +319,7 @@ def list_approved_events(request, country_code):
 
 
 @login_required
+@never_cache
 def created_events(request):
     """
     Display a list of pending events.
@@ -401,6 +406,7 @@ def scoreboard(request):
 
 @login_required
 @can_moderate_event
+@never_cache
 def change_status(request, event_id):
     event = change_event_status(event_id)
 
@@ -414,6 +420,7 @@ def change_status(request, event_id):
 
 @login_required
 @can_moderate_event
+@never_cache
 def reject_status(request, event_id):
     event = reject_event_status(event_id)
 
