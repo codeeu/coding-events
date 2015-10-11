@@ -152,6 +152,9 @@
 		$('.tabs #showcountries li[role=tab] > a').click(function() {
 			var tabId = $(this).attr('href').substr(1);
 			location.href = '#' + tabId;
+
+			var headerOffset = $('body').is('.device-sm') ? 0 : $('.content-wrap .container').offset().top;
+			window.scrollTo(0, $('#' + tabId).offset().top - headerOffset);
 		});
 	});
 </script>
