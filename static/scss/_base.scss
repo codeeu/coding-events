@@ -374,19 +374,20 @@ VIEW EVENT STYLES
 				width: 14.285%;
 				height: 43px;
 
+				span {
+					margin: 0 1px 0 0;
+				}
+
 				&.filled {
 					span {
 						background-color: $golden;
 						padding: 10px;
-						border-radius: 50%;
-						width: 80%;
 						display: block;
 					}
 					&.today {
 						span {
 							padding: 7px;
 							border: 3px solid $golden;
-							width: 80%;
 							display: block;
 						}
 
@@ -397,9 +398,8 @@ VIEW EVENT STYLES
 				&.today {
 					span {
 						background-color: $brand-primary;
+						color: $white;
 						padding: 10px;
-						border-radius: 50%;
-						width: 80%;
 						display: block;
 					}
 
@@ -479,7 +479,7 @@ ABOUT SITE STYLES
 			padding: 0;
 		}
 	}
-	
+
 }
 #codeweek-about-logo {
 	margin-bottom: 30px;
@@ -517,7 +517,7 @@ LIST EVENTS STYLES
 	    font-size: 16px;
 	    line-height: 21px;
 	    font-family: inherit;
-	    margin: 20px 0; 
+	    margin: 20px 0;
     }
 	.img-link {
 	    display: block;
@@ -534,12 +534,12 @@ LIST EVENTS STYLES
      .caption {
 	    font-size: 14px;
 	    line-height: 20px;
-	    padding: 5px 0; 
+	    padding: 5px 0;
 	    p {
-	      	height: 60px; 
+	      	height: 60px;
 	     }
 	 }
     .countdown {
-    	font-family: inherit; 
+    	font-family: inherit;
     }
 }
