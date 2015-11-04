@@ -73,6 +73,15 @@ class Event(models.Model):
     tags = TaggableManager(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
+    last_report_notification_sent_at = models.DateTimeField(null=True, blank=True)
+    report_notifications_count = models.IntegerField(default=0, blank=True)
+    name_for_certificate = models.CharField(max_length=255, default='')
+    participants_count = models.IntegerField(null=True)
+    average_participant_age = models.FloatField(null=True)
+    percentage_of_females = models.FloatField(null=True)
+    codeweek_for_all_participation_code = models.CharField(max_length=100, default='', blank=True)
+    reported_at = models.DateTimeField(null=True, blank=True)
+    certificate_generated_at = models.DateTimeField(null=True, blank=True)
 
     def __unicode__(self):
         return self.title
