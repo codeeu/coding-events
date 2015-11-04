@@ -19,6 +19,7 @@ from api.processors import get_created_events
 from api.processors import get_next_or_previous
 from api.processors import get_nearby_events
 from web.forms.event_form import AddEventForm
+from web.forms.event_form import ReportEventForm
 from web.forms.event_form import SearchEventForm
 from web.processors.event import get_initial_data
 from web.processors.event import change_event_status
@@ -227,6 +228,40 @@ def edit_event(request, event_id):
             'address': event_data.get('location', None),
             'editing': True,
             'picture_url': event.picture,
+        }, context_instance=RequestContext(request))
+
+
+@login_required
+@can_edit_event
+@never_cache
+def report_event(request, event_id):
+    event = get_event_by_id(event_id)
+    user = request.user
+    initial = get_initial_data(event)
+
+    event_data = {}
+
+    if request.method == 'POST':
+        event_form = ReportEventForm(data=request.POST)
+    else:
+        event_form = ReportEventForm(initial=initial)
+
+    if event_form.is_valid():
+        event_data = event_form.cleaned_data
+
+        event.__dict__.update(event_data)
+        event.save()
+
+        return HttpResponseRedirect(
+            reverse(
+                'web.view_event',
+                kwargs={
+                    'event_id': event.id,
+                    'slug': event.slug}))
+
+    return render_to_response(
+        'pages/report_event.html', {
+            'form': event_form,
         }, context_instance=RequestContext(request))
 
 

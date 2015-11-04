@@ -157,6 +157,34 @@ class AddEventForm(forms.ModelForm):
         super(AddEventForm, self).__init__(*args, **kwargs)
 
 
+class ReportEventForm(forms.ModelForm):
+    error_css_class = 'has-error'
+    required_css_class = 'required'
+
+    class Meta:
+        model = Event
+        fields = ['participants_count',
+                  'average_participant_age',
+                  'percentage_of_females',
+                  'codeweek_for_all_participation_code',
+                  'name_for_certificate',
+                  ]
+
+        help_texts = {
+            'codeweek_for_all_participation_code': "Optional. You can put here your Codeweek4All challenge code, if you got one. If you're not participating, just ignore this field.",
+            'percentage_of_females': "Required. Please provide a rough estimate, even if you don't have exact data. A number from 0 to 100.",
+            'average_participant_age': "Required. Please provide a rough estimate, even if you don't have exact data. A number greater than 0.",
+            'participants_count': "Required. Please provide a rough estimate, even if you don't have exact data. A number greater than 0.",
+        }
+
+    # TODO: validate
+    # custom validations for percentage of females and participants age
+    # do not allow reporting unless the event has “started”
+
+    def __init__(self, *args, **kwargs):
+        super(ReportEventForm, self).__init__(*args, **kwargs)
+        self.fields['codeweek_for_all_participation_code'].required = False
+
 class SearchEventForm(forms.Form):
 
     countries._countries.append(Event.CUSTOM_COUNTRY_ENTRIES[0])

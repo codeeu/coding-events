@@ -45,3 +45,42 @@
 	}
 }
 
+.form-vertical {
+	$error-color: #f00;
+	$error-background: #FFE5EA;
+
+	label {
+		display: block;
+	}
+
+	.helptext {
+		display: block;
+		color: $steel;
+		font-size: 14px;
+	}
+
+	.errorlist {
+		margin-bottom: 4px;
+		color: $error-color;
+		background-color: $error-background;
+	}
+
+	input[type="text"],
+	input[type="password"],
+	input[type="email"],
+	textarea {
+		box-sizing: border-box;
+		width: 70%;
+	}
+
+	.has-error {
+		background-color: $error-background;
+		input, textarea {
+			border-color: $error-color;
+			border-style: solid;
+		}
+		label, .helptext {
+			color: $error-color;
+		}
+	}
+}

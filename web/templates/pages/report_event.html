@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load compress %}
+
+{% block title %}- Add Event{% endblock title %}
+
+{% block custom_css %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/jasny-bootstrap.min.css" %}" />
+{% endblock %}
+
+
+{% block content %}
+	<div class="container">
+		<div class="clearfix">
+			<h1 class="pull-left">Report your #codeEU event</h1>
+		</div>
+		<p>
+			<strong>You can fill this form only once!</strong>
+			<span class="aluminum">Please check your data carefully. If you make a mistake, <a href="mailto:europecodes@gmail.com">contact us</a>.</span>
+		</p>
+		<p class="aluminum">Required fields are marked with an * asterisk. Your #codeEU participation certificate will be issued upon successful submission of this form.</p>
+
+		<form method="post" id="event" role="form" class="form-vertical clearfix">{% csrf_token %}
+			{{ form.as_p }}
+
+			<div class="btn btn-primary btn-directional btn-lg submit-button-wrapper">
+				<input type="submit" value="Submit event report" />
+			</div>
+		</form>
+	</div>
+{% endblock content %}
+
+{% block custom_js %}
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false&libraries=places"></script>
+	{% compress js %}
+		<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
+	{% endcompress %}
+{% endblock custom_js %}
