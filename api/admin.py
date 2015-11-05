@@ -1,5 +1,8 @@
 from django.contrib import admin
 
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
 from api import models
 
 
@@ -7,7 +10,12 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'country', )
     search_fields = ['user__email', 'user__username', 'user__first_name', 'user__last_name']
 
-class EventAdmin(admin.ModelAdmin):
+class EventResource(resources.ModelResource):
+    class Meta:
+        model = models.Event
+
+class EventAdmin(ImportExportModelAdmin):
+    resource_class = EventResource
     search_fields = [
         'title',
         'description',
