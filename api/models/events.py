@@ -11,6 +11,9 @@ from django_countries.fields import CountryField
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core.validators import MaxLengthValidator
+from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator
 
 
 class EventAudience(models.Model):
@@ -75,10 +78,10 @@ class Event(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
     last_report_notification_sent_at = models.DateTimeField(null=True, blank=True)
     report_notifications_count = models.IntegerField(default=0, blank=True)
-    name_for_certificate = models.CharField(max_length=255, default='', blank=True)
-    participants_count = models.IntegerField(null=True, blank=True)
-    average_participant_age = models.FloatField(null=True, blank=True)
-    percentage_of_females = models.FloatField(null=True, blank=True)
+    name_for_certificate = models.CharField(max_length=255, default='', blank=True, validators=[MaxLengthValidator(255)])
+    participants_count = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(0)])
+    average_participant_age = models.FloatField(null=True, blank=True, validators=[MinValueValidator(1)])
+    percentage_of_females = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)])
     codeweek_for_all_participation_code = models.CharField(max_length=100, default='', blank=True)
     reported_at = models.DateTimeField(null=True, blank=True)
     certificate_generated_at = models.DateTimeField(null=True, blank=True)
