@@ -51,12 +51,15 @@
 
 	label {
 		display: block;
+		font-size: 18px;
+		font-family: inherit;
+		text-transform: none;
 	}
 
 	.helptext {
 		display: block;
-		color: $steel;
-		font-size: 14px;
+		color: $aluminum;
+		font-size: 16px;
 	}
 
 	.errorlist {
