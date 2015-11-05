@@ -2,6 +2,7 @@
 Models for the event
 """
 import datetime
+from hashlib import sha1
 from django.utils import timezone
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -161,3 +162,8 @@ class Event(models.Model):
 
     def is_reporting_allowed(self):
         return self.has_started() and not self.is_reported()
+
+    def certificate_file_name(self):
+        obfuscated_part = sha1(settings.SECRET_KEY + str(self.pk)).hexdigest()
+
+        return str(self.pk) + '-' + obfuscated_part + '.pdf'

@@ -45,6 +45,7 @@ from web.processors.media import UploadImageError
 from web.decorators.events import can_edit_event
 from web.decorators.events import can_moderate_event
 from web.decorators.events import is_ambassador
+from certificates.generator import generate_certificate_for
 
 """
 Do not Query the database directly from te view.
@@ -255,6 +256,10 @@ def report_event(request, event_id):
             event.__dict__.update(event_data)
             event.reported_at = datetime.now()
             event.save()
+
+            if generate_certificate_for(event.pk, event.certificate_file_name(), event.name_for_certificate):
+                event.certificate_generated_at = datetime.now()
+                event.save()
 
             return HttpResponseRedirect(
                 reverse(

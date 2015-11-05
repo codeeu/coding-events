@@ -1,22 +1,15 @@
-from django.conf import settings
-from hashlib import sha1
 from os import system
 from os import unlink
 from os.path import dirname
 from os.path import realpath
 
-def certificate_name_for(event_id):
-    obfuscated_part = sha1(settings.SECRET_KEY + str(event_id)).hexdigest()
-
-    return str(event_id) + '-' + obfuscated_part + '.pdf'
-
-def generate_certificate_for(event_id, name_of_certificate_holder):
+def generate_certificate_for(event_id, certificate_name, name_of_certificate_holder):
     resources_path             = dirname(realpath(__file__)) + '/resources/'
     static_files_path          = dirname(dirname(realpath(__file__))) + '/static/certificates/'
 
     generic_template_path      = resources_path + 'template.tex'
     personalized_template_path = resources_path + str(event_id) + '.tex'
-    resulting_certificate_path = static_files_path + certificate_name_for(event_id)
+    resulting_certificate_path = static_files_path + certificate_name
 
     with open(generic_template_path) as template:
         personalized_certificate_content = template.read().replace(
