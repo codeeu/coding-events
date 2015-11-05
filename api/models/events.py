@@ -152,3 +152,12 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse('web.view_event', args=[self.pk, self.slug])
+
+    def is_reported(self):
+        return self.reported_at is not None
+
+    def is_certificate_generated(self):
+        return self.certificate_generated_at is not None
+
+    def is_reporting_allowed(self):
+        return self.has_started() and not self.is_reported()

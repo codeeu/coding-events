@@ -1,3 +1,6 @@
+from datetime import datetime
+from collections import OrderedDict
+
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -238,30 +241,38 @@ def report_event(request, event_id):
     user = request.user
     initial = get_initial_data(event)
     initial['name_for_certificate'] = event.organizer
-
-    event_data = {}
+    event_report_fields = OrderedDict()
 
     if request.method == 'POST':
-        event_form = ReportEventForm(data=request.POST)
+        report_event_form = ReportEventForm(data=request.POST)
     else:
-        event_form = ReportEventForm(initial=initial)
+        report_event_form = ReportEventForm(initial=initial)
 
-    if event_form.is_valid():
-        event_data = event_form.cleaned_data
+    if event.is_reporting_allowed():
+        if report_event_form.is_valid():
+            event_data = report_event_form.cleaned_data
 
-        event.__dict__.update(event_data)
-        event.save()
+            event.__dict__.update(event_data)
+            event.reported_at = datetime.now()
+            event.save()
 
-        return HttpResponseRedirect(
-            reverse(
-                'web.view_event',
-                kwargs={
-                    'event_id': event.id,
-                    'slug': event.slug}))
+            return HttpResponseRedirect(
+                reverse(
+                    'web.view_event',
+                    kwargs={
+                        'event_id': event.id,
+                        'slug': event.slug}))
+    else:
+        for field_name, field in report_event_form.fields.items():
+            event_report_fields[field.label] = initial[field_name]
 
     return render_to_response(
         'pages/report_event.html', {
-            'form': event_form,
+            'form': report_event_form,
+            'event_start_date': event.start_date,
+            'is_already_reported': event.is_reported(),
+            'is_reporting_allowed': event.is_reporting_allowed(),
+            'event_report_fields': event_report_fields,
         }, context_instance=RequestContext(request))
 
 
