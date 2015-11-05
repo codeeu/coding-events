@@ -183,6 +183,12 @@ class ReportEventForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ReportEventForm, self).__init__(*args, **kwargs)
+
+        # Mark all fields as required by default
+        for field_name in self.fields:
+            self.fields[field_name].required = True
+
+        # Optional fields
         self.fields['codeweek_for_all_participation_code'].required = False
 
 class SearchEventForm(forms.Form):
