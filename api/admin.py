@@ -18,7 +18,17 @@ class EventAdmin(admin.ModelAdmin):
         'creator__last_name',
     ]
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'status', 'location', 'country', 'start_date')
+    list_display = (
+        'title',
+        'status',
+        'location',
+        'country',
+        'start_date',
+        'reported_at',
+        'participants_count',
+        'average_participant_age',
+        'percentage_of_females',
+    )
     list_editable = ('status',)
     list_filter = ('status', 'start_date')
     filter_horizontal = ('audience',)
