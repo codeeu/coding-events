@@ -56,6 +56,12 @@
 		text-transform: none;
 	}
 
+	.required label::before {
+		content: '*';
+		display: inline-block;
+		margin-right: 0.15em;
+	}
+
 	.helptext {
 		display: block;
 		color: $aluminum;
