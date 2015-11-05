@@ -238,6 +238,7 @@ def report_event(request, event_id):
     event = get_event_by_id(event_id)
     user = request.user
     initial = get_initial_data(event)
+    initial['name_for_certificate'] = event.organizer
 
     event_data = {}
 
