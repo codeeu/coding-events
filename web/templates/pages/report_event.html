@@ -20,8 +20,10 @@
 		</p>
 		<p class="aluminum">Required fields are marked with an * asterisk. Your #codeEU participation certificate will be issued upon successful submission of this form.</p>
 
-		<form method="post" id="event" role="form" class="form-vertical clearfix">{% csrf_token %}
+		<form method="post" id="report-event" role="form" class="form-vertical clearfix">{% csrf_token %}
 			{{ form.as_p }}
+
+			<p>You can submit this form only once! Please check your data carefully. Nevertheless, if you made a mistake, <a href="mailto:europecodes@gmail.com">let us know</a>.</p>
 
 			<div class="btn btn-primary btn-directional btn-lg submit-button-wrapper">
 				<input type="submit" value="Submit event report" />
@@ -34,5 +36,12 @@
 	{% compress js %}
 		<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
 		<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(document).on('submit', 'form#report-event', function() {
+					return confirm("You can submit this form only once.\n\nAre you sure you want to submit the report?");
+				});
+			});
+		</script>
 	{% endcompress %}
 {% endblock custom_js %}
