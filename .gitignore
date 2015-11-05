@@ -13,3 +13,4 @@ staticfiles/
 .DS_Store
 Gemfile*
 /tmp
+/static/certificates/*.pdf

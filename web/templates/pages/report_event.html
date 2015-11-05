@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load compress %}
+
+{% block title %}- Add Event{% endblock title %}
+
+{% block custom_css %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/jasny-bootstrap.min.css" %}" />
+{% endblock %}
+
+
+{% block content %}
+	<div class="container">
+		<div class="clearfix">
+			<h1 class="pull-left">Report your #codeEU event</h1>
+		</div>
+
+		{% if is_reporting_allowed %}
+			<p>
+				<strong>You can fill this form only once!</strong>
+				Please check your data carefully. If you make a mistake, <a href="mailto:europecodes@gmail.com">contact us</a>.
+			</p>
+			<p>After submitting the report, a personalized certificate for participation in Code Week will be issued automatically and will become available for you to download or share.</p>
+			<p class="aluminum">Required fields are marked with an * asterisk.</p>
+
+			<form method="post" id="report-event" role="form" class="form-vertical clearfix">{% csrf_token %}
+				{{ form.as_p }}
+
+				<p>You can submit this form only once! Please check your data carefully. Nevertheless, if you made a mistake, <a href="mailto:europecodes@gmail.com">let us know</a>.</p>
+
+				<div class="btn btn-primary btn-directional btn-lg submit-button-wrapper">
+					<input type="submit" value="Submit event report" />
+				</div>
+			</form>
+		{% elif is_already_reported %}
+			<p>You have already submitted a report for this event. You can see the reported data below.</p>
+			<p>If you made a mistake, <a href="mailto:europecodes@gmail.com">let us know</a>. Don't forget to send us the event ID and the corrected data.</p>
+
+			<form class="form-vertical clearfix">
+				{% for label, value in event_report_fields.items %}
+					<p class="readonly-field">
+						<label>{{ label }}:</label>
+						<span class="value">{{ value }}</span>
+					</p>
+				{% endfor %}
+			</form>
+		{% else %}
+			<p>This event can not be reported yet as it has not yet started. You will be able to submit a report after <strong>{{ event_start_date }}</strong></p>
+			<p>After submitting a report, a personalized certificate for participation in Code Week will be issued automatically and will become available for you to download or share.</p>
+			<p>We will ask for the following fields in the report:</p>
+
+			<form class="form-vertical clearfix">
+				{% for field_name, field in form.fields.items %}
+					<p class="readonly-field">
+						<label>{{ field.label }}</label>
+						<span class="helptext">{{ field.help_text }}</span>
+					</p>
+				{% endfor %}
+			</form>
+		{% endif %}
+	</div>
+{% endblock content %}
+
+{% block custom_js %}
+	{% compress js %}
+		<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
+		<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(document).on('submit', 'form#report-event', function() {
+					return confirm("You can submit this form only once.\n\nAre you sure you want to submit the report?");
+				});
+			});
+		</script>
+	{% endcompress %}
+{% endblock custom_js %}

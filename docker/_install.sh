@@ -2,7 +2,7 @@
 
 apt-get -y update
 apt-get -u upgrade
-apt-get install -y libjpeg-dev python-dev python-setuptools supervisor ruby-sass python-geoip libmysqlclient-dev git
+apt-get install -y libjpeg-dev python-dev python-setuptools supervisor ruby-sass python-geoip libmysqlclient-dev git texlive-base texlive-latex-base
 
 easy_install pip
 pip install uwsgi

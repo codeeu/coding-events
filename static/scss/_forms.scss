@@ -45,3 +45,51 @@
 	}
 }
 
+.form-vertical {
+	$error-color: #f00;
+	$error-background: #FFE5EA;
+
+	label {
+		display: block;
+		font-size: 18px;
+		font-family: inherit;
+		text-transform: none;
+	}
+
+	.required label::before {
+		content: '*';
+		display: inline-block;
+		margin-right: 0.15em;
+	}
+
+	.helptext {
+		display: block;
+		color: $aluminum;
+		font-size: 16px;
+	}
+
+	.errorlist {
+		margin-bottom: 4px;
+		color: $error-color;
+		background-color: $error-background;
+	}
+
+	input[type="text"],
+	input[type="password"],
+	input[type="email"],
+	textarea {
+		box-sizing: border-box;
+		width: 70%;
+	}
+
+	.has-error {
+		background-color: $error-background;
+		input, textarea {
+			border-color: $error-color;
+			border-style: solid;
+		}
+		label, .helptext {
+			color: $error-color;
+		}
+	}
+}

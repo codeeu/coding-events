@@ -235,6 +235,8 @@ INSTALLED_APPS = (
     'compressor',
     # endless pagination
     'endless_pagination',
+    # Django admin import/export functionality for resources
+    'import_export',
 
     # defined apps
     'web',

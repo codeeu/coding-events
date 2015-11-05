@@ -1,3 +1,6 @@
+from datetime import datetime
+from collections import OrderedDict
+
 from django.contrib.gis.geoip import GeoIPException
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -8,8 +11,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django_countries import countries
 from django.views.decorators.cache import never_cache
+from django.http import Http404
+from django.shortcuts import redirect
 
 from api.processors import get_event_by_id
 from api.processors import get_filtered_events
@@ -19,6 +25,7 @@ from api.processors import get_created_events
 from api.processors import get_next_or_previous
 from api.processors import get_nearby_events
 from web.forms.event_form import AddEventForm
+from web.forms.event_form import ReportEventForm
 from web.forms.event_form import SearchEventForm
 from web.processors.event import get_initial_data
 from web.processors.event import change_event_status
@@ -38,10 +45,7 @@ from web.processors.media import UploadImageError
 from web.decorators.events import can_edit_event
 from web.decorators.events import can_moderate_event
 from web.decorators.events import is_ambassador
-
-from django.http import Http404
-from django.shortcuts import redirect
-from django.core.exceptions import ObjectDoesNotExist
+from certificates.generator import generate_certificate_for
 
 """
 Do not Query the database directly from te view.
@@ -227,6 +231,53 @@ def edit_event(request, event_id):
             'address': event_data.get('location', None),
             'editing': True,
             'picture_url': event.picture,
+        }, context_instance=RequestContext(request))
+
+
+@login_required
+@can_edit_event
+@never_cache
+def report_event(request, event_id):
+    event = get_event_by_id(event_id)
+    user = request.user
+    initial = get_initial_data(event)
+    initial['name_for_certificate'] = event.organizer
+    event_report_fields = OrderedDict()
+
+    if request.method == 'POST':
+        report_event_form = ReportEventForm(data=request.POST)
+    else:
+        report_event_form = ReportEventForm(initial=initial)
+
+    if event.is_reporting_allowed():
+        if report_event_form.is_valid():
+            event_data = report_event_form.cleaned_data
+
+            event.__dict__.update(event_data)
+            event.reported_at = datetime.now()
+            event.save()
+
+            if generate_certificate_for(event.pk, event.certificate_file_name(), event.name_for_certificate):
+                event.certificate_generated_at = datetime.now()
+                event.save()
+
+            return HttpResponseRedirect(
+                reverse(
+                    'web.view_event',
+                    kwargs={
+                        'event_id': event.id,
+                        'slug': event.slug}))
+    else:
+        for field_name, field in report_event_form.fields.items():
+            event_report_fields[field.label] = initial[field_name]
+
+    return render_to_response(
+        'pages/report_event.html', {
+            'form': report_event_form,
+            'event_start_date': event.start_date,
+            'is_already_reported': event.is_reported(),
+            'is_reporting_allowed': event.is_reporting_allowed(),
+            'event_report_fields': event_report_fields,
         }, context_instance=RequestContext(request))
 
 

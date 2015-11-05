@@ -12,6 +12,7 @@ urlpatterns = patterns(
     url(r'^map/$', 'events.map', name='web.map'),
     url(r'^add/$', 'events.add_event', name='web.add_event'),
     url(r'^edit/(?P<event_id>\d+)/$', 'events.edit_event', name='web.edit_event'),
+    url(r'^report/(?P<event_id>\d+)/$', 'events.report_event', name='web.report_event'),
     url(r'^view/(?P<event_id>\d+)/(?P<slug>[-\w]+)/saved/$', 'events.view_changed_event', name='web.view_changed_event'),
     url(r'^view/(?P<event_id>\d+)/(?P<slug>[-\w]+)/$', 'events.view_event', name='web.view_event'),
     url(r'^view/(?P<event_id>[0-9]+)/$', 'events.view_event_by_id', name='web.view_event_by_id'),

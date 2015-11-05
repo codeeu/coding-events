@@ -32,6 +32,16 @@
 	<div class="container">
 		<div id="fb-root"></div>
 			<div class="edit-toolbar">
+			{% if event.is_certificate_generated %}
+				<div class="alert alert-success">
+					<p>
+						Your Code Week certificate is ready.
+						Feel free to download it or share it directly.
+						<a href="/static/certificates/{{ event.certificate_file_name }}">View your certificate here</a>.
+					</p>
+				</div>
+			{% endif %}
+
 			{% if user.profile.is_ambassador %}
 			{% if user.profile.country == event.country or user.is_staff %}
 				<div id="change_status">

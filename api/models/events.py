@@ -2,6 +2,7 @@
 Models for the event
 """
 import datetime
+from hashlib import sha1
 from django.utils import timezone
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -11,6 +12,9 @@ from django_countries.fields import CountryField
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core.validators import MaxLengthValidator
+from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator
 
 
 class EventAudience(models.Model):
@@ -73,6 +77,15 @@ class Event(models.Model):
     tags = TaggableManager(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
+    last_report_notification_sent_at = models.DateTimeField(null=True, blank=True)
+    report_notifications_count = models.IntegerField(default=0, blank=True)
+    name_for_certificate = models.CharField(max_length=255, default='', blank=True, validators=[MaxLengthValidator(255)])
+    participants_count = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(0)])
+    average_participant_age = models.FloatField(null=True, blank=True, validators=[MinValueValidator(1)])
+    percentage_of_females = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)])
+    codeweek_for_all_participation_code = models.CharField(max_length=100, default='', blank=True)
+    reported_at = models.DateTimeField(null=True, blank=True)
+    certificate_generated_at = models.DateTimeField(null=True, blank=True)
 
     def __unicode__(self):
         return self.title
@@ -140,3 +153,17 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse('web.view_event', args=[self.pk, self.slug])
+
+    def is_reported(self):
+        return self.reported_at is not None
+
+    def is_certificate_generated(self):
+        return self.certificate_generated_at is not None
+
+    def is_reporting_allowed(self):
+        return self.has_started() and not self.is_reported()
+
+    def certificate_file_name(self):
+        obfuscated_part = sha1(settings.SECRET_KEY + str(self.pk)).hexdigest()
+
+        return str(self.pk) + '-' + obfuscated_part + '.pdf'
