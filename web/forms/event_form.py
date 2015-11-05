@@ -178,10 +178,6 @@ class ReportEventForm(forms.ModelForm):
             'name_for_certificate': "Required. Change this to the name of the event organizer who will be issued a certificate of participation in Code Week.",
         }
 
-    # TODO: validate
-    # custom validations for percentage of females and participants age
-    # do not allow reporting unless the event has “started”
-
     def __init__(self, *args, **kwargs):
         super(ReportEventForm, self).__init__(*args, **kwargs)
 
@@ -191,6 +187,7 @@ class ReportEventForm(forms.ModelForm):
 
         # Optional fields
         self.fields['codeweek_for_all_participation_code'].required = False
+
 
 class SearchEventForm(forms.Form):
 

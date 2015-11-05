@@ -8,8 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core import serializers
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django_countries import countries
 from django.views.decorators.cache import never_cache
+from django.http import Http404
+from django.shortcuts import redirect
 
 from api.processors import get_event_by_id
 from api.processors import get_filtered_events
@@ -39,10 +42,6 @@ from web.processors.media import UploadImageError
 from web.decorators.events import can_edit_event
 from web.decorators.events import can_moderate_event
 from web.decorators.events import is_ambassador
-
-from django.http import Http404
-from django.shortcuts import redirect
-from django.core.exceptions import ObjectDoesNotExist
 
 """
 Do not Query the database directly from te view.
