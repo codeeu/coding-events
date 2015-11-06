@@ -15,6 +15,14 @@
 			<h1 class="pull-left">Report your #codeEU event</h1>
 		</div>
 
+		<p class="readonly-field">
+			<strong>Event:</strong>
+			<a href="{% url 'web.view_event' event.id event.slug %}">
+				{{ event.title }}
+				({% include 'layout/time_to_event.html' %})
+			</a>
+		</p>
+
 		{% if event.is_reporting_allowed %}
 			<p>
 				<strong>You can fill this form only once!</strong>
@@ -42,10 +50,6 @@
 			<p>If you made a mistake, <a href="mailto:europecodes@gmail.com">let us know</a>. Don't forget to send us the event ID and the corrected data.</p>
 
 			<form class="form-vertical clearfix">
-				<p class="readonly-field">
-					<label>Event:</label>
-					<span class="value"><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></span>
-				</p>
 				{% for label, value in event_report_fields.items %}
 					<p class="readonly-field">
 						<label>{{ label }}:</label>
