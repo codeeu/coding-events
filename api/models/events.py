@@ -79,7 +79,7 @@ class Event(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
     last_report_notification_sent_at = models.DateTimeField(null=True, blank=True)
     report_notifications_count = models.IntegerField(default=0, blank=True)
-    name_for_certificate = models.CharField(max_length=255, default='', blank=True, validators=[MaxLengthValidator(255)])
+    name_for_certificate = models.CharField(max_length=255, default='', blank=True, validators=[MaxLengthValidator(70)])
     participants_count = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(0)])
     average_participant_age = models.FloatField(null=True, blank=True, validators=[MinValueValidator(1)])
     percentage_of_females = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(100)])
