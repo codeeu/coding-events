@@ -33,14 +33,16 @@
 	<div class="container">
 		<div id="fb-root"></div>
 			<div class="edit-toolbar">
-			{% if event.is_certificate_generated %}
-				<div class="alert alert-success">
-					<p>
-						Your Code Week certificate is ready.
-						Feel free to download it or share it directly.
-						<a href="{% static event.certificate_file_path %}">View your certificate here</a>.
-					</p>
-				</div>
+			{% if event.creator.id == request.user.id or user.is_staff %}
+				{% if event.is_certificate_generated %}
+					<div class="alert alert-success">
+						<p>
+							Your Code Week certificate is ready.
+							Feel free to download it or share it directly.
+							<a href="{% static event.certificate_file_path %}">View your certificate here</a>.
+						</p>
+					</div>
+				{% endif %}
 			{% endif %}
 
 			{% if user.profile.is_ambassador %}
