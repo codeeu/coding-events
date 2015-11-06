@@ -5,7 +5,7 @@ from os.path import realpath
 
 def generate_certificate_for(event_id, certificate_name, name_of_certificate_holder):
     resources_path             = dirname(realpath(__file__)) + '/resources/'
-    static_files_path          = dirname(dirname(realpath(__file__))) + '/static/certificates/'
+    static_files_path          = dirname(dirname(realpath(__file__))) + '/staticfiles/certificates/'
 
     generic_template_path      = resources_path + 'template.tex'
     personalized_template_path = resources_path + str(event_id) + '.tex'
@@ -21,6 +21,7 @@ def generate_certificate_for(event_id, certificate_name, name_of_certificate_hol
     commands = [
         'cd ' + resources_path,
         'pdflatex -interaction=nonstopmode -output-directory ' + resources_path + ' ' + personalized_template_path,
+        'mkdir -p ' + static_files_path,
         'mv -f ' + personalized_template_path.replace('.tex', '.pdf') + ' ' + resulting_certificate_path,
         'rm -rf ' + resources_path + str(event_id) + '.*',
     ]
