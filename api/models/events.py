@@ -167,3 +167,6 @@ class Event(models.Model):
         obfuscated_part = sha1(settings.SECRET_KEY + str(self.pk)).hexdigest()
 
         return str(self.pk) + '-' + obfuscated_part + '.pdf'
+
+    def certificate_file_path(self):
+        return 'certificates/' + self.certificate_file_name()

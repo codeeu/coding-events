@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load event_tags %}
+{% load static %}
 
 {% block title %}- {{ event.title }} ({{ event.country.name }}){% endblock title %}
 
@@ -37,7 +38,7 @@
 					<p>
 						Your Code Week certificate is ready.
 						Feel free to download it or share it directly.
-						<a href="/static/certificates/{{ event.certificate_file_name }}">View your certificate here</a>.
+						<a href="{% static event.certificate_file_path %}">View your certificate here</a>.
 					</p>
 				</div>
 			{% endif %}
