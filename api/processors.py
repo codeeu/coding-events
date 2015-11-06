@@ -145,7 +145,7 @@ def get_events_pending_for_report(creator):
     events = Event.objects.filter(
         creator=creator,
         reported_at=None,
-        start_date__lte=datetime.datetime.now())
+        start_date__lte=datetime.datetime.now()).exclude(status='REJECTED')
 
     return events
 

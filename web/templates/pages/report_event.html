@@ -58,7 +58,11 @@
 				{% endfor %}
 			</form>
 		{% else %}
-			<p>This event can not be reported yet as it has not yet started. You will be able to submit a report after <strong>{{ event_start_date }}</strong></p>
+			{% if event.status == 'REJECTED' %}
+				<p>This event can not be reported as it is rejected. If you believe this is a mistake, contact one of <a href="{% url 'web.ambassadors' %}">your local ambassadors</a> or <a href="mailto:europecodes@gmail.com">let us know</a>.</p>
+			{% else %}
+				<p>This event can not be reported yet as it has not yet started. You will be able to submit a report after <strong>{{ event_start_date }}</strong></p>
+			{% endif %}
 			<p>After submitting a report, a personalized certificate for participation in Code Week will be issued automatically and will become available for you to download or share.</p>
 			<p>We will ask for the following fields in the report:</p>
 
