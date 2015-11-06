@@ -141,6 +141,15 @@ def get_created_events(
     return events
 
 
+def get_events_pending_for_report(creator):
+    events = Event.objects.filter(
+        creator=creator,
+        reported_at=None,
+        start_date__lte=datetime.datetime.now())
+
+    return events
+
+
 def get_nearby_events(event, limit=None, past=False):
     """
     Select ten events which are near by the current event

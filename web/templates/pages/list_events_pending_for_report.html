@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load endless %}
+
+{% block title %}- Events pending for report{% endblock title %}
+
+
+{% block content %}
+	<div class="container">
+		<h1>Events pending for report by {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{ user.username }}{% endif %}.</h1>
+
+		{% if not event_list %}
+			<div class="row">
+				<p>You haven't added any events yet. Why don't you <a href="{% url 'web.add_event' %}">add one now</a> or read our <a href="{% url 'web.guide' %}">guide for organizers</a>?</p>
+			</div>
+		{% else %}
+			<p>The events listed below have started or already finished. Fill in a few numbers for statistical purposes for the event and claim your Code Week participation certificate. You will get one certificate per event.</p>
+		{% endif %}
+
+		<div class="row">
+			{% paginate 10 event_list as user_events %}
+
+			<ul>
+				{% for event in user_events %}
+					<li>
+						<a href="{% url 'web.view_event' event.id event.slug %}">
+							{{ event.title }}
+						</a>
+						– {% include 'layout/time_to_event.html' %} –
+						<a href="{% url 'web.report_event' event.id %}" class="btn btn-sm">Report event</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+		{% show_pages %}
+	</div>
+
+{% endblock content %}
