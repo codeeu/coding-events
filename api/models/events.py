@@ -161,7 +161,10 @@ class Event(models.Model):
         return self.certificate_generated_at is not None
 
     def is_reporting_allowed(self):
-        return self.has_started() and not self.is_reported() and self.status != 'REJECTED'
+        return self.has_started() \
+            and not self.is_reported() \
+            and self.status != 'REJECTED' \
+            and self.start_date.date().year >= 2015
 
     def certificate_file_name(self):
         obfuscated_part = sha1(settings.SECRET_KEY + str(self.pk)).hexdigest()
