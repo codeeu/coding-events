@@ -42,6 +42,13 @@
 							<a href="{% static event.certificate_file_path %}">View your certificate here</a>.
 						</p>
 					</div>
+				{% elif event.is_reporting_allowed %}
+					<div class="alert alert-warning">
+						<p>
+							Submit a report for this event and claim your Code Week certificate.
+							<a href="{% url 'web.report_event' event.id %}" class="btn btn-sm">Report event and claim certificate</a>
+						</p>
+					</div>
 				{% endif %}
 			{% endif %}
 
