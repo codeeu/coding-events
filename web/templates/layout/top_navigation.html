@@ -109,8 +109,8 @@
 						{% endif %}
 						<li><a href="{% url 'web.created_events' %}"><i
 								class="fa fa-user"></i> Your events</a></li>
-						<li><a href="{% url 'web.events_to_report' %}"><i
-								class="fa fa-user"></i> Report your events</a></li>
+						<!-- <li><a href="{% url 'web.events_to_report' %}"><i
+								class="fa fa-user"></i> Report your events</a></li> -->
 						<li><a href="{% url 'logout' %}?next={% firstof request.path '/' %}"><i
 								class="fa fa-sign-out"></i> Sign out</a></li>
 					</ul>
