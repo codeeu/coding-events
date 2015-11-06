@@ -9,9 +9,7 @@
 		<h1>Events pending for report by {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{ user.username }}{% endif %}.</h1>
 
 		{% if not event_list %}
-			<div class="row">
-				<p>You haven't added any events yet. Why don't you <a href="{% url 'web.add_event' %}">add one now</a> or read our <a href="{% url 'web.guide' %}">guide for organizers</a>?</p>
-			</div>
+			<p>There are no events to be reported yet.</p>
 		{% else %}
 			<p>The events listed below have started or already finished. Fill in a few numbers for statistical purposes for the event and claim your Code Week participation certificate. You will get one certificate per event.</p>
 		{% endif %}
