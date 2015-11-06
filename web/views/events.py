@@ -274,9 +274,7 @@ def report_event(request, event_id):
     return render_to_response(
         'pages/report_event.html', {
             'form': report_event_form,
-            'event_start_date': event.start_date,
-            'is_already_reported': event.is_reported(),
-            'is_reporting_allowed': event.is_reporting_allowed(),
+            'event': event,
             'event_report_fields': event_report_fields,
         }, context_instance=RequestContext(request))
 

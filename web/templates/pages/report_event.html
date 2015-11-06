@@ -15,7 +15,7 @@
 			<h1 class="pull-left">Report your #codeEU event</h1>
 		</div>
 
-		{% if is_reporting_allowed %}
+		{% if event.is_reporting_allowed %}
 			<p>
 				<strong>You can fill this form only once!</strong>
 				Please check your data carefully. If you make a mistake, <a href="mailto:europecodes@gmail.com">contact us</a>.
@@ -32,11 +32,20 @@
 					<input type="submit" value="Submit event report" />
 				</div>
 			</form>
-		{% elif is_already_reported %}
-			<p>You have already submitted a report for this event. You can see the reported data below.</p>
+		{% elif event.is_reported %}
+			<p>
+				You have already submitted a report for this event. You can see the reported data below.
+				{% if event.is_certificate_generated %}
+					You can also <a href="{% static event.certificate_file_path %}">view your Code Week certificate for this event here</a>.
+				{% endif %}
+			</p>
 			<p>If you made a mistake, <a href="mailto:europecodes@gmail.com">let us know</a>. Don't forget to send us the event ID and the corrected data.</p>
 
 			<form class="form-vertical clearfix">
+				<p class="readonly-field">
+					<label>Event:</label>
+					<span class="value"><a href="{% url 'web.view_event' event.id event.slug %}">{{ event.title }}</a></span>
+				</p>
 				{% for label, value in event_report_fields.items %}
 					<p class="readonly-field">
 						<label>{{ label }}:</label>
