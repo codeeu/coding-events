@@ -26,7 +26,7 @@
 		{% if event.is_reporting_allowed %}
 			<p>
 				<strong>You can fill this form only once!</strong>
-				Please check your data carefully. If you make a mistake, <a href="mailto:europecodes@gmail.com">contact us</a>.
+				Please check your data carefully. If you make a mistake, <a href="mailto:info@codeweek.eu">contact us</a>.
 			</p>
 			<p>After submitting the report, a personalized certificate for participation in Code Week will be issued automatically and will become available for you to download or share. You can <a href="{% static 'demo-certificate.pdf' %}">see an example certificate here</a>.</p>
 			<p class="aluminum">Required fields are marked with an * asterisk.</p>
@@ -34,7 +34,7 @@
 			<form method="post" id="report-event" role="form" class="form-vertical clearfix">{% csrf_token %}
 				{{ form.as_p }}
 
-				<p>You can submit this form only once! Please check your data carefully. Nevertheless, if you made a mistake, <a href="mailto:europecodes@gmail.com">let us know</a>.</p>
+				<p>You can submit this form only once! Please check your data carefully. Nevertheless, if you made a mistake, <a href="mailto:info@codeweek.eu">let us know</a>.</p>
 
 				<div class="btn btn-primary btn-directional btn-lg submit-button-wrapper">
 					<input type="submit" value="Submit event report" />
@@ -47,7 +47,7 @@
 					You can also <a href="{% static event.certificate_file_path %}">view your Code Week certificate for this event here</a>.
 				{% endif %}
 			</p>
-			<p>If you made a mistake, <a href="mailto:europecodes@gmail.com">let us know</a>. Don't forget to send us the event ID and the corrected data.</p>
+			<p>If you made a mistake, <a href="mailto:info@codeweek.eu">let us know</a>. Don't forget to send us the event ID and the corrected data.</p>
 
 			<form class="form-vertical clearfix">
 				{% for label, value in event_report_fields.items %}
@@ -59,7 +59,7 @@
 			</form>
 		{% else %}
 			{% if event.status == 'REJECTED' %}
-				<p>This event can not be reported as it is rejected. If you believe this is a mistake, contact one of <a href="{% url 'web.ambassadors' %}">your local ambassadors</a> or <a href="mailto:europecodes@gmail.com">let us know</a>.</p>
+				<p>This event can not be reported as it is rejected. If you believe this is a mistake, contact one of <a href="{% url 'web.ambassadors' %}">your local ambassadors</a> or <a href="mailto:info@codeweek.eu">let us know</a>.</p>
 			{% else %}
 				<p>This event can not be reported yet as it has not yet started. You will be able to submit a report after <strong>{{ event_start_date }}</strong></p>
 			{% endif %}

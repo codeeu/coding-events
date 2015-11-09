@@ -5,7 +5,7 @@ import dj_database_url
 DEBUG = False
 
 ADMINS = (
-    ('Codeweek', 'europecodes@gmail.com'),
+    ('Codeweek', 'info@codeweek.eu'),
 )
 
 dbconfig = dj_database_url.config()
