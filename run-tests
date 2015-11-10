@@ -1,0 +1,11 @@
+#!/bin/sh
+
+extra_args="$@"
+
+if [ -z "$extra_args" ]; then
+	coverage_options="--cov web --cov api --cov-report term-missing"
+else
+	coverage_options=""
+fi
+
+DJANGO_SETTINGS_MODULE=codeweekeu.settings_testing TEST_MODE=true python ./manage.py test api/ web/ $coverage_options -v "$@"
