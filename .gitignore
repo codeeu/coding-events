@@ -13,3 +13,5 @@ staticfiles/
 .DS_Store
 Gemfile*
 /tmp
+.coverage
+db/default.db_db_test
