@@ -16,7 +16,7 @@ def generate_certificate_for(event_id, certificate_name, name_of_certificate_hol
             '<CERTIFICATE_HOLDER_NAME>', name_of_certificate_holder)
 
     with open(personalized_template_path, 'w') as personalized_template:
-        personalized_template.write(personalized_certificate_content)
+        personalized_template.write(personalized_certificate_content.encode('utf-8'))
 
     commands = [
         'cd ' + resources_path,
