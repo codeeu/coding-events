@@ -14,6 +14,26 @@ class EventResource(resources.ModelResource):
     class Meta:
         model = models.Event
 
+class IsReportedAtListFilter(admin.SimpleListFilter):
+    title = u'reported state'
+    parameter_name = u'reported'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('1', 'Reported'),
+            ('0', 'Not reported'),
+        )
+
+    def queryset(self, request, queryset):
+        kwargs = {'reported_at': None}
+
+        if self.value() == '0':
+            return queryset.filter(**kwargs)
+        if self.value() == '1':
+            return queryset.exclude(**kwargs)
+
+        return queryset
+
 class EventAdmin(ImportExportModelAdmin):
     resource_class = EventResource
     search_fields = [
@@ -38,7 +58,7 @@ class EventAdmin(ImportExportModelAdmin):
         'percentage_of_females',
     )
     list_editable = ('status',)
-    list_filter = ('status', 'start_date')
+    list_filter = ('status', 'start_date', IsReportedAtListFilter)
     filter_horizontal = ('audience',)
     filter_horizontal = ('theme',)
 
