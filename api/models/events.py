@@ -163,7 +163,7 @@ class Event(models.Model):
     def is_reporting_allowed(self):
         return self.has_started() \
             and not self.is_reported() \
-            and self.status != 'REJECTED' \
+            and self.status == 'APPROVED' \
             and self.start_date.date().year >= 2015
 
     def certificate_file_name(self):

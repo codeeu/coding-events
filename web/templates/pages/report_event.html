@@ -58,8 +58,8 @@
 				{% endfor %}
 			</form>
 		{% else %}
-			{% if event.status == 'REJECTED' %}
-				<p>This event can not be reported as it is rejected. If you believe this is a mistake, contact one of <a href="{% url 'web.ambassadors' %}">your local ambassadors</a> or <a href="mailto:info@codeweek.eu">let us know</a>.</p>
+			{% if event.status != 'APPROVED' %}
+				<p>This event can not be reported as is not yet approved. If you believe this is a mistake, contact one of <a href="{% url 'web.ambassadors' %}">your local ambassadors</a> or <a href="mailto:info@codeweek.eu">let us know</a>.</p>
 			{% else %}
 				<p>This event can not be reported yet as it has not yet started. You will be able to submit a report after <strong>{{ event_start_date }}</strong></p>
 			{% endif %}
