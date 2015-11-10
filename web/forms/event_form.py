@@ -175,7 +175,7 @@ class ReportEventForm(forms.ModelForm):
             'percentage_of_females': "Required. Please provide a rough estimate, even if you don't have exact data. A number from 0 to 100.",
             'average_participant_age': "Required. Please provide a rough estimate, even if you don't have exact data. A number greater than 0.",
             'participants_count': "Required. Please provide a rough estimate, even if you don't have exact data. A number greater than 0.",
-            'name_for_certificate': "Required. Change this to the name of the event organizer who will be issued a certificate of participation in Code Week.",
+            'name_for_certificate': "Required. Change this to the name of the event organizer who will be issued a certificate of participation in Code Week. Please use only ASCII (Latin) letters. Letters with accents, umlauts and the like are not supported.",
         }
 
     def __init__(self, *args, **kwargs):
