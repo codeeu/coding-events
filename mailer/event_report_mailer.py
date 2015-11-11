@@ -24,3 +24,16 @@ def send_email_to_country_ambassadors(event):
     ambassadors = get_ambassadors_for_country(event.country)
     for user in ambassadors:
         send_event_report_email(user, event)
+
+
+def send_reminder_for_event_report_and_certificate(user, unreported_events_count):
+    template = loader.get_template("mailer/reminder_for_event_report_and_certificate.txt")
+    context = Context({
+        'name': user.full_name(),
+        'unreported_events_count': unreported_events_count,
+    })
+
+    email_content = template.render(context)
+    email_subject = 'Get your Code Week participation certificate'
+
+    send_mail(email_subject, email_content, 'Code Week <info@codeweek.eu>', [user.email_with_name()])

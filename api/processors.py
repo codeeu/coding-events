@@ -141,15 +141,16 @@ def get_created_events(
     return events
 
 
-def get_events_pending_for_report(creator):
-    events = Event.objects.filter(
-            creator=creator,
+def events_pending_for_report():
+    return Event.objects.filter(
             reported_at=None,
             status='APPROVED',
             start_date__lte=datetime.datetime.now(),
             start_date__gte=datetime.datetime(2015, 1, 1, 0, 0 ,0))
 
-    return events
+
+def events_pending_for_report_for(creator):
+    return events_pending_for_report().filter(creator=creator)
 
 
 def get_nearby_events(event, limit=None, past=False):

@@ -34,6 +34,19 @@ class UserProfile(models.Model):
 # It forces to get or create profile when User is accessed
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
+def email_with_name(self):
+    return "{first_name} {last_name} <{email}>".format(
+        first_name=self.first_name,
+        last_name=self.last_name,
+        email=self.email
+    )
+
+def full_name(self):
+    return self.first_name + ' ' + self.last_name
+
+User.email_with_name = email_with_name
+User.full_name = full_name
+
 
 class SocialAccountList(models.Model):
     name = models.CharField(max_length=255)

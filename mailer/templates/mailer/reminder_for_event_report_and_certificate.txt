@@ -1,0 +1,20 @@
+Hello, {{name}}!
+
+We’d like to thank you on behalf of all the organizers of Code Week for taking part in the initiative and helping us reach hundreds of thousands of people around the world!
+
+As a small token of appreciation for your role in Code Week we're awarding you as an event organizer a certificate of participation.{% if unreported_events_count > 1 %} Since you have organized and registered on the Code Week website more than one event, you can get a certificate for each one.{% endif %}
+
+To get your certificate, go to this link and click "Report event":
+
+http://events.codeweek.eu/report/
+
+You will see a form where we ask you for a few numbers about your event for statistical purposes. Upon submission of the form, your certificate will be automatically generated and will become available immediately. You can then share it online, download it, or even print it on paper, frame it and put it on your wall (if you do this, please send us a picture! :)) The certificate you will get will look like this: http://events.codeweek.eu/static/demo-certificate.pdf
+
+Note that you can submit the form only once.
+
+We hope that you continue working on bringing coding literacy to even more people during the year!
+
+Thank you once more and hope to see you again during next year's Code Week!
+
+Warmest regards,
+The Code Week Team
