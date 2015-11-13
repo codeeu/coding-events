@@ -33,7 +33,7 @@ class Command(BaseCommand):
             type='int',
             action='store',
             dest='emails_per_run',
-            help='The number of emails to send per run.'
+            help='Required. The number of emails to send per run.'
         ),
         make_option('--notifications-limit',
             type='int',
@@ -54,14 +54,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         last_reminder_sent_before = datetime.now() - timedelta(days=options['notifications_interval_in_days'])
 
-        if len(args) != 1:
+        if options['emails_per_run'] == None:
             self.stderr.write(
                 "Please specify the emails to send per run as a positional argument. E.g.:\n\n" +
-                "manage.py remind_organizers_to_report_events 100"
+                "manage.py remind_organizers_to_report_events --emails-per-run 100"
             )
             exit(1)
-        else:
-            emails_per_run = int(args[0])
 
         events_to_report = events_pending_for_report().filter(
                 Q(last_report_notification_sent_at=None) |
@@ -84,11 +82,11 @@ class Command(BaseCommand):
             u'We have to notify {organizers_count} organizer(s) in a total of {events_count} event(s). Will send at most {emails_per_run} email(s) now.'.format(
                 events_count=events_to_report.count(),
                 organizers_count=organizers.count(),
-                emails_per_run=emails_per_run
+                emails_per_run=options['emails_per_run']
             )
         )
 
-        for organizer in organizers[:emails_per_run]:
+        for organizer in organizers[:options['emails_per_run']]:
             unreported_organizer_events = events_pending_for_report_for(organizer)
             unrepored_events_count = unreported_organizer_events.count()
 
