@@ -176,8 +176,8 @@ var Codeweek = window.Codeweek || {};
 	}
 
 
-	function initialize(events, lon, lan) {
-		map = createMap(events, lon, lan, 3);
+	function initialize(events, lat, lng) {
+		map = createMap(events, lat, lng, 3);
 		//setAutocomplete();
 		if (location.hash !== '') {
 			var country_code = location.hash.replace('#', '').replace('!', '');
@@ -195,7 +195,7 @@ var Codeweek = window.Codeweek || {};
 	}
 
 
-	var init = function (past, lon, lan) {
+	var init = function (past, lat, lng) {
 
 		$(function () {
 			// Initialize map on front page
@@ -212,7 +212,7 @@ var Codeweek = window.Codeweek || {};
 						$('#events-map').html('<div id="api-error"><img src="/static/img/blame-the-dog.jpg"><p><strong>A dog broke our API. Catz will fix it soon. Always blame the dog!</strong></p></div>');
 					},
 					success: function(data, textStatus, jqXHR) {
-						initialize(data, lon, lan);
+						initialize(data, lat, lng);
 					}
 				});
 			});
