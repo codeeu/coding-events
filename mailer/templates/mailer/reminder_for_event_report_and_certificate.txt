@@ -1,4 +1,4 @@
-Hello, {{name}}!
+Hello{% if name %}, {{name}}{% endif %}!
 {% if total_emails_count > 1 and max_emails_count > 0 and total_emails_count >= max_emails_count %}
 This is a last reminder that you still have {{unreported_events_count}} event{% if unreported_events_count != 0 %}s{% endif %} for which you haven’t submitted a report and haven’t claimed your certificate of recognition.
 {% elif previous_emails_count > 0 %}
