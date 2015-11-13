@@ -35,7 +35,7 @@ class UserProfile(models.Model):
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 def email_with_name(self):
-    return "{first_name} {last_name} <{email}>".format(
+    return u'{first_name} {last_name} <{email}>'.format(
         first_name=self.first_name,
         last_name=self.last_name,
         email=self.email

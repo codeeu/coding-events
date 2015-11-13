@@ -51,10 +51,10 @@ def send_reminder_for_event_report_and_certificate(
 
     if test_mode:
         print("------------------------------------------------------------")
-        print("To: " + recipient)
-        print("From: " + sender)
-        print("Subject: " + subject)
-        print("\n" + content)
+        print(u"To: " + recipient)
+        print(u"From: " + sender)
+        print(u"Subject: " + subject)
+        print(u"\n" + content)
         print("------------------------------------------------------------")
     else:
         send_mail(subject, content, sender, [recipient])

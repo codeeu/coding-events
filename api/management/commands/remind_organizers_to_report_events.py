@@ -79,7 +79,7 @@ class Command(BaseCommand):
         organizers = User.objects.filter(id__in=organizer_ids)
 
         self.stdout.write(
-            'We have to notify {organizers_count} organizer(s) in a total of {events_count} event(s)'.format(
+            u'We have to notify {organizers_count} organizer(s) in a total of {events_count} event(s)'.format(
                 events_count=events_to_report.count(),
                 organizers_count=organizers.count()
             )
@@ -90,7 +90,7 @@ class Command(BaseCommand):
             unrepored_events_count = unreported_organizer_events.count()
 
             self.stdout.write(
-                'Emailing {contact} for {events_count} unreported event(s)'.format(
+                u'Emailing {contact} for {events_count} unreported event(s)'.format(
                     contact=organizer.email_with_name(),
                     events_count=unrepored_events_count
                 )
