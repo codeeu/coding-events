@@ -58,7 +58,7 @@ class EventAdmin(ImportExportModelAdmin):
         'percentage_of_females',
     )
     list_editable = ('status',)
-    list_filter = ('status', 'start_date', IsReportedAtListFilter)
+    list_filter = ('status', 'start_date', IsReportedAtListFilter, 'last_report_notification_sent_at', 'report_notifications_count')
     filter_horizontal = ('audience',)
     filter_horizontal = ('theme',)
 
