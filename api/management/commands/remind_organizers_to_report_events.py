@@ -66,9 +66,16 @@ class Command(BaseCommand):
                 Q(last_report_notification_sent_at__lte=last_reminder_sent_before)
             ).filter(
                 report_notifications_count__lt=options['notifications_limit']
+            ).order_by(
+                'report_notifications_count', 'start_date'
             )
 
         organizer_ids = events_to_report.distinct().values_list('creator_id', flat=True)
+
+        # The values above may not be unique as we're using ordering. See here for more info:
+        # https://docs.djangoproject.com/en/1.6/ref/models/querysets/#django.db.models.query.QuerySet.distinct
+        organizer_ids = list(set(organizer_ids))
+
         organizers = User.objects.filter(id__in=organizer_ids)
 
         self.stdout.write(
