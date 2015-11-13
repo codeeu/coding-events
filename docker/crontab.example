@@ -1,0 +1,3 @@
+EMAIL=info@codeweek.eu
+
+0 *    * * *   /bin/bash -l -c 'source /path/to/virtualenv/version/bin/activate VERSION && cd /path/to/project && ./manage.py remind_organizers_to_report_events --emails-per-run 50 --notifications-interval-in-days 21 --notifications-limit 3 >> /tmp/codeeu_remind_organizers_to_report_events.log 2>&1'

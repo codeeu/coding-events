@@ -63,6 +63,8 @@ CACHES = {
 
 See [docker/_install.sh](docker/_install.sh).
 
+There is also an example crontab file in [docker/crontab.example](docker/crontab.example).
+
 ## Bugs
 
 Please [open an issue](https://github.com/codeeu/coding-events/issues).
