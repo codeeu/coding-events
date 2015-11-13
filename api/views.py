@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from hashlib import sha1
+
 from rest_framework import generics
 from rest_framework_extensions.cache.decorators import cache_response
 
@@ -13,9 +15,16 @@ class CachedListAPIView(generics.ListAPIView):
     """
     Concrete cached view for listing a queryset.
     """
-    @cache_response(240)
+    @cache_response(timeout=240, key_func='calculate_cache_key')
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+    def calculate_cache_key(self, view_instance, view_method, request, args, kwargs):
+        return sha1('-'.join([
+                repr(request.GET),
+                repr(args),
+                repr(kwargs),
+            ])).hexdigest()
 
 
 class EventListApi(CachedListAPIView):
