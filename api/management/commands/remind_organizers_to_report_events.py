@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
+from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
 from django.db.models import Q
 
 from api.processors import events_pending_for_report
@@ -10,21 +10,62 @@ from api.models.users import User
 from mailer.event_report_mailer import send_reminder_for_event_report_and_certificate
 
 class Command(BaseCommand):
-    help = 'Sends a notification email to each organizer with unreported events. Only a limited number of emails is sent per run. Should be run via a cron each hour.'
+    args = '<emails-per-run>'
+    help = """
+    Sends a notification email to each organizer with unreported events.
+    Only a limited number of emails is sent per run. Should be run via a cron.
+    """
+
+    option_list = BaseCommand.option_list + (
+        make_option('--simulate-emails',
+            action='store_true',
+            dest='simulate_emails',
+            default=False,
+            help='Do not actually send emails, just print the contents to STDOUT.'
+        ),
+        make_option('--simulate-db',
+            action='store_true',
+            dest='simulate_db',
+            default=False,
+            help='Do not actually update the DB to mark events as notified.'
+        ),
+        make_option('--emails-per-run',
+            type='int',
+            action='store',
+            dest='emails_per_run',
+            help='The number of emails to send per run.'
+        ),
+        make_option('--notifications-limit',
+            type='int',
+            action='store',
+            dest='notifications_limit',
+            default=3,
+            help='Send at most X notification emails for event reporting.'
+        ),
+        make_option('--notifications-interval-in-days',
+            type='int',
+            action='store',
+            dest='notifications_interval_in_days',
+            default=21,
+            help="If we're allowed to send more than one reminder email, notifications will be sent each X days."
+        ),
+    )
 
     def handle(self, *args, **options):
-        emails_per_hour = settings.EVENT_REPORT_REMINDER_EMAILS_PER_HOUR
-        max_reminders   = settings.EVENT_REPORT_REMINDERS_LIMIT
-        remind_interval = settings.EVENT_REPORT_REMINDERS_INTERVAL_IN_DAYS
-        from_email      = settings.EVENT_REPORT_REMINDERS_FROM_EMAIL
+        last_reminder_sent_before = datetime.now() - timedelta(days=options['notifications_interval_in_days'])
 
-        last_reminder_sent_before = datetime.now() - timedelta(days=remind_interval)
+        if len(args) != 1:
+            self.stderr.write(
+                "Please specify the emails to send per run as a positional argument. E.g.:\n\n" +
+                "manage.py remind_organizers_to_report_events 100"
+            )
+            exit(1)
 
         events_to_report = events_pending_for_report().filter(
                 Q(last_report_notification_sent_at=None) |
                 Q(last_report_notification_sent_at__lte=last_reminder_sent_before)
             ).filter(
-                report_notifications_count__lt=max_reminders
+                report_notifications_count__lt=options['notifications_limit']
             )
 
         organizer_ids = events_to_report.distinct().values_list('creator_id', flat=True)
@@ -37,7 +78,7 @@ class Command(BaseCommand):
             )
         )
 
-        for organizer in organizers[:emails_per_hour]:
+        for organizer in organizers[:options['emails_per_run']]:
             unreported_organizer_events = events_pending_for_report_for(organizer)
             unrepored_events_count = unreported_organizer_events.count()
 
@@ -48,10 +89,16 @@ class Command(BaseCommand):
                 )
             )
 
-            send_reminder_for_event_report_and_certificate(organizer, unrepored_events_count)
+            send_reminder_for_event_report_and_certificate(
+                organizer,
+                unrepored_events_count,
+                previous_emails_count=unreported_organizer_events[0].report_notifications_count,
+                max_emails_count=options['notifications_limit'],
+                test_mode=options['simulate_emails']
+            )
 
-            for event in unreported_organizer_events:
-                event.last_report_notification_sent_at = datetime.now()
-                event.report_notifications_count += 1
-                event.save()
-
+            if not options['simulate_db']:
+                for event in unreported_organizer_events:
+                    event.last_report_notification_sent_at = datetime.now()
+                    event.report_notifications_count += 1
+                    event.save()

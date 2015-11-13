@@ -360,19 +360,7 @@ SETTINGS_EXPORT = [
 
 # Settings for sending evnet organizers reminder emails to submit an evnet
 # report and claim their certificate.
-EVENT_REPORT_REMINDERS_FROM_EMAIL = 'info@codeweek.eu'
-
-# The notification script runs each hour. The SendGrid free account has
-# a limit of 400 emails per day.
-EVENT_REPORT_REMINDER_EMAILS_PER_HOUR = 16
-
-# Send at most X reminders for event reporting.
-# Set to 0 to disable reminding for event reporting.
-EVENT_REPORT_REMINDERS_LIMIT = 3
-
-# If we're allowed to send more than one reminder email, reminders
-# will be sent each X days.
-EVENT_REPORT_REMINDERS_INTERVAL_IN_DAYS = 21
+EVENT_REPORT_REMINDERS_FROM_EMAIL = 'Code Week <info@codeweek.eu>'
 
 
 try:

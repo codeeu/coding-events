@@ -1,20 +1,26 @@
 Hello, {{name}}!
+{% if total_emails_count > 1 and max_emails_count > 0 and total_emails_count >= max_emails_count %}
+This is a last reminder that you still have {{unreported_events_count}} event{% if unreported_events_count != 0 %}s{% endif %} for which you haven’t submitted a report and haven’t claimed your certificate of recognition.
+{% elif previous_emails_count > 0 %}
+This is a follow up to our previous email to remind you that you have {{unreported_events_count}} event{% if unreported_events_count != 0 %}s{% endif %} for which you haven’t submitted a report and haven’t claimed your certificate of recognition.
+{% else %}
+We’d like to thank you for taking part in Europe Code Week 2015 and helping us to reach hundreds of thousands of people around the world!
+{% endif %}
+As a small token of appreciation for your role in Code Week, as an event organizer, we’re awarding you a certificate of recognition.{% if unreported_events_count > 1 %} Since you have organized and registered for more than one event on the codeweek.eu website, you can get a certificate for each one.{% endif %}
 
-We’d like to thank you on behalf of all the organizers of Code Week for taking part in the initiative and helping us reach hundreds of thousands of people around the world!
-
-As a small token of appreciation for your role in Code Week we're awarding you as an event organizer a certificate of participation.{% if unreported_events_count > 1 %} Since you have organized and registered on the Code Week website more than one event, you can get a certificate for each one.{% endif %}
-
-To get your certificate, go to this link and click "Report event":
+*To get your certificate, please click on the link below and click "Report event":*
 
 http://events.codeweek.eu/report/
 
-You will see a form where we ask you for a few numbers about your event for statistical purposes. Upon submission of the form, your certificate will be automatically generated and will become available immediately. You can then share it online, download it, or even print it on paper, frame it and put it on your wall (if you do this, please send us a picture! :)) The certificate you will get will look like this: http://events.codeweek.eu/static/demo-certificate.pdf
+You will see a form where we ask you for some information about your event for statistical purposes. Upon submitting the form, your certificate will be automatically generated and will become available immediately. You can then share it online, download it, or even print it on paper, frame it and put it on your wall (if you do this, please share a picture with the #CodeEU hashtag! :)) The certificate you will get will look like the one on this link: http://events.codeweek.eu/static/demo-certificate.pdf
 
 Note that you can submit the form only once.
 
-We hope that you continue working on bringing coding literacy to even more people during the year!
+We hope that you will continue working to bring coding literacy to even more people during the coming year!
 
-Thank you once more and hope to see you again during next year's Code Week!
+Thank you once more and hope to see you again in the next year's edition of Europe Code Week!
 
-Warmest regards,
-The Code Week Team
+Kind regards,
+The Code Week Ambassadors
+
+_You are receiving this message because you’ve registered an event on the events.codeweek.eu website and have entered {{email}} as an email of the event organizer. If you think this in an error, just reply to this message to let us know._
