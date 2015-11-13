@@ -60,6 +60,8 @@ class Command(BaseCommand):
                 "manage.py remind_organizers_to_report_events 100"
             )
             exit(1)
+        else:
+            emails_per_run = int(args[0])
 
         events_to_report = events_pending_for_report().filter(
                 Q(last_report_notification_sent_at=None) |
@@ -79,13 +81,14 @@ class Command(BaseCommand):
         organizers = User.objects.filter(id__in=organizer_ids)
 
         self.stdout.write(
-            u'We have to notify {organizers_count} organizer(s) in a total of {events_count} event(s)'.format(
+            u'We have to notify {organizers_count} organizer(s) in a total of {events_count} event(s). Will send at most {emails_per_run} email(s) now.'.format(
                 events_count=events_to_report.count(),
-                organizers_count=organizers.count()
+                organizers_count=organizers.count(),
+                emails_per_run=emails_per_run
             )
         )
 
-        for organizer in organizers[:options['emails_per_run']]:
+        for organizer in organizers[:emails_per_run]:
             unreported_organizer_events = events_pending_for_report_for(organizer)
             unrepored_events_count = unreported_organizer_events.count()
 
