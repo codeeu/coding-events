@@ -31,8 +31,14 @@ class UserProfile(models.Model):
     class Meta:
         app_label = 'api'
 
-# It forces to get or create profile when User is accessed
-User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+# Autocreate a related UserProfile object when accessed
+def get_user_profile(self):
+    try:
+        return self.userprofile
+    except UserProfile.DoesNotExist:
+        return UserProfile.objects.get_or_create(user=self)[0]
+
+User.profile = property(get_user_profile)
 
 def email_with_name(self):
     return u'{full_name} <{email}>'.format(

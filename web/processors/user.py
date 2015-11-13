@@ -13,16 +13,17 @@ def get_user_profile(user_id):
 
 
 def get_ambassadors(country_code=None):
-    ambassadors = []
-    all_ambassadors = User.objects.filter(
-        groups__name='ambassadors').order_by('date_joined')
-    for ambassador in all_ambassadors:
-        if country_code:
-            if ambassador.profile.country == country_code:
-                ambassadors.append(ambassador.profile)
-        else:
-            ambassadors.append(ambassador.profile)
-    return ambassadors
+    ambassadors = User.objects \
+        .filter(groups__name='ambassadors') \
+        .prefetch_related('userprofile') \
+        .order_by('date_joined')
+
+    if country_code != None:
+        ambassadors = ambassadors.filter(userprofile__country=country_code)
+
+    ambassador_profiles = list({ambassador.profile for ambassador in ambassadors})
+
+    return ambassador_profiles
 
 
 def get_ambassadors_for_countries():
