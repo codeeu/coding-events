@@ -3,7 +3,6 @@
 {% load static %}
 {% load compress %}
 
-
 {% block title %}- Search Events{% endblock title %}
 
 {% block search_button %}ddd{% endblock %}
@@ -27,7 +26,7 @@
 
 							<div class="search-checkbox">
 								<hr>
-								<label for="{{ form.past.id_for_label }}">{{ form.past.label }}</label> 
+								<label for="{{ form.past.id_for_label }}">{{ form.past.label }}</label>
 								{{ form.past}}
 							</div>
 
@@ -56,11 +55,10 @@
 {% endblock content %}
 
 {% block custom_js %}
-{{ block.super }}
-<script type="text/javascript" src="{% static "js/endless_pagination/endless-pagination.js" %}" ></script>
-<script type="text/javascript" src="{% static "js/faceted-search-events.js" %}" ></script>
-<script type="text/javascript">
-	Codeweek.FacetedSearch.init();
-</script>
-
+	{{ block.super }}
+	<script type="text/javascript" src="{% static "js/endless_pagination/endless-pagination.js" %}" ></script>
+	<script type="text/javascript" src="{% static "js/faceted-search-events.js" %}" ></script>
+	<script type="text/javascript">
+		Codeweek.FacetedSearch.init();
+	</script>
 {% endblock %}

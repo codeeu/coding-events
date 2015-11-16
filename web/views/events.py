@@ -399,7 +399,6 @@ def events_to_report(request):
 
 
 def search_events(request):
-
     country_code = request.GET.get('country_code', None)
 
     if not country_code:
@@ -413,9 +412,7 @@ def search_events(request):
         country_code = country['country_code']
 
     past = request.GET.get('past', 'no')
-    past_events = False
-    if past == 'yes':
-        past_events = True
+    past_events = (past == 'yes')
 
     search_query = request.GET.get('q', '')
     page = request.GET.get('page', None)

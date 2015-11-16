@@ -225,7 +225,6 @@ class SearchEventForm(forms.Form):
             attrs={
                 'class': 'search-form-element'}),
     )
-
     audience = forms.ModelMultipleChoiceField(
         queryset=EventAudience.objects.all(),
         label='Audience',
