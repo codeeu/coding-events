@@ -417,16 +417,17 @@ def search_events(request):
     search_query = request.GET.get('q', '')
     page = request.GET.get('page', None)
 
-    theme_filter = request.GET.get('theme', None)
-    audience_filter = request.GET.get('audience', None)
+    theme_filter = request.GET.getlist('theme', None)
+    audience_filter = request.GET.getlist('audience', None)
 
     template = 'pages/search_events.html'
     page_template = 'pages/ajax_faceted_search_events.html'
-
     form = SearchEventForm(
         country_code=country_code,
         past_events=past,
-        search=search_query)
+        search=search_query,
+        audience=audience_filter,
+        theme=theme_filter)
     events = get_filtered_events(
         search_query,
         country_code,
