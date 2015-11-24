@@ -8,7 +8,7 @@ We’d like to thank you for taking part in Europe Code Week 2015 and helping us
 {% endif %}
 As a small token of appreciation for your role in Code Week, as an event organizer, we’re awarding you a certificate of recognition.{% if unreported_events_count > 1 %} Since you have organized and registered for more than one event on the codeweek.eu website, you can get a certificate for each one.{% endif %}
 
-*To get your certificate, please click on the link below and click "Report event":*
+*To get your certificate, please click on the link below, log in with the same social account used to create the event, and click "Report event":*
 
 http://events.codeweek.eu/report/
 
