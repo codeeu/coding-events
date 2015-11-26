@@ -23,6 +23,7 @@ from api.processors import get_approved_events
 from api.processors import get_pending_events
 from api.processors import get_created_events
 from api.processors import events_pending_for_report_for
+from api.processors import reporeted_events_for
 from api.processors import get_next_or_previous
 from api.processors import get_nearby_events
 from web.forms.event_form import AddEventForm
@@ -389,12 +390,14 @@ def events_to_report(request):
     """
     Display a list of events which should be reported but have not been reported yet.
     """
-    creator = request.user
-    event_list = events_pending_for_report_for(creator=creator)
+    creator                = request.user
+    unreported_events_list = list(events_pending_for_report_for(creator=creator)) * 8
+    reported_events_list   = list(reporeted_events_for(creator=creator)) * 15
 
     return render_to_response(
         'pages/list_events_pending_for_report.html', {
-            'event_list': event_list,
+            'unreported_events_list': unreported_events_list,
+            'reported_events_list': reported_events_list,
         }, context_instance=RequestContext(request))
 
 

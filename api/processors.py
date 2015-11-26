@@ -149,6 +149,14 @@ def events_pending_for_report():
             start_date__gte=datetime.datetime(2015, 1, 1, 0, 0 ,0))
 
 
+def reported_events():
+    return Event.objects.filter(status='APPROVED').exclude(reported_at=None)
+
+
+def reporeted_events_for(creator):
+    return reported_events().filter(creator=creator)
+
+
 def events_pending_for_report_for(creator):
     return events_pending_for_report().filter(creator=creator)
 

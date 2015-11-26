@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load endless %}
+{% load static %}
 
 {% block title %}- Events pending for report{% endblock title %}
 
 
 {% block content %}
 	<div class="container">
-		<h1>Events pending for report by {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{ user.username }}{% endif %}.</h1>
+		<h1>Events pending for report by {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{ user.username }}{% endif %}</h1>
 
-		{% if not event_list %}
+		{% if not unreported_events_list %}
 			<p>There are no events to be reported yet.</p>
 		{% else %}
 			<p>The events listed below have started or already finished. Fill in a few numbers for statistical purposes for the event and claim your Code Week participation certificate. You will get one certificate per event.</p>
@@ -17,10 +18,10 @@
 		<p>You can submit a report only for approved events which have already started or finished.</p>
 
 		<div class="row">
-			{% paginate 10 event_list as user_events %}
+			{% paginate 10 unreported_events_list using "unreported_page" %}
 
 			<ul>
-				{% for event in user_events %}
+				{% for event in unreported_events_list %}
 					<li>
 						<a href="{% url 'web.view_event' event.id event.slug %}">
 							{{ event.title }}
@@ -32,6 +33,29 @@
 			</ul>
 		</div>
 		{% show_pages %}
+
+		{% if reported_events_list %}
+			<h1>Reported events by {% if user.first_name %}{{user.first_name}} {{user.last_name}}{% else %}{{ user.username }}{% endif %}</h1>
+
+			<p>The events listed below have already been reported and you can view or download your certificate for each one.</p>
+
+			<div class="row">
+				{% paginate 10 reported_events_list using "reported_page" %}
+
+				<ul>
+					{% for event in reported_events_list %}
+						<li>
+							<a href="{% url 'web.view_event' event.id event.slug %}">
+								{{ event.title }}
+							</a>
+							– {% include 'layout/time_to_event.html' %} –
+							<a href="{% static event.certificate_file_path %}" class="btn btn-sm">View your certificate here</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+			{% show_pages %}
+		{% endif %}
 	</div>
 
 {% endblock content %}
