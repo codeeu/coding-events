@@ -391,8 +391,8 @@ def events_to_report(request):
     Display a list of events which should be reported but have not been reported yet.
     """
     creator                = request.user
-    unreported_events_list = list(events_pending_for_report_for(creator=creator)) * 8
-    reported_events_list   = list(reporeted_events_for(creator=creator)) * 15
+    unreported_events_list = events_pending_for_report_for(creator=creator)
+    reported_events_list   = reporeted_events_for(creator=creator)
 
     return render_to_response(
         'pages/list_events_pending_for_report.html', {
