@@ -5,309 +5,309 @@
 {% block title %}- {{ event.title }} ({{ event.country.name }}){% endblock title %}
 
 {% block social %}
-	<meta name="description" content="{{ event.description }}" />
+  <meta name="description" content="{{ event.description }}" />
 
-	<meta property="og:title" content="{{ event.title }}" />
-	<meta property="og:type" content="website" />
-	{% if event.picture %}
-	<meta property="og:image" content="{{ event.picture.url }}" />
-	{% else %}
-	<meta property="og:image" content="http://events.codeweek.eu/static/img/social_default_picture.png" />
-	{% endif %}
-	<meta property="og:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
-	<meta property="og:description" content="{{ event.description }}" />
+  <meta property="og:title" content="{{ event.title }}" />
+  <meta property="og:type" content="website" />
+  {% if event.picture %}
+  <meta property="og:image" content="{{ event.picture.url }}" />
+  {% else %}
+  <meta property="og:image" content="http://events.codeweek.eu/static/img/social_default_picture.png" />
+  {% endif %}
+  <meta property="og:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
+  <meta property="og:description" content="{{ event.description }}" />
 
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
-	<meta name="twitter:title" content="{{ event.title }}" />
-	<meta name="twitter:description" content="{{ event.description }}" />
-	{% if event.picture %}
-	<meta name="twitter:image" content="{{ event.picture.url }}" />
-	{% else %}
-	<meta property="og:image" content="http://events.codeweek.eu/static/img/social_default_picture.png" />
-	{% endif %}
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:url" content="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" />
+  <meta name="twitter:title" content="{{ event.title }}" />
+  <meta name="twitter:description" content="{{ event.description }}" />
+  {% if event.picture %}
+  <meta name="twitter:image" content="{{ event.picture.url }}" />
+  {% else %}
+  <meta property="og:image" content="http://events.codeweek.eu/static/img/social_default_picture.png" />
+  {% endif %}
 {% endblock social %}
 
 {% block content %}
 
-	<div class="container">
-		<div id="fb-root"></div>
-			<div class="edit-toolbar">
-			{% if event.creator.id == request.user.id or user.is_staff %}
-				{% if event.is_certificate_generated %}
-					<div class="alert alert-success">
-						<p>
-							Your Code Week certificate is ready.
-							Feel free to download it or share it directly.
-							<a href="{% static event.certificate_file_path %}">View your certificate here</a>.
-						</p>
-					</div>
-				{% elif event.is_reporting_allowed %}
-					<div class="alert alert-warning">
-						<p>
-							Submit a report for this event and claim your Code Week certificate.
-							<a href="{% url 'web.report_event' event.id %}" class="btn btn-sm">Report event and claim certificate</a>
-						</p>
-					</div>
-				{% endif %}
-			{% endif %}
+  <div class="container">
+    <div id="fb-root"></div>
+      <div class="edit-toolbar">
+      {% if event.creator.id == request.user.id or user.is_staff %}
+        {% if event.is_certificate_generated %}
+          <div class="alert alert-success">
+            <p>
+              Your Code Week certificate is ready.
+              Feel free to download it or share it directly.
+              <a href="{% static event.certificate_file_path %}">View your certificate here</a>.
+            </p>
+          </div>
+        {% elif event.is_reporting_allowed %}
+          <div class="alert alert-warning">
+            <p>
+              Submit a report for this event and claim your Code Week certificate.
+              <a href="{% url 'web.report_event' event.id %}" class="btn btn-sm">Report event and claim certificate</a>
+            </p>
+          </div>
+        {% endif %}
+      {% endif %}
 
-			{% if user.profile.is_ambassador %}
-			{% if user.profile.country == event.country or user.is_staff %}
-				<div id="change_status">
-					{% if event.status == 'PENDING' %}
-						<div class="alert alert-warning">
-							This event is stil <strong>Pending</strong>.
-							If it looks good then
-							<form method="post" role="form" class="inline" action="{% url 'web.change_status' event.pk %}">
-								{% csrf_token %}
-								<input type="submit" value="approve" class="btn btn-sm btn-primary" />
-							</form>
+      {% if user.profile.is_ambassador %}
+      {% if user.profile.country == event.country or user.is_staff %}
+        <div id="change_status">
+          {% if event.status == 'PENDING' %}
+            <div class="alert alert-warning">
+              This event is stil <strong>Pending</strong>.
+              If it looks good then
+              <form method="post" role="form" class="inline" action="{% url 'web.change_status' event.pk %}">
+                {% csrf_token %}
+                <input type="submit" value="approve" class="btn btn-sm btn-primary" />
+              </form>
 
-							it
-							{% if event.creator.email %} or contact the event creator
-							<a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
-								by email
-							</a>{% endif %}.
+              it
+              {% if event.creator.email %} or contact the event creator
+              <a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
+                by email
+              </a>{% endif %}.
 
-							Otherwise
-							<form method="post" role="form" class="inline" action="{% url 'web.reject_status' event.pk %}">
-								{% csrf_token %}
-								<input type="submit" value="reject" class="btn btn-sm" />
-							</form>
-							it.
+              Otherwise
+              <form method="post" role="form" class="inline" action="{% url 'web.reject_status' event.pk %}">
+                {% csrf_token %}
+                <input type="submit" value="reject" class="btn btn-sm" />
+              </form>
+              it.
 
-							{% if next_event%}
-							<div class="pull-right">
-								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
-							</div>
-							{% endif %}
-						</div>
-					{% elif event.status == 'APPROVED' %}
-						<div class="alert alert-info">
-							This event is nice and approved. You can revert it to
-							<form method="post" role="form" class="inline" action="{% url 'web.change_status' event.pk %}">
-								{% csrf_token %}
-								<input type="submit" value="pending" class="btn btn-sm" />
-							</form>
+              {% if next_event%}
+              <div class="pull-right">
+                <a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a>
+              </div>
+              {% endif %}
+            </div>
+          {% elif event.status == 'APPROVED' %}
+            <div class="alert alert-info">
+              This event is nice and approved. You can revert it to
+              <form method="post" role="form" class="inline" action="{% url 'web.change_status' event.pk %}">
+                {% csrf_token %}
+                <input type="submit" value="pending" class="btn btn-sm" />
+              </form>
 
-							{% if event.creator.email %}, contact the event creator 
-							<a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
-								by email
-							</a>{% endif %}
+              {% if event.creator.email %}, contact the event creator
+              <a href="mailto:{{event.creator.email}}?subject=Your Code Week event">
+                by email
+              </a>{% endif %}
 
-							 or check other
-							<a href="{% url 'web.pending_events' user.profile.country %}">
-								<strong>pending events</strong>
-							</a>.
-							{% if next_event%}
-							<div class="pull-right">
-								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
-							</div>
-							{% endif %}
-						</div>
-					{% elif event.status == 'REJECTED' %}
-						<div class="alert alert-danger">
-							This event is rejected. You can revert it to
-							<form method="post" role="form" class="inline" action="{% url 'web.reject_status' event.pk %}">
-								{% csrf_token %}
-								<input type="submit" value="pending" class="btn btn-sm" />
-							</form>
+               or check other
+              <a href="{% url 'web.pending_events' user.profile.country %}">
+                <strong>pending events</strong>
+              </a>.
+              {% if next_event%}
+              <div class="pull-right">
+                <a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a>
+              </div>
+              {% endif %}
+            </div>
+          {% elif event.status == 'REJECTED' %}
+            <div class="alert alert-danger">
+              This event is rejected. You can revert it to
+              <form method="post" role="form" class="inline" action="{% url 'web.reject_status' event.pk %}">
+                {% csrf_token %}
+                <input type="submit" value="pending" class="btn btn-sm" />
+              </form>
 
-							or check other
-							<a href="{% url 'web.pending_events' user.profile.country %}">
-								<strong>pending events</strong>
-							</a>.
-							{% if next_event%}
-							<div class="pull-right">
-								<a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a> 
-							</div>
-							{% endif %}
-						</div>
-					{% endif %}
-				</div>
-			{% endif %}
-			{% endif %}
+              or check other
+              <a href="{% url 'web.pending_events' user.profile.country %}">
+                <strong>pending events</strong>
+              </a>.
+              {% if next_event%}
+              <div class="pull-right">
+                <a class="btn btn-sm btn-primary" href="{% url 'web.view_event' next_event.pk next_event.slug %}">Next pending event</a>
+              </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+      {% endif %}
 
-			{% if event.creator.id == request.user.id %}
-				<a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
-				<i class="fa fa-pencil-square-o"></i>Edit event</a>
-				{% if event.status == 'PENDING' %}
-					<div class="alert alert-warning">
-						<strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
-					</div>
-				{% endif %}
-			{% endif %}
-			</div>
+      {% if event.creator.id == request.user.id %}
+        <a href="{% url 'web.edit_event' event.id %}" class="btn pull-right edit-event-btn">
+        <i class="fa fa-pencil-square-o"></i>Edit event</a>
+        {% if event.status == 'PENDING' %}
+          <div class="alert alert-warning">
+            <strong>NOTE:</strong> This event is stil being reviewed by <a href="{% url 'web.ambassadors' %}">moderators</a>.
+          </div>
+        {% endif %}
+      {% endif %}
+      </div>
 
-		<div class="about-event clearfix">
-			<div class="col-md-8 event-description first">
-				<h1>{{ event.title }}</h1>
-				<strong>Organized by:</strong>
+    <div class="about-event clearfix">
+      <div class="col-md-8 event-description first">
+        <h1>{{ event.title }}</h1>
+        <strong>Organized by:</strong>
 
-				<p> {{ event.organizer }}</p>
-				{% if event.contact_person %}
-					<strong>Contact email:</strong><br>
-					<p><a href="mailto:{{ event.contact_person }}">{{ event.contact_person }}</a></p>
-				{% endif %}
-				<address>
-					<strong>Happening at: </strong><br />
-					{{ event.location }}
-				</address>
-				<p>
-					<strong>From</strong> {{ event.start_date|date:"l, F j, Y" }} at {{ event.start_date|date:"H:i" }}
-					<strong>to</strong> {{ event.end_date|date:"l, F j, Y" }} at {{ event.end_date|date:"H:i" }}
-				</p>
-				<strong>Description:</strong>
+        <p> {{ event.organizer }}</p>
+        {% if event.contact_person %}
+          <strong>Contact email:</strong><br>
+          <p><a href="mailto:{{ event.contact_person }}">{{ event.contact_person }}</a></p>
+        {% endif %}
+        <address>
+          <strong>Happening at: </strong><br />
+          {{ event.location }}
+        </address>
+        <p>
+          <strong>From</strong> {{ event.start_date|date:"l, F j, Y" }} at {{ event.start_date|date:"H:i" }}
+          <strong>to</strong> {{ event.end_date|date:"l, F j, Y" }} at {{ event.end_date|date:"H:i" }}
+        </p>
+        <strong>Description:</strong>
 
-				<p>
-					{{ event.description|linebreaksbr }}
-				</p>
-				{% if event.event_url %}
-					<strong>More information:</strong>
-					<p><a href="{{ event.event_url }}" target="_blank">{{ event.event_url }}</a></p>
-				{% endif %}
-				<strong>This event is for:</strong>
+        <p>
+          {{ event.description|linebreaksbr }}
+        </p>
+        {% if event.event_url %}
+          <strong>More information:</strong>
+          <p><a href="{{ event.event_url }}" target="_blank">{{ event.event_url }}</a></p>
+        {% endif %}
+        <strong>This event is for:</strong>
 
-				<p>{% for entry in event.audience.all %}
-					{% if forloop.last %}
-						{{ entry.name }}
-					{% else %}
-						{{ entry.name }},
-					{% endif %}
-				{% endfor %}</p>
-				<strong>Main themes:</strong>
+        <p>{% for entry in event.audience.all %}
+          {% if forloop.last %}
+            {{ entry.name }}
+          {% else %}
+            {{ entry.name }},
+          {% endif %}
+        {% endfor %}</p>
+        <strong>Main themes:</strong>
 
-				<p>{% for entry in event.theme.all %}
-					{% if forloop.last %}
-						{{ entry.name }}
-					{% else %}
-						{{ entry.name }},
-					{% endif %}
-				{% endfor %}</p>
-				{% if event.tags %}
-					<strong>Tags:</strong>
-					<p>
-						{% for tag in event.tags.all %}
-							{% if forloop.last %}
-								<a href="{% url 'web.search_events' %}?q={{ tag.name|urlencode }}">{{ tag.name }}</a>
-							{% else %}
-								<a href="{% url 'web.search_events' %}?q={{ tag.name|urlencode }}">{{ tag.name }}</a>,
-							{% endif %}
-						{% endfor %}
-					</p>
-				{% endif %}
+        <p>{% for entry in event.theme.all %}
+          {% if forloop.last %}
+            {{ entry.name }}
+          {% else %}
+            {{ entry.name }},
+          {% endif %}
+        {% endfor %}</p>
+        {% if event.tags %}
+          <strong>Tags:</strong>
+          <p>
+            {% for tag in event.tags.all %}
+              {% if forloop.last %}
+                <a href="{% url 'web.search_events' %}?q={{ tag.name|urlencode }}">{{ tag.name }}</a>
+              {% else %}
+                <a href="{% url 'web.search_events' %}?q={{ tag.name|urlencode }}">{{ tag.name }}</a>,
+              {% endif %}
+            {% endfor %}
+          </p>
+        {% endif %}
 
-				<strong>Share the event:</strong>
-				<div class="share-event-wrapper">
+        <strong>Share the event:</strong>
+        <div class="share-event-wrapper">
 
-					<div class="fb-like" 
-						data-href="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" data-layout="button_count" data-action="recommend" data-show-faces="false" data-share="true"></div>
-					<a href="https://twitter.com/share" class="twitter-share-button"
-					   data-url="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}"
-					   data-text="Check out {{ event.title }} at" data-via="CodeWeekEU"
-					   data-hashtags="codeEU">Tweet</a>
+          <div class="fb-like"
+            data-href="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}" data-layout="button_count" data-action="recommend" data-show-faces="false" data-share="true"></div>
+          <a href="https://twitter.com/share" class="twitter-share-button"
+             data-url="http://events.codeweek.eu{% url 'web.view_event' event.pk event.slug %}"
+             data-text="Check out {{ event.title }} at" data-via="CodeWeekEU"
+             data-hashtags="codeEU">Tweet</a>
 
-					<div class="g-plusone" data-size="medium" data-href="http://events.codeweek.eu"></div>
-					<a class="fa fa-envelope" title="Click to email this to a friend" href="mailto:?subject=Look at this awesome coding event&amp;body=Hi, check out {{ event.title }} event at http://events.codeweek.eu{{ event.get_absolute_url }}"></a>
-				</div>
-			</div>
-			<div class="col-md-4 event-time-place">
-				{% if event.picture %}
-					<div class="event-jumbotron">
-						<img src="{{ event.picture.url }}" alt="{{ event.title }} Cover Image" role="image" />
-					</div>
-				{% endif %}
-				<div id="calendar">
-					{{ event.start_date|render_calendar:event.end_date }}
-				</div>
-			</div>
-			<div class="col-md-12 first">
-				<hr>
-			</div>
-			<div id="view-event-map-wrapper" class="col-md-12 first">
-				<div id="view-event-map"></div>
-			</div>
-			</div>
-			<div class="col-md-12">
-				<hr>
-			</div>
-			{% if nearby %}
-				<div class="col-md-12">
-					<h3>Nearby events:</h3>
-					<div class="container-fluid ne-wrapper">
-						{% for event in nearby %}
-							{% include 'layout/near_event_tile.html' %}
-						{% endfor %}
-					</div>
-				</div>
-			{% endif %}
-		</div>
+          <div class="g-plusone" data-size="medium" data-href="http://events.codeweek.eu"></div>
+          <a class="fa fa-envelope" title="Click to email this to a friend" href="mailto:?subject=Look at this awesome coding event&amp;body=Hi, check out {{ event.title }} event at http://events.codeweek.eu{{ event.get_absolute_url }}"></a>
+        </div>
+      </div>
+      <div class="col-md-4 event-time-place">
+        {% if event.picture %}
+          <div class="event-jumbotron">
+            <img src="{{ event.picture.url }}" alt="{{ event.title }} Cover Image" role="image" />
+          </div>
+        {% endif %}
+        <div id="calendar">
+          {{ event.start_date|render_calendar:event.end_date }}
+        </div>
+      </div>
+      <div class="col-md-12 first">
+        <hr>
+      </div>
+      <div id="view-event-map-wrapper" class="col-md-12 first">
+        <div id="view-event-map"></div>
+      </div>
+      </div>
+      <div class="col-md-12">
+        <hr>
+      </div>
+      {% if nearby %}
+        <div class="col-md-12">
+          <h3>Nearby events:</h3>
+          <div class="container-fluid ne-wrapper">
+            {% for event in nearby %}
+              {% include 'layout/near_event_tile.html' %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
 {% endblock content %}
 
 {% block custom_js %}
-	{% load static %}
+  {% load static %}
 
-	<script type="text/javascript"
-	        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
-	</script>
-	<script>!function (d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-		if (!d.getElementById(id)) {
-			js = d.createElement(s);
-			js.id = id;
-			js.src = p + '://platform.twitter.com/widgets.js';
-			fjs.parentNode.insertBefore(js, fjs);
-		}
-	}(document, 'script', 'twitter-wjs');</script>
-	<!-- Place this tag in your head or just before your close body tag. -->
-	<script type="text/javascript" src="https://apis.google.com/js/platform.js">
-		{lang: 'en-GB'}
-	</script>
-	<script type="text/javascript">
+  <script type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU">
+  </script>
+  <script>!function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+    if (!d.getElementById(id)) {
+      js = d.createElement(s);
+      js.id = id;
+      js.src = p + '://platform.twitter.com/widgets.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }
+  }(document, 'script', 'twitter-wjs');</script>
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script type="text/javascript" src="https://apis.google.com/js/platform.js">
+    {lang: 'en-GB'}
+  </script>
+  <script type="text/javascript">
 
-		function initialize() {
-			//localization fix!
-			var latitude = "{{ event.geoposition.latitude }}"
-			latitude = latitude.replace(',','.');
-			var longitude = "{{ event.geoposition.longitude }}"
-			longitude = longitude.replace(',','.');
+    function initialize() {
+      //localization fix!
+      var latitude = "{{ event.geoposition.latitude }}"
+      latitude = latitude.replace(',','.');
+      var longitude = "{{ event.geoposition.longitude }}"
+      longitude = longitude.replace(',','.');
 
-			var myLatlng = new google.maps.LatLng(latitude, longitude);
-			var mapOptions = {
-				zoom: 15,
-				center: myLatlng
-			};
-			var map = new google.maps.Map(document.getElementById('view-event-map'),
-					mapOptions);
-			var infowindow = new google.maps.InfoWindow({
-				content: "<p><strong>{{ event.title }}</strong></p>{{ event.location }}"
-			});
-			var marker = new google.maps.Marker({
-				position: myLatlng,
-				animation: google.maps.Animation.DROP,
-				title: "{{ event.location }}",
-				zoomControl: true,
-				zoomControlOptions: {
-					style: google.maps.ZoomControlStyle.LARGE
-				}
-			});
-			marker.setMap(map);
-			google.maps.event.addListener(marker, 'click', function () {
-				infowindow.open(map, marker);
-			});
-		}
-		google.maps.event.addDomListener(window, 'load', initialize);
+      var myLatlng = new google.maps.LatLng(latitude, longitude);
+      var mapOptions = {
+        zoom: 15,
+        center: myLatlng
+      };
+      var map = new google.maps.Map(document.getElementById('view-event-map'),
+          mapOptions);
+      var infowindow = new google.maps.InfoWindow({
+        content: "<p><strong>{{ event.title }}</strong></p>{{ event.location }}"
+      });
+      var marker = new google.maps.Marker({
+        position: myLatlng,
+        animation: google.maps.Animation.DROP,
+        title: "{{ event.location }}",
+        zoomControl: true,
+        zoomControlOptions: {
+          style: google.maps.ZoomControlStyle.LARGE
+        }
+      });
+      marker.setMap(map);
+      google.maps.event.addListener(marker, 'click', function () {
+        infowindow.open(map, marker);
+      });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
 
-	</script>
+  </script>
 
 
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=1415375708710844";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=1415375708710844";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
 
 {% endblock %}

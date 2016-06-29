@@ -5,274 +5,270 @@
 {% block title %}- Add Event{% endblock title %}
 
 {% block custom_css %}
-	<link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}" />
-	<link rel="stylesheet" type="text/css" href="{% static "css/jasny-bootstrap.min.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "css/jquery.datetimepicker.css" %}" />
+  <link rel="stylesheet" type="text/css" href="{% static "css/jasny-bootstrap.min.css" %}" />
 {% endblock %}
 
-
 {% block content %}
-	<div class="container">
-		<div class="clearfix">
-			<h1 class="pull-left">{% if editing %}Edit{% else %}Add {% endif %} your #codeEU event</h1>
-			<div class="how-to">
-				<a href="{% url 'web.guide' %}" target="_blank"
-				   class="btn btn-sm pull-right">How to organize your own event?
-				</a>
-			</div>
-		</div>
-		<p class="aluminum">Required fields are marked with an * asterisk. Feel free to add the event listing in your local language.</p>
-		
+  <div class="container">
+    <div class="clearfix">
+      <h1 class="pull-left">{% if editing %}Edit{% else %}Add {% endif %} your #codeEU event</h1>
+      <div class="how-to">
+        <a href="{% url 'web.guide' %}" target="_blank"
+           class="btn btn-sm pull-right">How to organize your own event?
+        </a>
+      </div>
+    </div>
+    <p class="aluminum">Required fields are marked with an * asterisk. Feel free to add the event listing in your local language.</p>
 
+    <form enctype="multipart/form-data" method="post" id="event" role="form" class="form-horizontal clearfix">{% csrf_token %}
+      <div class="clearfix">
+        <div class="col-md-6 first">
+          <div class="form-group {% if form.title.errors %}has-error{% endif %}">
+            <label for="{{ form.title.auto_id }}" class="col-sm-3 control-label">
+              {% if form.title.field.required %}*{% endif %}
+              {{ form.title.label }}
+            </label>
 
-		<form enctype="multipart/form-data" method="post" id="event" role="form" class="form-horizontal clearfix">{% csrf_token %}
-			<div class="clearfix">
-				<div class="col-md-6 first">
-					<div class="form-group {% if form.title.errors %}has-error{% endif %}">
-						<label for="{{ form.title.auto_id }}" class="col-sm-3 control-label">
-							{% if form.title.field.required %}*{% endif %}
-							{{ form.title.label }}
-						</label>
+            <div class="col-sm-9">
+              {{ form.title }}
+            </div>
+            {% if form.title.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.title.errors }}</span>
+            {% endif %}
+          </div>
 
-						<div class="col-sm-9">
-							{{ form.title }}
-						</div>
-						{% if form.title.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.title.errors }}</span>
-						{% endif %}
-					</div>
-				
-					<div class="form-group {% if form.organizer.errors %}has-error{% endif %}">
-						<label for="{{ form.organizer.auto_id }}" class="col-sm-3 control-label">
-							{% if form.organizer.field.required %}*{% endif %}
-							{{ form.organizer.label }}
-						</label>
+          <div class="form-group {% if form.organizer.errors %}has-error{% endif %}">
+            <label for="{{ form.organizer.auto_id }}" class="col-sm-3 control-label">
+              {% if form.organizer.field.required %}*{% endif %}
+              {{ form.organizer.label }}
+            </label>
 
-						<div class="col-sm-9">
-							{{ form.organizer }}
-						</div>
-						{% if form.organizer.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.organizer.errors }}</span>
-						{% endif %}
-					</div>
-				
-					<div class="form-group {% if form.description.errors %}has-error{% endif %}">
-						<label for="{{ form.description.auto_id }}" class="col-sm-3 control-label">
-							{% if form.description.field.required %}*{% endif %}
-							{{ form.description.label }}
-						</label>
+            <div class="col-sm-9">
+              {{ form.organizer }}
+            </div>
+            {% if form.organizer.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.organizer.errors }}</span>
+            {% endif %}
+          </div>
 
-						<div class="col-sm-9">
-							{{ form.description }}
-						</div>
-						{% if form.description.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.description.errors }}</span>
-						{% endif %}
-					</div>
-				
-					<div class="form-group {% if form.audience.errors %}has-error{% endif %}">
-						<span class="help-block col-sm-9 col-sm-offset-3">{{ form.audience.help_text }}</span>
-						<label for="{{ form.audience.auto_id }}" class="col-sm-3 control-label">
-							{% if form.audience.field.required %}*{% endif %}
-							{{ form.audience.label }}
-						</label>
+          <div class="form-group {% if form.description.errors %}has-error{% endif %}">
+            <label for="{{ form.description.auto_id }}" class="col-sm-3 control-label">
+              {% if form.description.field.required %}*{% endif %}
+              {{ form.description.label }}
+            </label>
 
-						<div class="col-sm-9">
-							{{ form.audience }}
-						</div>
-						{% if form.audience.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.audience.errors }}</span>
-						{% endif %}
-					</div>
-				
-					<div class="form-group {% if form.theme.errors %}has-error{% endif %}">
-						<span class="help-block col-sm-9 col-sm-offset-3">{{ form.theme.help_text }}</span>
-						<label for="{{ form.theme.auto_id }}" class="col-sm-3 control-label">
-							{% if form.theme.field.required %}*{% endif %}
-							{{ form.theme.label }}
-						</label>
+            <div class="col-sm-9">
+              {{ form.description }}
+            </div>
+            {% if form.description.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.description.errors }}</span>
+            {% endif %}
+          </div>
 
-						<div class="col-sm-9">
-							{{ form.theme }}
-						</div>
-						{% if form.theme.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.theme.errors }}</span>
-						{% endif %}
-					</div>
-				
-				
-				</div>
-				<div class="col-md-6">
+          <div class="form-group {% if form.audience.errors %}has-error{% endif %}">
+            <span class="help-block col-sm-9 col-sm-offset-3">{{ form.audience.help_text }}</span>
+            <label for="{{ form.audience.auto_id }}" class="col-sm-3 control-label">
+              {% if form.audience.field.required %}*{% endif %}
+              {{ form.audience.label }}
+            </label>
 
-					<div class="form-group {% if form.location.errors or form.country.errors %}has-error{% endif %}">
-						<label for="{{ form.location.auto_id }}" class="col-sm-3 control-label">
-							{% if form.location.field.required %}*{% endif %}
-							{{ form.location.label }}
-						</label>
+            <div class="col-sm-9">
+              {{ form.audience }}
+            </div>
+            {% if form.audience.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.audience.errors }}</span>
+            {% endif %}
+          </div>
 
-						<div class="col-sm-9 first last">
-							{{ form.location }}
-						</div>
-						{% if form.location.errors or form.country.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.location.errors }}{{form.country.errors}}</span>
-						{% endif %}
-					</div>
-					<div id="view-event-map-wrapper" class="event-map col-sm-9 col-sm-offset-3">
-						<div id="view-event-map"><i class="fa fa-refresh fa-3x fa-spin"></i> </div>
-					</div>
-				
-					<div class="form-group {% if form.start_date.errors %}has-error{% endif %}">
-						<label for="{{ form.start_date.auto_id }}" class="col-sm-3 control-label">
-							{% if form.start_date.field.required %}*{% endif %}
-							{{ form.start_date.label }}
-						</label>
+          <div class="form-group {% if form.theme.errors %}has-error{% endif %}">
+            <span class="help-block col-sm-9 col-sm-offset-3">{{ form.theme.help_text }}</span>
+            <label for="{{ form.theme.auto_id }}" class="col-sm-3 control-label">
+              {% if form.theme.field.required %}*{% endif %}
+              {{ form.theme.label }}
+            </label>
 
-						<div class="col-sm-9 input-group">
-							<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-							{{ form.start_date }}
-						</div>
-						{% if form.start_date.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.start_date.errors }}</span>
-						{% elif form.start_date.help_text %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.start_date.help_text }}</span>
-						{% endif %}
-					</div>
+            <div class="col-sm-9">
+              {{ form.theme }}
+            </div>
+            {% if form.theme.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.theme.errors }}</span>
+            {% endif %}
+          </div>
 
-					<div class="form-group {% if form.end_date.errors %}has-error{% endif %}">
-						<label for="{{ form.end_date.auto_id }}" class="col-sm-3 control-label">
-							{% if form.end_date.field.required %}*{% endif %}
-							{{ form.end_date.label }}
-						</label>
+        </div>
+        <div class="col-md-6">
 
-						<div class="col-sm-9 input-group">
-							<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-							{{ form.end_date }}
-						</div>
-						{% if form.end_date.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.end_date.errors }}</span>
-						{% elif form.end_date.help_text %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.end_date.help_text }}</span>
-						{% endif %}
-					</div>
-					<div class="form-group {% if form.event_url.errors %}has-error{% endif %}">
-						<span class="help-block col-sm-9 col-sm-offset-3">{{ form.event_url.help_text }}</span>
-						<label for="{{ form.event_url.auto_id }}" class="col-sm-3 control-label">
-							{% if form.event_url.field.required %}*{% endif %}
-							{{ form.event_url.label }}
-						</label>
+          <div class="form-group {% if form.location.errors or form.country.errors %}has-error{% endif %}">
+            <label for="{{ form.location.auto_id }}" class="col-sm-3 control-label">
+              {% if form.location.field.required %}*{% endif %}
+              {{ form.location.label }}
+            </label>
 
-						<div class="col-sm-9 first last">
-							{{ form.event_url }}
-						</div>
-						{% if form.event_url.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.event_url.errors }}</span>
-						{% endif %}
-					</div>
-					
-					<div class="form-group {% if form.contact_person.errors %}has-error{% endif %}">
-						<span class="help-block col-sm-9 col-sm-offset-3">{{ form.contact_person.help_text }}</span>
-						<label for="{{ form.contact_person.auto_id }}" class="col-sm-3 control-label">
-							{% if form.contact_person.field.required %}*{% endif %}
-							{{ form.contact_person.label }}
-						</label>
+            <div class="col-sm-9 first last">
+              {{ form.location }}
+            </div>
+            {% if form.location.errors or form.country.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.location.errors }}{{form.country.errors}}</span>
+            {% endif %}
+          </div>
+          <div id="view-event-map-wrapper" class="event-map col-sm-9 col-sm-offset-3">
+            <div id="view-event-map"><i class="fa fa-refresh fa-3x fa-spin"></i> </div>
+          </div>
 
-						<div class="col-sm-9 first last">
-							{{ form.contact_person }}
-						</div>
-						{% if form.contact_person.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.contact_person.errors }}</span>
-						{% endif %}
-					</div>
+          <div class="form-group {% if form.start_date.errors %}has-error{% endif %}">
+            <label for="{{ form.start_date.auto_id }}" class="col-sm-3 control-label">
+              {% if form.start_date.field.required %}*{% endif %}
+              {{ form.start_date.label }}
+            </label>
 
-					<div class="form-group {% if form.tags.errors %}has-error{% endif %}">
-						<label for="{{ form.tags.auto_id }}" class="col-sm-3 control-label">
-							{% if form.tags.field.required %}*{% endif %}
-							{{ form.tags.label }}
-						</label>
+            <div class="col-sm-9 input-group">
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              {{ form.start_date }}
+            </div>
+            {% if form.start_date.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.start_date.errors }}</span>
+            {% elif form.start_date.help_text %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.start_date.help_text }}</span>
+            {% endif %}
+          </div>
 
-						<div class="col-sm-9 first last">
-							{{ form.tags }}
-						</div>
-						{% if form.tags.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.tags.errors }}</span>
-						{% elif form.tags.help_text %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.tags.help_text }}</span>
-						{% endif %}
-					</div>
+          <div class="form-group {% if form.end_date.errors %}has-error{% endif %}">
+            <label for="{{ form.end_date.auto_id }}" class="col-sm-3 control-label">
+              {% if form.end_date.field.required %}*{% endif %}
+              {{ form.end_date.label }}
+            </label>
 
-					<div class="form-group">
-						<label for="{{ form.picture.auto_id }}" class="col-sm-3 control-label">
-							{{ form.picture.label }}
-						</label>
+            <div class="col-sm-9 input-group">
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              {{ form.end_date }}
+            </div>
+            {% if form.end_date.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.end_date.errors }}</span>
+            {% elif form.end_date.help_text %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.end_date.help_text }}</span>
+            {% endif %}
+          </div>
+          <div class="form-group {% if form.event_url.errors %}has-error{% endif %}">
+            <span class="help-block col-sm-9 col-sm-offset-3">{{ form.event_url.help_text }}</span>
+            <label for="{{ form.event_url.auto_id }}" class="col-sm-3 control-label">
+              {% if form.event_url.field.required %}*{% endif %}
+              {{ form.event_url.label }}
+            </label>
 
-						<div class="col-sm-9 first last fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %}"
-						     data-provides="fileinput" data-name="{{ form.picture.name }}">
-						     <input type="hidden" name="{{ form.picture.name }}" value="nochange" />
-							<div class="fileinput-new">
-								<img src="{% static 'img/image_placeholder.png' %}" alt="Image Placeholder"
-								     style="max-height: 204px; max-width: 100%">
-							</div>
-							<div class="fileinput-preview fileinput-exists">
-								{% if picture_url %}
-								<img src="{{ picture_url.url }}" alt="{{ form.picture.name }} Image"
-								     style="max-height: 204px; max-width: 100%" />
-								{% endif %}
-							</div>
-							<div>
-							<span class="help-block">{{ form.picture.help_text }}</span>
-							<span class="btn btn-sm btn-file">
-								<span class="fileinput-new">Select image</span>
-								<span class="fileinput-exists">Change</span>
-								<input type="file"/></span>
-								<a href="#" class="btn btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
-							</div>		
-						</div>
-					</div>
-				</div>
+            <div class="col-sm-9 first last">
+              {{ form.event_url }}
+            </div>
+            {% if form.event_url.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.event_url.errors }}</span>
+            {% endif %}
+          </div>
 
-				<div class="hidden">{{ form.geoposition }}{{ form.country }}</div>
-			</div>
-			<div class="clearfix well well-sm">
-				<h3>Your contact information</h3>
-				<div class="aluminum">
-					This information will only be visible to
-					<a href="{% url 'web.ambassadors' %}" target="_blank">EU Code Week Ambassadors</a> and Code Week organizers, who will check your event before it appears on the map and might contact you if edits are necessary or for administering surveys for statistical purposes after the event.
-				</div>
-				<div class="col-md-6 first">
-					<div class="form-group {% if form.user_email.errors %}has-error{% endif %}">
-						<span class="help-block col-sm-9 col-sm-offset-3">{{ form.user_email.help_text }}</span>
-						<label for="{{ form.user_email.auto_id }}" class="col-sm-3 control-label">
-							{% if form.user_email.field.required %}*{% endif %} {{ form.user_email.label }}
-						</label>
-						<div class="col-sm-9">
-							{{ form.user_email }}
-						</div>
-						{% if form.user_email.errors %}
-							<span class="help-block col-sm-9 col-sm-offset-3">{{ form.user_email.errors }}</span>
-						{% endif %}
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 first">
-				<div class="col-sm-9 col-sm-offset-3">
-					<div class="btn btn-primary btn-directional fa-plus-circle btn-lg submit-button-wrapper">
-						<input type="submit" value="{% if editing %}Save{% else %}Add{% endif %} event" />
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
+          <div class="form-group {% if form.contact_person.errors %}has-error{% endif %}">
+            <span class="help-block col-sm-9 col-sm-offset-3">{{ form.contact_person.help_text }}</span>
+            <label for="{{ form.contact_person.auto_id }}" class="col-sm-3 control-label">
+              {% if form.contact_person.field.required %}*{% endif %}
+              {{ form.contact_person.label }}
+            </label>
+
+            <div class="col-sm-9 first last">
+              {{ form.contact_person }}
+            </div>
+            {% if form.contact_person.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.contact_person.errors }}</span>
+            {% endif %}
+          </div>
+
+          <div class="form-group {% if form.tags.errors %}has-error{% endif %}">
+            <label for="{{ form.tags.auto_id }}" class="col-sm-3 control-label">
+              {% if form.tags.field.required %}*{% endif %}
+              {{ form.tags.label }}
+            </label>
+
+            <div class="col-sm-9 first last">
+              {{ form.tags }}
+            </div>
+            {% if form.tags.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.tags.errors }}</span>
+            {% elif form.tags.help_text %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.tags.help_text }}</span>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.picture.auto_id }}" class="col-sm-3 control-label">
+              {{ form.picture.label }}
+            </label>
+
+            <div class="col-sm-9 first last fileinput {% if picture_url %}fileinput-exists{% else %}fileinput-new{% endif %}"
+                 data-provides="fileinput" data-name="{{ form.picture.name }}">
+                 <input type="hidden" name="{{ form.picture.name }}" value="nochange" />
+              <div class="fileinput-new">
+                <img src="{% static 'img/image_placeholder.png' %}" alt="Image Placeholder"
+                     style="max-height: 204px; max-width: 100%">
+              </div>
+              <div class="fileinput-preview fileinput-exists">
+                {% if picture_url %}
+                <img src="{{ picture_url.url }}" alt="{{ form.picture.name }} Image"
+                     style="max-height: 204px; max-width: 100%" />
+                {% endif %}
+              </div>
+              <div>
+              <span class="help-block">{{ form.picture.help_text }}</span>
+              <span class="btn btn-sm btn-file">
+                <span class="fileinput-new">Select image</span>
+                <span class="fileinput-exists">Change</span>
+                <input type="file"/></span>
+                <a href="#" class="btn btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden">{{ form.geoposition }}{{ form.country }}</div>
+      </div>
+      <div class="clearfix well well-sm">
+        <h3>Your contact information</h3>
+        <div class="aluminum">
+          This information will only be visible to
+          <a href="{% url 'web.ambassadors' %}" target="_blank">EU Code Week Ambassadors</a> and Code Week organizers, who will check your event before it appears on the map and might contact you if edits are necessary or for administering surveys for statistical purposes after the event.
+        </div>
+        <div class="col-md-6 first">
+          <div class="form-group {% if form.user_email.errors %}has-error{% endif %}">
+            <span class="help-block col-sm-9 col-sm-offset-3">{{ form.user_email.help_text }}</span>
+            <label for="{{ form.user_email.auto_id }}" class="col-sm-3 control-label">
+              {% if form.user_email.field.required %}*{% endif %} {{ form.user_email.label }}
+            </label>
+            <div class="col-sm-9">
+              {{ form.user_email }}
+            </div>
+            {% if form.user_email.errors %}
+              <span class="help-block col-sm-9 col-sm-offset-3">{{ form.user_email.errors }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 first">
+        <div class="col-sm-9 col-sm-offset-3">
+          <div class="btn btn-primary btn-directional fa-plus-circle btn-lg submit-button-wrapper">
+            <input type="submit" value="{% if editing %}Save{% else %}Add{% endif %} event" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 {% endblock content %}
 
 {% block custom_js %}
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false&libraries=places"></script>
-	{% compress js %}
-		<script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
-		<script type="text/javascript" src="{% static "js/jquery.datetimepicker.js" %}"></script>
-		<script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
-		<script type="text/javascript" src="{% static "js/events.js" %}"></script>
-		<script type="text/javascript">
-			Codeweek.Event.add();
-		</script>
-	{% endcompress %}
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&libraries=places"></script>
+  {% compress js %}
+    <script type="text/javascript" src="{% static "lib/bootstrap-sass/javascripts/bootstrap/tooltip.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.datetimepicker.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jasny-bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/events.js" %}"></script>
+    <script type="text/javascript">
+      Codeweek.Event.add();
+    </script>
+  {% endcompress %}
 
 {% endblock custom_js %}
