@@ -5,114 +5,114 @@
 {% block title %}- Map of Events{% endblock title %}
 
 {% block social %}
-	<meta name="description" content="October 10 - 18, 2015: a week to celebrate coding in Europe, encouraging citizens to learn more about technology, and connecting communities and organizations who can help you learn coding." />
+  <meta name="description" content="October 15 - 23, 2016: a week to celebrate coding in Europe, encouraging citizens to learn more about technology, and connecting communities and organizations who can help you learn coding." />
 
-	<meta property="og:title" content="Europe Code Week" />
-	<meta property="og:type" content="website" />
-	<meta property="og:image" content="http://events.codeweek.eu/static/img/social_default_picture.png" />
-	<meta property="og:url" content="http://codeweek.eu" />
-	<meta property="og:description" content="October 10 - 18, 2015: a week to celebrate coding in Europe, encouraging citizens to learn more about technology, and connecting communities and organizations who can help you learn coding." />
+  <meta property="og:title" content="Europe Code Week" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="http://events.codeweek.eu/static/img/social_default_picture.png" />
+  <meta property="og:url" content="http://codeweek.eu" />
+  <meta property="og:description" content="October 15 - 23, 2016: a week to celebrate coding in Europe, encouraging citizens to learn more about technology, and connecting communities and organizations who can help you learn coding." />
 
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:url" content="http://codeweek.eu" />
-	<meta name="twitter:title" content="Europe Code Week" />
-	<meta name="twitter:description" content="October 10 - 18, 2015: a week to celebrate coding in Europe" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:url" content="http://codeweek.eu" />
+  <meta name="twitter:title" content="Europe Code Week" />
+  <meta name="twitter:description" content="October 15 - 23, 2016: a week to celebrate coding in Europe" />
 {% endblock social %}
 
 
 {% block messages %}{% endblock %}
 {% block content %}
-	<div class="landing-outter">
-		<div class="landing-wrapper">
-			<div class="events-map-wrapper">
-				<div id="events-map">
-					<img id="loading-gif" src="/static/img/loading.gif">
-				</div>
-			</div>
-		</div>
+  <div class="landing-outter">
+    <div class="landing-wrapper">
+      <div class="events-map-wrapper">
+        <div id="events-map">
+          <img id="loading-gif" src="/static/img/loading.gif">
+        </div>
+      </div>
+    </div>
 
-		<div class="container index-content">
-			<div id="past-events">
-				{% if past == 'yes' %}
-				<a id="past-link" href="{% url 'web.index' %}"><i class="fa fa-check-square-o"></i> 
-				{% else %}
-				<a id="past-link" href="{% url 'web.index' %}?past=yes"><i class="fa fa-square-o"></i>
-				{% endif %}
-				Show past events</a>
-			</div>
-			<div class="clearfix">
-				<div id="search-events-link">
-					{% if country.country_code %}
-						<a class="btn btn-primary btn-lg"
-							href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past={{ past }}">
-						   <i class="fa fa-list"></i> List all events in <span id="country"> {{ country.country_name }}</span>
-						</a>
-					{% else %}
-						<a class="btn btn-primary btn-lg" href="{% url 'web.search_events' %}">
-							<i class="fa fa-list"></i> List all events
-						</a>
-					{% endif %}
-				</div>
-			</div>
+    <div class="container index-content">
+      <div id="past-events">
+        {% if past == 'yes' %}
+        <a id="past-link" href="{% url 'web.index' %}"><i class="fa fa-check-square-o"></i>
+        {% else %}
+        <a id="past-link" href="{% url 'web.index' %}?past=yes"><i class="fa fa-square-o"></i>
+        {% endif %}
+        Show past events</a>
+      </div>
+      <div class="clearfix">
+        <div id="search-events-link">
+          {% if country.country_code %}
+            <a class="btn btn-primary btn-lg"
+              href="{% url 'web.search_events' %}?country_code={{ country.country_code }}&amp;past={{ past }}">
+               <i class="fa fa-list"></i> List all events in <span id="country"> {{ country.country_name }}</span>
+            </a>
+          {% else %}
+            <a class="btn btn-primary btn-lg" href="{% url 'web.search_events' %}">
+              <i class="fa fa-list"></i> List all events
+            </a>
+          {% endif %}
+        </div>
+      </div>
 
-			<div class="change-location-wrapper">
-				<div id="showcountries" class="clearfix">
-					{% for each_country in all_countries %}
-						<div class="country-link" id="{{ each_country.1 }}" data-name="{{ each_country.0 }}">
-							<img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
+      <div class="change-location-wrapper">
+        <div id="showcountries" class="clearfix">
+          {% for each_country in all_countries %}
+            <div class="country-link" id="{{ each_country.1 }}" data-name="{{ each_country.0 }}">
+              <img src="/static/flags/{{ each_country.1|lower }}.png" alt="{{ each_country.0 }}" />
 
-							<div class="country-name">
-								{{ each_country.0 }}
-							</div>
-						</div>
-					{% endfor %}
-				</div>
-			</div>
-			<div class="clearfix">
-				<div id="scoreboard-link">
-					<a href="{% url 'web.scoreboard' %}" ><i class="fa fa-trophy"></i> Events Scoreboard by country</a>
-				</div>
-			</div>
+              <div class="country-name">
+                {{ each_country.0 }}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="clearfix">
+        <div id="scoreboard-link">
+          <a href="{% url 'web.scoreboard' %}" ><i class="fa fa-trophy"></i> Events Scoreboard by country</a>
+        </div>
+      </div>
 
-			<hr />
-			<div class="how-to">
-				<p><strong>Get involved:</strong>
-				<a href="{% url 'web.guide' %}" class="btn btn-primary btn-sm">
-					Organize or support events in your city
-				</a></p>
-				<p>or 
-				<a href="{% url 'web.ambassadors' %}{% if country %}#{{ country.country_name }}{% endif %}">
-					contact your <strong>EU Code Week Ambassador{% if ambassadors|length > 1 %}s{% endif %}</strong>
-					{% if country %} 
-						{% for ambassador in ambassadors %}
-							{% avatar ambassador.user.username 45 %} 
-						{% endfor %} 
-					{% endif %} 
-				</a>
-				</p>
+      <hr />
+      <div class="how-to">
+        <p><strong>Get involved:</strong>
+        <a href="{% url 'web.guide' %}" class="btn btn-primary btn-sm">
+          Organize or support events in your city
+        </a></p>
+        <p>or
+        <a href="{% url 'web.ambassadors' %}{% if country %}#{{ country.country_name }}{% endif %}">
+          contact your <strong>EU Code Week Ambassador{% if ambassadors|length > 1 %}s{% endif %}</strong>
+          {% if country %}
+            {% for ambassador in ambassadors %}
+              {% avatar ambassador.user.username 45 %}
+            {% endfor %}
+          {% endif %}
+        </a>
+        </p>
 
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+  </div>
 
 
 {% endblock content %}
 
 {% block custom_js %}
-	<script type="text/javascript"
-	        src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
-	</script>
-	{% compress js %}
-		<script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
-		<script type="text/javascript" src="{% static "js/markerclusterer.js" %}"></script>
-		<script type="text/javascript" src="{% static "js/oms.min.js" %}"></script>
-		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
-		<script type="text/javascript">
-			Codeweek.Index.media_url = '{{ MEDIA_URL|escapejs }}';
-		</script>
-	{% endcompress %}
+  <script type="text/javascript"
+          src="//maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyA3XIqeAZB_JDD7qSLBeqMRp0rvD2tcCrU&sensor=false">
+  </script>
+  {% compress js %}
+    <script type="text/javascript" src="{% static 'lib/bootstrap-sass/javascripts/bootstrap/affix.js' %}"></script>
+    <script type="text/javascript" src="{% static "js/markerclusterer.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/oms.min.js" %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <script type="text/javascript">
+      Codeweek.Index.media_url = '{{ MEDIA_URL|escapejs }}';
+    </script>
+  {% endcompress %}
 
-	<script type="text/javascript">
-		Codeweek.Index.init("{{ past }}", {{ lan_lon.0 }}, {{ lan_lon.1 }});
-	</script>
+  <script type="text/javascript">
+    Codeweek.Index.init("{{ past }}", {{ lan_lon.0 }}, {{ lan_lon.1 }});
+  </script>
 {% endblock %}
