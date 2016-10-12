@@ -51,11 +51,11 @@ def list_active_countries(with_past_events=False):
     events_countries = Event.objects.filter(
             start_date__gte=datetime.date(start_year, 1, 1),
             status='APPROVED'
-        ).only('country').distinct()
+        ).values_list('country').order_by().distinct()
 
-    active_countries = {(e.country.name.decode(), e.country.code) for e in events_countries}
+    active_countries = [(unicode(name), code) for code, name in list(countries) if (code,) in events_countries]
 
-    return list(active_countries)
+    return active_countries
 
 
 def get_initial_data(event):
