@@ -200,6 +200,10 @@ var Codeweek = window.Codeweek || {};
 		$(function () {
 			// Initialize map on front page
 			google.maps.event.addDomListener(window, 'load', function () {
+				var map = $('#events-map');
+
+				if (!map.length) return;
+
 				var ajaxURL = "/api/event/list/?format=json";
 				if (past == "yes")
 					ajaxURL = ajaxURL + "&past=yes"
@@ -209,7 +213,7 @@ var Codeweek = window.Codeweek || {};
 					url: ajaxURL,
 					error: function(jqXHR, textStatus, errorThrown) {
 						// TODO: Add some error handling for real
-						$('#events-map').html('<div id="api-error"><img src="/static/img/blame-the-dog.jpg"><p><strong>A dog broke our API. Catz will fix it soon. Always blame the dog!</strong></p></div>');
+						map.html('<div id="api-error"><img src="/static/img/blame-the-dog.jpg"><p><strong>A dog broke our API. Catz will fix it soon. Always blame the dog!</strong></p></div>');
 					},
 					success: function(data, textStatus, jqXHR) {
 						initialize(data, lat, lng);
