@@ -45,10 +45,11 @@ def list_countries():
     return all_countries
 
 
-def list_active_countries():
+def list_active_countries(with_past_events=False):
     """ List countries with at least an Event associated """
+    start_year = 2014 if with_past_events else datetime.datetime.now().year
     events_countries = Event.objects.filter(
-            start_date__gte=datetime.date(2014, 1, 1),
+            start_date__gte=datetime.date(start_year, 1, 1),
             status='APPROVED'
         ).only('country').distinct()
 

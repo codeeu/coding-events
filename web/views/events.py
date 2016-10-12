@@ -71,7 +71,7 @@ def index(request):
         lan_lon = (58.08695, 5.58121)
 
     ambassadors = get_ambassadors(country['country_code'])
-    all_countries = list_active_countries()
+    all_countries = list_active_countries(with_past_events=(past == 'yes'))
 
     return render_to_response(
         template, {
