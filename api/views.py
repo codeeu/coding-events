@@ -15,7 +15,7 @@ class CachedListAPIView(generics.ListAPIView):
     """
     Concrete cached view for listing a queryset.
     """
-    @cache_response(timeout=240, key_func='calculate_cache_key')
+    @cache_response(timeout=21600, key_func='calculate_cache_key')
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
