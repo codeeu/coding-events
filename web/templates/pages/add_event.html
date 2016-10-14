@@ -111,6 +111,8 @@
             {% if form.location.errors or form.country.errors %}
               <span class="help-block col-sm-9 col-sm-offset-3">{{ form.location.errors }}{{form.country.errors}}</span>
             {% endif %}
+
+            <span class="help-block col-sm-9 col-sm-offset-3">Type in an address or click on the map below to set a location.</span>
           </div>
           <div id="view-event-map-wrapper" class="event-map col-sm-9 col-sm-offset-3">
             <div id="view-event-map"><i class="fa fa-refresh fa-3x fa-spin"></i> </div>

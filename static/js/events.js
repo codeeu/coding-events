@@ -94,17 +94,27 @@ var Codeweek = window.Codeweek || {};
 		document.getElementById("id_geoposition_1").value = lng;
 	}
 
-	function createMarker(markerLatLng) {
-		marker = new google.maps.Marker({
-			position: markerLatLng,
-			animation: google.maps.Animation.DROP,
-			title: "Event location",
-			draggable: true
-		});
+	function createMarker(markerLatLng, viewport) {
+		if (!marker) {
+			marker = new google.maps.Marker({
+				position: markerLatLng,
+				animation: google.maps.Animation.DROP,
+				title: "Event location",
+				draggable: true
+			});
+		} else {
+			marker.setPosition(markerLatLng);
+		}
 
-		createMap(markerLatLng, 15);
+		if (!map) {
+			createMap(markerLatLng, 15);
+		}
 
 		marker.setMap(map);
+
+		if (viewport) {
+			map.fitBounds(viewport);
+		}
 
 		google.maps.event.addListener(marker, 'dragend', function (event) {
 			updateLatLng(this.getPosition().lat(), this.getPosition().lng());
@@ -133,16 +143,19 @@ var Codeweek = window.Codeweek || {};
 
 	function fillInAddress() {
 		// geoLatLng contains the Google Maps geocoded latitude, longitude
-		var geoLatLng = autocomplete.getPlace().geometry.location;
-	
-		createMarker(geoLatLng);
+		var geometry = autocomplete.getPlace().geometry;
+		var geoLatLng = geometry.location;
+
+		createMarker(geoLatLng, geometry.viewport);
 		updateLatLng(geoLatLng.lat(), geoLatLng.lng());
 		updateAddress(geoLatLng);
 	}
 
 	function auto_complete() {
+		var autocompleteField = document.getElementById('autocomplete');
+
 		autocomplete = new google.maps.places.Autocomplete(
-			(document.getElementById('autocomplete')),
+			autocompleteField,
 			{
 				types: ['geocode']
 			}
@@ -151,16 +164,25 @@ var Codeweek = window.Codeweek || {};
 		google.maps.event.addListener(autocomplete, 'place_changed', function () {
 			fillInAddress();
 		});
+
+		$(document).on('keydown', '#autocomplete', function(event) {
+			if (event.keyCode === 13) {
+				event.preventDefault();
+				return false;
+			}
+		});
 	}
 
 
 	function getAddress(address) {
+		if (!address) return;
+
 		geocoder = new google.maps.Geocoder();
 
 		geocoder.geocode({'address': address}, function (results, status) {
 			if (status === google.maps.GeocoderStatus.OK) {
 				var updated_location = results[0].geometry.location;
-				createMarker(updated_location);
+				createMarker(updated_location, results[0].geometry.viewport);
 				updateLatLng(updated_location.lat(), updated_location.lng());
 				updateAddress(updated_location);
 			}
@@ -174,6 +196,15 @@ var Codeweek = window.Codeweek || {};
 		auto_complete();
 		getAddress(address);
 		listenForPastedAddress();
+
+		google.maps.event.addListener(map, 'click', function (event) {
+			var position = event.latLng;
+			if (!position) return;
+
+			createMarker(position);
+			updateLatLng(position.lat(), position.lng());
+			updateAddress(position);
+		});
 	}
 
 	var add = function (address) {
