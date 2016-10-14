@@ -144,6 +144,7 @@ var Codeweek = window.Codeweek || {};
 	function fillInAddress() {
 		// geoLatLng contains the Google Maps geocoded latitude, longitude
 		var geometry = autocomplete.getPlace().geometry;
+		if (!geometry) return;
 		var geoLatLng = geometry.location;
 
 		createMarker(geoLatLng, geometry.viewport);
