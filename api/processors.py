@@ -32,6 +32,17 @@ def get_approved_events(limit=None, order=None, country_code=None, past=False):
 
     return events
 
+def get_event_detail(id):
+    """
+    Select event by ID
+    """
+
+    events = Event.objects.filter(id=id)
+
+
+
+    return events
+
 
 def get_pending_events(limit=None, order=None, country_code=None, past=False):
     """

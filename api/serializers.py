@@ -11,11 +11,25 @@ class EventListSerializers(serializers.ModelSerializer):
         model = Event
         fields = (
             'geoposition',
+            'id'
+            )
+
+    def transform_description_short(self, obj, value):
+        return Truncator(value).chars(160)
+
+class EventDetailSerializer(serializers.ModelSerializer):
+    description_short = serializers.CharField(source='description')
+
+    class Meta:
+        model = Event
+        fields = (
+            'geoposition',
             'title',
             'id',
             'slug',
             'description_short',
-            'picture')
+            'picture'
+            )
 
     def transform_description_short(self, obj, value):
         return Truncator(value).chars(160)
