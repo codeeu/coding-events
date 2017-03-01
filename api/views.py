@@ -4,8 +4,8 @@ from hashlib import sha1
 from rest_framework import generics
 from rest_framework_extensions.cache.decorators import cache_response
 
-from api.serializers import EventListSerializers
-from api.processors import get_approved_events
+from api.serializers import EventListSerializers, EventDetailSerializer
+from api.processors import get_approved_events, get_event_detail
 
 from api.serializers import ScoreboardSerializer
 from web.processors.event import count_approved_events_for_country
@@ -46,6 +46,18 @@ class EventListApi(CachedListAPIView):
         }
 
         return get_approved_events(**params)
+
+
+class EventDetailApi(CachedListAPIView):
+    serializer_class = EventDetailSerializer
+
+    def get_queryset(self):
+        params = {
+            'id': self.request.GET.get('id', None)
+        }
+
+        return get_event_detail(**params)
+
 
 
 class ScoreBoardApi(CachedListAPIView):

@@ -134,7 +134,8 @@ def get_country(country_code, user_ip):
     return country
 
 
-def count_approved_events_for_country(past=True):
+def \
+        count_approved_events_for_country(past=True):
     """
     Count the number of approved events and score for each country
     """
