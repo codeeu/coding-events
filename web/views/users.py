@@ -65,7 +65,6 @@ def ambassadors(request):
         user_country = None
 
     countries_ambassadors = get_ambassadors_for_countries()
-    all_countries = list_countries()
 
     if not user_country:
         position = 2
@@ -76,8 +75,6 @@ def ambassadors(request):
         'pages/ambassadors.html', {
             'user_country': user_country,
             'countries': countries_ambassadors,
-            # all_countries minus two CUSTOM_COUNTRY_ENTRIES
-            'all_countries': all_countries[2:],
             'country_pos': position,
         },
         context_instance=RequestContext(request))
