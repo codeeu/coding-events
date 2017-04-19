@@ -66,15 +66,10 @@ def ambassadors(request):
 
     countries_ambassadors = get_ambassadors_for_countries()
 
-    if not user_country:
-        position = 2
-    else:
-        position = get_country_pos(unicode(user_country['country_name']))
 
     return render_to_response(
         'pages/ambassadors.html', {
             'user_country': user_country,
-            'countries': countries_ambassadors,
-            'country_pos': position,
+            'countries': countries_ambassadors
         },
         context_instance=RequestContext(request))
