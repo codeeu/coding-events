@@ -30,7 +30,7 @@ Pillow==2.3.0
 py==1.4.23
 pystache==0.5.3
 python-openid==2.2.5
-python-social-auth==0.2.21
+python-social-auth==0.2.19
 PyYAML==3.11
 requests-oauthlib==0.4.2
 requests==2.2.1
