@@ -65,7 +65,7 @@ var Codeweek = window.Codeweek || {};
                     if (event.picture !== "") {
                         image += '<img src="' + Codeweek.Index.media_url + event.picture + '" class="img-polaroid marker-buble-img">';
                     } else {
-                       image += '<img src="http://codeweekeu.s3.amazonaws.com/event_picture/logo_gs_2016_07703ca0-7e5e-4cab-affb-4de93e3f2497.png" class="img-polaroid marker-buble-img">';
+                       image += '<img src="http://codeweek-s3.s3.amazonaws.com/event_picture/logo_gs_2016_07703ca0-7e5e-4cab-affb-4de93e3f2497.png" class="img-polaroid marker-buble-img">';
                     }
 
 
