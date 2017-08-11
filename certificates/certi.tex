@@ -1,10 +1,10 @@
 \documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
+\usepackage[spanish]{babel}
 \usepackage{mathpazo}
 \renewcommand{\familydefault}{\rmdefault}
 \usepackage[landscape,a4paper]{geometry}
-\geometry{verbose,tmargin=0cm,bmargin=0cm,lmargin=3cm,rmargin=3cm}
+\geometry{verbose,tmargin=0cm,bmargin=0cm,lmargin=0cm,rmargin=0cm}
 \usepackage{fancybox}
 \usepackage{calc}
 \usepackage{multicol}
@@ -18,13 +18,13 @@
 \vfill
 \centering
 \includegraphics[width=\paperwidth,height=\paperheight,%
-keepaspectratio]{images/background.png}%
+keepaspectratio]{V14.png}%
 \vfill
 }}}
 
 
 \begin{document}
-\AddToShipoutPicture{\BackgroundPic}
+\[\AddToShipoutPicture{\BackgroundPic}
 ~
 \vspace{1.2cm}
 ~
@@ -35,8 +35,8 @@ keepaspectratio]{images/background.png}%
 \begin{center}
 \begin{tabular}{lr}
 %~\hspace{0.7cm}
-\includegraphics[height=3.4cm]{images/codeweek_logo.png}
-\includegraphics[height=3.4cm]{images/european_commission_logo.png}
+\includegraphics[height=3.4cm]{codeweekeu.png}
+\includegraphics[height=3.4cm]{EC.png}
 \end{tabular}
 \end{center}
 \end{table}
@@ -44,11 +44,10 @@ keepaspectratio]{images/background.png}%
 \LARGE{CodeWeek EU organisers are honoured\\
 \vspace{1cm}
 \fontsize{50}{60}{\textbf{TO CERTIFY}}
-}
 
 \vspace{0.4cm}
 
-\Huge{that \textbf{<CERTIFICATE_HOLDER_NAME>
+\Huge{that \textbf{%pointname
 }}
 
 \vspace{0.4cm}
@@ -57,7 +56,8 @@ keepaspectratio]{images/background.png}%
 
 \vspace{0.3cm}
 
-\Huge{\textbf{EUROPE CODE WEEK 2016}}
+\Huge{\textbf{EUROPE CODE WEEK \textbf{%pointyear
+}}}
 
 \vspace{0.3cm}
 
@@ -81,18 +81,19 @@ keepaspectratio]{images/background.png}%
 \begin{center}
 \begin{tabular}{lr}
 %~\hspace{0.7cm}
-\includegraphics[height=2.5cm]{images/signature_and_stamp.png}
+\includegraphics[height=2.5cm]{signature2.png}
 \end{tabular}
 \end{center}
 \end{table}
 \vspace{-2.2cm}
 \begin{center}
-\footnotesize{On behalf of Europe Code Week Ambassadors}\\
-%\end{tabular}
+\footnotesize{On behalf of Europe Code Week Ambassadors}\\ 
+\end{tabular}
 
 %Diploma elaborado con el software libre \texttt{Pyploma}, (c)
 %\url{fjruizruano@gmail.com} bajo licencia
 %GPLv3. Visite: \url{http://code.google.com/p/pyploma}
 
 \end{center}
+\]
 \end{document}
