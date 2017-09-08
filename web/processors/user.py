@@ -40,7 +40,8 @@ def get_ambassadors_for_countries():
         countries_ambassadors.append(
             (code, readable_name, supporting_ambassadors, main_ambassadors))
 
-    countries_ambassadors.sort()
+    countries_ambassadors.sort(key=lambda country: country[1], reverse=False)
+
     return countries_ambassadors
 
 def get_ambassadors_for_country(country):
