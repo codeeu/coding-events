@@ -20,11 +20,15 @@
                 </div>
                 <div class="tabs clearfix" id="tab-1">
                     <div class="tab-container">
-                        {% for code, country, ambassadors, mains in countries %}
+                        {% for code, country, ambassadors, mains, facebook in countries %}
                             {% if ambassadors|length != 0 or mains|length != 0 %}
                                 <div class="tab-content clearfix" id="tabs-{{ code }}">
 
                                     <h2 class="clearfix center">{{ country }}</h2>
+                                    {% if facebook|length != 0 %}
+                                        <div class="small center" style="margin-top: -32px;">Visit the <a
+                                                href="{{ facebook }}">local Facebook page</a></div>
+                                    {% endif %}
 
                                     {% if ambassadors|length != 0 or mains|length != 0 %}
                                         {% if mains|length != 0 %}
