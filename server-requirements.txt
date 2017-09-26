@@ -39,3 +39,4 @@ South==0.8.4
 sqlparse==0.1.11
 static==1.0.2
 wsgiref==0.1.2
+django-maintenance-mode==0.4.3

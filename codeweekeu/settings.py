@@ -189,6 +189,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+    'maintenance_mode.middleware.MaintenanceModeMiddleware'
 
 )
 # END MIDDLEWARE CONFIGURATION
@@ -196,6 +197,7 @@ MIDDLEWARE_CLASSES = (
 
 # APP CONFIGURATION
 INSTALLED_APPS = (
+    'maintenance_mode',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -362,6 +364,8 @@ SETTINGS_EXPORT = [
 # report and claim their certificate.
 EVENT_REPORT_REMINDERS_FROM_EMAIL = 'Code Week <info@codeweek.eu>'
 
+MAINTENANCE_MODE = True
+MAINTENANCE_MODE_TEMPLATE = '503.html'
 
 try:
     from settings_local import *
