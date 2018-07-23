@@ -43,7 +43,7 @@
 						</div>
 					</div>
 					<div class="row">
-						{% paginate 6 cl.list as country_events %}
+						{% paginate 6 cl.list.reverse() as country_events %}
 						{% for event in country_events %}
 							{% include 'layout/event_tile.html' %}
 						{% endfor %}
